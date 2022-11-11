@@ -1,6 +1,7 @@
 <?php
 
 use app\core\Application;
+use app\controllers\AuthenticationController;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -13,6 +14,11 @@ $dotenv->load();
 // Instantiate the application object
 $app = new Application(dirname(__DIR__));
 
+
+// registering the routes
+
+$app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
+$app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
 
 // run the application
 $app->run();

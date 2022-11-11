@@ -1,0 +1,75 @@
+.form-item {
+    /* controlling the position of the children */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-item > input {
+    /* Colors */
+    /* background-color: red; */
+
+    /* sizes */
+    padding-inline: 1rem;
+    height: 2.5rem;
+
+    /* shape */
+    border-radius: 0.5rem;
+
+    /* borders */
+    border: 1px solid rgba(var(--black), 0.2);
+    outline: transparent 2px solid;
+
+    /* transtiton */
+    transition: all 0.2s ease-in-out;
+}
+
+.form-item > input:focus {
+    outline: var(--color-primary) 2px solid;
+    border: 1px solid transparent;
+}
+
+label {
+    padding: 0;
+    margin: 0;
+}
+
+/* variations based on content */
+.form-item--icon-right {
+    /* To enable icon positioning easily */
+    position: relative;
+}
+
+.form-item--icon-right > input {
+    padding-left: 2.25rem;
+}
+
+.form-item--icon-right svg {
+    position: absolute;
+    top: 2.625rem;
+    left: 0.75rem;
+    color: rgba(var(--black), 0.4);
+}
+
+
+/* for checkbox inputs  */
+
+
+.form-item.form-item--checkbox {
+    /* controlling the position of the children */
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+
+.form-item.form-item--checkbox > input {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.form-item.form-item--checkbox > input:focus {
+    outline: none;
+    border: 1px solid transparent;
+}

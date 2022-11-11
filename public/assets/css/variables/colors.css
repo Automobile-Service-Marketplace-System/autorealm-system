@@ -1,0 +1,26 @@
+html {
+  --primary: 97, 0, 255;
+  --success: 0, 197, 138;
+  --info: 0, 83, 243;
+  --warning: 250, 187, 65;
+  --danger: 229, 48, 48;
+  --light: 248, 248, 248;
+  --dark: 34, 34, 34;
+  --white: 255, 255, 255;
+  --black: 0, 0, 0;
+  --dark-blue: 15, 14, 21;
+  --light-blue: 24, 23, 40;
+  --disabled: 0, 0, 0, 0.5;
+  --color-primary: rgb(var(--primary));
+  --color-success: rgb(var(--success));
+  --color-info: rgb(var(--info));
+  --color-warning: rgb(var(--warning));
+  --color-danger: rgb(var(--danger));
+  --color-light: rgb(var(--light));
+  --color-dark: rgb(var(--dark));
+  --color-white: rgb(var(--white));
+  --color-black: rgb(var(--black));
+  --color-dark-blue: rgb(var(--dark-blue));
+  --color-light-blue: rgb(var(--light-blue));
+  --color-disabled: rgba(var(--disabled));
+}

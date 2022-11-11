@@ -1,0 +1,144 @@
+.btn {
+  /* colors */
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  /* shape */
+  border-radius: 0.5rem;
+  /* size */
+  padding: 0.5rem 1rem;
+  /* transition */
+  transition: all 0.2s ease-in-out;
+  /* placement of children elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  transform: translateY(-0.1rem);
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--primary), 0.2);
+}
+
+.btn:active {
+  transform: translateY(0.1rem);
+}
+
+.btn:disabled {
+  background-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn:disabled:active {
+  transform: translateY(0);
+}
+
+/* button variations with colors */
+
+.btn--success {
+  background-color: var(--color-success);
+}
+
+.btn--success:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--success), 0.2);
+}
+
+.btn--info {
+  background-color: var(--color-info);
+}
+
+.btn--info:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--info), 0.2);
+}
+
+.btn--warning {
+  background-color: var(--color-warning);
+}
+
+.btn--warning:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--warning), 0.2);
+}
+
+.btn--danger {
+  background-color: var(--color-danger);
+}
+
+.btn--danger:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--danger), 0.2);
+}
+
+.btn--light {
+  background-color: var(--color-light);
+  color: var(--color-black);
+}
+
+.btn--light:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--light), 0.2);
+}
+
+.btn--dark {
+  background-color: var(--color-dark);
+}
+
+.btn--dark:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--dark), 0.2);
+}
+
+.btn--white {
+  background-color: var(--color-white);
+  color: var(--color-dark);
+}
+
+.btn--white:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--white), 0.2);
+}
+
+.btn--black {
+  background-color: var(--color-black);
+}
+
+.btn--black:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--black), 0.2);
+}
+
+.btn--dark-blue {
+  background-color: var(--color-dark-blue);
+}
+
+.btn--dark-blue:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--dark-blue), 0.2);
+}
+
+.btn--light-blue {
+  background-color: var(--color-light-blue);
+}
+
+.btn--light-blue:hover {
+  box-shadow: 0rem 0.5rem 0.5rem rgba(var(--light-blue), 0.2);
+}
+
+/* button variations based on state */
+.btn--loading {
+  pointer-events: none;
+}
+
+.btn--loading svg {
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* button variations based on shape */
+
+.btn--round {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+/* button variations based on size */
+.btn--block {
+  width: 100%;
+}

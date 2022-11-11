@@ -1,0 +1,7 @@
+.card {
+  /* colors */
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0.25rem 1rem rgba(var(--dark), 0.2);
+}
