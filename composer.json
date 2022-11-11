@@ -1,0 +1,40 @@
+{
+    "name": "autorealm/website",
+    "description": "A PHP fullstack web application for AutoRealm vehicle service center",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Nethsara Sandeepa Elvitigala",
+            "email": "nethsarasandeepaelvitigala@gmail.com",
+            "homepage": "https://github.com/Nethrenial",
+            "role": "member"
+        },
+        {
+            "name": "Avishka Sathyanjana",
+            "email": "baavishka@gmail.com",
+            "homepage": "https://github.com/avishka-sathyanjana",
+            "role": "member"
+        },
+        {
+            "name": "Tharushi Chethana Gunathilaka",
+            "email": "ththarushi3@gmal.com",
+            "homepage": "https://github.com/Tharu0",
+            "role": "member"
+        },
+        {
+            "name": "Supun Dilshan",
+            "email": "dilshansenevi99@gmail.com",
+            "homepage": "https://github.com/DilshanSenewirathne",
+            "role": "member"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "autorealm\\": "./"
+        }
+    }
+}
