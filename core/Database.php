@@ -18,7 +18,7 @@ class Database
     }
 
 
-    public static function getPDO(): Database
+    public static function getInstance(): Database
     {
         if(!isset(self::$instance)) {
             self::$instance = new Database();

@@ -17,6 +17,7 @@ $app = new Application(dirname(__DIR__));
 
 // registering the routes
 
+$app->router->get("/", "home");
 $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
 $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
 

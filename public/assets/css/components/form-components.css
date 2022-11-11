@@ -5,10 +5,12 @@
     gap: 0.5rem;
 }
 
-.form-item > input {
-    /* Colors */
-    /* background-color: red; */
+.form-item > sup {
+    color: var(--color-danger);
+}
 
+.form-item > input {
+    
     /* sizes */
     padding-inline: 1rem;
     height: 2.5rem;
@@ -72,4 +74,28 @@ label {
 .form-item.form-item--checkbox > input:focus {
     outline: none;
     border: 1px solid transparent;
+}
+
+
+/* variations based on state */
+
+.form-item--error > input {
+    outline: var(--color-danger) 2px solid;
+}
+
+
+.form-item--error > small {
+    color: var(--color-danger);
+    font-size: 0.75rem;
+}
+
+.form-item--error:focus-within > input {
+    outline: var(--color-danger) 2px solid;
+    border: 1px solid transparent;
+
+}
+
+.form-item--error > label {
+    color: var(--color-danger);
+    animation: shake 1s ease-in-out;
 }
