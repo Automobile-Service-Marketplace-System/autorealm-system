@@ -19,18 +19,18 @@ align-items: center;
 }
 
 
- .brand {
+ .brand > a {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
- .brand > .brand__image {
+ .brand > a > .brand__image {
     width: 3rem;
     height: 3rem;
 }
 
- .brand > .brand__name {
+ .brand > a >.brand__name {
     font-size: 1.5rem;
     font-weight: bold;
 }

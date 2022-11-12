@@ -1,11 +1,14 @@
 <?php
 /**
  * @var array $errors
+ * @var array $body
  */
 
+use app\components\FormItem;
+
 $hasErrors = isset($errors) && !empty($errors);
-$isEmailError = $hasErrors && isset($errors['email']);
-$isPasswordError = $hasErrors && isset($errors['password']);
+$hasEmailError = $hasErrors && isset($errors['email']);
+$hasPasswordError = $hasErrors && isset($errors['password']);
 
 
 
@@ -14,14 +17,26 @@ $isPasswordError = $hasErrors && isset($errors['password']);
 <div class="customer-auth">
     <form action="/login" method="post" class="customer-auth-form">
         <h1>Welcome back !</h1>
-        <div class="form-item">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-        </div>
-        <div class="form-item">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-        </div>
+        <?php
+        FormItem::render(
+            id: "email",
+            label: "Email",
+            name: "email",
+            type: "email",
+            hasError: $hasEmailError,
+            error: $hasEmailError ? $errors['email'] : "",
+            value: $body['email'] ?? null
+        );
+        FormItem::render(
+            id: "password",
+            label: "Password",
+            name: "password",
+            type: "password",
+            hasError: $hasPasswordError,
+            error: $hasPasswordError ? $errors['password'] : "",
+            value: $body['password'] ?? null,
+            additionalAttributes: "minlength='6' pattern='.{6,}'"
+        ); ?>
         <a href="/forgot-password" class="link">Forgot password?</a>
         <button class="btn btn--danger btn--block">
             Sign In

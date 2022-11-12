@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use function Sodium\compare;
 
 class Customer
 {
@@ -31,7 +32,8 @@ class Customer
             $statement->bindValue(":contact_no", $this->body["contact_no"]);
             $statement->bindValue(":address", $this->body["address"]);
             $statement->bindValue(":email", $this->body["email"]);
-            $statement->bindValue(":password", $this->body["password"]);
+            $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+            $statement->bindValue(":password", $hash);
             try {
                 $statement->execute();
                 return true;
@@ -60,7 +62,7 @@ class Customer
             $statement->bindValue(":NIC", $this->body["nic"]);
             $statement->execute();
             if ($statement->rowCount() > 0) {
-                $errors['NIC'] = 'NIC already exists.';
+                $errors['NIC'] = 'NIC already in use.';
             }
         }
 
@@ -82,9 +84,15 @@ class Customer
 
         if (strlen($this->body['contact_no']) == 0) {
             $errors['contact_no'] = 'Contact number must not be empty.';
+        } else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
+            $errors['contact_no'] = 'Contact number must start with +947 and contain 10 digits.';
         } else {
-            if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
-                $errors['contact_no'] = 'Contact number must start with +947 and contain 10 digits.';
+            $query = "SELECT * FROM customer WHERE contact_no = :contact_no";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":contact_no", $this->body["contact_no"]);
+            $statement->execute();
+            if ($statement->rowCount() > 0) {
+                $errors['contact_no'] = 'Contact number already in use.';
             }
         }
 
@@ -110,6 +118,14 @@ class Customer
             $errors['password'] = 'Password & Confirm password must match';
         }
 
+        if ($this->body["tc"] != "on") {
+            $errors['tc'] = 'You must agree to the terms and conditions.';
+        }
+
+        if ($this->body["pp"] != "on") {
+            $errors['pp'] = 'You must agree to the privacy policy.';
+        }
+
         return $errors;
     }
 
@@ -128,9 +144,9 @@ class Customer
             $statement->execute();
             $customer = $statement->fetchObject();
             if (!$customer) {
-                $errors['email'] = 'Email does not exists';
+                $errors['email'] = 'Email does not exist';
             } else {
-                if ($this->body['password'] !== $customer->password) {
+                if (!password_verify($this->body['password'], $customer->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }
@@ -139,7 +155,6 @@ class Customer
             return $customer;
         }
         return $errors;
-
     }
 
 

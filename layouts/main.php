@@ -23,14 +23,16 @@
             rel="stylesheet"
     />
     <link rel="stylesheet" href="/assets/css/main.css">
-    <title><?php echo isset($title) ? "$title- AutoRealm" : "Home - AutoRealm" ?></title>
+    <title><?php echo isset($title) ? "$title - AutoRealm" : "Home - AutoRealm" ?></title>
 </head>
 <body>
 
 <header class="main-header">
     <div class="brand">
-        <img src="/assets/images/logo.webp" alt="AutoRealm Logo" class="brand__image">
-        <p class="brand__name">AutoRealm</p>
+        <a href="/">
+            <img src="/assets/images/logo.webp" alt="AutoRealm Logo" class="brand__image">
+            <p class="brand__name">AutoRealm</p>
+        </a>
     </div>
     <nav class="main-nav">
         <ul>

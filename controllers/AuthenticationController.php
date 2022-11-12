@@ -10,7 +10,9 @@ class AuthenticationController
 {
     public function getCustomerSignupForm(Request $req, Response $res): string
     {
-        return $res->render("customer-signup");
+        return $res->render("customer-signup", layoutParams: [
+            "title" => "Register",
+        ]);
     }
 
 
@@ -22,7 +24,8 @@ class AuthenticationController
 
         if (is_array($result)) {
             return $res->render(view: "customer-signup", pageParams: [
-                'errors' => $result
+                'errors' => $result,
+                'body' => $body
             ]);
         } else {
             if ($result) {
@@ -50,7 +53,8 @@ class AuthenticationController
         $result = $customer->login();
         if (is_array($result)) {
             return $res->render(view: "customer-login", pageParams: [
-                'errors' => $result
+                'errors' => $result,
+                'body' => $body
             ]);
         } else {
 
