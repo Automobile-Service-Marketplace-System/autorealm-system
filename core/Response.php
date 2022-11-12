@@ -38,9 +38,10 @@ class Response
      * @param int $statusCode - Status code that should be set
      * @return void
      */
-    public function redirect(string $path, bool $replace = true, int $statusCode = 302): void
+    public function redirect(string $path, bool $replace = true, int $statusCode = 302): string
     {
         header("Location: $path", $replace, $statusCode);
+        return "";
     }
 
 

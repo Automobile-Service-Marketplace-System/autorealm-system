@@ -15,12 +15,19 @@
 @import "components/buttons.css";
 @import "components/form-components.css";
 @import "components/cards.css";
+@import "components/headers.css";
+@import "components/footers.css";
+@import "components/links.css";
 
 
 /* importing css files for views */
-@import "views/customer-signup.css";
+@import "views/customer-auth.css";
 
 
 body {
   font-family: "Montserrat", sans-serif;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
 }
+
+
