@@ -19,7 +19,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 ?>
 
 <div class="customer-auth">
-    <form action="/register" method="post" class="customer-auth-form">
+    <form action="/register" method="post" class="customer-auth-form" enctype="multipart/form-data">
         <h1>Register with us</h1>
         <?php
         FormItem::render(

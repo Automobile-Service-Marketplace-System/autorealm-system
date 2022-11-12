@@ -85,7 +85,7 @@ class Customer
         if (strlen($this->body['contact_no']) == 0) {
             $errors['contact_no'] = 'Contact number must not be empty.';
         } else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
-            $errors['contact_no'] = 'Contact number must start with +947 and contain 10 digits.';
+            $errors['contact_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
         } else {
             $query = "SELECT * FROM customer WHERE contact_no = :contact_no";
             $statement = $this->pdo->prepare($query);

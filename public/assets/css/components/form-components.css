@@ -81,6 +81,7 @@ label {
 
 .form-item--error > input {
     outline: var(--color-danger) 2px solid;
+    border: 1px solid transparent;
 }
 
 
