@@ -2,11 +2,10 @@
 
 namespace app\components;
 
-
 class FormItem
 {
     /**
-     * @param string $id Id for the input
+     * @param string $id id for the input
      * @param string $label Label for the input
      * @param string $name Name for the input
      * @param string $required Required attribute for the input
@@ -41,7 +40,7 @@ class FormItem
                     <label for='$id'>$label.$requiredIndicator</label>
                     <input type='$type' name='$name' id='$id' placeholder='$placeholder' $required $disabled value='$value'  $additionalAttributes >
                     $errorElement
-                </div>";
+              </div>";
     }
 
 }

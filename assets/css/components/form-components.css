@@ -5,7 +5,7 @@
     gap: 0.5rem;
 }
 
-.form-item > sup {
+.form-item > label > sup {
     color: var(--color-danger);
 }
 

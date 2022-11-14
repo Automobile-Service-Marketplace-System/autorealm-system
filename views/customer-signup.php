@@ -11,6 +11,7 @@ $hasEmailError = $hasErrors && isset($errors['email']);
 $hasNICError = $hasErrors && isset($errors['NIC']);
 $hasFNameError = $hasErrors && isset($errors['f_name']);
 $hasLNameError = $hasErrors && isset($errors['l_name']);
+$hasImageError = $hasErrors && isset($errors['image']);
 $hasContactNoError = $hasErrors && isset($errors['contact_no']);
 $hasAddressError = $hasErrors && isset($errors['address']);
 $hasPasswordError = $hasErrors && isset($errors['password']);
@@ -39,6 +40,16 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             error: $hasLNameError ? $errors['l_name'] : "",
             value: $body['l_name'] ?? null,
             additionalAttributes: "pattern='^[\p{L} ]+$'"
+
+        );
+        FormItem::render(
+            id: "image",
+            label: "Profile photo",
+            name: "image[]",
+            type: "file",
+            hasError: $hasImageError,
+            error: $hasImageError ? $errors['image'] : "",
+            additionalAttributes: "accept='image/*' multiple"
 
         );
 

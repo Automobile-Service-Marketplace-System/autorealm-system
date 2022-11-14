@@ -2,6 +2,7 @@
 
 use app\core\Application;
 use app\controllers\AuthenticationController;
+use app\controllers\SiteController;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -16,6 +17,10 @@ $app = new Application(dirname(__DIR__));
 
 
 // registering the routes
+
+
+// main routes
+$app->router->get("/", [SiteController::class, 'getHomePage']);
 
 // customer's routes
 $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);

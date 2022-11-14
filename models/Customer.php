@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\core\Database;
-use function Sodium\compare;
 
 class Customer
 {

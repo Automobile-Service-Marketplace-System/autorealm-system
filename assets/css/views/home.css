@@ -1,0 +1,40 @@
+.hero-carousel {
+  height: calc(100vh);
+}
+
+.hero-carousel__item {
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-carousel__item:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero-carousel__item:first-child {
+  background-image: url("/images/carousel-item-1.webp");
+  display: none;
+}
+
+.hero-carousel__item:nth-child(2) {
+  background-image: url("/images/carousel-item-2.webp");
+  display: none;
+}
+
+.hero-carousel__item:last-child {
+  background-image: url("/images/carousel-item-3.webp");
+  display: none;
+}
+
+.hero-carousel__item.active {
+  display: block;
+}

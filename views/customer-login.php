@@ -10,8 +10,6 @@ $hasErrors = isset($errors) && !empty($errors);
 $hasEmailError = $hasErrors && isset($errors['email']);
 $hasPasswordError = $hasErrors && isset($errors['password']);
 
-
-
 ?>
 
 <div class="customer-auth">

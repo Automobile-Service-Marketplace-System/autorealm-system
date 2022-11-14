@@ -69,8 +69,6 @@ sub,
 sup {
     font-size: 75%;
     line-height: 0;
-    position: relative;
-    vertical-align: baseline;
 }
 
 sub {
@@ -78,7 +76,7 @@ sub {
 }
 
 sup {
-    top: -0.5em;
+    display: inline-block;
 }
 
 table {

@@ -35,3 +35,10 @@ align-items: center;
     font-weight: bold;
 }
 
+/* variations based on pages */
+.main-header--home {
+    background-color: transparent;
+    color: var(--color-white);
+    z-index: 2;
+}
+

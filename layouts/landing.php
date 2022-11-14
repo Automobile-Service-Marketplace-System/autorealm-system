@@ -17,7 +17,7 @@ use app\utils\DocumentHead;
 ?>
 <body>
 
-<header class="main-header">
+<header class="main-header main-header--home">
     <div class="brand">
         <a href="/">
             <img src="/images/logo.webp" alt="AutoRealm Logo" class="brand__image">
@@ -30,13 +30,11 @@ use app\utils\DocumentHead;
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
-            <li><a href="/login" class="btn btn--dark-blue">Login</a></li>
+            <li><a href="/login" class="btn btn--white">Login</a></li>
         </ul>
     </nav>
 </header>
-<main class="container container-fh">
-    {{content}}
-</main>
+{{content}}
 <footer class="main-footer">
     <div>
         <div class="brand-and-address">
