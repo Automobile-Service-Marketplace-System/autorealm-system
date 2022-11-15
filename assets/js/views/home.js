@@ -23,7 +23,7 @@ const carousel = new (class Carousel {
 
   attachListeners() {
     this.buttons.forEach((button, index) => {
-      button.addEventListener("click", () => {
+      button?.addEventListener("click", () => {
         button.classList.add("active");
         this.buttons.forEach((btn, idx) => {
           if (idx !== index) {
@@ -34,11 +34,11 @@ const carousel = new (class Carousel {
       });
     });
 
-    this.wrapper.addEventListener("touchstart", (e) => {
+    this.wrapper?.addEventListener("touchstart", (e) => {
       this.mouseX1 = e.touches[0].clientX;
     });
 
-    this.wrapper.addEventListener("touchend", (e) => {
+    this.wrapper?.addEventListener("touchend", (e) => {
       this.mouseX2 = e.changedTouches[0].clientX;
       if (this.mouseX1 > this.mouseX2) {
         this.next();
@@ -52,11 +52,6 @@ const carousel = new (class Carousel {
     setInterval(() => {
       this.next();
     }, 5000);
-  }
-
-  next() {
-    this.initial = (this.initial + 1) % this.buttons.length;
-    this.buttons[this.initial].click();
   }
 
   to(id) {
