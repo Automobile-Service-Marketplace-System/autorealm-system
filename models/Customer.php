@@ -51,8 +51,7 @@ class Customer
 
         if (strlen($this->body['nic']) == 0) {
             $errors['NIC'] = 'NIC must not be empty.';
-        } else if (!preg_match('/^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[vVxX]$/', $this->body['nic'])) {
-            {
+        } else if (!preg_match('/^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[vVxX]$/', $this->body['nic'])) { {
                 $errors['NIC'] = 'NIC must be a valid Sri Lankan NIC number.';
             }
         } else {
@@ -129,7 +128,7 @@ class Customer
     }
 
 
-    public function login(): array|object
+    public function login(): array |object
     {
         $errors = [];
         $customer = null;
@@ -155,6 +154,7 @@ class Customer
         }
         return $errors;
     }
+
 
 
 }

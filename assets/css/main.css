@@ -27,6 +27,11 @@ body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-/*Hello*/
+*,
+html,
+body {
+  scroll-behavior: smooth;
+}

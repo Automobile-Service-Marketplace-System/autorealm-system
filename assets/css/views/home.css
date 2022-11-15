@@ -1,5 +1,42 @@
 .hero-carousel {
   height: calc(100vh);
+  position: relative;
+}
+
+.hero-carousel__buttons {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-carousel__buttons > button {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  font-size: 0.001rem;
+  color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.hero-carousel__buttons > button:hover {
+  transform: scale(1.1);
+}
+
+.hero-carousel__buttons > button.active {
+  width: 15px;
+  height: 15px;
+}
+
+.hero-carousel__buttons > button.active:hover {
+  transform: scale(1);
 }
 
 .hero-carousel__item {
@@ -8,30 +45,56 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-carousel__item:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+.hero-carousel__text-container {
+  display: flex;
+  align-items: center;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero-carousel__text {
+  width: 50%;
+}
+
+.hero-carousel__text h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+.cta-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  color: #fff;
+  background-color: var(--color-danger);
+  transition: all 0.2s ease-in-out;
+}
+
+.cta-btn:hover {
+  transform: translateY(-0.2rem);
 }
 
 .hero-carousel__item:first-child {
-  background-image: url("/images/carousel-item-1.webp");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/images/carousel-item-1.webp");
   display: none;
 }
 
 .hero-carousel__item:nth-child(2) {
-  background-image: url("/images/carousel-item-2.webp");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/images/carousel-item-2.webp");
   display: none;
 }
 
-.hero-carousel__item:last-child {
-  background-image: url("/images/carousel-item-3.webp");
+.hero-carousel__item:nth-child(3) {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/images/carousel-item-3.webp");
   display: none;
 }
 
