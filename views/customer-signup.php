@@ -8,7 +8,6 @@ use app\components\FormItem;
 
 $hasErrors = isset($errors) && !empty($errors);
 $hasEmailError = $hasErrors && isset($errors['email']);
-$hasNICError = $hasErrors && isset($errors['NIC']);
 $hasFNameError = $hasErrors && isset($errors['f_name']);
 $hasLNameError = $hasErrors && isset($errors['l_name']);
 $hasImageError = $hasErrors && isset($errors['image']);
@@ -45,11 +44,11 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
         FormItem::render(
             id: "image",
             label: "Profile photo",
-            name: "image[]",
+            name: "image",
             type: "file",
             hasError: $hasImageError,
             error: $hasImageError ? $errors['image'] : "",
-            additionalAttributes: "accept='image/*' multiple"
+            additionalAttributes: "accept='image/*'"
 
         );
 
@@ -71,16 +70,6 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             hasError: $hasAddressError,
             error: $hasAddressError ? $errors['address'] : "",
             value: $body['address'] ?? null
-        );
-        FormItem::render(
-            id: "nic",
-            label: "NIC",
-            name: "nic",
-            placeholder: "Example: 123456789V or 200012345678",
-            hasError: $hasNICError,
-            error: $hasNICError ? $errors['NIC'] : "",
-            value: $body['NIC'] ?? null,
-            additionalAttributes: "pattern='^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[vVxX]$'"
         );
         FormItem::render(
             id: "email",
