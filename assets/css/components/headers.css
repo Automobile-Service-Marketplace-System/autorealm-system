@@ -1,0 +1,42 @@
+.main-header {
+  padding-inline: 2rem;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-light);
+}
+
+.main-header ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand > a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand > a > .brand__image {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 5px;
+}
+
+.brand > a > .brand__name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* variations based on pages */
+.main-header--home {
+  background-color: transparent;
+  color: var(--color-white);
+  z-index: 2;
+}

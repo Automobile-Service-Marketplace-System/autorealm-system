@@ -8,6 +8,15 @@ namespace app\core;
 class Request
 {
 
+    public Session $session;
+
+
+    public function __construct()
+    {
+        $this->session = new Session();
+    }
+
+
     /**
      * Get the path of current request without any url parameters.
      * @return string

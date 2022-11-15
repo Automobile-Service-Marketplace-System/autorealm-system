@@ -38,16 +38,17 @@ class Response
      * @param int $statusCode - Status code that should be set
      * @return void
      */
-    public function redirect(string $path, bool $replace = true, int $statusCode = 302): void
+    public function redirect(string $path, bool $replace = true, int $statusCode = 302): string
     {
         header("Location: $path", $replace, $statusCode);
+        return "";
     }
 
 
     /**
      * Use this method to render a view that resides in the view folder
      * @param string $view - file name of the view
-     * @param string $layout - layout that should be used
+     * @param string $layout - layouts that should be used
      * @param array $pageParams
      * @param array $layoutParams
      * @return string

@@ -1,0 +1,37 @@
+/* importing reset */
+@import "reset.css";
+
+/* importing variables */
+@import "variables/colors.css";
+
+/* importing animations */
+@import "animations.css";
+
+/*importing utilities */
+@import "utilities.css";
+
+/* importing component styles */
+@import "components/buttons.css";
+@import "components/form-components.css";
+@import "components/cards.css";
+@import "components/headers.css";
+@import "components/footers.css";
+@import "components/links.css";
+
+/* importing css files for views */
+@import "views/customer-auth.css";
+@import "views/home.css";
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+*,
+html,
+body {
+  scroll-behavior: smooth;
+}
