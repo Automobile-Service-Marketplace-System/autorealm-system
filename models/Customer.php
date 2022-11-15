@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\FSUploader;
 
 class Customer
 {
@@ -20,25 +21,42 @@ class Customer
     public function register(): bool|array
     {
         $errors = $this->validateRegisterBody();
-        if (empty($errors)) {
-            $query = "INSERT INTO customer (NIC, f_name, l_name, contact_no, address, email, password) 
-                  VALUES (:NIC, :f_name, :l_name, :contact_no, :address, :email, :password)";
 
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":NIC", $this->body["nic"]);
-            $statement->bindValue(":f_name", $this->body["f_name"]);
-            $statement->bindValue(":l_name", $this->body["l_name"]);
-            $statement->bindValue(":contact_no", $this->body["contact_no"]);
-            $statement->bindValue(":address", $this->body["address"]);
-            $statement->bindValue(":email", $this->body["email"]);
-            $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
-            $statement->bindValue(":password", $hash);
+        if (empty($errors)) {
             try {
-                $statement->execute();
-                return true;
-            } catch (\PDOException $e) {
-                return false;
+                $imageUrl = FSUploader::upload(innerDir: "customers/profile-photos");
+            } catch (\Exception $e) {
+                $errors["image"] = $e->getMessage();
             }
+            if (empty($errors)) {
+                $query = "INSERT INTO customer 
+                    (
+                        f_name, l_name, contact_no, address, email,password, image
+                    ) 
+                    VALUES 
+                    (
+                        :f_name, :l_name, :contact_no, :address, :email, :password, :image
+                    )";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":f_name", $this->body["f_name"]);
+                $statement->bindValue(":l_name", $this->body["l_name"]);
+                $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue(":address", $this->body["address"]);
+                $statement->bindValue(":email", $this->body["email"]);
+                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+                $statement->bindValue(":password", $hash);
+                $statement->bindValue(":image", $imageUrl ?? "");
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (\PDOException $e) {
+                    return false;
+                }
+            } else {
+                return $errors;
+            }
+
         } else {
             return $errors;
         }
@@ -48,21 +66,6 @@ class Customer
     private function validateRegisterBody(): array
     {
         $errors = [];
-
-        if (strlen($this->body['nic']) == 0) {
-            $errors['NIC'] = 'NIC must not be empty.';
-        } else if (!preg_match('/^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[vVxX]$/', $this->body['nic'])) { {
-                $errors['NIC'] = 'NIC must be a valid Sri Lankan NIC number.';
-            }
-        } else {
-            $query = "SELECT * FROM customer WHERE  NIC = :NIC";
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":NIC", $this->body["nic"]);
-            $statement->execute();
-            if ($statement->rowCount() > 0) {
-                $errors['NIC'] = 'NIC already in use.';
-            }
-        }
 
         if (strlen(trim($this->body['f_name'])) == 0) {
             $errors['f_name'] = 'First name must not be empty.';
@@ -128,7 +131,7 @@ class Customer
     }
 
 
-    public function login(): array |object
+    public function login(): array|object
     {
         $errors = [];
         $customer = null;
@@ -154,7 +157,6 @@ class Customer
         }
         return $errors;
     }
-
 
 
 }

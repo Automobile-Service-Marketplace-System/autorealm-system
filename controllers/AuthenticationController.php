@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
-use app\utils\FSUploader;
 
 class AuthenticationController
 {
@@ -20,8 +19,7 @@ class AuthenticationController
     public function registerCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
-        $uploader = new FSUploader();
-        $uploader->upload();
+
         $customer = new Customer($body);
         $result = $customer->register();
 
