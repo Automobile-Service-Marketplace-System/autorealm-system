@@ -1,3 +1,9 @@
+const mainHeaderHome = document.querySelector(".main-header--home");
+const pixelToWatch = document.querySelector(".pixel");
+const loginButton = mainHeaderHome?.querySelector(
+  ".main-nav ul li:last-child a"
+);
+
 const heroCarousel = document.querySelector(".hero-carousel");
 
 const carouselItem1 = document.querySelector(
@@ -40,9 +46,15 @@ const carousel = new (class Carousel {
 
     this.wrapper?.addEventListener("touchend", (e) => {
       this.mouseX2 = e.changedTouches[0].clientX;
-      if (this.mouseX1 > this.mouseX2) {
+      if (
+        this.mouseX1 > this.mouseX2 &&
+        Math.abs(this.mouseX1 - this.mouseX2) > 100
+      ) {
         this.next();
-      } else {
+      } else if (
+        this.mouseX2 > this.mouseX1 &&
+        Math.abs(this.mouseX1 - this.mouseX2) > 100
+      ) {
         this.prev();
       }
     });
@@ -59,12 +71,12 @@ const carousel = new (class Carousel {
     this.carouselItems.forEach((item) => {
       item.classList.remove("active");
     });
-    carouselItem.classList.add("active");
+    carouselItem?.classList.add("active");
   }
 
   next() {
     this.initial = (this.initial + 1) % this.buttons.length;
-    this.buttons[this.initial].click();
+    this.buttons[this.initial]?.click();
   }
 
   prev() {
@@ -73,9 +85,25 @@ const carousel = new (class Carousel {
     } else {
       this.initial = this.initial - 1;
     }
-    this.buttons[this.initial].click();
+    this.buttons[this.initial]?.click();
   }
 })();
 
 carousel.attachListeners();
-// carousel.start();
+carousel.start();
+
+const pixelObserver = new IntersectionObserver((entries) => {
+  if (entries[0].boundingClientRect.y < 0) {
+    mainHeaderHome?.classList.add("main-header--scrolled");
+    loginButton?.classList.remove("btn--white");
+    loginButton?.classList.add("btn--dark-blue");
+  } else {
+    mainHeaderHome?.classList.remove("main-header--scrolled");
+    loginButton?.classList.remove("btn--dark-blue");
+    loginButton?.classList.add("btn--white");
+  }
+});
+
+if (pixelToWatch) {
+  pixelObserver.observe(pixelToWatch);
+}

@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--color-light);
+  transition: all 0.2s ease-in-out;
 }
 
 .main-header ul {
@@ -39,4 +40,16 @@
   background-color: transparent;
   color: var(--color-white);
   z-index: 2;
+}
+
+/* variants based on states */
+
+.main-header--scrolled {
+  background-color: var(--color-light);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: var(--color-text-primary);
+}
+
+.main-header--scrolled img {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
