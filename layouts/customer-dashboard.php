@@ -1,6 +1,7 @@
 <?php
 /**
  * @var string $title
+ * @var string $pageMainHeading
  * @var object $customer
  */
 
@@ -31,12 +32,17 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <li><a href="/login" class="btn btn--thin btn--dark-blue">Login</a></li>
+                <li><img src="<?php echo $customer->image; ?>"
+                        alt="<?php echo "{$customer->f_name} {$customer->l_name}'s profile photo" ?>"></li>
             </ul>
         </nav>
-        <button class="menu-btn menu-btn--solid no_highlights">
-            <div class="menu-btn__bar"></div>
-        </button>
+        <div class="main-header__actions">
+            <img src="<?php echo $customer->image; ?>"
+                alt="<?php echo "{$customer->f_name} {$customer->l_name}'s profile photo" ?>">
+            <button class="menu-btn menu-btn--solid no_highlights">
+                <div class="menu-btn__bar"></div>
+            </button>
+        </div>
     </header>
     <nav class="dropdown-nav">
         <ul>
@@ -44,12 +50,18 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
-            <li><a href="/login" class="btn btn--dark-blue">Login</a></li>
-
         </ul>
     </nav>
-    <main class="container container-fh">
-        {{content}}
+    <main class="dashboard-container">
+        <aside>
+            aside
+        </aside>
+        <div class="dashboard-container__content">
+            <h1>
+                <?php echo $pageMainHeading; ?>
+            </h1>
+            {{content}}
+        </div>
     </main>
     <footer class="main-footer">
         <div>

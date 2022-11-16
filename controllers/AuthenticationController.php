@@ -60,8 +60,10 @@ class AuthenticationController
         } else {
 
             if ($result) {
-                $req->session->set("customer", $result);
-                return $res->redirect("/dashboard/overview");
+                $req->session->set("is_authenticated", true);
+                $req->session->set("user_id", $result->customer_id);
+                $req->session->set("user_role", "customer");
+                return $res->redirect(path: "/dashboard/profile");
             } else {
                 return $res->render("500", "error", [
                     "error" => "Something went wrong. Please try again later."
