@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
+use app\models\Officestaff;
 
 class AuthenticationController
 {
@@ -68,6 +69,19 @@ class AuthenticationController
                 ]);
             }
         }
-
     }
+
+    public function getOfficestaffLoginPage(Request $req, Response $res):string
+    {
+        return $res->render(view: "officestaff-login", layout: "plain");
+    }
+
+    public function loginOfficestaff(Request $req, Response $res):string
+    {
+        $body = $req->body();
+        $officestaff = new Officestaff($body);
+        var_dump($officestaff->login());
+        return "";
+    }
+
 }

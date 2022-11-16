@@ -28,6 +28,10 @@ $app->router->post("/register", [AuthenticationController::class, 'registerCusto
 $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
 
+//officestaff-login
+$app->router->get("/officestaff-login", [AuthenticationController::class, 'getOfficestaffLoginPage'] );
+$app->router->post("/officestaff-login", [AuthenticationController::class, 'loginOfficestaff']);
+
 // run the application
 $app->run();
 
