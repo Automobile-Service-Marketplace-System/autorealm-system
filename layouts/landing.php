@@ -31,10 +31,24 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <li><a href="/login" class="btn btn--white">Login</a></li>
+                <li><a href="/login" class="btn btn--thin btn--white">Login</a></li>
+
             </ul>
         </nav>
+        <button class="menu-btn no_highlights">
+            <div class="menu-btn__bar"></div>
+        </button>
     </header>
+    <nav class="dropdown-nav">
+        <ul>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/login" class="btn btn--dark-blue">Login</a></li>
+
+        </ul>
+    </nav>
     {{content}}
     <footer class="main-footer">
         <div>
