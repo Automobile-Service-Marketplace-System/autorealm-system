@@ -1,8 +1,9 @@
 <?php
 
 use app\core\Application;
-use app\controllers\AuthenticationController;
 use app\controllers\SiteController;
+use app\controllers\AuthenticationController;
+use app\controllers\DashboardController;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -27,6 +28,7 @@ $app->router->get("/register", [AuthenticationController::class, 'getCustomerSig
 $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
 $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
+$app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
 
 //officestaff-login
 $app->router->get("/officestaff-login", [AuthenticationController::class, 'getOfficestaffLoginPage'] );
@@ -34,4 +36,3 @@ $app->router->post("/officestaff-login", [AuthenticationController::class, 'logi
 
 // run the application
 $app->run();
-

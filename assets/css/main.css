@@ -18,7 +18,11 @@
 @import "components/footers.css";
 @import "components/links.css";
 
+/* importing css files for layouts */
+@import "layouts/customer-dashboard.css";
+
 /* importing css files for views */
+@import "views/customer-dashboard-profile.css";
 @import "views/customer-auth.css";
 @import "views/home.css";
 
@@ -34,4 +38,8 @@ body {
 html,
 body {
   scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
 }
