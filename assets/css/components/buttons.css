@@ -138,7 +138,88 @@
   border-radius: 50%;
 }
 
+.btn--thin {
+  padding: 0.25rem 1rem;
+}
+
 /* button variations based on size */
 .btn--block {
   width: 100%;
+}
+
+/* special purpose buttons */
+
+.menu-btn {
+  color: var(--color-dark);
+  border: none;
+  outline: none;
+
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+
+.menu-btn__bar {
+  width: 1.5rem;
+  min-height: 0.2rem;
+  background-color: var(--color-white);
+  margin: 0.2rem 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-btn__bar::before,
+.menu-btn__bar::after {
+  content: "";
+  position: absolute;
+  width: 1.5rem;
+  min-height: 0.2rem;
+  background-color: var(--color-white);
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-btn__bar::before {
+  transform: translateY(-0.6rem);
+}
+
+.menu-btn__bar::after {
+  transform: translateY(0.6rem);
+}
+
+.menu-btn.menu-btn--active .menu-btn__bar {
+  background-color: transparent;
+}
+
+.menu-btn.menu-btn--active .menu-btn__bar::before {
+  transform: rotate(45deg) translate(0.5rem, -0.5rem);
+}
+
+.menu-btn.menu-btn--active .menu-btn__bar::after {
+  transform: rotate(-45deg) translate(0.5rem, 0.5rem);
+}
+
+.menu-btn.menu-btn--scrolled .menu-btn__bar,
+.menu-btn.menu-btn--scrolled .menu-btn__bar::before,
+.menu-btn.menu-btn--scrolled .menu-btn__bar::after {
+  background-color: var(--color-dark);
+}
+
+.menu-btn.menu-btn--scrolled.menu-btn--active .menu-btn__bar {
+  background-color: transparent;
+}
+
+.menu-btn.menu-btn--solid .menu-btn__bar,
+.menu-btn.menu-btn--solid .menu-btn__bar::before,
+.menu-btn.menu-btn--solid .menu-btn__bar::after {
+  background-color: var(--color-dark);
+}
+
+.menu-btn.menu-btn--active.menu-btn--solid .menu-btn__bar {
+  background-color: transparent;
+}
+
+@media screen and (min-width: 768px) {
+  .menu-btn {
+    display: none;
+  }
 }

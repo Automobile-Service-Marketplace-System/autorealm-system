@@ -1,72 +1,68 @@
 .customer-auth {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - 60px - 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 50px - 2rem);
 }
 
 .customer-auth-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--color-bg-secondary);
-    box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 1rem;
-
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-secondary);
+  box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 .customer-auth-form h1 {
-    font-weight: bold;
-    font-size: 1.5rem;
-    text-align: center;
-
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
+@media screen and (min-width: 576px) {
+  .customer-auth-form {
+    width: 90%;
+    padding: 1.2rem;
+  }
 
-@media screen  and (min-width: 576px) {
-    .customer-auth-form {
-        width: 90%;
-        padding: 1.2rem;
-    }
-
-    .customer-auth-form h1 {
-        font-size: 1.2rem;
-    }
+  .customer-auth-form h1 {
+    font-size: 1.2rem;
+  }
 }
 
 @media screen and (min-width: 768px) {
-    .customer-auth-form {
-        width: 80%;
-        padding: 1.4rem;
-    }
+  .customer-auth-form {
+    width: 80%;
+    padding: 1.4rem;
+  }
 
-    .customer-auth-form h1 {
-        font-size: 1.5rem;
-    }
+  .customer-auth-form h1 {
+    font-size: 1.5rem;
+  }
 }
-
 
 @media screen and (min-width: 992px) {
-    .customer-auth-form {
-        width: 50%;
-        padding: 1.6rem;
-    }
+  .customer-auth-form {
+    width: 50%;
+    padding: 1.6rem;
+  }
 
-    .customer-auth-form h1 {
-        font-size:1.75em;
-    }
+  .customer-auth-form h1 {
+    font-size: 1.75em;
+  }
 }
 
-@media screen and  (min-width: 1200px) {
-    .customer-auth-form {
-        width: 40%;
-        padding: 2rem;
-    }
+@media screen and (min-width: 1200px) {
+  .customer-auth-form {
+    width: 40%;
+    padding: 2rem;
+  }
 
-    .customer-auth-form h1 {
-        font-size: 2rem;
-    }
+  .customer-auth-form h1 {
+    font-size: 2rem;
+  }
 }
