@@ -10,17 +10,16 @@ class Session
     }
 
 
-    public function set($key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
 
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         return $_SESSION[$key] ?? false;
     }
-
 
     public function remove($key): void
     {

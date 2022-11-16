@@ -10,6 +10,11 @@
   height: 100vh;
   background-color: var(--color-white);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.dashboard-container__nav {
+  margin-top: 2rem;
 }
 
 .dashboard-container__content {

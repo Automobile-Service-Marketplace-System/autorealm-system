@@ -54,7 +54,42 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
     </nav>
     <main class="dashboard-container">
         <aside>
-            aside
+            <nav class="dashboard-container__nav">
+                <ul>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Overview
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            My appointments
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-stopwatch"></i>
+                            Ongoing services/Repairs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-car"></i>
+                            My vehicles
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-money-bill"></i>
+                            My orders
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
         </aside>
         <div class="dashboard-container__content">
             <h1>

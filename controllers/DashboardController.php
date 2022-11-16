@@ -25,11 +25,11 @@ class DashboardController
                         'pageMainHeading' => 'My Profile'
                     ]);
             } else {
-                return $res->render(view: "login", layout: "home");
+                return $res->redirect(path: "/login");
             }
 
         }
 
-        return $res->render(view: "home", layout: "landing");
+        return $res->redirect(path: "/login");
     }
 }
