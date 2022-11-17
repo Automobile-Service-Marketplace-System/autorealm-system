@@ -5,7 +5,7 @@
  */
 
 use app\utils\DocumentHead;
-use \app\components\CustomerProfileDropdown;
+use \app\components\EmployeeProfileDropdown;
 
 ?>
 <!doctype html>
@@ -33,7 +33,7 @@ DocumentHead::createHead(
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
                 <?php if (isset($customer)) {
-                CustomerProfileDropdown::render($customer, 1);
+                EmployeeProfileDropdown::render($customer, 1);
             } else {
                 echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
             }
@@ -56,7 +56,7 @@ DocumentHead::createHead(
             if (!isset($customer)) {
                 echo "<li><a href='/login' class='btn btn--dark-blue'>Login</a></li>";
             } else {
-                CustomerProfileDropdown::render($customer, 2);
+                EmployeeProfileDropdown::render($customer, 2);
             }
         ?>
         </ul>
