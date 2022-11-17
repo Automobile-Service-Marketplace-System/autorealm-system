@@ -33,6 +33,7 @@ $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustome
 //officestaff-login
 $app->router->get("/officestaff-login", [AuthenticationController::class, 'getOfficestaffLoginPage'] );
 $app->router->post("/officestaff-login", [AuthenticationController::class, 'loginOfficestaff']);
+$app->router->get("/dashboard/profile", [DashboardController::class, 'getOfficestaffDashboardProfile']);
 
 // run the application
 $app->run();
