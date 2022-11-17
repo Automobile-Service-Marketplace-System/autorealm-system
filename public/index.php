@@ -4,6 +4,8 @@ use app\core\Application;
 use app\controllers\AuthenticationController;
 use app\controllers\SiteController;
 use app\controllers\EmployeeController;
+use app\controllers\AdminController;
+use app\controllers\SecurityOfficerController;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -28,9 +30,11 @@ $app->router->get("/register", [AuthenticationController::class, 'getCustomerSig
 $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
 $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
-$app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
-$app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
+$app->router->get("/admin-login", [AdminController::class, "getAdminLoginPage"]);
+$app->router->post('/admin-login', [AdminController::class, "loginAdmin"]);
 $app->router->get("/employee-register", [EmployeeController::class, 'getEmployeeSignupForm']);
+$app->router->get("/security-officer-login",[SecurityOfficerController::class, 'getSecurityOfficerLoginPage']);
+$app->router->post("/security-officer-login",[SecurityOfficerController::class, 'loginSecurityOfficer']);
 
 
 // run the application

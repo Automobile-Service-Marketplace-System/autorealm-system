@@ -5,7 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
-use app\models\Employee;
+use app\models\Admin;
 
 class AuthenticationController
 {
@@ -70,26 +70,4 @@ class AuthenticationController
         }
 
     }
-
-    public function getAdminLoginPage(Request $request, Response $response):string{
-        return $response->render(view: "admin-login", layout: "plain");
-    }
-
-    public function loginAdmin(Request $request, Response $response):string{
-        $body=$request->body();
-        $employee=new Employee($body);
-        $result=$employee->login();
-        if(is_array($result)){
-            return $response->render(view: "admin-login", layout: "plain", pageParams: [
-                "errors"=>$result
-            ]);
-
-        }
-        else{
-            echo "Successfully logged in";
-        }
-        return '';
-    }
-
-
 }
