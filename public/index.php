@@ -42,5 +42,8 @@ $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin
 $app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
 
 
+$app->router->get( "/stockmanager-login", [AuthenticationController::class,'getStockmanagerLoginPage']);
+$app->router->post( "/stockmanager-login", [AuthenticationController::class,'stockmanagerLogin']);
+
 // run the application
 $app->run();
