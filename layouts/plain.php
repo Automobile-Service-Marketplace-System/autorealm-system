@@ -10,10 +10,10 @@ use app\utils\DocumentHead;
 <!doctype html>
 <html lang="en">
 <?php
-DocumentHead::createHead(
-    css: ["/css/style.css"],
-    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
-);
+        DocumentHead::createHead(
+            css: ["/css/style.css"],
+            title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
+        );
 ?>
 <body>
 
@@ -24,3 +24,4 @@ DocumentHead::createHead(
 <script type="module" src="/js/index.js"></script>
 </body>
 </html>
+
