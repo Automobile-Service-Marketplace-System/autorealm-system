@@ -7,10 +7,10 @@ use app\core\Response;
 
 class EmployeeController
 {
-    public function getEmployeeSignupForm(Request $req, Response $res): string
+    public function getCreateEmployeePage(Request $req, Response $res): string
     {
-        return $res->render("employee-signup", layout: "plain", layoutParams: [
-            "title" => "Register",
+        return $res->render("create-employee", layout: "plain", layoutParams: [
+            "title" => "Create an employee",
         ]);
     }
 }

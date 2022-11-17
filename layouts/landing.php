@@ -5,14 +5,15 @@
  */
 
 use app\utils\DocumentHead;
+use \app\components\CustomerProfileDropdown;
 
 ?>
 <!doctype html>
 <html lang="en">
 <?php
 DocumentHead::createHead(
-css: ["/css/style.css"],
-title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
+    css: ["/css/style.css"],
+    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
 );
 ?>
 
@@ -31,7 +32,13 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <li><a href="/login" class="btn btn--thin btn--white">Login</a></li>
+                <?php if (isset($customer)) {
+                CustomerProfileDropdown::render($customer, 1);
+            } else {
+                echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
+            }
+            ?>
+
 
             </ul>
         </nav>
@@ -45,8 +52,13 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
-            <li><a href="/login" class="btn btn--dark-blue">Login</a></li>
-
+            <?php
+            if (!isset($customer)) {
+                echo "<li><a href='/login' class='btn btn--dark-blue'>Login</a></li>";
+            } else {
+                CustomerProfileDropdown::render($customer, 2);
+            }
+        ?>
         </ul>
     </nav>
     {{content}}
