@@ -4,7 +4,7 @@ const mainHeader = document.querySelector(".main-header");
 export const mainHeaderHome = document.querySelector(".main-header--home");
 const pixelToWatch = document.querySelector(".pixel");
 const loginButton = mainHeaderHome?.querySelector(
-  ".main-nav ul li:last-child a"
+  ".main-nav ul li:last-child a.login-btn"
 );
 
 const pixelObserver = new IntersectionObserver((entries) => {
