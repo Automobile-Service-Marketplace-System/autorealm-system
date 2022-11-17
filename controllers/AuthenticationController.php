@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
+use app\models\Stockmanager;
 
 class AuthenticationController
 {
@@ -68,6 +69,34 @@ class AuthenticationController
                 ]);
             }
         }
+
+    }
+
+    public function getStockmanagerLoginPage(Request $req, Response $res): string
+    {
+        return $res->render(view: "stockmanager-login", layout: "plain", layoutParams: [
+            'title' => 'Stock manager Login'
+        ])
+            ;
+    }
+
+    public function stockmanagerLogin(Request $req, Response $res): string
+    {
+        $body= $req->body();
+//        echo "<pre>";
+//        var_dump($body);
+//        echo "</pre>";
+
+        $stockManager= New Stockmanager($body);
+
+        $result=$stockManager->login();
+        if(is_array($result)) {
+            return $res->render(view: "stockmanager-login", layout: "plain", pageParams: [
+                "errors" => $result
+            ]);
+        }
+
+
 
     }
 }

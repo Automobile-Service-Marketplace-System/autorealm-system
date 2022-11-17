@@ -28,6 +28,9 @@ $app->router->post("/register", [AuthenticationController::class, 'registerCusto
 $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
 
+$app->router->get( "/stockmanager-login", [AuthenticationController::class,'getStockmanagerLoginPage']);
+$app->router->post( "/stockmanager-login", [AuthenticationController::class,'stockmanagerLogin']);
+
 // run the application
 $app->run();
 
