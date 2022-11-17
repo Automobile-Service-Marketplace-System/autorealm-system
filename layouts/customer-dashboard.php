@@ -5,6 +5,7 @@
  * @var object $customer
  */
 
+use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
 
 ?>
@@ -32,13 +33,13 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <li><img src="<?php echo $customer->image; ?>"
-                        alt="<?php echo "{$customer->f_name} {$customer->l_name}'s profile photo" ?>"></li>
+                <?php
+                CustomerProfileDropdown::render($customer, 1);
+                ?>
+
             </ul>
         </nav>
         <div class="main-header__actions">
-            <img src="<?php echo $customer->image; ?>"
-                alt="<?php echo "{$customer->f_name} {$customer->l_name}'s profile photo" ?>">
             <button class="menu-btn menu-btn--solid no_highlights">
                 <div class="menu-btn__bar"></div>
             </button>
@@ -46,10 +47,14 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
     </header>
     <nav class="dropdown-nav">
         <ul>
+
             <li><a href="/services">Services</a></li>
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
+            <?php
+            CustomerProfileDropdown::render($customer, 2);
+            ?>
         </ul>
     </nav>
     <main class="dashboard-container">

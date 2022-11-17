@@ -1,225 +1,299 @@
 .btn {
-  /* colors */
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  /* shape */
-  border-radius: 0.5rem;
-  /* size */
-  padding: 0.5rem 1rem;
-  /* transition */
-  transition: all 0.2s ease-in-out;
-  /* placement of children elements */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+    /* colors */
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    /* shape */
+    border-radius: 0.5rem;
+    /* size */
+    padding: 0.5rem 1rem;
+    /* transition */
+    transition: all 0.2s ease-in-out;
+    /* placement of children elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .btn:hover {
-  transform: translateY(-0.1rem);
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
 }
 
 .btn:active {
-  transform: translateY(0.1rem);
+    transform: translateY(0.1rem);
 }
 
 .btn:disabled {
-  background-color: var(--color-disabled);
-  cursor: not-allowed;
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
 }
 
 .btn:disabled:hover {
-  transform: translateY(0);
-  box-shadow: none;
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn:disabled:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 /* button variations with colors */
 
 .btn--success {
-  background-color: var(--color-success);
+    background-color: var(--color-success);
 }
 
 .btn--success:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--success), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--success), 0.2);
 }
 
 .btn--info {
-  background-color: var(--color-info);
+    background-color: var(--color-info);
 }
 
 .btn--info:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--info), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--info), 0.2);
 }
 
 .btn--warning {
-  background-color: var(--color-warning);
+    background-color: var(--color-warning);
 }
 
 .btn--warning:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--warning), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--warning), 0.2);
 }
 
 .btn--danger {
-  background-color: var(--color-danger);
+    background-color: var(--color-danger);
 }
 
 .btn--danger:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--danger), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--danger), 0.2);
 }
 
 .btn--light {
-  background-color: var(--color-light);
-  color: var(--color-black);
+    background-color: var(--color-light);
+    color: var(--color-black);
 }
 
 .btn--light:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--light), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--light), 0.2);
 }
 
 .btn--dark {
-  background-color: var(--color-dark);
+    background-color: var(--color-dark);
 }
 
 .btn--dark:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--dark), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--dark), 0.2);
 }
 
 .btn--white {
-  background-color: var(--color-white);
-  color: var(--color-dark);
+    background-color: var(--color-white);
+    color: var(--color-dark);
 }
 
 .btn--white:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--white), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--white), 0.2);
 }
 
 .btn--black {
-  background-color: var(--color-black);
+    background-color: var(--color-black);
 }
 
 .btn--black:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--black), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--black), 0.2);
 }
 
 .btn--dark-blue {
-  background-color: var(--color-dark-blue);
+    background-color: var(--color-dark-blue);
 }
 
 .btn--dark-blue:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--dark-blue), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--dark-blue), 0.2);
 }
 
 .btn--light-blue {
-  background-color: var(--color-light-blue);
+    background-color: var(--color-light-blue);
 }
 
 .btn--light-blue:hover {
-  box-shadow: 0 0.5rem 0.5rem rgba(var(--light-blue), 0.2);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--light-blue), 0.2);
 }
 
 /* button variations based on state */
 .btn--loading {
-  pointer-events: none;
+    pointer-events: none;
 }
 
 .btn--loading svg {
-  animation: spin 1s ease-in-out infinite;
+    animation: spin 1s ease-in-out infinite;
 }
 
 /* button variations based on shape */
 
 .btn--round {
-  aspect-ratio: 1;
-  border-radius: 50%;
+    aspect-ratio: 1;
+    border-radius: 50%;
 }
 
 .btn--thin {
-  padding: 0.25rem 1rem;
+    padding: 0.25rem 1rem;
 }
 
 /* button variations based on size */
 .btn--block {
-  width: 100%;
+    width: 100%;
 }
 
 /* special purpose buttons */
 
 .menu-btn {
-  color: var(--color-dark);
-  border: none;
-  outline: none;
+    color: var(--color-dark);
+    border: none;
+    outline: none;
 
-  display: inline-block;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
 }
 
 .menu-btn__bar {
-  width: 1.5rem;
-  min-height: 0.2rem;
-  background-color: var(--color-white);
-  margin: 0.2rem 0;
-  transition: all 0.2s ease-in-out;
+    width: 1.5rem;
+    min-height: 0.2rem;
+    background-color: var(--color-white);
+    margin: 0.2rem 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .menu-btn__bar::before,
 .menu-btn__bar::after {
-  content: "";
-  position: absolute;
-  width: 1.5rem;
-  min-height: 0.2rem;
-  background-color: var(--color-white);
-  transition: all 0.2s ease-in-out;
+    content: "";
+    position: absolute;
+    width: 1.5rem;
+    min-height: 0.2rem;
+    background-color: var(--color-white);
+    transition: all 0.2s ease-in-out;
 }
 
 .menu-btn__bar::before {
-  transform: translateY(-0.6rem);
+    transform: translateY(-0.6rem);
 }
 
 .menu-btn__bar::after {
-  transform: translateY(0.6rem);
+    transform: translateY(0.6rem);
 }
 
 .menu-btn.menu-btn--active .menu-btn__bar {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .menu-btn.menu-btn--active .menu-btn__bar::before {
-  transform: rotate(45deg) translate(0.5rem, -0.5rem);
+    transform: rotate(45deg) translate(0.5rem, -0.5rem);
 }
 
 .menu-btn.menu-btn--active .menu-btn__bar::after {
-  transform: rotate(-45deg) translate(0.5rem, 0.5rem);
+    transform: rotate(-45deg) translate(0.5rem, 0.5rem);
 }
 
 .menu-btn.menu-btn--scrolled .menu-btn__bar,
 .menu-btn.menu-btn--scrolled .menu-btn__bar::before,
 .menu-btn.menu-btn--scrolled .menu-btn__bar::after {
-  background-color: var(--color-dark);
+    background-color: var(--color-dark);
 }
 
 .menu-btn.menu-btn--scrolled.menu-btn--active .menu-btn__bar {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .menu-btn.menu-btn--solid .menu-btn__bar,
 .menu-btn.menu-btn--solid .menu-btn__bar::before,
 .menu-btn.menu-btn--solid .menu-btn__bar::after {
-  background-color: var(--color-dark);
+    background-color: var(--color-dark);
 }
 
 .menu-btn.menu-btn--active.menu-btn--solid .menu-btn__bar {
-  background-color: transparent;
+    background-color: transparent;
+}
+
+/* menu-button for employee dashboards */
+.employee-menu-btn {
+    color: var(--color-dark);
+    border: none;
+    outline: none;
+
+    display: inline-block;
+    /*width: 3rem;*/
+    /*height: 3rem;*/
+    border-radius: 50%;
+}
+
+.employee-menu-btn__bar {
+    width: 1.5rem;
+    min-height: 0.2rem;
+    background-color: var(--color-white);
+    margin: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.employee-menu-btn__bar::before,
+.employee-menu-btn__bar::after {
+    content: "";
+    position: absolute;
+    width: 1.5rem;
+    min-height: 0.2rem;
+    background-color: var(--color-white);
+    transition: all 0.2s ease-in-out;
+}
+
+.employee-menu-btn__bar::before {
+    transform: translateY(-0.6rem);
+}
+
+.employee-menu-btn__bar::after {
+    transform: translateY(0.6rem);
+}
+
+.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar {
+    background-color: transparent;
+}
+
+.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar::before {
+    transform: rotate(45deg) translate(0.5rem, -0.5rem);
+}
+
+.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar::after {
+    transform: rotate(-45deg) translate(0.5rem, 0.5rem);
+}
+
+.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar,
+.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar::before,
+.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar::after {
+    background-color: var(--color-dark);
+}
+
+.employee-menu-btn.employee-menu-btn--scrolled.employee-menu-btn--active .employee-menu-btn__bar {
+    background-color: transparent;
+}
+
+.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar,
+.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar::before,
+.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar::after {
+    background-color: var(--color-dark);
+}
+
+.employee-menu-btn.employee-menu-btn--active.employee-menu-btn--solid .employee-menu-btn__bar {
+    background-color: transparent;
 }
 
 @media screen and (min-width: 768px) {
-  .menu-btn {
-    display: none;
-  }
+    .menu-btn {
+        display: none;
+    }
+
+    .employee-menu-btn {
+        /*display: none;*/
+    }
 }
