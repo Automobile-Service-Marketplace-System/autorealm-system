@@ -79,15 +79,15 @@ class AuthenticationController
     }
 
 
-    public function getStockmanagerLoginPage(Request $req, Response $res): string
+    public function getStockManagerLoginPage(Request $req, Response $res): string
     {
-        return $res->render(view: "stockmanager-login", layout: "plain", layoutParams: [
+        return $res->render(view: "stock-manager-login", layout: "plain", layoutParams: [
             'title' => 'Stock manager Login'
         ])
             ;
     }
 
-    public function stockmanagerLogin(Request $req, Response $res): string
+    public function loginStockManager(Request $req, Response $res): string
     {
         $body= $req->body();
 
@@ -95,7 +95,7 @@ class AuthenticationController
 
         $result=$stockManager->login();
         if(is_array($result)) {
-            return $res->render(view: "stockmanager-login", layout: "plain", pageParams: [
+            return $res->render(view: "stock-manager-login", layout: "plain", pageParams: [
                 "errors" => $result
             ]);
         } else {

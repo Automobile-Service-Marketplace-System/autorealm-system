@@ -96,6 +96,15 @@
   object-fit: cover;
 }
 
+
+
+.employee-dashboard-container__content-header {
+  display: flex;
+  align-items: center;
+    justify-content: space-between;
+  padding-inline: 0.5rem;
+}
+
 @media screen and (min-width: 576px) {
   .dropdown-nav.dropdown-nav--active {
     width: 70vw;
@@ -135,5 +144,10 @@
   .brand > a > .brand__name {
     font-size: 1.5rem;
     font-weight: bold;
+  }
+
+  .employee-dashboard-container__content-header {
+    padding-inline: 1rem;
+    padding-block: 0.25rem;
   }
 }
