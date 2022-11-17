@@ -97,6 +97,19 @@ class AuthenticationController
             return $res->render(view: "stockmanager-login", layout: "plain", pageParams: [
                 "errors" => $result
             ]);
+        } else {
+
+            if ($result) {
+
+                $req->session->set("is_authenticated", true);
+                $req->session->set("user_id", $result->employee_id);
+                $req->session->set("user_role", "stock_manager");
+                return $res->redirect(path: "/stock_manager/profile");
+            } else {
+                return $res->render("500", "error", [
+                    "error" => "Something went wrong. Please try again later."
+                ]);
+            }
         }
 
 
