@@ -17,7 +17,6 @@ DocumentHead::createHead(
 ?>
 <body>
 
-
 <main class="container container-fh">
     {{content}}
 </main>
