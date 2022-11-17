@@ -31,10 +31,15 @@ $app->router->get("/register", [AuthenticationController::class, 'getCustomerSig
 $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
 $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
+$app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
+$app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
+
+
+
+// admininstrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
 $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
-$app->router->get("/employee-register", [EmployeeController::class, 'getEmployeeSignupForm']);
-$app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
+$app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
 
 
 // run the application

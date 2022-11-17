@@ -49,7 +49,7 @@
 /* variants based on states */
 
 .main-header--scrolled {
-  background-color: var(--color-light);
+  background-color: var(--color-white);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   color: var(--color-text-primary);
 }
@@ -73,7 +73,7 @@
 }
 
 .dropdown-nav.dropdown-nav--active {
-  width: 80vw;
+  width: 90vw;
   padding: 1rem;
 }
 
@@ -94,6 +94,13 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+@media screen and (min-width: 576px) {
+  .dropdown-nav.dropdown-nav--active {
+    width: 70vw;
+    padding: 1rem;
+  }
 }
 
 @media screen and (min-width: 768px) {
