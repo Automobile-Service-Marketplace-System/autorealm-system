@@ -37,5 +37,11 @@ $app->router->get("/employee-register", [EmployeeController::class, 'getEmployee
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
 
 
+//officestaff-login
+$app->router->get("/officestaff-login", [AuthenticationController::class, 'getOfficestaffLoginPage'] );
+$app->router->post("/officestaff-login", [AuthenticationController::class, 'loginOfficestaff']);
+$app->router->get("/dashboard/profile", [DashboardController::class, 'getOfficestaffDashboardProfile']);
+
+
 // run the application
 $app->run();
