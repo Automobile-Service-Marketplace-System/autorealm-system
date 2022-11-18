@@ -75,8 +75,8 @@ DocumentHead::createHead(
     <div class="employee-dashboard-container__content">
 
         <header class="employee-dashboard-container__content-header">
-            <button class="employee-menu-btn employee-menu-btn--solid no_highlights">
-                <div class="employee-menu-btn__bar"></div>
+            <button class="employee-menu-btn  no_highlights">
+                <i class="fa-solid fa-bars"></i>
             </button>
             <?php
             EmployeeProfileDropdown::render(employee: $stockManager, role: "Stock manager", id: 1);

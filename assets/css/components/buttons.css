@@ -223,77 +223,16 @@
     color: var(--color-dark);
     border: none;
     outline: none;
-
     display: inline-block;
-    /*width: 3rem;*/
-    /*height: 3rem;*/
     border-radius: 50%;
+    font-size: 1.5rem;
 }
 
-.employee-menu-btn__bar {
-    width: 1.5rem;
-    min-height: 0.2rem;
-    background-color: var(--color-white);
-    margin: 0;
-    transition: all 0.2s ease-in-out;
-}
-
-.employee-menu-btn__bar::before,
-.employee-menu-btn__bar::after {
-    content: "";
-    position: absolute;
-    width: 1.5rem;
-    min-height: 0.2rem;
-    background-color: var(--color-white);
-    transition: all 0.2s ease-in-out;
-}
-
-.employee-menu-btn__bar::before {
-    transform: translateY(-0.6rem);
-}
-
-.employee-menu-btn__bar::after {
-    transform: translateY(0.6rem);
-}
-
-.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar {
-    background-color: transparent;
-}
-
-.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar::before {
-    transform: rotate(45deg) translate(0.5rem, -0.5rem);
-}
-
-.employee-menu-btn.employee-menu-btn--active .employee-menu-btn__bar::after {
-    transform: rotate(-45deg) translate(0.5rem, 0.5rem);
-}
-
-.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar,
-.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar::before,
-.employee-menu-btn.employee-menu-btn--scrolled .employee-menu-btn__bar::after {
-    background-color: var(--color-dark);
-}
-
-.employee-menu-btn.employee-menu-btn--scrolled.employee-menu-btn--active .employee-menu-btn__bar {
-    background-color: transparent;
-}
-
-.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar,
-.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar::before,
-.employee-menu-btn.employee-menu-btn--solid .employee-menu-btn__bar::after {
-    background-color: var(--color-dark);
-}
-
-.employee-menu-btn.employee-menu-btn--active.employee-menu-btn--solid .employee-menu-btn__bar {
-    background-color: transparent;
-}
 
 @media screen and (min-width: 768px) {
     .menu-btn {
         display: none;
     }
 
-    .employee-menu-btn {
-        /*display: none;*/
-    }
+
 }
