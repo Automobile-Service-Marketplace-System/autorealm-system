@@ -5,11 +5,11 @@ namespace app\components;
 class Table
 {
     public  static function render(array $items, array $columns) : void {
-        $template = "<table class='employee-dashboard__table'><tr>";
+        $template = "<div class='employee-dashboard__table-wrapper'><table class='employee-dashboard__table'><thead><tr>";
         foreach ($columns as $column) {
             $template = $template."<th>$column</th>";
         }
-        $template = $template."</tr>";
+        $template = $template."</tr></thead><tbody>";
         foreach ($items as $item) {
             $tr = "<tr>";
             foreach ($item as $part) {
@@ -18,7 +18,7 @@ class Table
             $tr = $tr."</tr>";
             $template = $template.$tr;
         }
-        $template = $template."</table>";
+        $template = $template."</tbody></table><div>";
         echo $template;
     }
 }

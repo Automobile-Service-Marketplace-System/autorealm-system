@@ -7,29 +7,50 @@ $items = [
         "Item Code" => 1,
         "Name" => "Tyre",
         "Brand" => "\$ 23",
-        "Category" => "",
-        "Unit price" => "",
-        "Quantity" => "",
-        "Description" => "",
+        "Category" => "Spare part",
+        "Unit price" => "3000",
+        "Quantity" => "100",
+        "Description" => "A device used for car transportation",
     ],
     [
-        "id" => 2,
-        "name" => "Engine",
-        "price" => "\$ 400"
+        "Item Code" => 2,
+        "Name" => "Tyre",
+        "Brand" => "\$ 23",
+        "Category" => "Spare part",
+        "Unit price" => "3000",
+        "Quantity" => "100",
+        "Description" => "A device used for car transportation",
     ],
     [
-        "id" => 3,
-        "name" => "Breaks",
-        "price" => "\$ 150"
+        "Item Code" => 3,
+        "Name" => "Tyre",
+        "Brand" => "\$ 23",
+        "Category" => "Spare part",
+        "Unit price" => "3000",
+        "Quantity" => "100",
+        "Description" => "A device used for car transportation",
     ],
     [
-        "id" => 4,
-        "name" => "Hood",
-        "price" => "\$ 300"
+        "Item Code" => 4,
+        "Name" => "Tyre",
+        "Brand" => "\$ 23",
+        "Category" => "Spare part",
+        "Unit price" => "3000",
+        "Quantity" => "100",
+        "Description" => "A device used for car transportation",
+    ],
+    [
+        "Item Code" => 5,
+        "Name" => "Tyre",
+        "Brand" => "\$ 23",
+        "Category" => "Spare part",
+        "Unit price" => "3000",
+        "Quantity" => "100",
+        "Description" => "A device used for car transportation",
     ],
 ];
 
-$columns = ["id", "name", "price"];
+$columns = ["Item code", "Name", "Brand", "Category", "Unit price", "Quantity", "Description"];
 
 Table::render(items: $items, columns: $columns);
 

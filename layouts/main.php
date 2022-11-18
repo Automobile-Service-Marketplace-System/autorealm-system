@@ -35,7 +35,7 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <?php if (isset($customer)) {
                     CustomerProfileDropdown::render($customer, 1);
                 } else {
-                    echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
+                    echo "<li><a href='/login' class='btn btn--thin btn--dark-blue login-btn'>Login</a></li>";
                 } ?>
             </ul>
         </nav>

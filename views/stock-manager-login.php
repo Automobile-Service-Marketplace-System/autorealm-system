@@ -59,7 +59,6 @@
 </style>
 
 
-<body>
 <div class="form-container">
     <form class="stockmanager-login" action="/stockmanager-login" method="post">
         <h1>Signup</h1>
@@ -87,4 +86,3 @@
 
     </form>
 </div>
-</body>

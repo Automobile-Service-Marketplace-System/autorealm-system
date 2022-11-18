@@ -18,8 +18,7 @@ class DashboardController
             $customer = $customerModel->getCustomerById($req->session->get("user_id"));
             if ($customer) {
                 return $res->render(view: "customer-dashboard-profile", layout: "customer-dashboard", pageParams: [
-                    'customer' => $customer
-
+                    'customer' => $customer,
                 ], layoutParams: [
                         'title' => 'My Profile',
                         'customer' => $customer,
@@ -30,7 +29,6 @@ class DashboardController
             }
 
         }
-
         return $res->redirect(path: "/login");
     }
 
