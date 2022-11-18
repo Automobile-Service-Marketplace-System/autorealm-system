@@ -1,25 +1,26 @@
 <?php
 /**
  * @var string $title
+ * @var string $pageMainHeading
  * @var object $customer
  */
 
+use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
-use \app\components\CustomerProfileDropdown;
 
 ?>
 <!doctype html>
 <html lang="en">
 <?php
 DocumentHead::createHead(
-    css: ["/css/style.css"],
-    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
+css: ["/css/style.css"],
+title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
 );
 ?>
 
 <body>
     <div class="pixel"></div>
-    <header class="main-header main-header--home">
+    <header class="main-header">
         <div class="brand">
             <a href="/">
                 <img src="/images/logo.webp" alt="AutoRealm Logo" class="brand__image">
@@ -32,36 +33,76 @@ DocumentHead::createHead(
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <?php if (isset($customer)) {
+                <?php
                 CustomerProfileDropdown::render($customer, 1);
-            } else {
-                echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
-            }
-            ?>
-
+                ?>
 
             </ul>
         </nav>
-        <button class="menu-btn no_highlights">
-            <div class="menu-btn__bar"></div>
-        </button>
+        <div class="main-header__actions">
+            <button class="menu-btn menu-btn--solid no_highlights">
+                <div class="menu-btn__bar"></div>
+            </button>
+        </div>
     </header>
     <nav class="dropdown-nav">
         <ul>
+
             <li><a href="/services">Services</a></li>
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
             <?php
-            if (!isset($customer)) {
-                echo "<li><a href='/login' class='btn btn--dark-blue'>Login</a></li>";
-            } else {
-                CustomerProfileDropdown::render($customer, 2);
-            }
-        ?>
+            CustomerProfileDropdown::render($customer, 2);
+            ?>
         </ul>
     </nav>
-    {{content}}
+    <main class="dashboard-container">
+        <aside>
+            <nav class="dashboard-container__nav">
+                <ul>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Overview
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            My appointments
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-stopwatch"></i>
+                            Ongoing services/Repairs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-car"></i>
+                            My vehicles
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/overview">
+                            <i class="fa-solid fa-money-bill"></i>
+                            My orders
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </aside>
+        <div class="dashboard-container__content">
+            <h1>
+                <?php echo $pageMainHeading; ?>
+            </h1>
+            {{content}}
+        </div>
+    </main>
     <footer class="main-footer">
         <div>
             <div class="brand-and-address">

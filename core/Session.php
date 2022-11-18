@@ -6,21 +6,22 @@ class Session
 {
     public function __construct()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
 
-    public function set($key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
 
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         return $_SESSION[$key] ?? false;
     }
-
 
     public function remove($key): void
     {

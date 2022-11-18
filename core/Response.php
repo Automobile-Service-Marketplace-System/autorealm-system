@@ -36,7 +36,7 @@ class Response
      * @param string $path - Internal or external path to redirect to
      * @param bool $replace - Whether to replace the previously set redirect location
      * @param int $statusCode - Status code that should be set
-     * @return void
+     * @return string
      */
     public function redirect(string $path, bool $replace = true, int $statusCode = 302): string
     {
@@ -85,6 +85,7 @@ class Response
 
     private function getView(string $view, array $params = []): string
     {
+
         foreach ($params as $key => $value) {
             $$key = $value;
         }

@@ -3,7 +3,7 @@
 .idea
 .vscode
 node_modules
-/public/index.js
-/public/index.js.map
-/public/style.css
+/public/js/index.js
+/public/js/index.js.map
+/public/css/style.css
 /public/uploads

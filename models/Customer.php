@@ -20,6 +20,15 @@ class Customer
     }
 
 
+    public function getCustomerById(int $customer_id): bool|object
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM customer WHERE customer_id = :customer_id");
+        $stmt->execute([
+            ":customer_id" => $customer_id
+        ]);
+        return $stmt->fetchObject();
+    }
+
     public function register(): bool|array
     {
         $errors = $this->validateRegisterBody();
@@ -138,7 +147,7 @@ class Customer
     }
 
 
-    public function login(): array|object
+    public function login(): array |object
     {
         $errors = [];
         $customer = null;
