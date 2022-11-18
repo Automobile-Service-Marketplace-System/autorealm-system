@@ -1,0 +1,44 @@
+.employee-dashboard__table-wrapper {
+    /*width: 100%;*/
+    background-color: red;
+    overflow-x: auto;
+}
+
+.employee-dashboard__table {
+    width: 100%;
+    background-color: var(--color-white);
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/*.employee-dashboard__table tbody {*/
+/*    display: table;*/
+/*    width: 100%;*/
+/*}*/
+
+.employee-dashboard__table tr {
+    position: relative;
+}
+
+.employee-dashboard__table tr>th:first-child, .employee-dashboard__table tr>td:first-child {
+    position: sticky;
+    left: 0;
+}
+
+/*.employee-dashboard__table tr th:first-child {*/
+/*    position: absolute;*/
+/*    left: 0;*/
+/*    top: 0;*/
+/*    width: 100px;*/
+/*    background-color: green;*/
+/*}*/
+
+.employee-dashboard__table th {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid green;
+}
+
+.employee-dashboard__table td {
+    padding: 1rem;
+}
