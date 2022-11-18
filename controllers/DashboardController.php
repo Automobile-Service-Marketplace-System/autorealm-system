@@ -63,8 +63,8 @@ class DashboardController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "stock_manager") {
 
-            $StockManagerModel = new Stockmanager();
-            $stockManager = $StockManagerModel->getStockManagerById($req->session->get("user_id"));
+            $stockManagerModel = new Stockmanager();
+            $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
             if ($stockManager) {
                 return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", pageParams: [
                     'stockmanager' => $stockManager
@@ -75,11 +75,11 @@ class DashboardController
                     'pageMainHeading' => 'My Profile'
                 ]);
             } else {
-                return $res->redirect(path: "/login");
+                return $res->redirect(path: "/stock-manager-login");
             }
 
         }
 
-        return $res->redirect(path: "/login");
+        return $res->redirect(path: "/stock-manager-login");
     }
 }
