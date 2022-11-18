@@ -46,7 +46,7 @@ $app->router->get("/admin-manager-dashboard", [ProductsController::class, 'getPr
 // stock manager routes
 $app->router->get( "/stock-manager-login", [AuthenticationController::class,'getStockManagerLoginPage']);
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
-$app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
+$app->router->get("/stock-manager-dashboard/products", [DashboardController::class, 'getStockManagerDashboardProfile']);
 
 //officestaff-login
 $app->router->get("/officestaff-login", [AuthenticationController::class, 'getOfficestaffLoginPage'] );
