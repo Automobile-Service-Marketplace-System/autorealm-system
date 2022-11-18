@@ -5,7 +5,7 @@ namespace app\models;
 use app\core\Database;
 use app\utils\FSUploader;
 
-class Stockmanager
+class StockManager
 {
     private \PDO $pdo;
     private array $body;
