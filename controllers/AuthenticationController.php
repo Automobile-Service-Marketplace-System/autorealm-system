@@ -2,14 +2,19 @@
 
 namespace app\controllers;
 
+//importing core classes
 use app\core\Request;
 use app\core\Response;
+
+//importing model classes
 use app\models\Customer;
-use app\models\Stockmanager;
+use app\models\StockManager;
 use app\models\Employee;
+use app\models\OfficeStaff;
 
 class AuthenticationController
 {
+//    Regarding customer authentication
     public function getCustomerSignupForm(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "customer") {
@@ -19,7 +24,6 @@ class AuthenticationController
             "title" => "Register",
         ]);
     }
-
 
     public function registerCustomer(Request $req, Response $res): string
     {
@@ -42,7 +46,6 @@ class AuthenticationController
             }
         }
     }
-
 
     public function getCustomerLoginForm(Request $req, Response $res): string
     {
@@ -75,27 +78,67 @@ class AuthenticationController
                 ]);
             }
         }
+    }
 
+    public function logoutCustomer(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "customer") {
+            $req->session->destroy();
+            return $res->redirect(path: "/");
+        } else {
+            return $res->redirect("/dashboard/overview");
+        }
     }
 
 
-    public function getStockmanagerLoginPage(Request $req, Response $res): string
+//     Regarding office staff member authentication
+    public function getOfficeStaffLoginPage(Request $req, Response $res):string
     {
-        return $res->render(view: "stockmanager-login", layout: "plain", layoutParams: [
+        return $res->render(view: "office-staff-login", layout: "plain");
+    }
+
+    public function loginOfficeStaff(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $officeStaff = new OfficeStaff($body);
+        $result = $officeStaff ->login();
+        if(is_array($result)){
+            return $res->render(view: "office-staff-login", layout: "plain", pageParams: [
+                "errors" => $result
+            ]);
+        } else {
+            if($result) {
+                // reaches when office staff successful logged in
+                $req->session->set("is_authenticated", true);
+                $req->session->set("user_id", $result->employee_id);
+                $req->session->set("user_role", "office_staff_member");
+                return $res->redirect(path: "/office-staff-dashboard/profile");
+            } {
+                return $res->render("500", "error", [
+                    "error" => "Something went wrong. Please try again later."
+                ]);
+            }
+        }
+    }
+
+    public function getStockManagerLoginPage(Request $req, Response $res): string
+    {
+        return $res->render(view: "stock-manager-login", layout: "plain", layoutParams: [
             'title' => 'Stock manager Login'
         ])
             ;
     }
 
-    public function stockmanagerLogin(Request $req, Response $res): string
+//    Regarding stock manager authentication
+    public function loginStockManager(Request $req, Response $res): string
     {
         $body= $req->body();
 
-        $stockManager= New Stockmanager($body);
+        $stockManager= new StockManager($body);
 
         $result=$stockManager->login();
         if(is_array($result)) {
-            return $res->render(view: "stockmanager-login", layout: "plain", pageParams: [
+            return $res->render(view: "stock-manager-login", layout: "plain", pageParams: [
                 "errors" => $result
             ]);
         } else {
@@ -105,7 +148,7 @@ class AuthenticationController
                 $req->session->set("is_authenticated", true);
                 $req->session->set("user_id", $result->employee_id);
                 $req->session->set("user_role", "stock_manager");
-                return $res->redirect(path: "/stock_manager/profile");
+                return $res->redirect(path: "/stock-manager-dashboard/profile");
             } else {
                 return $res->render("500", "error", [
                     "error" => "Something went wrong. Please try again later."
@@ -117,19 +160,13 @@ class AuthenticationController
 
     }
 
-    public function logoutCustomer(Request $req, Response $res)
-    {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "customer") {
-            $req->session->destroy();
-            return $res->redirect(path: "/");
-        }
-    }
     public function getAdminLoginPage(Request $request, Response $response): string
     {
 
         return $response->render(view: "admin-login", layout: "plain");
     }
 
+//    Regarding admin authentication
     public function loginAdmin(Request $request, Response $response): string
     {
         $body = $request->body();
@@ -145,6 +182,5 @@ class AuthenticationController
         }
         return '';
     }
-
 
 }

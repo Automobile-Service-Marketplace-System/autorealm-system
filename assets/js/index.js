@@ -8,3 +8,4 @@ import "./views/home";
 import "./components/MenuButton";
 import "./components/Header";
 import "./components/CustomerProfileDropdown";
+import "./components/EmployeeProfileDropdown";

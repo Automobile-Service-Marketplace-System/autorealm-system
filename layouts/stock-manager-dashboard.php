@@ -2,7 +2,7 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $admin
+ * @var object $stockManager
  */
 
 use app\components\EmployeeProfileDropdown;
@@ -10,7 +10,7 @@ use app\utils\DocumentHead;
 
 
 //for now, a dummy StockManger class
-class Admin
+class StockManager
 {
     public string $f_name = "John";
     public string $l_name = "Doe";
@@ -18,7 +18,7 @@ class Admin
 
 }
 
-$admin = new StockManager();
+$stockManager = new StockManager();
 
 ?>
 <!doctype html>
@@ -79,7 +79,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $admin, role: "Admin", id: 1);
+            EmployeeProfileDropdown::render(employee: $stockManager, role: "Stock manager", id: 1);
             ?>
         </header>
         <h1>
