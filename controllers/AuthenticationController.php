@@ -49,7 +49,7 @@ class AuthenticationController
 
     public function getCustomerLoginForm(Request $req, Response $res): string
     {
-        return $res->render(view: "customer-login", layoutParams: [
+        return $res->render(view: "customer-login",layout: "main", layoutParams: [
             'title' => 'Login'
         ]);
     }
@@ -162,7 +162,6 @@ class AuthenticationController
 
     public function getAdminLoginPage(Request $request, Response $response): string
     {
-
         return $response->render(view: "admin-login", layout: "plain");
     }
 

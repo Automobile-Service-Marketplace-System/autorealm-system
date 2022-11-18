@@ -85,6 +85,7 @@ class Response
 
     private function getView(string $view, array $params = []): string
     {
+
         foreach ($params as $key => $value) {
             $$key = $value;
         }

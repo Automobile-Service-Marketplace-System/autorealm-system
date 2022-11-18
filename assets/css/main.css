@@ -18,6 +18,7 @@
 @import "components/footers.css";
 @import "components/links.css";
 @import "components/dropdowns.css";
+@import "components/tables.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
