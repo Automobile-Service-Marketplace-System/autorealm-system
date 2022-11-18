@@ -4,7 +4,7 @@
  * @var object $customer
  */
 
-use app\components\EmployeeProfileDropdown;
+use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
 
 ?>
@@ -33,7 +33,7 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
                 <?php if (isset($customer)) {
-                    EmployeeProfileDropdown::render($customer, 1);
+                    CustomerProfileDropdown::render($customer, 1);
                 } else {
                     echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
                 } ?>
@@ -54,7 +54,7 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
             if (!isset($customer)) {
                 echo "<li><a href='/login' class='btn btn--dark-blue'>Login</a></li>";
             } else {
-                EmployeeProfileDropdown::render($customer, 2);
+                CustomerProfileDropdown::render($customer, 2);
             }
             ?>
         </ul>

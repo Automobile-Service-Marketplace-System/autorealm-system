@@ -34,27 +34,26 @@ class DashboardController
         return $res->redirect(path: "/login");
     }
 
-    public function getOfficestaffDashboardProfile(Request $req, Response $res): string
+    public function getOfficeStaffDashboardProfile(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "office_staff_member") {
 
-            $officestaffModel = new Officestaff();
-            $officestaff = $officestaffModel->getOfficestaffById($req->session->get("user_id"));
-            if ($officestaff) {
-                return $res->render(view: "officestaff-dashboard-profile", layout: "officestaff-dashboard", pageParams: [
-                    'officestaff' => $officestaff
-
+            $officeStaffModel = new Officestaff();
+            $officeStaff = $officeStaffModel->getOfficeStaffById($req->session->get("user_id"));
+            if ($officeStaff) {
+                return $res->render(view: "office-staff-dashboard-profile", layout: "office-staff-dashboard", pageParams: [
+                    'officeStaff' => $officeStaff
                 ], layoutParams: [
                     'title' => 'My Profile',
-                    'officestaff' => $officestaff,
+                    'officeStaff' => $officeStaff,
                     'pageMainHeading' => 'My Profile'
                 ]);
             } else {
-                return $res->redirect(path: "/login");
+                return $res->redirect(path: "/office-staff-login");
             }
 
         }
 
-        return $res->redirect(path: "/login");
+        return $res->redirect(path: "/office-staff-login");
     }
 }
