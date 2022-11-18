@@ -8,6 +8,8 @@ use app\utils\FSUploader;
 class Customer
 {
     private \PDO $pdo;
+    // PDO is a database access layer that provides a fast and
+    // consistent interface for accessing and managing databases in PHP applications
     private array $body;
 
 
@@ -76,7 +78,7 @@ class Customer
     {
         $errors = [];
 
-        if (strlen(trim($this->body['f_name'])) == 0) {
+        if (strlen(trim($this->body['f_name'])) == 0) {  //remove whitespaces by trim(string)
             $errors['f_name'] = 'First name must not be empty.';
         } else {
             if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
@@ -99,9 +101,13 @@ class Customer
         } else {
             $query = "SELECT * FROM customer WHERE contact_no = :contact_no";
             $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
             $statement->bindValue(":contact_no", $this->body["contact_no"]);
+            //contact_no replace with the contact_no of this->body
             $statement->execute();
+            // click go
             if ($statement->rowCount() > 0) {
+                //Return the number of rows
                 $errors['contact_no'] = 'Contact number already in use.';
             }
         }
@@ -117,6 +123,7 @@ class Customer
             $statement->bindValue(':email', $this->body['email']);
             $statement->execute();
             $customer = $statement->fetchObject();
+            //returns the current statement as an object to customer.
             if ($customer) {
                 $errors['email'] = 'Email already in use.';
             }
