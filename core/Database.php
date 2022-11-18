@@ -22,6 +22,8 @@ class Database
     public static function getInstance(): Database
     {
         if(!isset(self::$instance)) {
+            //checks whether a variable is set, which means that it has to be declared and is not NULL.
+            //This function returns true if the variable exists and is not NULL, otherwise it returns false.
             self::$instance = new Database();
         }
         return self::$instance;

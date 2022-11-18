@@ -1,9 +1,3 @@
-const mainHeaderHome = document.querySelector(".main-header--home");
-const pixelToWatch = document.querySelector(".pixel");
-const loginButton = mainHeaderHome?.querySelector(
-  ".main-nav ul li:last-child a"
-);
-
 const heroCarousel = document.querySelector(".hero-carousel");
 
 const carouselItem1 = document.querySelector(
@@ -63,7 +57,7 @@ const carousel = new (class Carousel {
   start() {
     setInterval(() => {
       this.next();
-    }, 5000);
+    }, 25000);
   }
 
   to(id) {
@@ -91,19 +85,3 @@ const carousel = new (class Carousel {
 
 carousel.attachListeners();
 carousel.start();
-
-const pixelObserver = new IntersectionObserver((entries) => {
-  if (entries[0].boundingClientRect.y < 0) {
-    mainHeaderHome?.classList.add("main-header--scrolled");
-    loginButton?.classList.remove("btn--white");
-    loginButton?.classList.add("btn--dark-blue");
-  } else {
-    mainHeaderHome?.classList.remove("main-header--scrolled");
-    loginButton?.classList.remove("btn--dark-blue");
-    loginButton?.classList.add("btn--white");
-  }
-});
-
-if (pixelToWatch) {
-  pixelObserver.observe(pixelToWatch);
-}

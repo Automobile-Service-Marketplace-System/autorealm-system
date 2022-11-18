@@ -12,7 +12,6 @@
   top: 90%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -113,7 +112,7 @@
 
 .pixel {
   position: absolute;
-  top: 60px;
+  top: 50px;
   left: 0;
   width: 100vw;
   height: 0.1px;
@@ -121,7 +120,7 @@
 }
 
 .home-section {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 50px);
 }
 
 .home-section h2 {
