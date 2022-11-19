@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
 use app\models\Officestaff;
+use app\models\Stockmanager;
 
 class DashboardController
 {
@@ -55,6 +56,28 @@ class DashboardController
         return $res->redirect(path: "/office-staff-login");
     }
 
+    public function getStockManagerDashboardProfile(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "stock_manager") {
+
+            $stockManagerModel = new Stockmanager();
+            $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
+            if ($stockManager) {
+                return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", pageParams: [
+                    'stockmanager' => $stockManager
+
+                ], layoutParams: [
+                    'title' => 'My Profile',
+                    'stockManager' => $stockManager,
+                    'pageMainHeading' => 'My Profile'
+                ]);
+            } else {
+                return $res->redirect(path: "/stock-manager-login");
+            }
+
+        }
+
+        return $res->redirect(path: "/stock-manager-login");
     public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
