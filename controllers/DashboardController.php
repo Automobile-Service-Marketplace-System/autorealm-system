@@ -20,10 +20,10 @@ class DashboardController
                 return $res->render(view: "customer-dashboard-profile", layout: "customer-dashboard", pageParams: [
                     'customer' => $customer,
                 ], layoutParams: [
-                        'title' => 'My Profile',
-                        'customer' => $customer,
-                        'pageMainHeading' => 'My Profile'
-                    ]);
+                    'title' => 'My Profile',
+                    'customer' => $customer,
+                    'pageMainHeading' => 'My Profile'
+                ]);
             } else {
                 return $res->redirect(path: "/login");
             }
@@ -53,5 +53,13 @@ class DashboardController
         }
 
         return $res->redirect(path: "/office-staff-login");
+    }
+
+    public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
+    {
+        return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
+            'title' => 'Overview',
+            'pageMainHeading' => 'Overview'
+        ]);
     }
 }
