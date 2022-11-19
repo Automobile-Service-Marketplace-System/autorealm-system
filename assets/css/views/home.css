@@ -206,6 +206,8 @@
 
   .home-section article img {
     width: 45%;
+    /* fix for firefox */
+    min-width: 45%;
     height: 350px;
   }
 }
