@@ -7,3 +7,4 @@ node_modules
 /public/js/index.js.map
 /public/css/style.css
 /public/uploads
+yarn-error.log
