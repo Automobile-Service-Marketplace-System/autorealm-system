@@ -125,6 +125,7 @@
     width: 100%;
     gap: 1rem;
     display: none;
+    z-index: 2;
     /* opacity: 0; */
 }
 

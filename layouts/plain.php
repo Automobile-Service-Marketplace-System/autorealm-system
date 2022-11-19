@@ -16,9 +16,7 @@ use app\utils\DocumentHead;
 ?>
 <body style="display: initial">
 
-<main class="container container-fh">
     {{content}}
-</main>
 
 <script type="module" src="/js/index.js"></script>
 </body>

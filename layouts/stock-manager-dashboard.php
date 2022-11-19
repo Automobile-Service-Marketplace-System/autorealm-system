@@ -30,7 +30,7 @@ DocumentHead::createHead(
 );
 ?>
 
-<body>
+<body style="overflow: hidden">
 <div class="pixel"></div>
 <main class="employee-dashboard-container">
     <aside class="employee-dashboard-container__sidebar">
@@ -39,34 +39,34 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/dashboard/overview">
+            <a href="/stock-manager-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-calendar-check"></i>
+            <a href="/stock-manager-dashboard/products">
+                <i class="fa-solid fa-box"></i>
                 <span>
-                    My appointments
+                    Products
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-stopwatch"></i>
-                <span>
-                    Ongoing services/Repairs
-                </span>
-            </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-car"></i>
-                <span>
-                    My vehicles
-                </span>
-            </a>
-            <a href="/dashboard/overview">
+            <a href="/stock-manager-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    My orders
+                    Orders
+                </span>
+            </a>
+            <a href="/stock-manager-dashboard/suppliers">
+                <i class="fa-solid fa-users"></i>
+                <span>
+                    Suppliers
+                </span>
+            </a>
+            <a href="/stock-manager-dashboard/reviews">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span>
+                    Reviews
                 </span>
             </a>
 
@@ -82,10 +82,11 @@ DocumentHead::createHead(
             EmployeeProfileDropdown::render(employee: $stockManager, role: "Stock manager", id: 1);
             ?>
         </header>
-        <h1>
-            <?php echo $pageMainHeading; ?>
-        </h1>
+
         <div class="employee-dashboard-page">
+            <h1>
+                <?php echo $pageMainHeading; ?>
+            </h1>
             {{content}}
         </div>
     </div>

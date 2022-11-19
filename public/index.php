@@ -36,6 +36,8 @@ $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer'
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
 
 
+// foreman routes
+$app->router->get("/foreman-login", [AuthenticationController::class, 'getForemanLoginPage']);
 
 // administrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
@@ -51,6 +53,7 @@ $app->router->get("/stock-manager-dashboard/products", [DashboardController::cla
 //officeStaff-login
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
+$app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
 
 
