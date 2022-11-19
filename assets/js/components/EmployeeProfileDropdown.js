@@ -61,3 +61,4 @@ employeeProfileDropdownToggle2?.addEventListener("click", () => {
         );
     }
 });
+

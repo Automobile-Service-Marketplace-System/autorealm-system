@@ -2,7 +2,7 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $stockManager
+ * @var object $officeStaffMember
  */
 
 use app\components\EmployeeProfileDropdown;
@@ -10,15 +10,14 @@ use app\utils\DocumentHead;
 
 
 //for now, a dummy StockManger class
-class StockManager
-{
+class OfficeStaffMember {
     public string $f_name = "John";
     public string $l_name = "Doe";
     public string $image = "/images/placeholders/profile.webp";
 
 }
 
-$stockManager = new StockManager();
+$officeStaffMember = new OfficeStaffMember();
 
 ?>
 <!doctype html>
@@ -30,7 +29,7 @@ DocumentHead::createHead(
 );
 ?>
 
-<body>
+<body style="overflow: hidden">
 <div class="pixel"></div>
 <main class="employee-dashboard-container">
     <aside class="employee-dashboard-container__sidebar">
@@ -39,34 +38,34 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/dashboard/overview">
+            <a href="/stock-manager-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-calendar-check"></i>
+            <a href="/stock-manager-dashboard/products">
+                <i class="fa-solid fa-file-invoice"></i>
                 <span>
-                    My appointments
+                    Invoices
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-stopwatch"></i>
+            <a href="/stock-manager-dashboard/orders">
+                <i class="fa-solid fa-user"></i>
                 <span>
-                    Ongoing services/Repairs
+                    Customers
                 </span>
             </a>
-            <a href="/dashboard/overview">
+            <a href="/stock-manager-dashboard/suppliers">
                 <i class="fa-solid fa-car"></i>
                 <span>
-                    My vehicles
+                    Vehicles
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/stock-manager-dashboard/reviews">
+                <i class="fa-solid fa-calendar-check"></i>
                 <span>
-                    My orders
+                    Appointments
                 </span>
             </a>
 
@@ -79,13 +78,14 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $stockManager, role: "Stock manager", id: 1);
+            EmployeeProfileDropdown::render(employee: $officeStaffMember, role: "Office staff", id: 1);
             ?>
         </header>
-        <h1>
-            <?php echo $pageMainHeading; ?>
-        </h1>
+
         <div class="employee-dashboard-page">
+            <h1>
+                <?php echo $pageMainHeading; ?>
+            </h1>
             {{content}}
         </div>
     </div>
