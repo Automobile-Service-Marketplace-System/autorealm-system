@@ -1,0 +1,19 @@
+.employee-auth {
+  width: 100vw;
+  height: 100vh;
+  background-color: palegreen;
+  display: flex;
+  align-items: center;
+}
+
+.employee-auth__left {
+  background-color: red;
+  width: 50vw;
+  height: 100vh;
+}
+
+.employee-auth__right {
+  background-color: teal;
+  width: 50vw;
+  height: 100vh;
+}
