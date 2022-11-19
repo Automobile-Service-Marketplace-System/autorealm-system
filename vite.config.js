@@ -6,6 +6,9 @@ dotenv.config();
 
 export default defineConfig({
   plugins: process.env.MODE === "development" ? [] : [compress()],
+  css: {
+    devSourcemap: process.env.MODE === "development",
+  },
   build: {
     sourcemap: process.env.MODE === "development" ? true : false,
     cssCodeSplit: false,

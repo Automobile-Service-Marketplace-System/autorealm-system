@@ -86,7 +86,7 @@ class AuthenticationController
             $req->session->destroy();
             return $res->redirect(path: "/");
         } else {
-            return $res->redirect("/dashboard/overview");
+            return $res->redirect("/");
         }
     }
 
@@ -159,6 +159,15 @@ class AuthenticationController
 
 
     }
+
+
+//    Regarding foreman authentication
+
+public function getForemanLoginPage(Request $req, Response $res): string {
+    return $res->render(view: "foreman-login", layout: "employee-auth", layoutParams: [
+        'title' => 'Login'
+    ]);
+}
 
     public function getAdminLoginPage(Request $request, Response $response): string
     {

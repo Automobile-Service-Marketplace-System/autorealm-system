@@ -24,6 +24,11 @@ class DocumentHead
             $jsIncludes .= "<script src='$jsFile'></script>";
         }
 
+        $isDev = $_ENV["MODE"] === "development";
+
+
+        $injectedSocket = $isDev ? "<script src='/__DEV__/ar.js' type='module'></script>" : "";
+
         echo "
             <head>
                 <meta charset='UTF-8'>
@@ -32,6 +37,7 @@ class DocumentHead
                 <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>
                 <script src='https://kit.fontawesome.com/115370f697.js' crossorigin='anonymous'></script>
                 $jsIncludes
+                $injectedSocket
                 <link rel='preconnect' href='https://fonts.googleapis.com'>
                 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
                 <link href='https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap' rel='stylesheet'>
