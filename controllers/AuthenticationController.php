@@ -169,7 +169,7 @@ class AuthenticationController
     public function loginAdmin(Request $request, Response $response): string
     {
         $body = $request->body();
-        $employee = new Employee($body);
+        $employee = new Admin($body);
         $result = $employee->login();
         if (is_array($result)) {
             return $response->render(view: "admin-login", layout: "plain", pageParams: [
