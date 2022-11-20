@@ -13,7 +13,10 @@
 }
 
 .employee-auth__right {
-  background-color: teal;
+  /* background-color: teal; */
   width: 50vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
