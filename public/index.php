@@ -8,13 +8,22 @@ use app\controllers\AuthenticationController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 
+use app\utils\DevOnly;
+
+use Dotenv\Dotenv;
+
+
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 
 // loading the .env file
-$dotenv = \Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
+
+DevOnly::printToBrowserConsole(password_hash("aq1sw2de3fr4", PASSWORD_DEFAULT));
+DevOnly::printToBrowserConsole($_COOKIE);
+
 
 
 // Instantiate the application object
@@ -36,8 +45,18 @@ $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer'
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
 
 
+// definitive employee routes
+$app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);
+$app->router->post("/employee-login", [AuthenticationController::class, 'loginEmployee']);
+
 // foreman routes
-$app->router->get("/foreman-login", [AuthenticationController::class, 'getForemanLoginPage']);
+$app->router->get("/foreman-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
+$app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'getForemanDashboardProfile']);
+
+// technician routes
+$app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
+$app->router->get("/technician-dashboard/profile", [DashboardController::class, 'getTechnicianDashboardProfile']);
+
 
 // administrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
@@ -48,7 +67,9 @@ $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPa
 // stock manager routes
 $app->router->get( "/stock-manager-login", [AuthenticationController::class,'getStockManagerLoginPage']);
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
-$app->router->get("/stock-manager-dashboard/products", [DashboardController::class, 'getStockManagerDashboardProfile']);
+$app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
+$app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
+
 
 //office Staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );

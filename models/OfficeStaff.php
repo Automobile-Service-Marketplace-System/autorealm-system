@@ -3,10 +3,11 @@
 namespace app\models;
 
 use app\core\Database;
+use PDO;
 
 class OfficeStaff
 {
-    private \PDO $pdo;
+    private PDO $pdo;
     private array $body;
 
 
@@ -16,11 +17,11 @@ class OfficeStaff
         $this->body = $registerBody;
     }
 
-    public function getOfficeStaffById(int $employee_id): bool|object
+    public function getOfficeStaffById(int $office_staff_id): bool|object
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM employee WHERE employee_id = :employee_id");
+        $stmt = $this->pdo->prepare("SELECT * FROM employee e INNER  JOIN officestaff o on e.employee_id = o.employee_id WHERE e.employee_id = :employee_id");
         $stmt->execute([
-            ":employee_id" => $employee_id
+            ":employee_id" => $office_staff_id
         ]);
         return $stmt->fetchObject();
     }
@@ -40,10 +41,15 @@ class OfficeStaff
             $officeStaff = $statement->fetchObject();
             if (!$officeStaff) {
                 $errors['email'] = 'Email does not exist';
+<<<<<<< HEAD:models/Officestaff.php
             } else {
                 if (!password_verify($this->body['password'], $officeStaff->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
+=======
+            } else if (!password_verify($this->body['password'] , $officeStaff->password) ){
+                $errors['password'] = 'Password is incorrect';
+>>>>>>> 0038ae60ad025ddfeea18eaebf357c065575b3ed:models/OfficeStaff.php
             }
         }
         if (empty($errors)) {

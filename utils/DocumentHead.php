@@ -13,10 +13,17 @@ class DocumentHead
     public static function createHead(array $css = [], array $js = [], string $title = "AutoRealm"): void
     {
 
+        $isDev = $_ENV["MODE"] === "development";
+
         $cssIncludes = "";
-        foreach ($css as $cssFile) {
-            $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
+        if ($isDev) {
+            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
+        } else {
+            foreach ($css as $cssFile) {
+                $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
+            }
         }
+
 
 
         $jsIncludes = "";
@@ -24,7 +31,7 @@ class DocumentHead
             $jsIncludes .= "<script src='$jsFile'></script>";
         }
 
-        $isDev = $_ENV["MODE"] === "development";
+
 
 
         $injectedSocket = $isDev ? "<script src='/__DEV__/ar.js' type='module'></script>" : "";
