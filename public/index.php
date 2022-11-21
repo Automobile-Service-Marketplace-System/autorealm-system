@@ -50,7 +50,7 @@ $app->router->get( "/stock-manager-login", [AuthenticationController::class,'get
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
 $app->router->get("/stock-manager-dashboard/products", [DashboardController::class, 'getStockManagerDashboardProfile']);
 
-//officeStaff-login
+//office Staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);

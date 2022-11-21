@@ -41,7 +41,7 @@ class OfficeStaff
             if (!$officeStaff) {
                 $errors['email'] = 'Email does not exist';
             } else {
-                if ($this->body['password'] != $officeStaff->password) {
+                if (!password_verify($this->body['password'], $officeStaff->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }
