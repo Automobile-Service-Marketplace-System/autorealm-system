@@ -12,7 +12,8 @@ use app\components\FormItem;
 
 ?>
 
-<form action="/foreman-login" method="post">
+<form action="/employee-login" method="post" class="employee-login__form">
+   <h1>Welcome back !</h1>
     <?php
     FormItem::render(
         id: "foreman-email",
@@ -36,7 +37,7 @@ use app\components\FormItem;
     );
     ?>
 
-    <a href="/forgot-password" class="link">Forgot password?</a>
+    <a href="tel:+94703614315" class="link">Forgot password? contact admin to reset</a>
     <button class="btn btn--danger btn--block">
         Sign In
     </button>

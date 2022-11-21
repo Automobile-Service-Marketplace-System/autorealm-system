@@ -1,6 +1,7 @@
 import { createServer as createNodeServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import chokidar from "chokidar";
+import { readFile } from "fs/promises";
 
 const server = createNodeServer();
 const io = new SocketIOServer(server, {
@@ -15,33 +16,47 @@ io.on("connection", (socket) => {
 });
 
 // directories to watch files in
-const dirs = [
+const paths = [
   "components",
   "controllers",
   "models",
-  "public",
+  `public/index.php`,
+  `public/js/index.js`,
   "core",
   "layouts",
   "views",
   "utils",
 ];
 
+const cssPath = `public/css/style.css`;
+
 // start watching files
-const watcher = chokidar.watch(dirs, {
-  ignored: /(^|[\/\\])\../,
+const cssWatcher = chokidar.watch(cssPath, {
   persistent: true,
+  useFsEvents: true,
+  ignoreInitial: true,
 });
 
-// on file change, emit event to client
-watcher.on("change", (path) => {
+const otherWatcher = chokidar.watch(paths, {
+  persistent: true,
+  interval: 100,
+  useFsEvents: true,
+  ignoreInitial: true,
+});
+
+let lastCss = "";
+
+cssWatcher.on("change", async (path) => {
   console.log(`File ${path} has been changed`);
-  if (path === "public\\css\\style.css") {
-    io.emit("css-reload");
-  } else {
-    io.emit("browser-reload");
-  }
+  const content = (await readFile(path, "utf-8")).toString();
+  io.emit("css-reload", content);
+});
+
+otherWatcher.on("change", async (path) => {
+  console.log(`File ${path} has been changed`);
+  io.emit("browser-reload");
 });
 
 server.listen(3001, () => {
-  console.log("Reloader service started on port 3001");
+  console.log("Reloading service started on port 3001");
 });

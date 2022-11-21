@@ -1,19 +1,19 @@
 <?php
 /**
- * @var object $officestaff
+ * @var object $officeStaff
  */
 
 ?>
 
 <div class="customer-profile">
-    <img src="<?php echo $officestaff->image ?>" alt="<?php echo $officestaff->f_name . ' ' . $officestaff->l_name . '\'s'; ?>">
+    <img src="<?php echo $officeStaff->image; ?>" alt="<?php echo $officeStaff->f_name . ' ' . $officeStaff->l_name . '\'s'; ?>">
     <div class="officestaff-profile__info">
         <p>
             <strong>
                 First name
             </strong>
             <span>
-                <?php echo $officestaff->f_name ?>
+                <?php echo $officeStaff->f_name ?>
             </span>
         </p>
         <p>
@@ -21,7 +21,7 @@
                 Last name
             </strong>
             <span>
-                <?php echo $officestaff->l_name ?>
+                <?php echo $officeStaff->l_name ?>
             </span>
         </p>
         <p>
@@ -29,7 +29,7 @@
                 Email
             </strong>
             <span>
-                <?php echo $officestaff->email ?>
+                <?php echo $officeStaff->email ?>
             </span>
 
         </p>
@@ -38,7 +38,7 @@
                 Phone
             </strong>
             <span>
-                <?php echo $officestaff->contact_no ?>
+                <?php echo $officeStaff->contact_no ?>
             </span>
 
         </p>
@@ -47,7 +47,7 @@
                 NIC
             </strong>
             <span>
-                <?php echo $officestaff->NIC ?>
+                <?php echo $officeStaff->NIC ?>
             </span>
 
         </p>
@@ -56,7 +56,7 @@
                   Birthday
              </strong>
              <span>
-                <?php echo $officestaff->dob ?>
+                <?php echo $officeStaff->dob ?>
             </span>
 
         </p>
@@ -65,7 +65,7 @@
                 Date of appointed
             </strong>
             <span>
-                <?php echo $officestaff->date_of_appointed ?>
+                <?php echo $officeStaff->date_of_appointed ?>
             </span>
 
         </p>
@@ -74,7 +74,7 @@
                 Address
             </strong>
             <span>
-                <?php echo $officestaff->address ?>
+                <?php echo $officeStaff->address ?>
             </span>
 
         </p>
@@ -83,7 +83,7 @@
                   Job role
              </strong>
              <span>
-                <?php echo $officestaff->job_role ?>
+                <?php echo $officeStaff->job_role ?>
             </span>
 
         </p>

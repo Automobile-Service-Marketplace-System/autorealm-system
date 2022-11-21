@@ -7,6 +7,7 @@ use app\core\Request;
 use app\core\Response;
 
 //importing model classes
+use app\models\Admin;
 use app\models\Customer;
 use app\models\StockManager;
 use app\models\Employee;
@@ -17,7 +18,7 @@ class AuthenticationController
 //    Regarding customer authentication
     public function getCustomerSignupForm(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "customer") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             return $res->redirect("/dashboard/profile");
         }
         return $res->render("customer-signup", layoutParams: [
@@ -28,7 +29,7 @@ class AuthenticationController
     public function registerCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
-        $customer = new Customer($body);
+        $customer = new Admin($body);
         $result = $customer->register();
 
         if (is_array($result)) {
@@ -36,20 +37,20 @@ class AuthenticationController
                 'errors' => $result,
                 'body' => $body
             ]);
-        } else {
-            if ($result) {
-                return $res->redirect("/login?success=1");
-            } else {
-                return $res->render("500", "error", [
-                    "error" => "Something went wrong. Please try again later."
-                ]);
-            }
         }
+
+        if ($result) {
+            return $res->redirect("/login?success=1");
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
     public function getCustomerLoginForm(Request $req, Response $res): string
     {
-        return $res->render(view: "customer-login",layout: "main", layoutParams: [
+        return $res->render(view: "customer-login", layout: "main", layoutParams: [
             'title' => 'Login'
         ]);
     }
@@ -64,35 +65,34 @@ class AuthenticationController
                 'errors' => $result,
                 'body' => $body
             ]);
-        } else {
-
-            if ($result) {
-                // only reaches here if the customer's login attempt is successful
-                $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
-                $req->session->set("user_id", $result->customer_id); // `$_SESSION['user_id'] = $result->customer_id;
-                $req->session->set("user_role", "customer"); // $_SESSION['user_role'] = "customer";
-                return $res->redirect(path: "/dashboard/profile"); // header("Location: /dashboard/profile");
-            } else {
-                return $res->render("500", "error", [
-                    "error" => "Something went wrong. Please try again later."
-                ]);
-            }
         }
+
+        if ($result) {
+            // only reaches here if the customer's login attempt is successful
+            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
+            $req->session->set("user_id", $result->customer_id);
+            $req->session->set("user_role", "customer"); // $_SESSION['user_role'] = "customer";
+            return $res->redirect(path: "/dashboard/profile"); // header("Location: /dashboard/profile");
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
     public function logoutCustomer(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "customer") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $req->session->destroy();
             return $res->redirect(path: "/");
-        } else {
-            return $res->redirect("/");
         }
+
+        return $res->redirect("/");
     }
 
 
 //     Regarding office staff member authentication
-    public function getOfficeStaffLoginPage(Request $req, Response $res):string
+    public function getOfficeStaffLoginPage(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-login", layout: "plain");
     }
@@ -101,23 +101,24 @@ class AuthenticationController
     {
         $body = $req->body();
         $officeStaff = new OfficeStaff($body);
-        $result = $officeStaff ->login();
-        if(is_array($result)){
+        $result = $officeStaff->login();
+        if (is_array($result)) {
             return $res->render(view: "office-staff-login", layout: "plain", pageParams: [
                 "errors" => $result
             ]);
-        } else {
-            if($result) {
-                // reaches when office staff successful logged in
-                $req->session->set("is_authenticated", true);
-                $req->session->set("user_id", $result->employee_id);
-                $req->session->set("user_role", "office_staff_member");
-                return $res->redirect(path: "/office-staff-dashboard/profile");
-            } {
-                return $res->render("500", "error", [
-                    "error" => "Something went wrong. Please try again later."
-                ]);
-            }
+        }
+
+        if ($result) {
+            // reaches when office staff successful logged in
+            $req->session->set("is_authenticated", true);
+            $req->session->set("user_id", $result->employee_id);
+            $req->session->set("user_role", "office_staff_member");
+            return $res->redirect(path: "/office-staff-dashboard/profile");
+        }
+        {
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
+            ]);
         }
     }
 
@@ -125,37 +126,34 @@ class AuthenticationController
     {
         return $res->render(view: "stock-manager-login", layout: "plain", layoutParams: [
             'title' => 'Stock manager Login'
-        ])
-            ;
+        ]);
     }
 
 //    Regarding stock manager authentication
     public function loginStockManager(Request $req, Response $res): string
     {
-        $body= $req->body();
+        $body = $req->body();
 
-        $stockManager= new StockManager($body);
+        $stockManager = new StockManager($body);
 
-        $result=$stockManager->login();
-        if(is_array($result)) {
+        $result = $stockManager->login();
+        if (is_array($result)) {
             return $res->render(view: "stock-manager-login", layout: "plain", pageParams: [
                 "errors" => $result
             ]);
-        } else {
-
-            if ($result) {
-
-                $req->session->set("is_authenticated", true);
-                $req->session->set("user_id", $result->employee_id);
-                $req->session->set("user_role", "stock_manager");
-                return $res->redirect(path: "/stock-manager-dashboard/profile");
-            } else {
-                return $res->render("500", "error", [
-                    "error" => "Something went wrong. Please try again later."
-                ]);
-            }
         }
 
+        if ($result) {
+
+            $req->session->set("is_authenticated", true);
+            $req->session->set("user_id", $result->employee_id);
+            $req->session->set("user_role", "stock_manager");
+            return $res->redirect(path: "/stock-manager-dashboard/profile");
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
 
 
     }
@@ -163,11 +161,50 @@ class AuthenticationController
 
 //    Regarding foreman authentication
 
-public function getForemanLoginPage(Request $req, Response $res): string {
-    return $res->render(view: "foreman-login", layout: "employee-auth", layoutParams: [
-        'title' => 'Login'
-    ]);
-}
+    public function getEmployeeLoginPage(Request $req, Response $res): string
+    {
+        return $res->render(view: "employee-login", layout: "employee-auth", layoutParams: [
+            'title' => 'Login'
+        ]);
+    }
+
+
+    public function loginEmployee(Request $req, Response $res) :string {
+        $body = $req->body();
+        $employee = new Employee($body);
+        $result = $employee->login();
+        var_dump($result);
+        if (is_array($result)) {
+            return $res->render(view: "employee-login", pageParams: [
+                'errors' => $result,
+                'body' => $body
+            ]);
+        }
+
+        if ($result) {
+            // only reaches here if the employee's login attempt is successful
+            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
+            $req->session->set("user_id", $result->employee_id);
+            $req->session->set("user_role", $result->job_role); // $_SESSION['user_role'] = "employee";
+            $path = "";
+            if($result->job_role === "admin") {
+                $path = "/admin-dashboard/profile";
+            } elseif ($result->job_role === "foreman") {
+                $path = "/foreman-dashboard/profile";
+            } elseif ($result->job_role === "stock_manager") {
+                $path = "/stock-manager-dashboard/profile";
+            } elseif ($result->job_role === "office_staff_member") {
+                $path = "/office-staff-dashboard/profile";
+            } elseif ($result->job_role === "technician") {
+                $path = "/technician-dashboard/profile";
+            }
+            return $res->redirect(path: $path);
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+    }
 
     public function getAdminLoginPage(Request $request, Response $response): string
     {
@@ -185,9 +222,9 @@ public function getForemanLoginPage(Request $req, Response $res): string {
                 "errors" => $result
             ]);
 
-        } else {
-            echo "Successfully logged in";
         }
+
+        echo "Successfully logged in";
         return '';
     }
 
