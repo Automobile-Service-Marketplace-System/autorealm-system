@@ -17,6 +17,15 @@ class StockManager
         $this->body = $registerBody;
     }
 
+    public function getStockManagerById(int $employee_id): bool|object
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM employee WHERE employee_id = :employee_id");
+        $stmt->execute([
+            ":employee_id" => $employee_id
+        ]);
+        return $stmt->fetchObject();
+    }
+
 //    public function register(): bool|array
 //    {
 //        $errors = $this->validateRegisterBody();
