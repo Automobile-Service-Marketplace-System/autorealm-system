@@ -71,9 +71,9 @@ class Admin
         }
         else if (strlen($this->body['nic']) == 10 || strlen($this->body['nic']) == 12) {
             //NIC check
-//            if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
-//                $errors['contact_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
-//            }
+            // if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
+            //     $errors['contact_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
+            // }
         } else {
             $query = "SELECT * FROM employee WHERE contact_no = :nic";
             $statement = $this->pdo->prepare($query);
