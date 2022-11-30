@@ -49,7 +49,7 @@ class AuthenticationController
 
     public function getCustomerLoginForm(Request $req, Response $res): string
     {
-        return $res->render(view: "customer-login",layout: "main", layoutParams: [
+        return $res->render(view: "customer-login", layoutParams: [
             'title' => 'Login'
         ]);
     }
@@ -162,6 +162,7 @@ class AuthenticationController
 
     public function getAdminLoginPage(Request $request, Response $response): string
     {
+
         return $response->render(view: "admin-login", layout: "plain");
     }
 
@@ -169,7 +170,7 @@ class AuthenticationController
     public function loginAdmin(Request $request, Response $response): string
     {
         $body = $request->body();
-        $employee = new Admin($body);
+        $employee = new Employee($body);
         $result = $employee->login();
         if (is_array($result)) {
             return $response->render(view: "admin-login", layout: "plain", pageParams: [
@@ -181,7 +182,6 @@ class AuthenticationController
         }
         return '';
     }
-
 
     // Regarding security officer authentication
     public function getSecurityOfficerLoginPage(Request $request, Response $response):string{
