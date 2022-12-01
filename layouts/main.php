@@ -4,6 +4,7 @@
  * @var object $customer
  */
 
+use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
 
 ?>
@@ -31,7 +32,11 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
                 <li><a href="/products">Products</a></li>
                 <li><a href="/about-us">About Us</a></li>
                 <li><a href="/contact-us">Contact Us</a></li>
-                <li><a href="/login" class="btn btn--thin btn--dark-blue">Login</a></li>
+                <?php if (isset($customer)) {
+                    CustomerProfileDropdown::render($customer, 1);
+                } else {
+                    echo "<li><a href='/login' class='btn btn--thin btn--dark-blue login-btn'>Login</a></li>";
+                } ?>
             </ul>
         </nav>
         <button class="menu-btn menu-btn--solid no_highlights">
@@ -40,12 +45,18 @@ title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
     </header>
     <nav class="dropdown-nav">
         <ul>
+
             <li><a href="/services">Services</a></li>
             <li><a href="/products">Products</a></li>
             <li><a href="/about-us">About Us</a></li>
             <li><a href="/contact-us">Contact Us</a></li>
-            <li><a href="/login" class="btn btn--dark-blue">Login</a></li>
-
+            <?php
+            if (!isset($customer)) {
+                echo "<li><a href='/login' class='btn btn--dark-blue'>Login</a></li>";
+            } else {
+                CustomerProfileDropdown::render($customer, 2);
+            }
+            ?>
         </ul>
     </nav>
     <main class="container container-fh">

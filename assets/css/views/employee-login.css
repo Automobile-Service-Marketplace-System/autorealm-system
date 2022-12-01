@@ -1,0 +1,36 @@
+.employee-login__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+
+.employee-login__form h1 {
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+
+@media screen  and (min-width: 768px) {
+    .employee-login__form {
+        padding: 1.5rem;
+    }
+}
+
+@media screen  and (min-width: 992px) {
+    .employee-login__form {
+        padding: 2rem;
+    }
+}
+
+@media screen  and (min-width: 1200px) {
+    .employee-login__form {
+        padding: 2.5rem;
+    }
+}

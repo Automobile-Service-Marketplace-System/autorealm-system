@@ -17,13 +17,20 @@
 @import "components/headers.css";
 @import "components/footers.css";
 @import "components/links.css";
+@import "components/dropdowns.css";
+@import "components/tables.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
+@import "layouts/employee-dashboard.css";
+@import "layouts/employee-auth.css";
 
 /* importing css files for views */
+@import "views/products-page.css";
 @import "views/customer-dashboard-profile.css";
 @import "views/customer-auth.css";
+@import "views/create-employee.css";
+@import "views/employee-login.css";
 @import "views/home.css";
 
 body {
@@ -42,4 +49,9 @@ body {
 
 body {
   overflow-x: hidden;
+  display: none;
+}
+
+.fontawesome-i2svg-active body {
+  display: initial;
 }
