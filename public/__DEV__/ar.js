@@ -8,7 +8,7 @@ const socket = io("ws://localhost:3001");
 const logSuccess = (arg) =>
     console.log(
         `%c[AR]: %c${arg}`,
-        "color: rgb(0, 197, 138);font-weight: bold;font-size: 3rem",
+        "color: rgb(0, 197, 138);font-weight: bold;",
         "font-weight: thin;"
     );
 

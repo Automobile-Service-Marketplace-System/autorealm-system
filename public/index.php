@@ -8,7 +8,6 @@ use app\controllers\AuthenticationController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 
-use app\utils\DevOnly;
 
 use Dotenv\Dotenv;
 
@@ -20,9 +19,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 // loading the .env file
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
-
-DevOnly::printToBrowserConsole(password_hash("aq1sw2de3fr4", PASSWORD_DEFAULT));
-DevOnly::printToBrowserConsole($_COOKIE);
 
 
 

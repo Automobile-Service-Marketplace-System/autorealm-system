@@ -119,6 +119,9 @@ class DashboardController
      */
     public function getStockManagerDashboardProfile(Request $req, Response $res): string
     {
-        return "WIP, to be completed by Avishka";
+        return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", layoutParams: [
+            'title' => 'Profile',
+            'pageMainHeading' => 'Profile'
+        ]);
     }
 }

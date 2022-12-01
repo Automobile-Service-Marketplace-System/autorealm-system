@@ -29,7 +29,7 @@ class AuthenticationController
     public function registerCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
-        $customer = new Admin($body);
+        $customer = new Customer($body);
         $result = $customer->register();
 
         if (is_array($result)) {
