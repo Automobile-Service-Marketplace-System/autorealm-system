@@ -175,7 +175,7 @@ class Admin
             if (!$employee) {
                 $errors['email'] = 'Email does not exist';
             } else {
-                if ($this->body['password']!=$employee->password) {
+                if (! password_verify($this->body['password'],$employee->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }

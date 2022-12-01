@@ -9,6 +9,7 @@ use app\core\Response;
 //importing model classes
 use app\models\Customer;
 use app\models\StockManager;
+use app\models\Admin;
 use app\models\Employee;
 use app\models\OfficeStaff;
 
@@ -160,27 +161,34 @@ class AuthenticationController
 
     }
 
-    public function getAdminLoginPage(Request $request, Response $response): string
-    {
-
+    public function getAdminLoginPage(Request $request, Response $response):string{
         return $response->render(view: "admin-login", layout: "plain");
     }
 
-//    Regarding admin authentication
-    public function loginAdmin(Request $request, Response $response): string
-    {
-        $body = $request->body();
-        $employee = new Employee($body);
-        $result = $employee->login();
-        if (is_array($result)) {
+    public function loginAdmin(Request $request, Response $response):string{
+        $body=$request->body();
+        $employee=new Admin($body);
+        $result=$employee->login();
+        if(is_array($result)){
             return $response->render(view: "admin-login", layout: "plain", pageParams: [
-                "errors" => $result
+                "errors"=>$result,
+                'body'=>$body
             ]);
 
-        } else {
-            echo "Successfully logged in";
         }
-        return '';
+        else{
+            if($result){
+                $request->session->set("is-authenticated",true); //$_SESSION["is-authenticated"] = true
+                $request->session->set("user_id",$result->employee_id);
+                $request->session->set("user_role","admin");
+                return $response->redirect(path:"/admin-dashboard/profile");
+            }
+            else{
+                return $response->render("500","error",[
+                    "error"=>"Something went wrong. Please try again later."
+                ]);
+            }
+        }
     }
 
     // Regarding security officer authentication
