@@ -11,14 +11,20 @@
 <style>
 
     .form-container{
-        margin: 0 auto;
+        /*margin: 0 auto;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*!* background-color: red; *!*/
+        /*vertical-align: middle;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*min-height: 100vh;*/
         display: flex;
-        flex-direction: column;
-        /* background-color: red; */
-        vertical-align: middle;
         align-items: center;
-        justify-content: center;
-        min-height: 100vh;
+    justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: red;
     }
 
     .stockmanager-login{

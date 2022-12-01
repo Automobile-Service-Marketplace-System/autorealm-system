@@ -20,7 +20,7 @@ class Session
 
     public function get(string $key): mixed
     {
-        return $_SESSION[$key] ?? false;
+        return $_SESSION[$key] ?? "";
     }
 
     public function remove($key): void

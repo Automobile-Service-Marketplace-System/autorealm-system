@@ -47,9 +47,8 @@
 
 <div>
     <div class="container">
-        <form class="form-signin" action="officestaff-login" method="post">
+        <form class="form-signin" action="/office-staff-login" method="post">
             <h2 class="form-signin-heading">Login to your account</h2>
-
             <lable class="form-lable">Email</lable>
 <!--            <br>-->
             <input class="form-input" type="text" name="email" required="" autofocus="" />

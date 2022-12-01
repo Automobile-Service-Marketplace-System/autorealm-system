@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use JsonException;
+
 /**
  * Class Response
  * @package app\core
@@ -64,12 +66,13 @@ class Response
      * Use this method to send data as a JSON value
      * @param mixed $data - Data that needs to be sent
      * @return string
+     * @throws JsonException
      */
     public function json(mixed $data): string
     {
         $this->setHeader(key: "Content-Type", value: "application/json");
         $this->setHeader(key: "charset", value: "utf-8");
-        return json_encode($data);
+        return json_encode($data, JSON_THROW_ON_ERROR);
     }
 
     private function getLayout(string $layout = "main", array $params = []): string

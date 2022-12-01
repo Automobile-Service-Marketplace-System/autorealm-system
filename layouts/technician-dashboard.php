@@ -2,12 +2,11 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $officeStaff
+ * @var object $technician
  */
 
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
-
 
 ?>
 <!doctype html>
@@ -28,34 +27,34 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/technician-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
-                <i class="fa-solid fa-file-invoice"></i>
+            <a href="/technician-dashboard/products">
+                <i class="fa-solid fa-box"></i>
                 <span>
-                    Invoices
+                    Jobs
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
-                <i class="fa-solid fa-user"></i>
+            <a href="/technician-dashboard/orders">
+                <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    Customers
+                    Orders
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
-                <i class="fa-solid fa-car"></i>
+            <a href="/technician-dashboard/suppliers">
+                <i class="fa-solid fa-users"></i>
                 <span>
-                    Vehicles
+                    Suppliers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
-                <i class="fa-solid fa-calendar-check"></i>
+            <a href="/technician-dashboard/reviews">
+                <i class="fa-solid fa-comment-dots"></i>
                 <span>
-                    Appointments
+                    Reviews
                 </span>
             </a>
 
@@ -68,7 +67,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $officeStaff, role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employee: $technician, role: "Technician", id: 1);
             ?>
         </header>
 
