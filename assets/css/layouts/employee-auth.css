@@ -1,0 +1,94 @@
+.employee-auth {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+
+}
+
+
+.employee-auth::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    /*backdrop-filter: blur(2px);*/
+}
+
+.employee-auth__left {
+    width: 50vw;
+    height: 100vh;
+    display: none;
+    background-image: url("/images/employee-login-background.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.employee-auth__right {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 1rem;
+    z-index: 2;
+    background-color: var(--color-light);
+    position: relative;
+}
+
+
+.employee-login__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    /*gap: 1rem;*/
+}
+
+.employee-login__brand img {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+}
+
+.employee-login__brand p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333333;
+}
+
+@media screen and (min-width: 768px) {
+    .employee-auth__right {
+        padding-inline: 2rem;
+    }
+
+    .employee-auth__left {
+        display: initial;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .employee-auth__left {
+        display: block;
+    }
+
+    .employee-auth__right {
+        width: 50vw;
+        padding-inline: 4rem;
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .employee-auth__right {
+        padding-inline: 8rem;
+    }
+}

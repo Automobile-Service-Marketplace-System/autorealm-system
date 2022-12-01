@@ -5,6 +5,7 @@ namespace app\utils;
 use app\core\Application;
 use app\core\Uploader;
 use Exception;
+use RuntimeException;
 
 class FSUploader extends Uploader
 {
@@ -18,7 +19,7 @@ class FSUploader extends Uploader
      * @return string|array
      * @throws Exception
      */
-    static public function upload(string $fieldName = "image", float $limit = 5, bool $multiple = false, string $innerDir = "", array $allowed = ["jpg", "jpeg", "png", "webp"]): string|array
+    public static function upload(string $fieldName = "image", float $limit = 5, bool $multiple = false, string $innerDir = "", array $allowed = ["jpg", "jpeg", "png", "webp"]): string|array
     {
         if ($multiple) {
             $files = $_FILES[$fieldName];
@@ -34,13 +35,13 @@ class FSUploader extends Uploader
                 $urls[] = self::uploadFile(file: $file, limit: $limit, innerDir: $innerDir, allowed: $allowed);
             }
             return $urls;
-        } else {
-            $file = $_FILES[$fieldName];
-            echo "<pre>";
-            var_dump($file);
-            echo "</pre>";
-            return self::uploadFile(file: $file, limit: $limit, innerDir: $innerDir, allowed: $allowed);
         }
+
+        $file = $_FILES[$fieldName];
+        echo "<pre>";
+        var_dump($file);
+        echo "</pre>";
+        return self::uploadFile(file: $file, limit: $limit, innerDir: $innerDir, allowed: $allowed);
     }
 
     /**
@@ -51,36 +52,35 @@ class FSUploader extends Uploader
      * @return string
      * @throws Exception
      */
-    static private function uploadFile(array $file, float|int $limit, string $innerDir, array $allowed): string
+    private static function uploadFile(array $file, float|int $limit, string $innerDir, array $allowed): string
     {
         $fileName = $file['name'];
         $fileTmpName = $file['tmp_name'];
         $fileSize = $file['size'];
         $fileError = $file['error'];
-        $fileType = $file['type'];
 
         $fileExt = explode('.', $fileName);
         $fileActualExt = strtolower(end($fileExt));
 
 
-        if (in_array($fileActualExt, $allowed)) {
+        if (in_array($fileActualExt, $allowed, true)) {
             if ($fileError === 0) {
                 if ($fileSize < $limit * 1024 * 1024) {
-                    $fileNameNew = uniqid(prefix: '', more_entropy: true) . "." . $fileActualExt;
+                    $fileNameNew = uniqid(prefix: true, more_entropy: true) . "." . $fileActualExt;
                     $fileDestination = Application::$rootDir . "/public/uploads" . "/" . $innerDir . "/" . $fileNameNew;
-                    if (!file_exists(filename: Application::$rootDir . "/public/uploads" . "/" . $innerDir)) {
-                        mkdir(directory: Application::$rootDir . "/public/uploads" . "/" . $innerDir,permissions:  0777, recursive: true);
+                    if (!file_exists(filename: Application::$rootDir . "/public/uploads" . "/" . $innerDir) && !mkdir($concurrentDirectory = Application::$rootDir . "/public/uploads" . "/" . $innerDir, 0777, true) && !is_dir($concurrentDirectory)) {
+                        throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
                     }
                     move_uploaded_file($fileTmpName, $fileDestination);
                     return "/uploads/" . $innerDir . "/" . $fileNameNew;
-                } else {
-                    throw new Exception("Your file is too big!");
                 }
-            } else {
-                throw new Exception("There was an error uploading your file!");
+
+                throw new RuntimeException("Your file is too big!");
             }
-        } else {
-            throw new Exception("You cannot upload files of this type!");
+
+            throw new RuntimeException("There was an error uploading your file!");
         }
+
+        throw new RuntimeException("You cannot upload files of this type!");
     }
 }

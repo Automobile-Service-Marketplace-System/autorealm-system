@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use app\core\Database;
 
 class SecurityOfficer
@@ -14,7 +15,7 @@ class SecurityOfficer
         $this->body = $registerBody;
     }
 
-    public function login(): array|object
+    public function login(): array |object
     {
         $errors = [];
         $employee = null;
@@ -30,7 +31,7 @@ class SecurityOfficer
             if (!$employee) {
                 $errors['email'] = 'Email does not exist';
             } else {
-                if ($this->body['password']!=$employee->password) {
+                if (!password_verify($this->body['password'], $employee->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }
