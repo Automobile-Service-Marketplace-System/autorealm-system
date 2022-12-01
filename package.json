@@ -1,7 +1,10 @@
 {
   "name": "autorealm-system",
   "version": "0.0.1",
-  "repository": "git@github.com-personal:Automobile-Service-Marketplace-System/autorealm-system.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:Automobile-Service-Marketplace-System/autorealm-system.git"
+  },
   "author": "Nethsara Sandeepa Elvitigala <nethsarasandeepaelvitigala@gmail.com>",
   "license": "proprietary",
   "devDependencies": {
@@ -19,5 +22,11 @@
     "dev:reloader": "node ./scripts/autoreload.mjs",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:reloader\"",
     "build": "vite build"
-  }
+  },
+  "dependencies": {
+    "html5-qrcode": "^2.3.3"
+  },
+  "description": "PHP full stack application for the AutoRealm system",
+  "main": "vite.config.js",
+  "keywords": []
 }

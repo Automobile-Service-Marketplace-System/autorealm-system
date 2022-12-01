@@ -7,15 +7,16 @@ use app\core\Request;
 use app\core\Response;
 
 //importing model classes
-use app\models\Admin;
 use app\models\Customer;
 use app\models\StockManager;
+use app\models\Admin;
 use app\models\Employee;
 use app\models\OfficeStaff;
+use app\models\SecurityOfficer;
 
 class AuthenticationController
 {
-//    Regarding customer authentication
+    //    Regarding customer authentication
     public function getCustomerSignupForm(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
@@ -91,7 +92,7 @@ class AuthenticationController
     }
 
 
-//     Regarding office staff member authentication
+    //     Regarding office staff member authentication
     public function getOfficeStaffLoginPage(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-login", layout: "plain");
@@ -114,8 +115,7 @@ class AuthenticationController
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
             return $res->redirect(path: "/office-staff-dashboard/profile");
-        }
-        {
+        } {
             return $res->render("500", "error", [
                 "error" => "Something went wrong. Please try again later."
             ]);
@@ -129,7 +129,7 @@ class AuthenticationController
         ]);
     }
 
-//    Regarding stock manager authentication
+    //    Regarding stock manager authentication
     public function loginStockManager(Request $req, Response $res): string
     {
         $body = $req->body();
@@ -159,7 +159,7 @@ class AuthenticationController
     }
 
 
-//    Regarding foreman authentication
+    //    Regarding foreman authentication
 
     public function getEmployeeLoginPage(Request $req, Response $res): string
     {
@@ -169,7 +169,8 @@ class AuthenticationController
     }
 
 
-    public function loginEmployee(Request $req, Response $res) :string {
+    public function loginEmployee(Request $req, Response $res): string
+    {
         $body = $req->body();
         $employee = new Employee($body);
         $result = $employee->login();
@@ -187,7 +188,7 @@ class AuthenticationController
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", $result->job_role); // $_SESSION['user_role'] = "employee";
             $path = "";
-            if($result->job_role === "admin") {
+            if ($result->job_role === "admin") {
                 $path = "/admin-dashboard/profile";
             } elseif ($result->job_role === "foreman") {
                 $path = "/foreman-dashboard/profile";
@@ -208,24 +209,67 @@ class AuthenticationController
 
     public function getAdminLoginPage(Request $request, Response $response): string
     {
-        return $response->render(view: "admin-login", layout: "plain");
+        return $response->render(view: "admin-login", layout: "plain", layoutParams: [
+            "title" => "Admin Login"
+        ]);
     }
 
-//    Regarding admin authentication
     public function loginAdmin(Request $request, Response $response): string
     {
         $body = $request->body();
-        $employee = new Employee($body);
+        $employee = new Admin($body);
         $result = $employee->login();
         if (is_array($result)) {
             return $response->render(view: "admin-login", layout: "plain", pageParams: [
-                "errors" => $result
+                "errors" => $result,
+                'body' => $body
             ]);
 
+        } else {
+            if ($result) {
+                $request->session->set("is-authenticated", true); //$_SESSION["is-authenticated"] = true
+                $request->session->set("user_id", $result->employee_id);
+                $request->session->set("user_role", "admin");
+                return $response->redirect(path: "/admin-dashboard/profile");
+            } else {
+                return $response->render("500", "error", [
+                    "error" => "Something went wrong. Please try again later."
+                ]);
+            }
         }
-
-        echo "Successfully logged in";
-        return '';
     }
 
+    // Regarding security officer authentication
+    public function getSecurityOfficerLoginPage(Request $request, Response $response): string
+    {
+
+        return $response->render(view: "security-officer-login", layout: "plain", layoutParams: [
+            "title" => "Security Officer Login"
+        ]);
+    }
+
+    public function loginSecurityOfficer(Request $request, Response $response): string
+    {
+        $body = $request->body();
+        $employee = new SecurityOfficer($body);
+        $result = $employee->login();
+        if (is_array($result)) {
+            return $response->render(view: "security-officer-login", layout: "plain", pageParams: [
+                "errors" => $result,
+                'body' => $body
+            ]);
+
+        } else {
+            if ($result) {
+                $request->session->set("is-authenticated", true); //$_SESSION["is-authenticated"] = true
+                $request->session->set("user_id", $result->employee_id);
+                $request->session->set("user_role", "security-officer");
+                return $response->redirect(path: "/security-officer-dashboard/profile");
+            } else {
+                return $response->render("500", "error", [
+                    "error" => "Something went wrong. Please try again later."
+                ]);
+            }
+        }
+    }
 }

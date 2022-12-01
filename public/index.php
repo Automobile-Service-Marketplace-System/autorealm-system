@@ -77,6 +77,9 @@ $app->router->post("/office-staff-login", [AuthenticationController::class, 'log
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
 
+//security officer roots
+$app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
+$app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
 
 // run the application
 $app->run();
