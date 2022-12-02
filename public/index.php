@@ -72,7 +72,7 @@ $app->router->get("/stock-manager-dashboard/profile", [DashboardController::clas
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 
 
-//officeStaff-login
+// office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
