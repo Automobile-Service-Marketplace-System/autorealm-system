@@ -3,8 +3,9 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\FSUploader;
 
-class OfficeStaff
+class Admin
 {
     private \PDO $pdo;
     private array $body;
@@ -16,19 +17,10 @@ class OfficeStaff
         $this->body = $registerBody;
     }
 
-    public function getOfficeStaffById(int $employee_id): bool|object
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM employee WHERE employee_id = :employee_id");
-        $stmt->execute([
-            ":employee_id" => $employee_id
-        ]);
-        return $stmt->fetchObject();
-    }
-
-    public function login(): array|object
+    public function login(): array |object
     {
         $errors = [];
-        $officeStaff = null;
+        $employee = null;
 
         if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Email must be a valid email address';
@@ -37,20 +29,19 @@ class OfficeStaff
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':email', $this->body['email']);
             $statement->execute();
-            $officeStaff = $statement->fetchObject();
-            if (!$officeStaff) {
+            $employee = $statement->fetchObject();
+            if (!$employee) {
                 $errors['email'] = 'Email does not exist';
             } else {
-                if ($this->body['password'] != $officeStaff->password) {
+                if (!password_verify($this->body['password'], $employee->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }
         }
         if (empty($errors)) {
-            return $officeStaff;
+            return $employee;
         }
         return $errors;
     }
-
 
 }

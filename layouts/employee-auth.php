@@ -17,12 +17,15 @@ DocumentHead::createHead(
 <body style="display: initial">
 
 <main class="employee-auth">
-    <aside class="employee-auth__left">
-
-    </aside>
     <section class="employee-auth__right">
+        <div class="employee-login__brand">
+            <img src="/images/logo.webp" alt="Autorealm logo">
+            <p>AutoRealm</p>
+        </div>
         {{content}}
     </section>
+    <aside class="employee-auth__left">
+    </aside>
 </main>
 
 
