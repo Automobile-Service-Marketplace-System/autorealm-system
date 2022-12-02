@@ -142,8 +142,8 @@ class DashboardController
      * @param Response $res
      * @return string
      */
-    public function getStockManagerDashboardProfile(Request $req, Response $res): string
-    {
-        return "WIP, to be completed by Avishka";
-    }
+    // public function getStockManagerDashboardProfile(Request $req, Response $res): string
+    // {
+    //     return "WIP, to be completed by Avishka";
+    // }
 }

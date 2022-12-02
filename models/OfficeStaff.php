@@ -41,15 +41,8 @@ class OfficeStaff
             $officeStaff = $statement->fetchObject();
             if (!$officeStaff) {
                 $errors['email'] = 'Email does not exist';
-<<<<<<< HEAD:models/Officestaff.php
-            } else {
-                if (!password_verify($this->body['password'], $officeStaff->password)) {
-                    $errors['password'] = 'Password is incorrect';
-                }
-=======
             } else if (!password_verify($this->body['password'] , $officeStaff->password) ){
                 $errors['password'] = 'Password is incorrect';
->>>>>>> 0038ae60ad025ddfeea18eaebf357c065575b3ed:models/OfficeStaff.php
             }
         }
         if (empty($errors)) {
