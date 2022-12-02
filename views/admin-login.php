@@ -1,4 +1,3 @@
-
 <?php
 /**
  * @var array $errors;
@@ -10,83 +9,75 @@
 ?>
 
 <style>
-    .btn{
-        background-color: blue;
-        color: white;
-        width: auto;
-        height: auto;
-        border-radius: .2cm;
-    }
-
-    .start{
-        margin-top: 2cm;
-    }
-
-    .fa {
-        padding: 6px;
-        background-color:blue;
-        height: 15px;
-        width: 15px;
-        border-radius: 50%;
-        text-decoration: none;
-    }
-
-    .fa-facebook{
-        color: white;
-    }
-
-    .fa-twitter{
-        color: white;
-    }
-
-    .fa-linkedin {
-        color: white;
-    }
-
-    .aaa{
-        width: 7cm;
-        height: .5cm;
-    }
-
-    h5{
+    .label{
         display: flex;
-        flex-direction: row;
-        width: 7.3cm;
+        flex-direction: column;
+        padding-bottom: .75cm;
     }
 
-    h5:before,
-    h5:after {
-        content: "";
-        flex: 1 1;
-        border-bottom: 1px solid #000;
-        margin: auto;
+    .form-container{
+        display: flex; 
+        align-items: center;  
+        justify-content: center;
+        /* min-height: 100vh; */
+        margin: 4cm;
+    }
+
+    .label > input{
+        padding-inline: 0.5rem;
+        border-radius: 0.5rem;
+        height: 2rem;
+        border:1px solid  black;
+    }
+
+    .admin-login{
+        width: 30%;
+        border: 2px solid;
+        box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
+        border-radius: 1rem;  
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .btn{
+            background-color:rgb(229 48 48);
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            height: 2.5rem;
+            border: none;
+            cursor: pointer;   
     }
 </style>
 
-<h5 class="line">Or</h5>
+<!-- <head>
+    <link rel="stylesheet" href="\assets\css\views\admin-login.css">
+</head> -->
 
-<form action="/admin-login" method="post">
-    <div>
-        <input class="aaa" type="text" id="email" name="email" placeholder="Email address" width="7px">
-        <?php
-            if ($has_email_errors) {
-                echo "<p>". $errors['email'] ."</p>";
-            }
-        ?>
-        <br><br><input class="aaa" type="password" id="pw" name="password" placeholder="password" >
-        <?php
-            if($has_password_errors){
-                echo "<p>". $errors['password']."</p>";
-            }
-        ?>
-    </div>
-    <div><br>
-        <input type="checkbox" name="rm">Remember me.&nbsp;&nbsp;&nbsp;&nbsp;Forget password?</p>
-    </div>
-    <div><br>
-        <input type="submit" id="btn" value="LOGIN" class="btn">
-    </div>
-</form>
-
-<p>Don't have an account? <span style="color:red">Register</span></p>
+<div class="form-container">
+    <form class="admin-login" action="/admin-login" method="post">
+        <h1 style="text-align:center">Admin Login</h1>
+        <div class="label">
+            <label for="email">Email<sup>*</sup></label>
+            <input type="email", id="email" name="email">           
+	        <?php 
+                if($has_errors && $has_email_errors){
+                    echo "<span style='color: red'>"."*".$errors["email"]."</span>";
+                }
+	        ?>            
+        </div>
+        <div class="label">
+            <label for="password">Password<sup>*</sup></label>
+            <input type="password", id="password" name="password">
+            <?php 
+                if($has_errors && $has_password_errors){
+                    echo "<span style='color: red'>"."*".$errors["password"]."</span>";
+                }
+            ?>                  
+        </div> 
+        <div class="label">
+            <button type="submit" class="btn">Login</button>       
+        </div>   
+    </form>
+</div>
 
