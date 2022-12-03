@@ -3,13 +3,11 @@
 namespace app\models;
 
 use app\core\Database;
-use PDO;
 
-class Employee
+class SecurityOfficer
 {
-    private PDO $pdo;
+    private \PDO $pdo;
     private array $body;
-
 
     public function __construct(array $registerBody = [])
     {
@@ -32,8 +30,10 @@ class Employee
             $employee = $statement->fetchObject();
             if (!$employee) {
                 $errors['email'] = 'Email does not exist';
-            } else if (!password_verify($this->body['password'], $employee->password)) {
-                $errors['password'] = 'Password is incorrect';
+            } else {
+                if (!password_verify($this->body['password'], $employee->password)) {
+                    $errors['password'] = 'Password is incorrect';
+                }
             }
         }
         if (empty($errors)) {

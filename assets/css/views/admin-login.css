@@ -1,0 +1,39 @@
+.label{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: .75cm;
+}
+
+.form-container{
+    display: flex; 
+    align-items: center;  
+    justify-content: center;
+    /* min-height: 100vh; */
+    margin: 6cm;
+}
+
+.label > input{
+    padding-inline: 0.5rem;
+    border-radius: 0.5rem;
+    height: 2rem;
+    border:1px solid  black;
+}
+
+.admin-login{
+    width: 30%;
+    border: 2px solid;
+    box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
+    border-radius: 1rem;  
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.btn{
+         background-color:rgb(229 48 48);
+        color: white;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        height: 2.5rem;
+        border: none;
+        cursor: pointer;   
+}

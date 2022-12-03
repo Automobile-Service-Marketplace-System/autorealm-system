@@ -58,6 +58,7 @@ $app->router->get("/technician-dashboard/profile", [DashboardController::class, 
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
 $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
 $app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
+$app->router->post('/admin-dashboard/create-employee',[EmployeeController::class,'AddEmployee']);
 $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
 
 // stock manager routes
@@ -73,6 +74,9 @@ $app->router->post("/office-staff-login", [AuthenticationController::class, 'log
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
 
+//security officer roots
+$app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
+$app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
 
 // run the application
 $app->run();
