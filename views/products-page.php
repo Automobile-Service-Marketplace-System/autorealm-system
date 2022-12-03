@@ -157,12 +157,37 @@ foreach ($products[0] as $key => $value) {
     $columns[] = $key;
 }
 
+$columns[] = "Actions";
+
+$items = [];
+foreach ($products as $product) {
+    $items[] = [
+        "ID" => $product["ID"],
+        "Name" => $product["Name"],
+        "Category" => $product["Category"],
+        "Model" => $product["Model"],
+        "Price" => $product["Price (LKR)"],
+        "Quantity" => $product["Quantity"],
+        "Brand" => $product["Brand"],
+        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+                            <button class='btn btn--rounded btn--warning'>
+                                <i class='fa-solid fa-pencil'></i>
+                            </button>
+                            <button class='btn btn--rounded btn--danger'>
+                                <i class='fa-solid fa-trash'></i>
+                            </button>
+                      </div>"
+
+
+    ];
+}
+
 //filter out only the columns that we want to display
 
 //echo "<pre>";
 //print_r($columns);
 //echo "</pre>";
 
-Table::render(items: $products, columns: $columns, keyColumns: ["ID", "Actions"], ommitedColumns: ["description"]);
+Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"], ommitedColumns: ["description"]);
 
 
