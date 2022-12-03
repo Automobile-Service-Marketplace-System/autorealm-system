@@ -6,6 +6,9 @@
 
 use app\components\Table;
 
+// this is just for the dummy data
+
+
 //$items = [
 //    [
 //        "ID" => 1,
@@ -143,6 +146,8 @@ use app\components\Table;
 
 //Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
+// to check whether we are getting the data from the database or not
+
 //echo "<pre>";
 //print_r($products);
 //echo "</pre>";
@@ -152,10 +157,12 @@ foreach ($products[0] as $key => $value) {
     $columns[] = $key;
 }
 
+//filter out only the columns that we want to display
+
 //echo "<pre>";
 //print_r($columns);
 //echo "</pre>";
 
-Table::render(items: $products, columns: $columns, keyColumns: ["ID", "Actions"]);
+Table::render(items: $products, columns: $columns, keyColumns: ["ID", "Actions"], ommitedColumns: ["description"]);
 
 

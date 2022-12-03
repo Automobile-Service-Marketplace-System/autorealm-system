@@ -65,7 +65,7 @@
 </style>
 
 
-<div class="form-container">
+<div class="form-container" >
     <form class="stockmanager-login" action="/stockmanager-login" method="post">
         <h1>Signup</h1>
         <div class="input-container">
