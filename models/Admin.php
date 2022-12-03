@@ -17,6 +17,7 @@ class Admin
         $this->body = $registerBody;
     }
 
+
     public function login(): array |object
     {
         $errors = [];
