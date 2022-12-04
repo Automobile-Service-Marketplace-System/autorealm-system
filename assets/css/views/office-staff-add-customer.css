@@ -1,0 +1,12 @@
+.office-staff-add-customer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.office-staff-add-customer-form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}

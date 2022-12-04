@@ -1,0 +1,32 @@
+<?php
+
+use app\components\Table;
+
+$columns = [];
+
+foreach($customers[0] as $key=>$value){
+    $columns[] = $key;
+}
+$columns[] = "Actions";
+
+$items = [];
+
+foreach($customers as $customer) {
+    $items[] = [
+        "ID" => $customer["ID"],
+        "Full Name" => $customer["Full Name"],
+        "Contact No" => $customer["Contact No"],
+        "Address" => $customer["Address"],
+        "Email" => $customer["Email"],
+        "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+                                        <a href='/office-staff-dashboard/vehicles?customer_id={$customer['ID']}' class='btn btn--rounded btn--warning'>
+                                            <i class='fa-solid fa-car-side'></i>
+                                         </a>
+                                         <button class='btn btn--rounded btn--danger'>
+                                            <i class='fa-solid fa-pencil'></i>
+                                         </button>
+                        </div>"
+    ];
+}
+
+Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
