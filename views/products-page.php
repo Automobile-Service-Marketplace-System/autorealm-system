@@ -8,7 +8,6 @@ use app\components\Table;
 
 // this is just for the dummy data
 
-
 //$items = [
 //    [
 //        "ID" => 1,
@@ -143,11 +142,11 @@ use app\components\Table;
 //];
 
 //$columns = ["ID", "Name", "Brand", "Category", "Unit price", "Quantity", "Description", ""];
-
+//
 //Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
-
-// to check whether we are getting the data from the database or not
-
+//
+//// to check whether we are getting the data from the database or not
+//
 //echo "<pre>";
 //print_r($products);
 //echo "</pre>";
@@ -159,6 +158,10 @@ foreach ($products[0] as $key => $value) {
 
 $columns[] = "Actions";
 
+//echo "<pre>";
+//print_r($columns);
+//echo "</pre>";
+
 $items = [];
 foreach ($products as $product) {
     $items[] = [
@@ -166,9 +169,9 @@ foreach ($products as $product) {
         "Name" => $product["Name"],
         "Category" => $product["Category"],
         "Model" => $product["Model"],
+        "Brand" => $product["Brand"],
         "Price" => $product["Price (LKR)"],
         "Quantity" => $product["Quantity"],
-        "Brand" => $product["Brand"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                             <button class='btn btn--rounded btn--warning'>
                                 <i class='fa-solid fa-pencil'></i>
@@ -188,6 +191,6 @@ foreach ($products as $product) {
 //print_r($columns);
 //echo "</pre>";
 
-Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"], ommitedColumns: ["description"]);
+Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
 
 

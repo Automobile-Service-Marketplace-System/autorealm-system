@@ -43,8 +43,7 @@ class Product
                         m.model_name as Model,
                         b.brand_name as Brand,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
-                        p.quantity as Quantity,
-                        p.product_type as Type
+                        p.quantity as Quantity
 
                     FROM product p 
                         
