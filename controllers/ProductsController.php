@@ -8,6 +8,7 @@ use app\models\Product;
 
 class ProductsController
 {
+
     public function getProductsPage(Request $req, Response $res) : string {
         if($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager"){
 
@@ -23,6 +24,7 @@ class ProductsController
         }
 
         return $res->redirect(path: "/employee-login");
+
     }
 
 
