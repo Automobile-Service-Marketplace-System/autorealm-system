@@ -82,7 +82,10 @@ class DashboardController
 
         return $res->redirect(path: "/stock-manager-login");
 
+<<<<<<< HEAD
+=======
     }
+>>>>>>> 918b0f89d6373949e9c57a4c81520f85ed9afb52
     public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
