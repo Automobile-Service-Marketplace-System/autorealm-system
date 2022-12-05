@@ -7,6 +7,7 @@ use app\controllers\EmployeeController;
 use app\controllers\AuthenticationController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
+use app\controllers\JobsController;
 
 
 use Dotenv\Dotenv;
@@ -48,6 +49,7 @@ $app->router->post("/employee-login", [AuthenticationController::class, 'loginEm
 // foreman routes
 $app->router->get("/foreman-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'getForemanDashboardProfile']);
+$app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
 
 // technician routes
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);

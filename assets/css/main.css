@@ -32,6 +32,7 @@
 @import "views/create-employee.css";
 @import "views/employee-login.css";
 @import "views/home.css";
+@import "views/jobs-page.css";
 
 body {
   font-family: "Inter", sans-serif;

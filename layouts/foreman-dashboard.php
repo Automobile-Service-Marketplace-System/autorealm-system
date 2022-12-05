@@ -14,7 +14,7 @@ use app\utils\DocumentHead;
 <?php
 DocumentHead::createHead(
     css: ["/css/style.css"],
-    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
+    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm",
 );
 ?>
 
@@ -33,7 +33,7 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/foreman-dashboard/products">
+            <a href="/foreman-dashboard/jobs">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Jobs
