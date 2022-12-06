@@ -5,6 +5,7 @@ use app\controllers\SiteController;
 
 use app\controllers\EmployeeController;
 use app\controllers\AuthenticationController;
+use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 
@@ -68,11 +69,14 @@ $app->router->get("/stock-manager-dashboard/profile", [DashboardController::clas
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 
 
-//officeStaff-login
+// office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomer']);
 
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
