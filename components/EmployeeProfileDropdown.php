@@ -6,7 +6,7 @@ class EmployeeProfileDropdown
 {
     public static function render(object $employee, string $role, int $id): void
     {
-        echo "<div class='employee-profile-dropdown__toggle' id='employee-profile-dropdown-$id'>
+        echo "<div class='employee-profile-dropdown__toggle no_highlights' id='employee-profile-dropdown-$id'>
                 <img src='{$employee->image}' alt=\"{$employee->f_name} {$employee->l_name}'s profile photo\">
                 <p>
                     {$employee->f_name[0]}. {$employee->l_name}

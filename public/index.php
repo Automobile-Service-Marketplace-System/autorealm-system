@@ -5,10 +5,10 @@ use app\controllers\SiteController;
 
 use app\controllers\EmployeeController;
 use app\controllers\AuthenticationController;
+use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 
-use app\utils\DevOnly;
 
 use Dotenv\Dotenv;
 
@@ -20,9 +20,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 // loading the .env file
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
-
-DevOnly::printToBrowserConsole(password_hash("aq1sw2de3fr4", PASSWORD_DEFAULT));
-DevOnly::printToBrowserConsole($_COOKIE);
 
 
 
@@ -72,11 +69,14 @@ $app->router->get("/stock-manager-dashboard/profile", [DashboardController::clas
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 
 
-//office Staff routes
+//office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomer']);
 
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
