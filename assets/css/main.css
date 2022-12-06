@@ -32,6 +32,7 @@
 @import "views/create-employee.css";
 @import "views/employee-login.css";
 @import "views/home.css";
+@import "views/office-staff-login.css";
 @import "views/office-staff-add-customer.css";
 
 body {
