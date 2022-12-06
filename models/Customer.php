@@ -3,7 +3,10 @@
 namespace app\models;
 
 use app\core\Database;
+use app\core\Request;
+use app\core\Response;
 use app\utils\FSUploader;
+use PDO;
 
 class Customer
 {
@@ -135,14 +138,6 @@ class Customer
             $errors['password'] = 'Password & Confirm password must match';
         }
 
-        if ($this->body["tc"] != "on") {
-            $errors['tc'] = 'You must agree to the terms and conditions.';
-        }
-
-        if ($this->body["pp"] != "on") {
-            $errors['pp'] = 'You must agree to the privacy policy.';
-        }
-
         return $errors;
     }
 
@@ -173,6 +168,22 @@ class Customer
         }
         return $errors;
     }
+
+    public function getCustomers(): array 
+    {
+
+        return $this->pdo->query("
+            SELECT 
+                customer_id as ID,
+                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                contact_no as 'Contact No',
+                address as Address,
+                email as Email
+            FROM customer")->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    
 
 
 }

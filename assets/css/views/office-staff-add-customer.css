@@ -1,0 +1,13 @@
+.office-staff-add-customer-form {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 2rem;
+}
+
+.office-staff-add-customer-form__customer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
