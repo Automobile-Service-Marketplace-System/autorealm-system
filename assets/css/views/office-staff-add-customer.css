@@ -1,13 +1,18 @@
 .office-staff-add-customer-form {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 2rem;
+  /*display: grid;*/
+  /*grid-template-columns: repeat(2,1fr);*/
+  /*gap: 2rem;*/
+margin-bottom: 2rem;
 }
 
 .office-staff-add-customer-form__customer {
-  display: flex;
+  display: grid;
   flex-direction: column;
   gap: 1rem;
 }
 
-
+.office-staff-add-customer-form__vehicle {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -51,7 +51,7 @@ DocumentHead::createHead(
                     Invoices
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/office-staff-dashboard/customers">
                 <i class="fa-solid fa-user"></i>
                 <span>
                     Customers
