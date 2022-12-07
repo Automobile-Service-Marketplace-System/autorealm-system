@@ -68,7 +68,7 @@
             In Progress
             <span>2</span>
         </h2>
-        <div class="job-card job-card--in-progress">
+        <div class="job-card job-card--in-progress" id="job-card-34567">
             <div class="job-card__header">
                 <div class="job-card__header-info">
                     <h3 class="job-card__title">Job #234</h3>
@@ -92,13 +92,13 @@
                         <h4>Technicians</h4>
                         <p>2</p>
                     </div>
-                    <div class="job-card__stat job-card__stat--progress" data-done="3" data-all="8"
-                        <h4>Progress</h4>
+                    <div class="job-card__stat job-card__stat--progress" data-done="3" data-all="8">
+                        <canvas id="progress-34567"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="job-card job-card--in-progress">
+        <div class="job-card job-card--in-progress" id="job-card-34568">
             <div class="job-card__header">
                 <div class="job-card__header-info">
                     <h3 class="job-card__title">Job #234</h3>
@@ -109,12 +109,26 @@
                 </a>
             </div>
             <div class="job-card__info">
-                <p class="job-card-new-notice">
-                    Add an inspection report and
-                    assign technicians to start this job.
-                </p>
+                <div class="job-card__stats">
+                    <div class="job-card__stat">
+                        <h4>Services</h4>
+                        <p>5</p>
+                    </div>
+                    <div class="job-card__stat">
+                        <h4>Products</h4>
+                        <p>4</p>
+                    </div>
+                    <div class="job-card__stat">
+                        <h4>Technicians</h4>
+                        <p>2</p>
+                    </div>
+                    <div class="job-card__stat job-card__stat--progress" data-done="7" data-all="8">
+                        <canvas id="progress-34568"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
+
     </section>
     <section class="jobs-col">
         <h2 class="jobs-col__heading">
