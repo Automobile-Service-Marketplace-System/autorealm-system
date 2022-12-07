@@ -8,6 +8,17 @@
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
+//for now, a dummy OfficeSatff class
+class OfficeSatff
+{
+    public string $f_name = "John";
+    public string $l_name = "Doe";
+    public string $image = "/images/placeholders/profile.webp";
+
+}
+
+$officestaff = new OfficeSatff();
+
 
 ?>
 <!doctype html>
@@ -40,7 +51,7 @@ DocumentHead::createHead(
                     Invoices
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/office-staff-dashboard/customers">
                 <i class="fa-solid fa-user"></i>
                 <span>
                     Customers
@@ -68,7 +79,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $officeStaff, role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employee: $officestaff, role: "Office staff", id: 1);
             ?>
         </header>
 

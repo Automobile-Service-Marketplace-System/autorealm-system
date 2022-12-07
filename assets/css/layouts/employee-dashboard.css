@@ -24,6 +24,11 @@
 
 }
 
+.employee-dashboard-page {
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+}
+
 .employee-dashboard-container__sidebar nav {
     margin-top: 3rem;
     color: #fff;
