@@ -7,9 +7,9 @@ const jobCardStatProgresses = document.querySelectorAll('.job-card__stat--progre
 jobCardStatProgresses.forEach((jobCardStatProgress) => {
     const doneAmount = Number.parseInt(jobCardStatProgress.dataset.done);
     const totalAmount = Number.parseInt(jobCardStatProgress.dataset.all);
-    console.log(`Ratio = ${doneAmount} / ${totalAmount}`);
     const chartCanvas = jobCardStatProgress.querySelector('canvas');
-    console.log(chartCanvas);
+    chartCanvas.getContext("2d").canvas.width = 50;
+    chartCanvas.getContext("2d").canvas.height = 50;
 
     const ratio = doneAmount / totalAmount;
     let mainColor = '';
@@ -27,9 +27,12 @@ jobCardStatProgresses.forEach((jobCardStatProgress) => {
                 data: [doneAmount, totalAmount - doneAmount],
                 backgroundColor: [
                     mainColor,
-                    '#e4e4e4'
+                    'transparent'
                 ]
             }]
         },
+        options: {
+            responsive: false,
+        }
     })
 })

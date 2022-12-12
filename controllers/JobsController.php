@@ -12,12 +12,23 @@ class JobsController
     public function getJobsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
-            $foremanModel = new Foreman();
-            $foreman = $foremanModel->getForemanById($req->session->get("user_id"));
             return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", layoutParams: [
                 'title' => 'Assigned Jobs',
                 'pageMainHeading' => 'Assigned Jobs',
-                'foreman' => $foreman
+                'foremanId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/employee-login");
+    }
+
+    public function viewJobPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", layoutParams: [
+                'title' => "Job #{$query['id']}",
+                'pageMainHeading' => "Job #{$query['id']}",
+                'foremanId' => $req->session->get("user_id"),
             ]);
         }
         return $res->redirect(path: "/employee-login");

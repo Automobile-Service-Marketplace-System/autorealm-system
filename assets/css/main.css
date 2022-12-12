@@ -33,6 +33,8 @@
 @import "views/employee-login.css";
 @import "views/home.css";
 @import "views/jobs-page.css";
+@import "views/office-staff-login.css";
+@import "views/office-staff-add-customer.css";
 
 body {
   font-family: "Inter", sans-serif;

@@ -70,3 +70,9 @@
   text-align: center;
   font-size: 0.9rem;
 }
+
+
+/*.job-card__stat--progress canvas {*/
+/*  width: 2rem;*/
+/*  aspect-ratio: 1;*/
+/*}*/
