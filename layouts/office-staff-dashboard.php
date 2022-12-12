@@ -2,23 +2,11 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $officeStaff
+ * @var string $officeStaffId
  */
 
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
-
-//for now, a dummy OfficeSatff class
-class OfficeSatff
-{
-    public string $f_name = "John";
-    public string $l_name = "Doe";
-    public string $image = "/images/placeholders/profile.webp";
-
-}
-
-$officestaff = new OfficeSatff();
-
 
 ?>
 <!doctype html>
@@ -79,7 +67,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $officestaff, role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $officeStaffId,employeeType: 'office_staff', role: "Office staff", id: 1);
             ?>
         </header>
 
