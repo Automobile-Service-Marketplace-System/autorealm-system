@@ -8,17 +8,6 @@ use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
 
-//for now, a dummy StockManger class
-class Admin
-{
-    public string $f_name = "Elvitigala";
-    public string $l_name = "N.S";
-    public string $image = "/images/placeholders/profile.webp";
-
-} 
-
-$admin = new Admin();
-
 ?>
 <!doctype html>
 <html lang="en">
