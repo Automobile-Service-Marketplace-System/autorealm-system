@@ -1,0 +1,86 @@
+.jobs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    margin: 0 auto;
+}
+
+
+.jobs-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.jobs-col__heading {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-evenly;
+}
+
+
+.job-status-indicator {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+}
+
+.job-status-indicator--todo {
+    background-color: var(--color-danger);
+}
+
+.job-status-indicator--in-progress {
+    background-color: var(--color-warning);
+}
+
+.job-status-indicator--completed {
+    background-color: var(--color-success);
+}
+
+
+@media screen and (min-width: 768px) {
+    .jobs-grid {
+        grid-gap: 2rem;
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+
+    .jobs-col {
+        gap: 2rem;
+    }
+}
+
+
+@media screen and (min-width: 992px) {
+    .jobs-grid {
+        grid-gap: 3rem;
+    }
+
+    .jobs-col {
+        gap: 2.5rem;
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .jobs-grid {
+        grid-gap: 5rem;
+    }
+
+    .jobs-col {
+        gap: 3rem;
+    }
+
+}
+
+

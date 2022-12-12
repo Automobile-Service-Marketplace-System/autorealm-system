@@ -1,5 +1,11 @@
 .employee-dashboard-container__content-header {
     padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+.employee-dashboard-container__content-header--scrolled {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .employee-dashboard-container {

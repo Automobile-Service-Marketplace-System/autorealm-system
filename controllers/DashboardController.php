@@ -104,13 +104,11 @@ class DashboardController
                     'foreman' => $foreman
                 ], layoutParams: [
                     'title' => 'Profile',
-                    'foreman' => $foreman,
+                    'foremanId' => $req->session->get("user_id"),
                     'pageMainHeading' => 'Profile'
                 ]);
             }
-
             return $res->redirect(path: "/employee-login");
-
         }
         return $res->redirect(path: "/employee-login");
     }
