@@ -1,43 +1,3 @@
-<!-- <div class="container">
-    <div class="item">
-        <label for="">First Name</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Last Name</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Contact No</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Address</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Email</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">NIC</label>
-        <input type="text">
-    </div>
-    <div class="item">
-        <label for="">Password</label>
-        <input type="text">
-    </div>
-    <div class="item">
-        <label for="">Confirm Passsword</label>
-        <input type="text">
-    </div>
-</div> -->
-
 <?php
 /**
  * @var array $errors
@@ -84,7 +44,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
             FormItem::render(
                 id: "image",
-                label: "Profile photo",
+                label: "Profile Photo",
                 name: "image",
                 type: "file",
                 hasError: $hasImageError,
@@ -145,10 +105,54 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
             ?>
         </div>
+        <h3>Also add a vehicle for this customer</h3>
 
         <div class="office-staff-add-customer-form__vehicle">
-            <h3>Also add a vehicle for this customer</h3>
+
         <?php 
+        FormItem::render(
+            id: "engine_no",
+            label: "Engine No",
+            name: "engine_no",
+            hasError: $hasFNameError,
+            error: $hasFNameError ? $errors['engine_no'] : "",
+            value: $body['engine_no'] ?? null,
+            additionalAttributes: "pattern='^[\p{L} ]+$'"
+        );
+
+        FormItem::render(
+            id: "registration_no",
+            label: "Registration No",
+            name: "registration_no",
+            hasError: $hasFNameError,
+            error: $hasFNameError ? $errors['registration_no'] : "",
+            value: $body['registration_no'] ?? null,
+            additionalAttributes: "pattern='^[\p{L} ]+$'"
+        );
+
+        FormItem::render(
+            id: "model_name",
+            label: "Model Name",
+            name: "model_name",
+            hasError: $hasFNameError,
+            error: $hasFNameError ? $errors['model_name'] : "",
+            value: $body['model_name'] ?? null,
+            additionalAttributes: "pattern='^[\p{L} ]+$'"
+        );
+
+        FormItem::render(
+            id: "manufactured_year",
+            label: "Manufactured Year",
+            name: "manufactured_year",
+            hasError: $hasFNameError,
+            error: $hasFNameError ? $errors['manufactured_year'] : "",
+            value: $body['manufactured_year'] ?? null,
+            additionalAttributes: "pattern='^[\p{L} ]+$'"
+        );
+
+        ?>
+            
+        <!-- <?php 
             //vehicle details
             FormItem::render(
                 id: "engine_no",
@@ -162,7 +166,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 
             FormItem::render(
                 id: "registration_no",
-                label: "Registrationo",
+                label: "Registration No",
                 name: "registration_no",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['registration_no'] : "",
@@ -189,6 +193,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 value: $body['manufactured_year'] ?? null,
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
+            
 
             FormItem::render(
                 id: "vehicle_type",
@@ -221,25 +226,55 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
 
             FormItem::render(
-                id: "engine_type",
-                label: "Engine Type",
-                name: "engine_type",
+                id: "engine_capacity",
+                label: "Engine Capacity",
+                name: "engine_capacity",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_type'] : "",
-                value: $body['engine_type'] ?? null,
+                error: $hasFNameError ? $errors['engine_capacity'] : "",
+                value: $body['engine_capacity'] ?? null,
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
-            ?>
+
+            FormItem::render(
+                id: "brand_name",
+                label: "Brand Name",
+                name: "brand_name",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['brand_name'] : "",
+                value: $body['brand_name'] ?? null,
+                additionalAttributes: "pattern='^[\p{L} ]+$'"
+            );
+
+            FormItem::render(
+                id: "transmission_type",
+                label: "Transmission Type",
+                name: "transmission_type",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['transmission_type'] : "",
+                value: $body['transmission_type'] ?? null,
+                additionalAttributes: "pattern='^[\p{L} ]+$'"
+            );
+
+            FormItem::render(
+                id: "fuel_type",
+                label: "Fuel Type",
+                name: "fuel_type",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['fuel_type'] : "",
+                value: $body['fuel_type'] ?? null,
+                additionalAttributes: "pattern='^[\p{L} ]+$'"
+            );
+            ?> -->
         </div>
         
+        <div class="office-staff-btn">
+            <button class="btn btn--danger btn--block">
+                Reset
+            </button>
 
-        <button class="btn btn--danger btn--block">
-            Reset
-        </button>
-
-        <button class="btn btn--success btn--block">
-            Create an account
-        </button>
-
+            <button class="btn btn--success btn--block">
+                Create an account
+            </button>
+        </div>
     </form>
 </div>
