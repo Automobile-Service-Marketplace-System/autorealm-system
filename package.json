@@ -8,6 +8,7 @@
   "author": "Nethsara Sandeepa Elvitigala <nethsarasandeepaelvitigala@gmail.com>",
   "license": "proprietary",
   "devDependencies": {
+    "chart.js": "^4.0.1",
     "chokidar": "^3.5.3",
     "concurrently": "^7.5.0",
     "dotenv": "^16.0.3",
