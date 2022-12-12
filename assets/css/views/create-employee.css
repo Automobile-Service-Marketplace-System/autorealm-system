@@ -1,12 +1,4 @@
-    p{
-        font-size: 18px;
-        margin-bottom: 2rem; 
-    }
 
-    label{
-        font-size: 16px;
-        /* /margin-bottom: 1rem;   */
-    }
 
     .role-input{
         display: flex;
@@ -22,17 +14,6 @@
         padding: 0.25rem;
         width: 4cm;
         margin-bottom:1rem;
-    }
-
-    input{
-        border: 0.5px solid #1d1d1d;
-        border-radius: 8px;
-    }
-
-    body{
-        background: #F8F8F8;
-        margin-right: 5cm;
-        /* margin-left: 10cm; */
     }
 
     .form-input{
