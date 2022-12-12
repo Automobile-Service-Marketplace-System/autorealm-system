@@ -54,3 +54,21 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.status{
+  width: .75rem;
+  height: .75rem;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.status--danger{
+  background-color: var(--color-danger);
+}
+
+.status--warning{
+  background-color: var(--color-warning);
+}
+.status--success{
+  background-color: var(--color-success);
+}
