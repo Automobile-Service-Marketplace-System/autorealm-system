@@ -2,21 +2,22 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $admin
+ * @var object $stockManager
  */
-
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
 
-//class Admin {
-//    public string $f_name = "John";
-//    public string $l_name = "Doe";
-//    public string $image = "/images/placeholders/profile.webp";
-//
-//}
-//
-//$admin = new Admin();
+//for now, a dummy StockManger class
+class Admin
+{
+    public string $f_name = "Elvitigala";
+    public string $l_name = "N.S";
+    public string $image = "/images/placeholders/profile.webp";
+
+} 
+
+$admin = new Admin();
 
 ?>
 <!doctype html>
@@ -37,34 +38,70 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/employee-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/employee-dashboard/employee">
                 <i class="fa-solid fa-box"></i>
+                <span>
+                    Employee
+                </span>
+            </a>
+            <a href="/employee-dashboard/products">
+                <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Products
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/employee-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/employee-dashboard/suppliers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Suppliers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/employee-dashboard/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews
+                </span>
+            </a>
+            <a href="/employee-dashboard/services">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>
+                    Services
+                </span>
+            </a>
+            <a href="/employee-dashboard/services/jobs">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>
+                    Service/Repair Jobs
+                </span>
+            </a>
+            <a href="/employee-dashboard/vehicle-maintenance-reports">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>
+                    Vehicle Maintenance Reports
+                </span>
+            </a>
+            <a href="/employee-dashboard/customers">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>
+                    Customers
+                </span>
+            </a>            
+            <a href="/employee-dashboard/vehicles">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>
+                    Vehicles
                 </span>
             </a>
 
@@ -77,13 +114,13 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $admin, role: "Administrator", id: 1);
+            employeeProfileDropdown::render(employee: $admin, role: "admin", id: 1);
             ?>
         </header>
 
         <div class="employee-dashboard-page">
             <h1>
-                <?php echo $pageMainHeading; ?>
+
             </h1>
             {{content}}
         </div>

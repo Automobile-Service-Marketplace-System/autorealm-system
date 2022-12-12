@@ -135,4 +135,46 @@ class DashboardController
         return $res->redirect(path: "/employee-login");
     }
 
+    public function getAdminDashboardProfile(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
+            $adminModel = new Admin();
+            $admin = $adminModel->getAdminById($req->session->get("user_id"));
+            if ($admin) {
+                return $res->render(view: "admin-dashboard-profile", layout: "admin-dashboard", pageParams: [
+                    'admin' => $admin
+                ], layoutParams: [
+                        'title' => 'Profile',
+                        'admin' => $admin,
+                        'pageMainHeading' => 'Profile'
+                    ]);
+            }
+
+            return $res->redirect(path: "/employee-login");
+
+        }
+        return $res->redirect(path: "/employee-login");
+    }
+    
+    public function getSecurityOfficerDashboardProfile(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
+            $securityOfficerModel = new SecurityOfficer();
+            $securityOfficer = $securityOfficerModel->getSecurityOfficerById($req->session->get("user_id"));
+            if ($securityOfficer) {
+                return $res->render(view: "security-officer-dashboard-profile", layout: "security-officer-dashboard", pageParams: [
+                    'security-officer' => $securityOfficer
+                ], layoutParams: [
+                        'title' => 'Profile',
+                        'security-officer' => $securityOfficer,
+                        'pageMainHeading' => 'Profile'
+                    ]);
+            }
+
+            return $res->redirect(path: "/employee-login");
+
+        }
+        return $res->redirect(path: "/employee-login");
+    }
+
 }

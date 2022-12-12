@@ -15,6 +15,15 @@ class SecurityOfficer
         $this->body = $registerBody;
     }
 
+    public function getSecurityOfficerById(int $securityOfficer_id): bool|object
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM employee e INNER JOIN securityOfficer s on e.employee_id = s.employee_id  WHERE e.employee_id = :employee_id");
+        $stmt->execute([
+            ":employee_id" => $securityOfficer_id
+        ]);
+        return $stmt->fetchObject();
+    }
+
     public function login(): array |object
     {
         $errors = [];
