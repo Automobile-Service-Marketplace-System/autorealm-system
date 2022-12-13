@@ -101,6 +101,7 @@
 
 </style> -->
 
+
 <main class="create-employee">
     <p>Add a new staff account, these accounts will allow your employees to<br> access their respective dashboards</p>
     <form action="/employee-register" method="post">

@@ -176,7 +176,6 @@ class Employee
         return $errors;
     }
 
-
     public function login(): array |object
     {
         $errors = [];
