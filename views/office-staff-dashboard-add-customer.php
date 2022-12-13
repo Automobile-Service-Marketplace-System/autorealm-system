@@ -3,6 +3,7 @@
  * @var array $errors
  * @var array $body
  * @var array $models
+ * @var array $brands
  */
 
 use app\components\FormItem;
@@ -144,19 +145,13 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
 
             FormSelectItem::render(
-                id: "model_name",
-                label: "Brand Name",
-                name: "brand_name",
+                id: "brand",
+                label: "Brand",
+                name: "brand",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['brand_name'] : "",
+                error: $hasFNameError ? $errors['brand'] : "",
                 value: "1",
-                options: [
-                    "1" => "Toyota",
-                    "2" => "Suzuki",
-                    "3" => "Nissan",
-                    "4" => "Honda",
-                    "5" => "Mitsubishi",
-                ]
+                options: $brands
             );
 
             FormItem::render(
