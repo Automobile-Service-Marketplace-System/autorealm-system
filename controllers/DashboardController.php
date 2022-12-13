@@ -138,7 +138,7 @@ class DashboardController
 
     public function getAdminDashboardProfile(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "admin") {
             $adminModel = new Admin();
             $admin = $adminModel->getAdminById($req->session->get("user_id"));
             if ($admin) {
@@ -147,7 +147,8 @@ class DashboardController
                 ], layoutParams: [
                         'title' => 'Profile',
                         'admin' => $admin,
-                        'pageMainHeading' => 'Profile'
+                        'pageMainHeading' => 'Profile',
+                        'employeeId'=> $req->session->get("user_id")
                     ]);
             }
 

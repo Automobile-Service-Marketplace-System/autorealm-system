@@ -104,28 +104,28 @@
 
 <main class="create-employee">
     <p>Add a new staff account, these accounts will allow your employees to<br> access their respective dashboards</p>
-    <form action="/employee-register" method="post">
+    <form action="/create-employee" method="post">
         <b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
-                <input type="radio" id="security-officer" name="job_role1" value="Security Officer">
-                <label>Security Officer</label>
+                <input type="radio" id="security-officer" name="job_role" value="security_officer">
+                <label for="security-officer">Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="office-staff" name="job_role2">
-                <label>Office Staff</label>
+                <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
+                <label for="office-staff">Office Staff</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="foreman" name="job_role3">
-                <label>Foreman</label>
+                <input type="radio" id="foreman" name="job_role" value="foreman">
+                <label for="foreman">Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="technician" name="job_role4">
-                <label>Technician</label>
+                <input type="radio" id="technician" name="job_role" value="technician">
+                <label foreman="technician">Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="stock-manager" name="job_role5">
-                <label>Stock Manager</label>
+                <input type="radio" id="stock-manager" name="job_role" value="stock_manager">
+                <label for="stock-manager">Stock Manager</label>
 
             </div>
         </div>
@@ -133,50 +133,53 @@
         <div class="part">
             <div class="part1">
                 <div class="form-input">
-                    <label><b>Full Name</b></label>
+                    <label class="label"><b>First Name</b></label>
                     <input type="text" id="f_name" name=f_name class="lbl">
                 </div>
-        
                 <div class="form-input">
-                    <label><b>Full Name with Initials</b></label>
+                    <label class="label"><b>Last Name</b></label>
+                    <input type="text" id="l_name" name=l_name class="lbl">
+                </div>
+                <div class="form-input">
+                    <label class="label"><b>Full Name with Initials</b></label>
                     <input type="text" id="fi" name=fi class="lbl">
                 </div>
         
                 <div class="line">
                     <div class="form-input-small">
-                        <label><b>Date of Birth</b></label>
+                        <label class="label"><b>Date of Birth</b></label>
                         <input type="date" id="dob" name="dob" class="lbl2">
                     </div>
         
                     <div class="form-input-small">
-                        <label><b>National Identity Card No</b></label>
+                        <label class="label"><b>National Identity Card No</b></label>
                         <input type="text" id="nic" name="nic" class="lbl2">
                     </div>
                 </div>
         
                 <div class="form-input">
-                    <label><b>Address</b></label>
-                    <input type="text" id="add" name=add class="lbl">
+                    <label class="label"><b>Address</b></label>
+                    <input type="text" id="address" name='address' class="lbl">
                 </div>
         
                 <div class="form-input">
-                    <label><b>Contact numbers (Primary first, then any other seperated with commas)</b></label>
+                    <label class="label"><b>Contact numbers (Primary first, then any other seperated with commas)</b></label>
                     <input type="text" id="con_no" name='con_no' class="lbl">
                 </div>
         
                 <div class="form-input">
-                    <label><b>Email Address</b></label>
-                    <input type="email" >
+                    <label class="label"><b>Email Address</b></label>
+                    <input type="email" id="email" name="email">
                 </div>
                 <div class="line">
                     <div class="form-input-small">
-                        <label><b>Password</b></label>
+                        <label class="label"><b>Password</b></label>
                         <input type="password" id="pw" name="pw" class="lbl2">
                     </div>
             
                     <div class="form-input-small">
-                        <label><b>Confirm Password</b></label>
-                        <input type="password" id="cpw" name="cpw" class="lbl2">
+                        <label ><b>Confirm Password</b></label>
+                        <input type="password" id="cpw" name="cpw" class="lbl2" >
                     </div>
                 </div>
                 <button type="reset" id="rst" class="btn1">Reset</button>

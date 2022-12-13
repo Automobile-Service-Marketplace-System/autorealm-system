@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Employee;
 
 class EmployeeController
 {
@@ -13,7 +14,7 @@ class EmployeeController
             return $res->render(view: "create-employee", layout: "admin-dashboard", layoutParams: [
                 'title' => 'Create an employee',
                 'pageMainHeading' => 'Create an employee',
-                'adminId' => $req->session->get("user_id"),
+                'employeeId'=> $req->session->get("user_id")
             ]);
         }
         return $res->redirect(path: "/employee-login");
