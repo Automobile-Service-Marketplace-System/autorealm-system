@@ -27,5 +27,18 @@ class ProductsController
 
     }
 
+    public function getAddProductsPage(Request $req, Response $res) : string {
+        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager"){
+
+            return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard" , layoutParams: [
+                'title' => 'Add Products',
+                'pageMainHeading' => 'Add Products'
+            ]);
+        }
+
+        return $res->redirect(path: "/employee-login");
+
+    }
+
 
 }
