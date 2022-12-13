@@ -2,6 +2,7 @@
 /**
  * @var array $errors
  * @var array $body
+ * @var array $models
  */
 
 use app\components\FormItem;
@@ -142,14 +143,20 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
-            FormItem::render(
+            FormSelectItem::render(
                 id: "model_name",
-                label: "Model Name",
-                name: "model_name",
+                label: "Brand Name",
+                name: "brand_name",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['model_name'] : "",
-                value: $body['model_name'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                error: $hasFNameError ? $errors['brand_name'] : "",
+                value: "1",
+                options: [
+                    "1" => "Toyota",
+                    "2" => "Suzuki",
+                    "3" => "Nissan",
+                    "4" => "Honda",
+                    "5" => "Mitsubishi",
+                ]
             );
 
             FormItem::render(
@@ -189,21 +196,15 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 value: $body['engine_capacity'] ?? null,
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
-
+//
             FormSelectItem::render(
-                id: "brand_name",
-                label: "Brand Name",
-                name: "brand_name",
+                id: "model",
+                label: "Model",
+                name: "model",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['brand_name'] : "",
+                error: $hasFNameError ? $errors['model'] : "",
                 value: "1",
-                options: [
-                    "1" => "Toyota",
-                    "2" => "Suzuki",
-                    "3" => "Nissan",
-                    "4" => "Honda",
-                    "5" => "Mitsubishi",
-                ]
+                options: $models
             );
 
             FormSelectItem::render(
