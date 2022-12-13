@@ -53,7 +53,7 @@ class CustomersController
         return $res->redirect(path: "/employee-login");
     }
 
-    public function officeStaffAddCustomer(Request $req, Response $res): string
+    public function getOfficeStaffAddCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
         $customer = new Customer($body);
@@ -62,6 +62,7 @@ class CustomersController
         $modelModel = new Model();
         $rawModels = $modelModel->getModels();
         $models = [];
+
         foreach ($rawModels as $rawModel) {
             $models[$rawModel['model_id']] =  $rawModel['model_name'];
         }
