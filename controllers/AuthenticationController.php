@@ -186,9 +186,11 @@ class AuthenticationController
         $result = $employee->login();
         var_dump($result);
         if (is_array($result)) {
-            return $res->render(view: "employee-login", pageParams: [
+            return $res->render(view: "employee-login", layout: "employee-auth" ,pageParams: [
                 'errors' => $result,
                 'body' => $body
+            ], layoutParams: [
+                'title' => 'Login'
             ]);
         }
 
