@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Brand;
 use app\models\Customer;
 use app\models\Model;
 
@@ -35,14 +36,25 @@ class CustomersController
 
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
+
             $modelModel = new Model();
-            $rawModels = $modelModel->getModels();$models = [];
+            $rawModels = $modelModel->getModels();
+            $models = [];
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] =  $rawModel['model_name'];
             }
 
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+            foreach ($rawBrands as $rawBrand) {
+                $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+            }
+
             return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard", pageParams: [
-                'models'=> $models
+                'models'=> $models,
+                'brands' => $brands
+
             ], layoutParams: [
                 'title' => 'Add New Customer',
                 'pageMainHeading' => 'Add New Customer',
@@ -53,7 +65,7 @@ class CustomersController
         return $res->redirect(path: "/employee-login");
     }
 
-    public function officeStaffAddCustomer(Request $req, Response $res): string
+    public function getOfficeStaffAddCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
         $customer = new Customer($body);
@@ -62,8 +74,17 @@ class CustomersController
         $modelModel = new Model();
         $rawModels = $modelModel->getModels();
         $models = [];
+
         foreach ($rawModels as $rawModel) {
             $models[$rawModel['model_id']] =  $rawModel['model_name'];
+        }
+
+        $modelBrand = new Brand();
+        $rawBrands = $modelBrand->getBrands();
+        $brands = [];
+
+        foreach ($rawBrands as $rawBrand) {
+            $models[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
         }
 
         if (is_array($result)) {
@@ -73,7 +94,8 @@ class CustomersController
                     "customer"=>$customer, 
                     'errors' => $result,
                     'body' => $body,
-                    'models' => $models
+                    'models' => $models,
+                    'brands' => $brands
                 ], 
                 layoutParams: [
                     'title' => 'Add New Customer',
