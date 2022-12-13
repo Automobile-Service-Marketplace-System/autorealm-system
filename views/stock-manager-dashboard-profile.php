@@ -1,19 +1,19 @@
 <?php
 /**
- * @var object $customer
+ * @var object $stockManager
  */
 
 ?>
 
 <div class="customer-profile">
-    <img src="<?php echo $customer->image ?>" alt="<?php echo $customer->f_name . ' ' . $customer->l_name . '\'s'; ?>">
-    <div class="customer-profile__info">
+    <img src="<?php echo $stockManager->image ?>" alt="<?php echo $stockManager->f_name . ' ' . $stockManager->l_name . '\'s'; ?>">
+    <div class="stockmanager-profile__info">
         <p>
             <strong>
                 First name
             </strong>
             <span>
-                <?php echo $customer->f_name ?>
+                <?php echo $stockManager->f_name ?>
             </span>
         </p>
         <p>
@@ -21,7 +21,7 @@
                 Last name
             </strong>
             <span>
-                <?php echo $customer->l_name ?>
+                <?php echo $stockManager->l_name ?>
             </span>
         </p>
         <p>
@@ -29,7 +29,7 @@
                 Email
             </strong>
             <span>
-                <?php echo $customer->email ?>
+                <?php echo $stockManager->email ?>
             </span>
 
         </p>
@@ -38,7 +38,7 @@
                 Phone
             </strong>
             <span>
-                <?php echo $customer->contact_no ?>
+                <?php echo $stockManager->contact_no ?>
             </span>
 
         </p>
@@ -47,7 +47,7 @@
                 Address
             </strong>
             <span>
-                <?php echo $customer->address ?>
+                <?php echo $stockManager->address ?>
             </span>
 
         </p>

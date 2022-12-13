@@ -19,7 +19,8 @@ class ProductsController
             return $res->render(view: "products-page", layout: "stock-manager-dashboard",pageParams: [
                 "products" => $products] , layoutParams: [
                 'title' => 'Products',
-                'pageMainHeading' => 'Products'
+                'pageMainHeading' => 'Products',
+                'employeeId' => $req->session->get("user_id")
             ]);
         }
 
