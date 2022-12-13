@@ -28,5 +28,17 @@ foreach($customers as $customer) {
                         </div>"
     ];
 }
+?>
 
-Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
+<div class="office-staff-button-set">
+    <div class="add-button">
+        <a class="btn" href="customers/add">
+            <i class="fa-solid fa-plus"></i>
+         New Customer</a>
+    </div>
+    
+</div>
+    
+<?php
+    Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
+?>
