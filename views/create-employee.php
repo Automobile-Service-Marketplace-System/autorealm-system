@@ -107,23 +107,23 @@
         <b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
-                <input type="radio" id="job-role-1" name="job_role1" value="Security Officer">
+                <input type="radio" id="security-officer" name="job_role1" value="Security Officer">
                 <label>Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="radio2" name="job_role2">
+                <input type="radio" id="office-staff" name="job_role2">
                 <label>Office Staff</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="radio3" name="job_role3">
+                <input type="radio" id="foreman" name="job_role3">
                 <label>Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="radio4" name="job_role4">
+                <input type="radio" id="technician" name="job_role4">
                 <label>Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="radio5" name="job_role5">
+                <input type="radio" id="stock-manager" name="job_role5">
                 <label>Stock Manager</label>
 
             </div>

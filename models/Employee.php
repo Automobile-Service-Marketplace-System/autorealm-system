@@ -106,14 +106,10 @@ class Employee
         }
 
 
-        // full name with initialies
-        // if (strlen(trim($this->body['f_name'])) == 0) {  //remove whitespaces by trim(string)
-        //     $errors['f_name'] = 'First name must not be empty.';
-        // } else {
-        //     if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
-        //         $errors['f_name'] = 'First name must contain only letters.';
-        //     }
-        // }
+        if (strlen(trim($this->body['fi'])) == 0) {  //remove whitespaces by trim(string)
+            $errors['fi'] = 'Full name with initialies must not be empty.';
+        }
+        
 
 
         if (empty($dob)){
@@ -147,7 +143,7 @@ class Employee
         }
 
 
-        if (!(($this->body["job-role-1"]) == "on" || ($this->body["radio2"]) == "on" || ($this->body["radio3"]) == "on" || ($this->body["radio4"]) == "on" ||($this->body["radio5"]) == "on" )) {
+        if (!(($this->body["security-officer"]) == "on" || ($this->body["office-staff"]) == "on" || ($this->body["foreman"]) == "on" || ($this->body["technician"]) == "on" ||($this->body["stock-manager"]) == "on" )) {
             $errors['tc'] = 'You must select job type.';
         }
 
