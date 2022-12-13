@@ -33,7 +33,8 @@ class ProductsController
 
             return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard" , layoutParams: [
                 'title' => 'Add Products',
-                'pageMainHeading' => 'Add Products'
+                'pageMainHeading' => 'Add Products',
+                'employeeId' => $req->session->get("user_id")
             ]);
         }
 

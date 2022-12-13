@@ -23,7 +23,7 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 
 ?>
 
-<div class="stock-manager-add-customer">
+<div class="stock-manager-add-product-form">
     <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form" enctype="multipart/form-data">
         <h2>Product Details</h2>
 	    <div class="stock-manager-add-products-form__product">
@@ -70,19 +70,25 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
                 error: $hasModelIdError ? $errors['model_id'] : "",
 
             );
-            FormItem::render(
-                id: "description",
-                label: "Description",
-                name: "description",
-                hasError: $hasDescriptionError,
-                error: $hasDescriptionError ? $errors['description'] : "",
 
-            );
             ?>
+            <div id="description-input">
+                <?php
+                FormItem::render(
+                    id: "description",
+                    label: "Description",
+                    name: "description",
+                    hasError: $hasDescriptionError,
+                    error: $hasDescriptionError ? $errors['description'] : "",
+
+                );
+                ?>
+            </div>
         </div>
 		<br>
+        <h2 class="order-details-heading">Order Details</h2>
         <div class="stock-manager-add-products-form__order">
-	        <h2>Order Details</h2>
+
 			<?php
 			FormItem::render(
 				id: "amount",
@@ -120,14 +126,15 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 			?>
         </div>
 
-
+    <div class="stock-manager-btn">
         <button class="btn btn--danger btn--block">
             Reset
         </button>
 
-        <button class="btn btn--success btn--block">
+        <button class="btn btn--info btn--block">
             Add product
         </button>
+    </div>
 
     </form>
 </div>
