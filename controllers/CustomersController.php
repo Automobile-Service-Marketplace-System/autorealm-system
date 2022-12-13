@@ -34,7 +34,7 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
-            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
+            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",layoutParams: [
                 'title' => 'Add New Customer',
                 'pageMainHeading' => 'Add New Customer',
                 'officeStaffId' => $req->session->get('user_id')
