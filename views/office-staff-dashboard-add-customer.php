@@ -176,7 +176,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                     "3" => "Motor Vehicle",
                     "4" => "Motor Lorry",
                     "5" => "Motor Coach",
-                    "6" => "Special purpose vehicle"
+                    "6" => "Special Purpose Vehicle"
                 ]
             );
 
