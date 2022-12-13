@@ -5,7 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
-
+use app\models\Model;
 
 
 class CustomersController
@@ -17,10 +17,12 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
-            return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
-                'title' => 'Customers',
-                'pageMainHeading' => 'Customers',
-                'officeStaffId' => $req->session->get('user_id')
+            return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",
+                pageParams: ["customers"=>$customers], 
+                layoutParams: [
+                    'title' => 'Customers',
+                    'pageMainHeading' => 'Customers',
+                    'officeStaffId' => $req->session->get('user_id')
             ]);
         }
 
@@ -33,8 +35,15 @@ class CustomersController
 
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
+            $modelModel = new Model();
+            $rawModels = $modelModel->getModels();$models = [];
+            foreach ($rawModels as $rawModel) {
+                $models[$rawModel['model_id']] =  $rawModel['model_name'];
+            }
 
-            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",layoutParams: [
+            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard", pageParams: [
+                'models'=> $models
+            ], layoutParams: [
                 'title' => 'Add New Customer',
                 'pageMainHeading' => 'Add New Customer',
                 'officeStaffId' => $req->session->get('user_id')
@@ -50,13 +59,21 @@ class CustomersController
         $customer = new Customer($body);
         $result = $customer->register();
 
+        $modelModel = new Model();
+        $rawModels = $modelModel->getModels();
+        $models = [];
+        foreach ($rawModels as $rawModel) {
+            $models[$rawModel['model_id']] =  $rawModel['model_name'];
+        }
+
         if (is_array($result)) {
 
             return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",
                 pageParams: [
                     "customer"=>$customer, 
                     'errors' => $result,
-                    'body' => $body
+                    'body' => $body,
+                    'models' => $models
                 ], 
                 layoutParams: [
                     'title' => 'Add New Customer',
