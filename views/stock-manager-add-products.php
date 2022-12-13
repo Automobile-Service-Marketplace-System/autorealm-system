@@ -25,7 +25,7 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 
 <div class="stock-manager-add-product-form">
     <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form" enctype="multipart/form-data">
-        <h2>Product Details</h2>
+        <h2 class="product-form-subheading">Product Details</h2>
 	    <div class="stock-manager-add-products-form__product">
             <?php
             FormItem::render(
@@ -86,7 +86,7 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
             </div>
         </div>
 		<br>
-        <h2 class="order-details-heading">Order Details</h2>
+        <h2 class="order-details-heading product-form-subheading">Order Details</h2>
         <div class="stock-manager-add-products-form__order">
 
 			<?php

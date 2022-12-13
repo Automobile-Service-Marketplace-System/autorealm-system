@@ -27,32 +27,35 @@
     margin-top: 2rem;
 }
 
-.stock-manager-add-products-form__product #name{
-
+.product-form-subheading{
+    font-size: 1.15rem;
+    font-weight: 500;
 }
+/*.stock-manager-add-products-form__product #name{*/
 
-.stock-manager-add-products-form__product #category{
+/*}*/
 
-}
+/*.stock-manager-add-products-form__product #category{*/
 
-.stock-manager-add-products-form__product #product_type{
+/*}*/
 
-}
+/*.stock-manager-add-products-form__product #product_type{*/
 
-.stock-manager-add-products-form__product #brand_id{
+/*}*/
 
-}
+/*.stock-manager-add-products-form__product #brand_id{*/
 
-.stock-manager-add-products-form__product #model_id{
+/*}*/
 
-}
+/*.stock-manager-add-products-form__product #model_id{*/
 
-.stock-manager-add-products-form__product #description{
+/*}*/
 
-}
+/*.stock-manager-add-products-form__product #description{*/
+
+/*}*/
 
 #description-input {
     grid-column: 1 / 3;
     grid-row: 3 / 5;
-    background-color: red;
 }
