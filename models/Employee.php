@@ -3,6 +3,9 @@
 namespace app\models;
 
 use app\core\Database;
+use app\core\Request;
+use app\core\Response;
+use app\utils\FSUploader;
 use PDO;
 
 class Employee
@@ -39,11 +42,11 @@ class Employee
             if (empty($errors)) {
                 $query = "INSERT INTO employee 
                     (
-                        nic, f_name, fi, dob, address, email, job_role, contact_no, is_active, date_of_appointed, password, image
+                        nic, f_name, fi, dob, address, email, foreman, contact_no, is_active, date_of_appointed, password, image
                     ) 
                     VALUES 
                     (
-                        :nic, :f_name, :fi, :dob, :address, :email, :job_role, :contact_no, :is_active, :date_of_appointed :password, :image
+                        :nic, :f_name, :fi, :dob, :address, :email, :foreman, :contact_no, :is_active, :date_of_appointed :password, :image
                     )";
 
                 $statement = $this->pdo->prepare($query);
@@ -53,7 +56,7 @@ class Employee
                 $statement->bindValue(":dob", $this->body["dob"]);
                 $statement->bindValue(":address", $this->body["address"]);
                 $statement->bindValue(":email", $this->body["email"]);
-                $statement->bindValue(":job_role", $this->body["job_role"]);
+                $statement->bindValue(":foreman", $this->body["foreman"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
                 $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
                 $statement->bindValue(":password", $hash);
@@ -176,6 +179,7 @@ class Employee
         return $errors;
     }
 
+
     public function login(): array |object
     {
         $errors = [];
@@ -199,5 +203,19 @@ class Employee
             return $employee;
         }
         return $errors;
+    }
+    
+    public function getEmployee(): array 
+    {
+
+        return $this->pdo->query("
+            SELECT 
+                employee_id as ID,
+                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                contact_no as 'Contact No',
+                address as Address,
+                email as Email
+            FROM employee")->fetchAll(PDO::FETCH_ASSOC);
+
     }
 }

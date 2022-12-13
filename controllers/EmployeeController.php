@@ -20,4 +20,25 @@ class EmployeeController
 
     }
 
+    public function registerEmployee(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $employee = new Employee($body);
+        $result = $employee->register();
+
+        if (is_array($result)) {
+            return $res->render(view: "employee-signup", pageParams: [
+                'errors' => $result,
+                'body' => $body
+            ]);
+        }
+
+        if ($result) {
+            return $res->redirect("/login?success=1");
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+    }
 }
