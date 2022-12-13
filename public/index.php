@@ -70,7 +70,8 @@ $app->router->get( "/stock-manager-login", [AuthenticationController::class,'get
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
 $app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
-
+$app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
+//$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProducts']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );

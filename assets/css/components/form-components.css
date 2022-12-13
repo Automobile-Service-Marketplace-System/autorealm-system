@@ -9,7 +9,7 @@
     color: var(--color-danger);
 }
 
-.form-item > input {
+.form-item > input, .form-item > select {
     
     /* sizes */
     padding-inline: 1rem;
@@ -26,7 +26,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-.form-item > input:focus {
+.form-item > input:focus, .form-item > select:focus {
     outline: var(--color-primary) 2px solid;
     border: 1px solid transparent;
 }

@@ -158,6 +158,16 @@ class AuthenticationController
 
     }
 
+    public function logoutStockManager(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
+            $req->session->destroy();
+            return $res->redirect(path: "/");
+        }
+
+        return $res->redirect("/");
+    }
+
 
     //    Regarding foreman authentication
 
@@ -176,9 +186,11 @@ class AuthenticationController
         $result = $employee->login();
         var_dump($result);
         if (is_array($result)) {
-            return $res->render(view: "employee-login", pageParams: [
+            return $res->render(view: "employee-login", layout: "employee-auth" ,pageParams: [
                 'errors' => $result,
                 'body' => $body
+            ], layoutParams: [
+                'title' => 'Login'
             ]);
         }
 

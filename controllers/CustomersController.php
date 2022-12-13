@@ -19,7 +19,8 @@ class CustomersController
 
             return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
                 'title' => 'Customers',
-                'pageMainHeading' => 'Customers'
+                'pageMainHeading' => 'Customers',
+                'officeStaffId' => $req->session->get('user_id')
             ]);
         }
 
@@ -35,7 +36,8 @@ class CustomersController
 
             return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
                 'title' => 'Add New Customer',
-                'pageMainHeading' => 'Add New Customer'
+                'pageMainHeading' => 'Add New Customer',
+                'officeStaffId' => $req->session->get('user_id')
             ]);
         }
 

@@ -48,7 +48,8 @@ class DashboardController
                 ], layoutParams: [
                     'title' => 'My Profile',
                     'officeStaff' => $officeStaff,
-                    'pageMainHeading' => 'My Profile'
+                    'pageMainHeading' => 'My Profile',
+                    'officeStaffId' => $req->session->get('user_id')
                 ]);
             }
 
