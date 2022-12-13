@@ -180,31 +180,14 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 ]
             );
 
-            FormSelectItem::render(
-                id: "engine_type",
-                label: "Engine Type",
-                name: "engine_type",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_type'] : "",
-                value: "1",
-                options: [
-                    "1" => "Petrol Engine",
-                    "2" => "Diesel Engine",
-                    "3" => "Gas  Engine",
-                ]
-            );
-
-            FormSelectItem::render(
+            FormItem::render(
                 id: "engine_capacity",
                 label: "Engine Capacity",
                 name: "engine_capacity",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['engine_capacity'] : "",
-                value: "1",
-                options: [
-                    "1" => "Type 1",
-                    "2" => "Type 2",
-                ]
+                value: $body['engine_capacity'] ?? null,
+                additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
             FormSelectItem::render(
@@ -233,8 +216,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 options: [
                     "1" => "Manual",
                     "2" => "Automatic",
-                    "3" => "Continuously variable transmission",
-                    "4" => "Semi-automatic and dual-clutch transmissions"
+                    "3" => "Triptonic",
+                    "4" => "CVT"
                 ]
             );
 
@@ -248,7 +231,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 options: [
                     "1" => "Petrol",
                     "2" => "Diesel",
-                    "3" => "Gas",
+                    "3" => "Hybrid",
+                    "4" => "Electric",
                 ]
             );
 
