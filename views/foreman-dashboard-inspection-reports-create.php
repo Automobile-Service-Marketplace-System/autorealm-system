@@ -23,8 +23,13 @@ use app\components\FormItem;
         <div class="maintenance-inspection-form__section-items">
             <div class="maintenance-inspection-form__section-item">
                 <p>Section condition</p>
-                <div class=""></div>
-                <input type="radio" name="section1" value="Passed">
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1" value="Passed">
+                        <label for=""></label>
+                    </div>
+                </div>
+                
                 <input type="radio" name="section1" value="Not passed">
             </div>
             <div class="maintenance-inspection-form__section-item">

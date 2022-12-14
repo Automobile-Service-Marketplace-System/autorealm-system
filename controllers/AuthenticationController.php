@@ -210,6 +210,9 @@ class AuthenticationController
             } elseif ($result->job_role === "technician") {
                 $path = "/technician-dashboard/profile";
             }
+            elseif ($result->job_role === "security_officer") {
+                $path = "/security-officer-dashboard/check-appointment";
+            }
             return $res->redirect(path: $path);
         }
 
