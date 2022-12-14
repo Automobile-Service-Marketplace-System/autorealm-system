@@ -61,8 +61,9 @@ $app->router->get("/technician-dashboard/profile", [DashboardController::class, 
 // administrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
 $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
-$app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
-$app->router->post('/admin-dashboard/create-employee',[EmployeeController::class,'AddEmployee']);
+$app->router->get("/admin-dashboard/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
+$app->router->post("/admin-dashboard/employees/add",[EmployeeController::class,'registerEmployee']);
+$app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
 $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
 
 // stock manager routes
