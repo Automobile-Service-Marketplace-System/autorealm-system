@@ -18,7 +18,7 @@ class Customer
 
     public function __construct(array $registerBody = [])
     {
-        $this->pdo = Database::getInstance()->pdo;
+            $this->pdo = Database::getInstance()->pdo;
         $this->body = $registerBody;
     }
 

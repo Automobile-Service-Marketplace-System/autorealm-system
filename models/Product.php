@@ -3,7 +3,11 @@
 namespace app\models;
 
 use app\core\Database;
-use PDO;
+use PDO;;
+use app\core\Request;
+use app\core\Response;
+use app\utils\FSUploader;
+
 
 
 class Product
@@ -55,5 +59,49 @@ class Product
 
         )-> fetchAll(PDO::FETCH_ASSOC);
 
+    }
+
+    public function addProducts(): bool|array
+    {
+        $errors = $this->validateRegisterBody();
+
+        if (empty($errors)) {
+            try {
+                $imageUrl = FSUploader::upload(innerDir: "customers/profile-photos");
+            } catch (\Exception $e) {
+                $errors["image"] = $e->getMessage();
+            }
+            if (empty($errors)) {
+                $query = "INSERT INTO customer 
+                    (
+                        f_name, l_name, contact_no, address, email,password, image
+                    ) 
+                    VALUES 
+                    (
+                        :f_name, :l_name, :contact_no, :address, :email, :password, :image
+                    )";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":f_name", $this->body["f_name"]);
+                $statement->bindValue(":l_name", $this->body["l_name"]);
+                $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue(":address", $this->body["address"]);
+                $statement->bindValue(":email", $this->body["email"]);
+                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+                $statement->bindValue(":password", $hash);
+                $statement->bindValue(":image", $imageUrl ?? "");
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (\PDOException $e) {
+                    return false;
+                }
+            } else {
+                return $errors;
+            }
+
+        } else {
+            return $errors;
+        }
     }
 }
