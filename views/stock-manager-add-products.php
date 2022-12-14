@@ -8,6 +8,9 @@ use app\components\FormSelectItem;
  * @var array $errors
  * @var array $body
  * @var array $models
+ * @var array $brands
+ * @var array $categories
+ * @var array $suppliers
  */
 
 $hasErrors = isset($errors) && !empty($errors);
@@ -39,38 +42,43 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 
             );
 
-            FormItem::render(
-                id: "category",
+            FormSelectItem::render(
+                id: "category_id",
                 label: "Category",
-                name: "category",
+                name: "category_id",
                 hasError: $hasCategoryError,
                 error: $hasCategoryError ? $errors['category'] : "",
+                value: "1",
+                options: $categories
 
             );
 
-            FormItem::render(
+            FormSelectItem::render(
                 id: "product_type",
                 label: "Product Type",
                 name: "product_type",
                 hasError: $hasProductTypeError,
                 error: $hasProductTypeError ? $errors['product_type'] : "",
-
+                options: [
+                    "spare part" => "Spare Part",
+                    "accessory" => "Accessory"
+                ]
             );
 
             FormSelectItem::render(
-                id: "brand",
+                id: "brand_id",
                 label: "Brand",
-                name: "brand",
+                name: "brand_id",
                 hasError: $hasBrandIdError,
                 error: $hasBrandIdError ? $errors['brand'] : "",
                 value: "1",
-                //options: $brands
+                options: $brands
 
             );
             FormSelectItem::render(
-                id: "model",
+                id: "model_id",
                 label: "Model",
-                name: "model",
+                name: "model_id",
                 hasError: $hasModelIdError,
                 error: $hasModelIdError ? $errors['model'] : "",
                 value: "1",
@@ -112,13 +120,14 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
                 error: $hasPriceError ? $errors['unit_price'] : "",
 
 			);
-			FormItem::render(
+			FormSelectItem::render(
 				id: "supplier_id",
 				label: "Supplier",
 				name: "supplier_id",
                 hasError: $hasSupplierIdError,
                 error: $hasSupplierIdError ? $errors['supplier_id'] : "",
-
+                value: "1",
+                options: $suppliers
 			);
 			FormItem::render(
 				id: "date_time",

@@ -6,6 +6,9 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Product;
 use app\models\Model;
+use app\models\Brand;
+use app\models\Category;
+use app\models\Supplier;
 
 class ProductsController
 {
@@ -33,14 +36,40 @@ class ProductsController
     public function getAddProductsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
+
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
             $models = [];
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
+
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+            foreach ($rawBrands as $rawBrand) {
+                $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+            }
+
+            $modelCategory = new Category();
+            $rawCategories = $modelCategory->getCategories();
+            $categories = [];
+            foreach ($rawCategories as $rawCategory) {
+                $categories[$rawCategory['category_id']] =  $rawCategory['name'];
+            }
+
+            $modelSupplier = new Supplier();
+            $rawSuppliers = $modelSupplier->getSuppliers();
+            $suppliers = [];
+            foreach ($rawSuppliers as $rawSupplier) {
+                $suppliers[$rawSupplier['supplier_id']] =  $rawSupplier['name'];
+            }
+
             return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
-                'models' => $models
+                'models' => $models,
+                'brands' => $brands,
+                'categories' => $categories,
+                'suppliers' => $suppliers
             ], layoutParams: [
                 'title' => 'Add Products',
                 'pageMainHeading' => 'Add Products',
