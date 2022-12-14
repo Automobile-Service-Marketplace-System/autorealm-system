@@ -9,6 +9,7 @@ use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 use app\controllers\JobsController;
+use app\controllers\AppointmentController;
 
 
 use Dotenv\Dotenv;
@@ -87,6 +88,7 @@ $app->router->post("/office-staff-dashboard/customers/add", [CustomersController
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
 
 // run the application
 $app->run();
