@@ -9,6 +9,7 @@ use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 use app\controllers\JobsController;
+use app\controllers\VehiclesController;
 
 
 use Dotenv\Dotenv;
@@ -83,6 +84,8 @@ $app->router->get("/office-staff-dashboard/profile", [DashboardController::class
 $app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
 $app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
 $app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'getOfficeStaffAddCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'officeStaffgetVehiclesPage']);
+
 
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
