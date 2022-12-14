@@ -1,0 +1,9 @@
+.maintenance-inspection-form {
+    margin-top: 1rem;
+}
+
+
+.maintenance-inspection-form__section-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
