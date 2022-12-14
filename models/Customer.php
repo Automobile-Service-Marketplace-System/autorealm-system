@@ -43,7 +43,7 @@ class Customer
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
-                $query = "INSERT INTO customer 
+                $query1 = "INSERT INTO customer 
                     (
                         f_name, l_name, contact_no, address, email,password, image
                     ) 
@@ -52,7 +52,7 @@ class Customer
                         :f_name, :l_name, :contact_no, :address, :email, :password, :image
                     )";
 
-                $statement = $this->pdo->prepare($query);
+                $statement = $this->pdo->prepare($query1);
                 $statement->bindValue(":f_name", $this->body["f_name"]);
                 $statement->bindValue(":l_name", $this->body["l_name"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
