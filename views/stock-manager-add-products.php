@@ -133,6 +133,7 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 				id: "date_time",
 				label: "Recieved Date",
 				name: "date_time",
+                type: "date",
                 hasError: $hasDateTimeError,
                 error: $hasDateTimeError ? $errors['date_time'] : "",
 
