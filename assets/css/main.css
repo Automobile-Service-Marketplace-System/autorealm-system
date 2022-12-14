@@ -39,6 +39,7 @@
 @import "views/office-staff-add-customer.css";
 @import "views/office-staff-dashboard-customers-page.css";
 @import "views/create-maintenance-report.css";
+@import "views/check-qrcode.css";
 
 body {
   font-family: "Inter", sans-serif;

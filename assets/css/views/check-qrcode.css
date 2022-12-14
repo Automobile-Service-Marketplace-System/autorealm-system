@@ -1,0 +1,12 @@
+.qrcode-result-wrapper{
+    /* background-color:red; */
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:2cm;
+    margin-bottom:0.75cm;
+}
+
+.qrcode-result {
+    background-color: teal;
+}
