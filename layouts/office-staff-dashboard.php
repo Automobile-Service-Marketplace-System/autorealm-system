@@ -45,7 +45,7 @@ DocumentHead::createHead(
                     Customers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/office-staff-dashboard/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
