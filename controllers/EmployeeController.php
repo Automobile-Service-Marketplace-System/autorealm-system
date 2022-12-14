@@ -23,14 +23,19 @@ class EmployeeController
 
     public function registerEmployee(Request $req, Response $res): string
     {
+        var_dump($_POST);
         $body = $req->body();
         $employee = new Employee($body);
         $result = $employee->register();
 
         if (is_array($result)) {
-            return $res->render(view: "employee-signup", pageParams: [
+            return $res->render(view: "create-employee", layout: "admin-dashboard", pageParams: [
                 'errors' => $result,
                 'body' => $body
+            ], layoutParams: [
+                "title" => "Create an employee",
+                'pageMainHeading' => 'Create an employee',
+                'employeeId'=> $req->session->get("user_id")
             ]);
         }
 

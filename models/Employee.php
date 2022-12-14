@@ -18,6 +18,7 @@ class Employee
     {
         $this->pdo = Database::getInstance()->pdo;
         $this->body = $registerBody;
+//        var_dump($this->body);
     }
 
     public function getEmployeeById(int $employee_id): bool|object
@@ -59,7 +60,7 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":con_no", $this->body["con_no"]);
-                $hash = pw_hash($this->body["pw"], pw_DEFAULT);
+                $hash = password_hash($this->body["pw"], PASSWORD_DEFAULT);
                 $statement->bindValue(":pw", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
                 try {
@@ -81,6 +82,9 @@ class Employee
     private function validateRegisterBody(): array
     {
         $errors = [];
+
+
+
 
         if (strlen($this->body['nic']) == 0) {
             $errors['nic'] = 'NIC number must not be empty.';
@@ -124,15 +128,15 @@ class Employee
         
 
 
-        // if (empty($dob)){
-        //     $errors['dob'] = 'Please submit your date of birth.';
-        // }
-        // elseif (!preg_match('~^([0-9]{2})/([0-9]{2})/([0-9]{4})$~', $this->body['dob'],$parts)){
-        //     $errors['dob'] = 'The date of birth is not a valid date in the format MM/DD/YYYY';
-        // }
-        // elseif (!checkdate($parts[1],$parts[2],$parts[3])){
-        //     $errors['dob'] = 'The date of birth is invalid. Please check that the month is between 1 and 12, and the day is valid for that month.';
-        // }
+//         if (empty($dob)){
+//             $errors['dob'] = 'Please submit your date of birth.';
+//         }
+//         elseif (!preg_match('~^([0-9]{2})/([0-9]{2})/([0-9]{4})$~', $this->body['dob'],$parts)){
+//             $errors['dob'] = 'The date of birth is not a valid date in the format MM/DD/YYYY';
+//         }
+//         elseif (!checkdate($parts[1],$parts[2],$parts[3])){
+//             $errors['dob'] = 'The date of birth is invalid. Please check that the month is between 1 and 12, and the day is valid for that month.';
+//         }
 
 
         if (strlen($this->body['address']) == 0) {
@@ -169,7 +173,7 @@ class Employee
         } else if (!preg_match('/^\+947\d{8}$/', $this->body['con_no'])) {
             $errors['con_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
         } else {
-            $query = "SELECT * FROM employee WHERE con_no = :con_no";
+            $query = "SELECT * FROM employee WHERE contact_no = :con_no";
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
             $statement->bindValue(":con_no", $this->body["con_no"]);
@@ -183,10 +187,10 @@ class Employee
         }
 
         
-        if (strlen($this->body['pw']) == 0) {
-            $errors['pw'] = 'password length must be at least 6 characters';
-        } else if ($this->body['pw'] !== $this->body['cpw']) {
-            $errors['pw'] = 'password & Confirm password must match';
+        if (strlen($this->body['password']) == 0) {
+            $errors['password'] = 'password length must be at least 6 characters';
+        } else if ($this->body['password'] !== $this->body['cpw']) {
+            $errors['password'] = 'password & Confirm password must match';
         }
 
         return $errors;
@@ -198,7 +202,7 @@ class Employee
         $errors = [];
         $employee = null;
 
-        if (!filter_var($this->body['email'], FILTER_VALIDATE_email)) {
+        if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'email must be a valid email address';
         } else {
             $query = "SELECT * FROM employee WHERE email = :email";
@@ -208,8 +212,8 @@ class Employee
             $employee = $statement->fetchObject();
             if (!$employee) {
                 $errors['email'] = 'email does not exist';
-            } else if (!pw_verify($this->body['pw'], $employee->pw)) {
-                $errors['pw'] = 'pw is incorrect';
+            } else if (!password_verify($this->body['password'], $employee->password)) {
+                $errors['password'] = 'pw is incorrect';
             }
         }
         if (empty($errors)) {
