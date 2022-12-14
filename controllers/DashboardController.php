@@ -24,10 +24,10 @@ class DashboardController
                 return $res->render(view: "customer-dashboard-profile", layout: "customer-dashboard", pageParams: [
                     'customer' => $customer,
                 ], layoutParams: [
-                        'title' => 'My Profile',
-                        'customer' => $customer,
-                        'pageMainHeading' => 'My Profile'
-                    ]);
+                    'title' => 'My Profile',
+                    'customer' => $customer,
+                    'pageMainHeading' => 'My Profile'
+                ]);
             }
 
             return $res->redirect(path: "/login");
@@ -46,10 +46,11 @@ class DashboardController
                 return $res->render(view: "office-staff-dashboard-profile", layout: "office-staff-dashboard", pageParams: [
                     'officeStaff' => $officeStaff
                 ], layoutParams: [
-                        'title' => 'My Profile',
-                        'officeStaff' => $officeStaff,
-                        'pageMainHeading' => 'My Profile'
-                    ]);
+                    'title' => 'My Profile',
+                    'officeStaff' => $officeStaff,
+                    'pageMainHeading' => 'My Profile',
+                    'officeStaffId' => $req->session->get('user_id')
+                ]);
             }
 
             return $res->redirect(path: "/office-staff-login");
@@ -70,10 +71,10 @@ class DashboardController
                     'stockmanager' => $stockManager
 
                 ], layoutParams: [
-                        'title' => 'My Profile',
-                        'stockManager' => $stockManager,
-                        'pageMainHeading' => 'My Profile'
-                    ]);
+                    'title' => 'My Profile',
+                    'stockManager' => $stockManager,
+                    'pageMainHeading' => 'My Profile'
+                ]);
             } else {
                 return $res->redirect(path: "/stock-manager-login");
             }
@@ -82,7 +83,9 @@ class DashboardController
 
         return $res->redirect(path: "/stock-manager-login");
 
+
     }
+
     public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
@@ -101,14 +104,12 @@ class DashboardController
                 return $res->render(view: "foreman-dashboard-profile", layout: "foreman-dashboard", pageParams: [
                     'foreman' => $foreman
                 ], layoutParams: [
-                        'title' => 'Profile',
-                        'foreman' => $foreman,
-                        'pageMainHeading' => 'Profile'
-                    ]);
+                    'title' => 'Profile',
+                    'foremanId' => $req->session->get("user_id"),
+                    'pageMainHeading' => 'Profile'
+                ]);
             }
-
             return $res->redirect(path: "/employee-login");
-
         }
         return $res->redirect(path: "/employee-login");
     }
@@ -123,10 +124,10 @@ class DashboardController
                 return $res->render(view: "technician-dashboard-profile", layout: "technician-dashboard", pageParams: [
                     'technician' => $technician
                 ], layoutParams: [
-                        'title' => 'Profile',
-                        'technician' => $technician,
-                        'pageMainHeading' => 'Profile'
-                    ]);
+                    'title' => 'Profile',
+                    'technician' => $technician,
+                    'pageMainHeading' => 'Profile'
+                ]);
             }
 
             return $res->redirect(path: "/employee-login");
@@ -137,7 +138,7 @@ class DashboardController
 
     public function getAdminDashboardProfile(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "admin") {
             $adminModel = new Admin();
             $admin = $adminModel->getAdminById($req->session->get("user_id"));
             if ($admin) {
@@ -146,7 +147,8 @@ class DashboardController
                 ], layoutParams: [
                         'title' => 'Profile',
                         'admin' => $admin,
-                        'pageMainHeading' => 'Profile'
+                        'pageMainHeading' => 'Profile',
+                        'employeeId'=> $req->session->get("user_id")
                     ]);
             }
 

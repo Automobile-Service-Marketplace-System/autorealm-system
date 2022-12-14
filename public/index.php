@@ -5,10 +5,11 @@ use app\controllers\SiteController;
 
 use app\controllers\EmployeeController;
 use app\controllers\AuthenticationController;
+use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
+use app\controllers\JobsController;
 
-use app\utils\DevOnly;
 
 use Dotenv\Dotenv;
 
@@ -20,9 +21,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 // loading the .env file
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
-
-DevOnly::printToBrowserConsole(password_hash("aq1sw2de3fr4", PASSWORD_DEFAULT));
-DevOnly::printToBrowserConsole($_COOKIE);
 
 
 
@@ -48,11 +46,13 @@ $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustome
 // definitive employee routes
 $app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);
 $app->router->post("/employee-login", [AuthenticationController::class, 'loginEmployee']);
+$app->router->post("/employee-logout", [AuthenticationController::class, 'logoutEmployee']);
 
 // foreman routes
 $app->router->get("/foreman-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'getForemanDashboardProfile']);
-
+$app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
+$app->router->get("/foreman-dashboard/jobs/view", [JobsController::class, 'viewJobPage']);
 // technician routes
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/technician-dashboard/profile", [DashboardController::class, 'getTechnicianDashboardProfile']);
@@ -61,8 +61,10 @@ $app->router->get("/technician-dashboard/profile", [DashboardController::class, 
 // administrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
 $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
-$app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
-$app->router->post('/admin-dashboard/create-employee',[EmployeeController::class,'AddEmployee']);
+$app->router->get("/admin-dashboard/employees", [EmployeeController::class, 'getViewEmployeesPage']);
+$app->router->get("/admin-dashboard/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
+$app->router->post("/admin-dashboard/employees/add",[EmployeeController::class,'registerEmployee']);
+$app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
 $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
 
 // stock manager routes
@@ -70,13 +72,17 @@ $app->router->get( "/stock-manager-login", [AuthenticationController::class,'get
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
 $app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
+$app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
+//$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProducts']);
 
-
-//officeStaff-login
+//office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'getOfficeStaffAddCustomer']);
 
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);

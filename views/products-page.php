@@ -1,141 +1,43 @@
+
 <?php
+
+/**
+ * @var array $products
+ */
 
 use app\components\Table;
 
-$items = [
-    [
-        "ID" => 1,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ],
-    [
-        "ID" => 1,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1000,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1000,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1000,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1000,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ], [
-        "ID" => 1000,
-        "Name" => "Tyre",
-        "Brand" => "\$ 23",
-        "Category" => "Spare part",
-        "Unit price" => "3000",
-        "Quantity" => "100",
-        "Description" => "A device used for car transportation",
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--danger'>
-                                <i class='fa-solid fa-trash'></i>
-                            </button>
-                      </div>"
-    ],
-];
 
-$columns = ["ID", "Name", "Brand", "Category", "Unit price", "Quantity", "Description", ""];
+$columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity", "Actions" ];
 
-Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
+$items = [];
+foreach ($products as $product) {
+    $quantityColor= $product["Quantity"]>20?"success":($product["Quantity"]>10?"warning":"danger");
+    $quantityElement= "<p class='product-quantity'>  <span class='status status--$quantityColor'></span>{$product["Quantity"]}</p>";
+    $items[] = [
+        "ID" => $product["ID"],
+        "Name" => $product["Name"],
+        "Category" => $product["Category"],
+        "Model" => $product["Model"],
+        "Brand" => $product["Brand"],
+        "Price" => $product["Price (LKR)"],
+        "Quantity" => $quantityElement,
+        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+                            <a href='' class='btn btn--rounded btn--info'>
+                                <i class='fa-solid fa-cart-shopping'></i>
+                            
+                            <a href='' class='btn btn--rounded btn--warning'>
+                                <i class='fa-solid fa-pencil'></i>
+                            </a>
+                            <button class='btn btn--rounded btn--danger'>
+                                <i class='fa-solid fa-trash'></i>
+                            </button>
+                      </div>"
+
+
+    ];
+}
+
+
+Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
 

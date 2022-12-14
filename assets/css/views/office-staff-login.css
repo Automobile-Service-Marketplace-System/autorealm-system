@@ -1,0 +1,40 @@
+.office-staff-login{
+    margin:100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.office-staff-login-form {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+}
+
+.office-staff-login-heading {
+    text-align: center;
+    font-size: 40px;
+}
+
+.office-staff-login-input {
+    background-color: whitesmoke;
+}
+
+.office-staff-login-btn {
+    height: 2rem;
+    background-color: var(--color-danger);
+    color: aliceblue;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.office-staff-login-btn:hover {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
+}

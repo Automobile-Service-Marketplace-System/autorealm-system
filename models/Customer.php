@@ -3,7 +3,10 @@
 namespace app\models;
 
 use app\core\Database;
+use app\core\Request;
+use app\core\Response;
 use app\utils\FSUploader;
+use PDO;
 
 class Customer
 {
@@ -40,9 +43,10 @@ class Customer
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
+                //for customer table
                 $query = "INSERT INTO customer 
                     (
-                        f_name, l_name, contact_no, address, email,password, image
+                        f_name, l_name, contact_no, address, email, password, image
                     ) 
                     VALUES 
                     (
@@ -58,6 +62,35 @@ class Customer
                 $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
+                try {
+                    $statement->execute();
+                    // return true;
+                } catch (\PDOException $e) {
+                    return false;
+                }
+
+                //for vehicle table
+                $query = "INSERT INTO vehicle 
+                    (
+                        vin, reg_no, engine_no, manufactured_year, engine_capacity, vehicle_type, fuel_type, transmission_type, customer_id, model_id, brand_id
+                    ) 
+                    VALUES 
+                    (
+                        :vin, :reg_no, :engine_no, :manufactured_year, :engine_capacity, :vehicle_type, :fuel_type, :transmission_type, :customer_id, :model, :brand
+                    )";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":vin", $this->body["vin"]);
+                $statement->bindValue(":reg_no", $this->body["reg_no"]);
+                $statement->bindValue(":engine_no", $this->body["engine_no"]);
+                $statement->bindValue(":manufactured_year", $this->body["manufactured_year"]);
+                $statement->bindValue(":engine_capacity", $this->body["engine_capacity"]);
+                $statement->bindValue(":vehicle_type", $this->body["vehicle_type"]);
+                $statement->bindValue(":fuel_type", $this->body["fuel_type"]);
+                $statement->bindValue(":transmission_type", $this->body["transmission_type"]);
+                 $statement->bindValue(":customer_id", $this->pdo->lastInsertId());
+                $statement->bindValue(":model", $this->body["model"]);
+                $statement->bindValue(":brand", $this->body["brand"]);
                 try {
                     $statement->execute();
                     return true;
@@ -135,14 +168,6 @@ class Customer
             $errors['password'] = 'Password & Confirm password must match';
         }
 
-        if ($this->body["tc"] != "on") {
-            $errors['tc'] = 'You must agree to the terms and conditions.';
-        }
-
-        if ($this->body["pp"] != "on") {
-            $errors['pp'] = 'You must agree to the privacy policy.';
-        }
-
         return $errors;
     }
 
@@ -173,6 +198,22 @@ class Customer
         }
         return $errors;
     }
+
+    public function getCustomers(): array 
+    {
+
+        return $this->pdo->query("
+            SELECT 
+                customer_id as ID,
+                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                contact_no as 'Contact No',
+                address as Address,
+                email as Email
+            FROM customer")->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    
 
 
 }
