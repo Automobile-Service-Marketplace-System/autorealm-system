@@ -115,33 +115,44 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 
             <?php
             FormItem::render(
+                id: "vin",
+                label: "VIN",
+                name: "vin",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['vin'] : "",
+                value: $body['vin'] ?? null,
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
+            );
+
+            FormItem::render(
                 id: "engine_no",
                 label: "Engine No",
                 name: "engine_no",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['engine_no'] : "",
                 value: $body['engine_no'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
             FormItem::render(
-                id: "registration_no",
+                id: "reg_no",
                 label: "Registration No",
-                name: "registration_no",
+                name: "reg_no",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['registration_no'] : "",
-                value: $body['registration_no'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                error: $hasFNameError ? $errors['reg_no'] : "",
+                value: $body['reg_no'] ?? null,
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
             FormItem::render(
                 id: "manufactured_year",
                 label: "Manufactured Year",
                 name: "manufactured_year",
+                type: "date",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['manufactured_year'] : "",
                 value: $body['manufactured_year'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
             FormSelectItem::render(
@@ -158,10 +169,11 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "model_year",
                 label: "Model Year",
                 name: "model_year",
+                type: "date",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['model_year'] : "",
                 value: $body['model_year'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
 
@@ -189,7 +201,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['engine_capacity'] : "",
                 value: $body['engine_capacity'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 //
             FormSelectItem::render(
@@ -218,11 +230,11 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
 
             FormSelectItem::render(
-                id: "Fuel_type",
+                id: "fuel_type",
                 label: "Fuel Type",
-                name: "Fuel_type",
+                name: "fuel_type",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['Fuel_type'] : "",
+                error: $hasFNameError ? $errors['fuel_type'] : "",
                 value: "1",
                 options: [
                     "1" => "Petrol",
