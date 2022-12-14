@@ -2,8 +2,161 @@
     margin-top: 1rem;
 }
 
+.maintenance-inspection-form__section {
+    margin-bottom: 1rem;
+}
+
+.maintenance-inspection-form__section h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
 
 .maintenance-inspection-form__section-items {
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+
+.maintenance-inspection-form__section-item p {
+    margin-bottom: 0.5rem;
+}
+
+.maintenance-inspection-form__section-condition-check {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+
+.form-item--radio {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.form-item--radio input {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+
+.maintenance-inspection-form__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+.suggestions-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+
+.service-suggestions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 2rem;
+}
+
+.service-suggestion {
+    background-color: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    position: relative;
+    margin-top: 1rem;
+    box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.service-suggestion:hover {
+    box-shadow: 0.1rem 0.2rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.service-suggestion button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--color-white);
+    position: absolute;
+    top: -36px;
+    right: -36px;
+    transform: translate(-50%, 50%);
+    background-color: var(--color-danger);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: grid;
+    place-items: center;
+}
+
+.service-suggestion button:hover {
+    transform: translate(-50%, 45%);
+}
+
+.product-suggestions {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 2rem;
+}
+
+.product-suggestion {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-white);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.product-suggestion button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--color-white);
+    position: absolute;
+    top: -36px;
+    right: -36px;
+    transform: translate(-50%, 50%);
+    background-color: var(--color-danger);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: grid;
+    place-items: center;
+}
+
+.product-suggestion button:hover {
+    transform: translate(-50%, 45%);
+}
+
+
+.product-suggestion img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+}
+
+.product-suggestion p {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+
+.suggestions-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-block: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
