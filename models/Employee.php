@@ -3,9 +3,8 @@
 namespace app\models;
 
 use app\core\Database;
-use app\core\Request;
-use app\core\Response;
 use app\utils\FSUploader;
+use app\utils\Util;
 use PDO;
 
 class Employee
@@ -47,24 +46,60 @@ class Employee
                     ) 
                     VALUES 
                     (
-                        :nic, :f_name, :l_name, :dob, :address, :email, :job_role, :con_no, :pw, 1, CURDATE(), :image
+                        :nic, :f_name, :l_name, :dob, :address, :email, :job_role, :contact_no, :password, 1, CURDATE(), :image
                     )";
 
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":nic", $this->body["nic"]);
-                $statement->bindValue(":f_name", $this->body["f_name"]);   
+                $statement->bindValue(":f_name", $this->body["f_name"]);
                 $statement->bindValue(":l_name", $this->body["l_name"]);
-                // full name with initialies
+                // full name with initials
                 $statement->bindValue(":dob", $this->body["dob"]);
                 $statement->bindValue(":address", $this->body["address"]);
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
-                $statement->bindValue(":con_no", $this->body["con_no"]);
-                $hash = password_hash($this->body["pw"], PASSWORD_DEFAULT);
-                $statement->bindValue(":pw", $hash);
+                $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+                $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
                 try {
                     $statement->execute();
+                    $lastInsertedId = $this->pdo->lastInsertId();
+                    switch ($this->body['job_role']) {
+                        case "foreman":
+                            $query = "INSERT INTO  foreman (employee_id, is_available) VALUES (:employee_id, 1)";
+                            $statement = $this->pdo->prepare($query);
+                            $statement->bindValue(":employee_id", $lastInsertedId);
+                            $statement->execute();
+                            break;
+                        case "security_officer":
+                            $query = "INSERT INTO securityofficer (employee_id, shift) VALUES (:employee_id,'day')";
+                            $statement = $this->pdo->prepare($query);
+                            $statement->bindValue(":employee_id", $lastInsertedId);
+                            $statement->execute();
+                            break;
+                        case "technician":
+                            $query = "INSERT INTO technician (employee_id, is_available, speciality) VALUES (:employee_id, 1, 'none')";
+                            $statement = $this->pdo->prepare($query);
+                            $statement->bindValue(":employee_id", $lastInsertedId);
+                            $statement->execute();
+                            break;
+                        case "stock_manager":
+                            $query = "INSERT INTO stockmanager (employee_id) VALUES (:employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                            $statement->bindValue(":employee_id", $lastInsertedId);
+                            $statement->execute();
+                            break;
+                        case "office_staff_member":
+                            $query = "INSERT INTO officestaff (employee_id, type) VALUES (:employee_id, 'clerk')";
+                            $statement = $this->pdo->prepare($query);
+                            $statement->bindValue(":employee_id", $lastInsertedId);
+                            $statement->execute();
+                            break;
+                        default:
+                            break;
+
+                    }
                     return true;
                 } catch (\PDOException $e) {
                     return false;
@@ -84,18 +119,41 @@ class Employee
         $errors = [];
 
 
+        if (trim($this->body['f_name']) === '') {
+            $errors['f_name'] = 'First name must not be empty.';
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
+            $errors['f_name'] = 'First name must contain only letters.';
+        }
+
+        if (trim($this->body['l_name']) === '') {
+            $errors['l_name'] = 'Last name must not be empty.';
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['l_name'])) {
+            $errors['l_name'] = 'Last name must contain only letters.';
+        }
 
 
-        if (strlen($this->body['nic']) == 0) {
+        if (trim($this->body['fi']) === '') {
+            $errors['fi'] = 'Full name with initials must not be empty.';
+        }
+
+
+        if (empty($this->body['dob'])) {
+            $errors['dob'] = 'Date of birth must not be empty.';
+        } elseif (!Util::isRealDate($this->body['dob'])) {
+            $errors['dob'] = 'Date of birth is not a valid date.';
+        }
+
+
+        if ($this->body['nic'] === '') {
             $errors['nic'] = 'NIC number must not be empty.';
-        // } else if (!preg_match('/^\+947\d{8}$/', $this->body['con_no'])) {
-        //     $errors['con_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
+        } else if (!preg_match('/^(\d{9}[xXvV]|\d{12})$/', $this->body['nic'])) {
+            $errors['nic'] = 'NIC No must be in either be in 996632261V or 200022203401 forma.';
         } else {
             $query = "SELECT * FROM employee WHERE nic = :nic";
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
             $statement->bindValue(":nic", $this->body["nic"]);
-            //con_no replace with the con_no of this->body
+            //contact_no replace with the contact_no of this->body
             $statement->execute();
             // click go
             if ($statement->rowCount() > 0) {
@@ -104,42 +162,7 @@ class Employee
             }
         }
 
-
-        if (strlen(trim($this->body['f_name'])) == 0) {  //remove whitespaces by trim(string)
-            $errors['f_name'] = 'First name must not be empty.';
-        } else {
-            if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
-                $errors['f_name'] = 'First name must contain only letters.';
-            }
-        }
-
-        if (strlen(trim($this->body['l_name'])) == 0) {  //remove whitespaces by trim(string)
-            $errors['l_name'] = 'Last name must not be empty.';
-        } else {
-            if (!preg_match('/^[\p{L} ]+$/u', $this->body['l_name'])) {
-                $errors['l_name'] = 'Last name must contain only letters.';
-            }
-        }
-
-
-        if (strlen(trim($this->body['fi'])) == 0) {  //remove whitespaces by trim(string)
-            $errors['fi'] = 'Full name with initialies must not be empty.';
-        }
-        
-
-
-//         if (empty($dob)){
-//             $errors['dob'] = 'Please submit your date of birth.';
-//         }
-//         elseif (!preg_match('~^([0-9]{2})/([0-9]{2})/([0-9]{4})$~', $this->body['dob'],$parts)){
-//             $errors['dob'] = 'The date of birth is not a valid date in the format MM/DD/YYYY';
-//         }
-//         elseif (!checkdate($parts[1],$parts[2],$parts[3])){
-//             $errors['dob'] = 'The date of birth is invalid. Please check that the month is between 1 and 12, and the day is valid for that month.';
-//         }
-
-
-        if (strlen($this->body['address']) == 0) {
+        if ($this->body['address'] === '') {
             $errors['address'] = 'Address must not be empty.';
         }
 
@@ -163,33 +186,33 @@ class Employee
         //     $errors['tc'] = 'You must select job type.';
         // }
 
-        if( $this->body['job_role'] !=='security_officer' && $this->body['job_role'] !=='office_staff_member' && $this->body['job_role'] !=='foreman' && $this->body['job_role'] !=='technician' && $this->body['job_role'] !=='stock_manager'){
+        if ($this->body['job_role'] !== 'security_officer' && $this->body['job_role'] !== 'office_staff_member' && $this->body['job_role'] !== 'foreman' && $this->body['job_role'] !== 'technician' && $this->body['job_role'] !== 'stock_manager') {
             $errors['job_role'] = 'You must select job type.';
         }
 
 
-        if (strlen($this->body['con_no']) == 0) {
-            $errors['con_no'] = 'Contact number must not be empty.';
-        } else if (!preg_match('/^\+947\d{8}$/', $this->body['con_no'])) {
-            $errors['con_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
+        if ($this->body['contact_no'] === '') {
+            $errors['contact_no'] = 'Contact number must not be empty.';
+        } else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
+            $errors['contact_no'] = 'Contact number must start with +947 and contain 12 digits.';
         } else {
-            $query = "SELECT * FROM employee WHERE contact_no = :con_no";
+            $query = "SELECT * FROM employee WHERE contact_no = :contact_no";
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
-            $statement->bindValue(":con_no", $this->body["con_no"]);
-            //con_no replace with the con_no of this->body
+            $statement->bindValue(":contact_no", $this->body["contact_no"]);
+            //contact_no replace with the contact_no of this->body
             $statement->execute();
             // click go
             if ($statement->rowCount() > 0) {
                 //Return the number of rows
-                $errors['con_no'] = 'Contact number already in use.';
+                $errors['contact_no'] = 'Contact number already in use.';
             }
         }
 
-        
-        if (strlen($this->body['password']) == 0) {
+
+        if (strlen($this->body['password']) < 6) {
             $errors['password'] = 'password length must be at least 6 characters';
-        } else if ($this->body['password'] !== $this->body['cpw']) {
+        } else if ($this->body['password'] !== $this->body['confirm_password']) {
             $errors['password'] = 'password & Confirm password must match';
         }
 
@@ -197,7 +220,7 @@ class Employee
     }
 
 
-    public function login(): array |object
+    public function login(): array|object
     {
         $errors = [];
         $employee = null;
@@ -213,7 +236,7 @@ class Employee
             if (!$employee) {
                 $errors['email'] = 'email does not exist';
             } else if (!password_verify($this->body['password'], $employee->password)) {
-                $errors['password'] = 'pw is incorrect';
+                $errors['password'] = 'Password is incorrect';
             }
         }
         if (empty($errors)) {
@@ -221,15 +244,15 @@ class Employee
         }
         return $errors;
     }
-    
-    public function getEmployee(): array 
+
+    public function getEmployee(): array
     {
 
         return $this->pdo->query("
             SELECT 
                 employee_id as ID,
                 CONCAT(f_name, ' ', l_name) as 'Full Name',
-                con_no as 'Contact No',
+                contact_no as 'Contact No',
                 address as Address,
                 email as email
             FROM employee")->fetchAll(PDO::FETCH_ASSOC);
