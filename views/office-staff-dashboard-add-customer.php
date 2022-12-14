@@ -1,50 +1,13 @@
-<!-- <div class="container">
-    <div class="item">
-        <label for="">First Name</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Last Name</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Contact No</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Address</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">Email</label>
-        <input type="text">
-    </div>
-
-    <div class="item">
-        <label for="">NIC</label>
-        <input type="text">
-    </div>
-    <div class="item">
-        <label for="">Password</label>
-        <input type="text">
-    </div>
-    <div class="item">
-        <label for="">Confirm Passsword</label>
-        <input type="text">
-    </div>
-</div> -->
-
 <?php
 /**
  * @var array $errors
  * @var array $body
+ * @var array $models
+ * @var array $brands
  */
 
 use app\components\FormItem;
+use app\components\FormSelectItem;
 
 $hasErrors = isset($errors) && !empty($errors);
 $hasEmailError = $hasErrors && isset($errors['email']);
@@ -60,7 +23,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 
 
 <div class="office-staff-add-customer">
-    <form action="/office-staff-dashboard/customers/add" method="post" class="office-staff-add-customer-form" enctype="multipart/form-data">
+    <form action="/office-staff-dashboard/customers/add" method="post" class="office-staff-add-customer-form"
+          enctype="multipart/form-data">
         <div class="office-staff-add-customer-form__customer">
             <?php
             FormItem::render(
@@ -84,7 +48,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
             FormItem::render(
                 id: "image",
-                label: "Profile photo",
+                label: "Profile Photo",
                 name: "image",
                 type: "file",
                 hasError: $hasImageError,
@@ -145,11 +109,11 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             );
             ?>
         </div>
+        <h3 class="office-staff-header">Also add a vehicle for this customer</h3>
 
         <div class="office-staff-add-customer-form__vehicle">
-            <h3>Also add a vehicle for this customer</h3>
-        <?php 
-            //vehicle details
+
+            <?php
             FormItem::render(
                 id: "engine_no",
                 label: "Engine No",
@@ -162,21 +126,11 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 
             FormItem::render(
                 id: "registration_no",
-                label: "Registrationo",
+                label: "Registration No",
                 name: "registration_no",
                 hasError: $hasFNameError,
                 error: $hasFNameError ? $errors['registration_no'] : "",
                 value: $body['registration_no'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
-            );
-
-            FormItem::render(
-                id: "model_name",
-                label: "Model Name",
-                name: "model_name",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['model_name'] : "",
-                value: $body['model_name'] ?? null,
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
@@ -190,14 +144,14 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
-            FormItem::render(
-                id: "vehicle_type",
-                label: "Vehicle Type",
-                name: "vehicle_type",
+            FormSelectItem::render(
+                id: "brand",
+                label: "Brand",
+                name: "brand",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['vehicle_type'] : "",
-                value: $body['vehicle_type'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                error: $hasFNameError ? $errors['brand'] : "",
+                value: "1",
+                options: $brands
             );
 
             FormItem::render(
@@ -210,36 +164,85 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
-            FormItem::render(
-                id: "engine_type",
-                label: "Engine Type",
-                name: "engine_type",
+
+            FormSelectItem::render(
+                id: "vehicle_type",
+                label: "Vehicle Type",
+                name: "vehicle_type",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_type'] : "",
-                value: $body['engine_type'] ?? null,
-                additionalAttributes: "pattern='^[\p{L} ]+$'"
+                error: $hasFNameError ? $errors['vehicle_type'] : "",
+                value: "1",
+                options: [
+                    "1" => "Motorcycle",
+                    "2" => "Motor Tricycle",
+                    "3" => "Motor Vehicle",
+                    "4" => "Motor Lorry",
+                    "5" => "Motor Coach",
+                    "6" => "Special Purpose Vehicle"
+                ]
             );
 
             FormItem::render(
-                id: "engine_type",
-                label: "Engine Type",
-                name: "engine_type",
+                id: "engine_capacity",
+                label: "Engine Capacity",
+                name: "engine_capacity",
                 hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_type'] : "",
-                value: $body['engine_type'] ?? null,
+                error: $hasFNameError ? $errors['engine_capacity'] : "",
+                value: $body['engine_capacity'] ?? null,
                 additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
+//
+            FormSelectItem::render(
+                id: "model",
+                label: "Model",
+                name: "model",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['model'] : "",
+                value: "1",
+                options: $models
+            );
+
+            FormSelectItem::render(
+                id: "transmission_type",
+                label: "Transmission Type",
+                name: "transmission_type",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['transmission_type'] : "",
+                value: "1",
+                options: [
+                    "1" => "Manual",
+                    "2" => "Automatic",
+                    "3" => "Triptonic",
+                    "4" => "CVT"
+                ]
+            );
+
+            FormSelectItem::render(
+                id: "Fuel_type",
+                label: "Fuel Type",
+                name: "Fuel_type",
+                hasError: $hasFNameError,
+                error: $hasFNameError ? $errors['Fuel_type'] : "",
+                value: "1",
+                options: [
+                    "1" => "Petrol",
+                    "2" => "Diesel",
+                    "3" => "Hybrid",
+                    "4" => "Electric",
+                ]
+            );
+
             ?>
         </div>
-        
 
-        <button class="btn btn--danger btn--block">
-            Reset
-        </button>
+        <div class="office-staff-btn">
+            <button class="btn btn--danger btn--block">
+                Reset
+            </button>
 
-        <button class="btn btn--success btn--block">
-            Create an account
-        </button>
-
+            <button class="btn btn--blue btn--block">
+                Create an account
+            </button>
+        </div>
     </form>
 </div>

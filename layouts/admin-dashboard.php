@@ -2,7 +2,7 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var string $adminId
+ * @var string $employeeId
  */
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
@@ -103,7 +103,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $adminId, employeeType:"admin",  role: "admin", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  role: "admin", id: 1);
             ?>
         </header>
 

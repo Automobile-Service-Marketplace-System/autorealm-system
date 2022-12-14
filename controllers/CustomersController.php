@@ -4,8 +4,9 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Brand;
 use app\models\Customer;
-
+use app\models\Model;
 
 
 class CustomersController
@@ -17,9 +18,12 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
-            return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
-                'title' => 'Customers',
-                'pageMainHeading' => 'Customers'
+            return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",
+                pageParams: ["customers"=>$customers], 
+                layoutParams: [
+                    'title' => 'Customers',
+                    'pageMainHeading' => 'Customers',
+                    'officeStaffId' => $req->session->get('user_id')
             ]);
         }
 
@@ -33,20 +37,55 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
-            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",pageParams: ["customers"=>$customers], layoutParams: [
+            $modelModel = new Model();
+            $rawModels = $modelModel->getModels();
+            $models = [];
+            foreach ($rawModels as $rawModel) {
+                $models[$rawModel['model_id']] =  $rawModel['model_name'];
+            }
+
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+            foreach ($rawBrands as $rawBrand) {
+                $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+            }
+
+            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard", pageParams: [
+                'models'=> $models,
+                'brands' => $brands
+
+            ], layoutParams: [
                 'title' => 'Add New Customer',
-                'pageMainHeading' => 'Add New Customer'
+                'pageMainHeading' => 'Add New Customer',
+                'officeStaffId' => $req->session->get('user_id')
             ]);
         }
 
         return $res->redirect(path: "/employee-login");
     }
 
-    public function officeStaffAddCustomer(Request $req, Response $res): string
+    public function getOfficeStaffAddCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
         $customer = new Customer($body);
         $result = $customer->register();
+
+        $modelModel = new Model();
+        $rawModels = $modelModel->getModels();
+        $models = [];
+
+        foreach ($rawModels as $rawModel) {
+            $models[$rawModel['model_id']] =  $rawModel['model_name'];
+        }
+
+        $modelBrand = new Brand();
+        $rawBrands = $modelBrand->getBrands();
+        $brands = [];
+
+        foreach ($rawBrands as $rawBrand) {
+            $models[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+        }
 
         if (is_array($result)) {
 
@@ -54,7 +93,9 @@ class CustomersController
                 pageParams: [
                     "customer"=>$customer, 
                     'errors' => $result,
-                    'body' => $body
+                    'body' => $body,
+                    'models' => $models,
+                    'brands' => $brands
                 ], 
                 layoutParams: [
                     'title' => 'Add New Customer',

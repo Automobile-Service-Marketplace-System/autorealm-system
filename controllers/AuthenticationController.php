@@ -158,6 +158,16 @@ class AuthenticationController
 
     }
 
+    public function logoutStockManager(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
+            $req->session->destroy();
+            return $res->redirect(path: "/");
+        }
+
+        return $res->redirect("/");
+    }
+
 
     //    Regarding foreman authentication
 

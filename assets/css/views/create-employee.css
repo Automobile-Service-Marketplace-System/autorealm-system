@@ -27,12 +27,16 @@
         width: 645px;
         height: 40px;
         padding-left: .5cm;
+        border-radius: 0.5rem;
+        border-color: black;
     }
 
     .form-input-small>input{
         width: 309px;
         height: 40px;
         padding-left: .5cm;
+        border-radius: 0.5rem;
+        border-color: black;
     }
 
     .line{
@@ -52,8 +56,8 @@
         background-color: #E53030;
         color: #FFFFFF;
         border-color: #E53030;
-        Width: 139px;
-        Height:50px;
+        width: 139px;
+        height:50px;
         border-radius:8px;
     }
 
@@ -72,6 +76,10 @@
     .part{
         display: flex;
         justify-content: space-between;
+    }
+
+    .part1{
+        margin-right: 2rem;
     }
 
     .pic{
