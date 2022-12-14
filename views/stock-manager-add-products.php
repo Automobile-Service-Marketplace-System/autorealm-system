@@ -2,10 +2,12 @@
 
 <?php
 use app\components\FormItem;
+use app\components\FormSelectItem;
 
 /**
  * @var array $errors
  * @var array $body
+ * @var array $models
  */
 
 $hasErrors = isset($errors) && !empty($errors);
@@ -54,21 +56,25 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
                 error: $hasProductTypeError ? $errors['product_type'] : "",
 
             );
-            FormItem::render(
-                id: "brand_id",
+
+            FormSelectItem::render(
+                id: "brand",
                 label: "Brand",
-                name: "brand_id",
+                name: "brand",
                 hasError: $hasBrandIdError,
-                error: $hasBrandIdError ? $errors['brand_id'] : "",
+                error: $hasBrandIdError ? $errors['brand'] : "",
+                value: "1",
+                //options: $brands
 
             );
-            FormItem::render(
-                id: "model_id",
+            FormSelectItem::render(
+                id: "model",
                 label: "Model",
-                name: "model_id",
+                name: "model",
                 hasError: $hasModelIdError,
-                error: $hasModelIdError ? $errors['model_id'] : "",
-
+                error: $hasModelIdError ? $errors['model'] : "",
+                value: "1",
+                options: $models
             );
 
             ?>
