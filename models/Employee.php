@@ -60,8 +60,8 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":con_no", $this->body["con_no"]);
-                $hash = password_hash($this->body["pw"], PASSWORD_DEFAULT);
-                $statement->bindValue(":pw", $hash);
+                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+                $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
                 try {
                     $statement->execute();
@@ -189,7 +189,7 @@ class Employee
         
         if (strlen($this->body['password']) == 0) {
             $errors['password'] = 'password length must be at least 6 characters';
-        } else if ($this->body['password'] !== $this->body['cpw']) {
+        } else if ($this->body['password'] !== $this->body['confirm_password']) {
             $errors['password'] = 'password & Confirm password must match';
         }
 
@@ -213,7 +213,7 @@ class Employee
             if (!$employee) {
                 $errors['email'] = 'email does not exist';
             } else if (!password_verify($this->body['password'], $employee->password)) {
-                $errors['password'] = 'pw is incorrect';
+                $errors['password'] = 'password is incorrect';
             }
         }
         if (empty($errors)) {
