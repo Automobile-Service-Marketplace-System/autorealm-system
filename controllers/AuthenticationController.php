@@ -184,7 +184,6 @@ class AuthenticationController
         $body = $req->body();
         $employee = new Employee($body);
         $result = $employee->login();
-        var_dump($result);
         if (is_array($result)) {
             return $res->render(view: "employee-login", layout: "employee-auth" ,pageParams: [
                 'errors' => $result,
@@ -210,6 +209,9 @@ class AuthenticationController
                 $path = "/office-staff-dashboard/profile";
             } elseif ($result->job_role === "technician") {
                 $path = "/technician-dashboard/profile";
+            }
+            elseif ($result->job_role === "security_officer") {
+                $path = "/security-officer-dashboard/check-appointment";
             }
             return $res->redirect(path: $path);
         }
