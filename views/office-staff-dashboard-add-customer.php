@@ -18,6 +18,10 @@ $hasContactNoError = $hasErrors && isset($errors['contact_no']);
 $hasAddressError = $hasErrors && isset($errors['address']);
 $hasPasswordError = $hasErrors && isset($errors['password']);
 
+//for vehicle
+$hasVINError = $hasErrors && isset($errors['vin']);
+$hasRegNoError = $hasErrors && isset($errors['reg_no']);
+$hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 
 ?>
 
@@ -118,8 +122,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "vin",
                 label: "VIN",
                 name: "vin",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['vin'] : "",
+                hasError: $hasVINError,
+                error: $hasVINError ? $errors['vin'] : "",
                 value: $body['vin'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -128,8 +132,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "engine_no",
                 label: "Engine No",
                 name: "engine_no",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_no'] : "",
+                hasError: $hasEngineNoError,
+                error: $hasEngineNoError ? $errors['engine_no'] : "",
                 value: $body['engine_no'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -138,8 +142,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "reg_no",
                 label: "Registration No",
                 name: "reg_no",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['reg_no'] : "",
+                hasError: $hasRegNoError,
+                error: $hasRegNoError ? $errors['reg_no'] : "",
                 value: $body['reg_no'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -149,8 +153,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 label: "Manufactured Year",
                 name: "manufactured_year",
                 type: "date",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['manufactured_year'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['manufactured_year'] : "",
                 value: $body['manufactured_year'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -159,8 +163,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "brand",
                 label: "Brand",
                 name: "brand",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['brand'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['brand'] : "",
                 value: "1",
                 options: $brands
             );
@@ -170,8 +174,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 label: "Model Year",
                 name: "model_year",
                 type: "date",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['model_year'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['model_year'] : "",
                 value: $body['model_year'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -181,8 +185,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "vehicle_type",
                 label: "Vehicle Type",
                 name: "vehicle_type",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['vehicle_type'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['vehicle_type'] : "",
                 value: "1",
                 options: [
                     "1" => "Motorcycle",
@@ -198,8 +202,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "engine_capacity",
                 label: "Engine Capacity",
                 name: "engine_capacity",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['engine_capacity'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['engine_capacity'] : "",
                 value: $body['engine_capacity'] ?? null,
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
@@ -208,8 +212,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "model",
                 label: "Model",
                 name: "model",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['model'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['model'] : "",
                 value: "1",
                 options: $models
             );
@@ -218,8 +222,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "transmission_type",
                 label: "Transmission Type",
                 name: "transmission_type",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['transmission_type'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['transmission_type'] : "",
                 value: "1",
                 options: [
                     "1" => "Manual",
@@ -233,8 +237,8 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
                 id: "fuel_type",
                 label: "Fuel Type",
                 name: "fuel_type",
-                hasError: $hasFNameError,
-                error: $hasFNameError ? $errors['fuel_type'] : "",
+                // hasError: $hasFNameError,
+                // error: $hasFNameError ? $errors['fuel_type'] : "",
                 value: "1",
                 options: [
                     "1" => "Petrol",

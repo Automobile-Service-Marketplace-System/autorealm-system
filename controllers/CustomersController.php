@@ -8,31 +8,32 @@ use app\models\Brand;
 use app\models\Customer;
 use app\models\Model;
 
-
 class CustomersController
 {
-    public function officeStaffgetCustomersPage(Request $req, Response $res) : string {
+    public function getCustomersPage(Request $req, Response $res): string
+    {
 
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
-            return $res->render(view: "office-staff-dashboard-customers-page", layout: "office-staff-dashboard",
-                pageParams: ["customers"=>$customers], 
-                layoutParams: [
+            return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
+                pageParams:["customers" => $customers],
+                layoutParams:[
                     'title' => 'Customers',
                     'pageMainHeading' => 'Customers',
-                    'officeStaffId' => $req->session->get('user_id')
-            ]);
+                    'officeStaffId' => $req->session->get('user_id'),
+                ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path:"/employee-login");
     }
 
-    public function officeStaffAddCustomerPage(Request $req, Response $res) : string {
+    public function getAddCustomerPage(Request $req, Response $res): string
+    {
 
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
@@ -41,65 +42,64 @@ class CustomersController
             $rawModels = $modelModel->getModels();
             $models = [];
             foreach ($rawModels as $rawModel) {
-                $models[$rawModel['model_id']] =  $rawModel['model_name'];
+                $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
 
             $modelBrand = new Brand();
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
             foreach ($rawBrands as $rawBrand) {
-                $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
 
-            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard", pageParams: [
-                'models'=> $models,
-                'brands' => $brands
+            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard", pageParams:[
+                'models' => $models,
+                'brands' => $brands,
 
-            ], layoutParams: [
+            ], layoutParams:[
                 'title' => 'Add New Customer',
                 'pageMainHeading' => 'Add New Customer',
-                'officeStaffId' => $req->session->get('user_id')
+                'officeStaffId' => $req->session->get('user_id'),
             ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path:"/employee-login");
     }
 
-    public function getOfficeStaffAddCustomer(Request $req, Response $res): string
+    public function addCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
         $customer = new Customer($body);
         $result = $customer->register();
 
-        $modelModel = new Model();
-        $rawModels = $modelModel->getModels();
-        $models = [];
-
-        foreach ($rawModels as $rawModel) {
-            $models[$rawModel['model_id']] =  $rawModel['model_name'];
-        }
-
-        $modelBrand = new Brand();
-        $rawBrands = $modelBrand->getBrands();
-        $brands = [];
-
-        foreach ($rawBrands as $rawBrand) {
-            $models[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
-        }
-
         if (is_array($result)) {
-
-            return $res->render(view: "office-staff-dashboard-add-customer", layout: "office-staff-dashboard",
-                pageParams: [
-                    "customer"=>$customer, 
+            $modelModel = new Model();
+            $rawModels = $modelModel->getModels();
+            $models = [];
+    
+            foreach ($rawModels as $rawModel) {
+                $models[$rawModel['model_id']] = $rawModel['model_name'];
+            }
+    
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+    
+            foreach ($rawBrands as $rawBrand) {
+                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+            }
+            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
+                pageParams:[
+                    "customer" => $customer,
                     'errors' => $result,
                     'body' => $body,
                     'models' => $models,
-                    'brands' => $brands
-                ], 
-                layoutParams: [
+                    'brands' => $brands,
+                ],
+                layoutParams:[
                     'title' => 'Add New Customer',
-                    'pageMainHeading' => 'Add New Customer'
+                    'pageMainHeading' => 'Add New Customer',
+                    'officeStaffId' => $req->session->get("user_id")
                 ]);
         }
 
@@ -107,12 +107,9 @@ class CustomersController
             return $res->redirect("/office-staff-dashboard/customers");
         }
 
-        return $res->render("500", "error", [
-            "error" => "Something went wrong. Please try again later."
+        return $res->render(view:"500", layout:"plain", pageParams:[
+            "error" => "Something went wrong. Please try again later.",
         ]);
     }
-
-
-    
 
 }

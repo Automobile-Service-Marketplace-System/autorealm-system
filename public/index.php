@@ -84,10 +84,11 @@ $app->router->get("/office-staff-login", [AuthenticationController::class, 'getO
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
-$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
-$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
-$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'getOfficeStaffAddCustomer']);
-$app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'officeStaffgetVehiclesPage']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'getCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'getAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'addCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'getVehiclesPage']);
+$app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
 
 
 //security officer roots
