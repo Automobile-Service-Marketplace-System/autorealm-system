@@ -25,9 +25,25 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
-            return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", layoutParams: [
+            return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", pageParams: [
+                'jobId' => $query['id'],
+            ], layoutParams: [
                 'title' => "Job #{$query['id']}",
                 'pageMainHeading' => "Job #{$query['id']}",
+                'foremanId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/employee-login");
+    }
+
+
+    public function getCreateInspectionReportPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", layoutParams: [
+                'title' => "Maintenance Inspection report for job #{$query['job_id']}",
+                'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
