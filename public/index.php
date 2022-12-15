@@ -93,7 +93,7 @@ $app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
-$app->router->post( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
+$app->router->get( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
 $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
 
 
