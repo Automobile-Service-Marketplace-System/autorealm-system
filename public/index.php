@@ -9,6 +9,8 @@ use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 use app\controllers\JobsController;
+use app\controllers\AppointmentController;
+use app\controllers\VehiclesController;
 
 
 use Dotenv\Dotenv;
@@ -82,13 +84,17 @@ $app->router->get("/office-staff-login", [AuthenticationController::class, 'getO
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
-$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'officeStaffgetCustomersPage']);
-$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'officeStaffAddCustomerPage']);
-$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'getOfficeStaffAddCustomer']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'getCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'getAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'addCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'getVehiclesPage']);
+$app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
+
 
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
 
 // run the application
 $app->run();

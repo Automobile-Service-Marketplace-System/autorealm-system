@@ -2,11 +2,21 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var string $officeStaffId
+ * @var string $securityOfficerId
  */
 
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
+
+
+//class Admin {
+//    public string $f_name = "John";
+//    public string $l_name = "Doe";
+//    public string $image = "/images/placeholders/profile.webp";
+//
+//}
+//
+//$admin = new Admin();
 
 ?>
 <!doctype html>
@@ -34,27 +44,27 @@ DocumentHead::createHead(
                 </span>
             </a>
             <a href="/stock-manager-dashboard/products">
-                <i class="fa-solid fa-file-invoice"></i>
+                <i class="fa-solid fa-box"></i>
                 <span>
-                    Invoices
+                    Products
                 </span>
             </a>
-            <a href="/office-staff-dashboard/customers">
-                <i class="fa-solid fa-user"></i>
+            <a href="/stock-manager-dashboard/orders">
+                <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    Customers
+                    Orders
                 </span>
             </a>
-            <a href="/office-staff-dashboard/vehicles">
-                <i class="fa-solid fa-car"></i>
+            <a href="/stock-manager-dashboard/suppliers">
+                <i class="fa-solid fa-users"></i>
                 <span>
-                    Vehicles
+                    Suppliers
                 </span>
             </a>
             <a href="/stock-manager-dashboard/reviews">
-                <i class="fa-solid fa-calendar-check"></i>
+                <i class="fa-solid fa-comment-dots"></i>
                 <span>
-                    Appointments
+                    Reviews
                 </span>
             </a>
 
@@ -67,7 +77,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $officeStaffId,employeeType: 'office_staff', role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $securityOfficerId, employeeType:"security_officer", role: "Security Officer", id: 1);
             ?>
         </header>
 
