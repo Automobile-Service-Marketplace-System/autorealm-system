@@ -3,11 +3,13 @@
 namespace app\models;
 
 use app\core\Database;
-use PDO;;
+use PDO;
+
+;
+
 use app\core\Request;
 use app\core\Response;
 use app\utils\FSUploader;
-
 
 
 class Product
@@ -16,27 +18,27 @@ class Product
     private array $body;
 
 
-    public function __construct()
+    public function __construct(array $body = [])
     {
         $this->pdo = Database::getInstance()->pdo;
-
+        $this->body = $body;
     }
 
     public function getProducts(): array
     {
 
-       // $result = $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
+        // $result = $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
 //        echo "<pre>";
 //        var_dump($result);
 //        echo "</pre>";
 
-       // return $result;
+        // return $result;
 
 //        $stmt = $this->pdo->prepare("SELECT * FROM product");
 //        $stmt->execute();
 //        return $stmt->fetchAll(PDO::FETCH_OBJ);
 
-   // return $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
+        // return $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
 
         return $this->pdo->query(
             "SELECT 
@@ -57,51 +59,70 @@ class Product
             
                     ORDER BY p.item_code"
 
-        )-> fetchAll(PDO::FETCH_ASSOC);
+        )->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
-    public function addProducts(): bool|array
+    public function addProducts(): bool|array|string
     {
-        $errors = $this->validateRegisterBody();
+        //$errors = $this->validateRegisterBody();
+        $errors = [];
 
         if (empty($errors)) {
-            try {
-                $imageUrl = FSUploader::upload(innerDir: "customers/profile-photos");
-            } catch (\Exception $e) {
-                $errors["image"] = $e->getMessage();
-            }
-            if (empty($errors)) {
-                $query = "INSERT INTO customer 
+            $query = "INSERT INTO product 
                     (
-                        f_name, l_name, contact_no, address, email,password, image
+                        name, category_id,product_type, brand_id, model_id, description, price, quantity
                     ) 
+                 
                     VALUES 
                     (
-                        :f_name, :l_name, :contact_no, :address, :email, :password, :image
+                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity
+                    )";
+            //for product table
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue("name", $this->body["name"]);
+            $statement->bindValue(":category_id", $this->body["category_id"]);
+            $statement->bindValue(":product_type", $this->body["product_type"]);
+            $statement->bindValue(":brand_id", $this->body["brand_id"]);
+            $statement->bindValue(":model_id", $this->body["model_id"]);
+            $statement->bindValue(":description", $this->body["description"]);
+            $statement->bindValue(":price", $this->body["selling_price"]);
+            $statement->bindValue(":quantity", $this->body["quantity"]);
+            try {
+                $statement->execute();
+
+                $query = "INSERT INTO stockpurchasereport 
+                    (
+                       item_code, date_time, supplier_id, unit_price, amount
+                    ) 
+                 
+                    VALUES 
+                    (
+                      :item_code, :date_time, :supplier_id, :unit_price, :amount 
                     )";
 
                 $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":f_name", $this->body["f_name"]);
-                $statement->bindValue(":l_name", $this->body["l_name"]);
-                $statement->bindValue(":contact_no", $this->body["contact_no"]);
-                $statement->bindValue(":address", $this->body["address"]);
-                $statement->bindValue(":email", $this->body["email"]);
-                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
-                $statement->bindValue(":password", $hash);
-                $statement->bindValue(":image", $imageUrl ?? "");
+                $statement->bindValue(":item_code", $this->pdo->lastInsertId());
+                $statement->bindValue(":date_time", $this->body["date_time"]);
+                $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+                $statement->bindValue(":unit_price", $this->body["unit_price"]);
+                $statement->bindValue(":amount", $this->body["quantity"]);
+
                 try {
                     $statement->execute();
                     return true;
                 } catch (\PDOException $e) {
                     return false;
                 }
-            } else {
-                return $errors;
+            } catch (\PDOException $e) {
+                return $e->getMessage();
             }
+
 
         } else {
             return $errors;
         }
+
+
     }
 }

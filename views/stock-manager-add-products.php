@@ -24,6 +24,7 @@ $hasAmountError = $hasErrors && isset($errors['amount']);
 $hasPriceError = $hasErrors && isset($errors['unit_price']);
 $hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
 $hasDateTimeError = $hasErrors && isset($errors['date_time']);
+$hasPriceError= $hasErrors && isset($errors['price'])
 
 
 ?>
@@ -85,6 +86,15 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
                 options: $models
             );
 
+            FormItem::render(
+                id: "selling_price",
+                label: "Selling Price",
+                name: "selling_price",
+                hasError: $hasNameError,
+                error: $hasNameError ? $errors['name'] : "",
+
+            );
+
             ?>
             <div id="description-input">
                 <?php
@@ -105,9 +115,9 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 
 			<?php
 			FormItem::render(
-				id: "amount",
+				id: "quantity",
 				label: "Stock Quantity",
-				name: "amount",
+				name: "quantity",
                 hasError: $hasAmountError,
                 error: $hasAmountError ? $errors['amount'] : "",
 
@@ -131,7 +141,7 @@ $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 			);
 			FormItem::render(
 				id: "date_time",
-				label: "Recieved Date",
+				label: "Received Date",
 				name: "date_time",
                 type: "date",
                 hasError: $hasDateTimeError,
