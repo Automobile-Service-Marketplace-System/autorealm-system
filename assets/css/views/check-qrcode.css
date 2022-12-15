@@ -1,12 +1,58 @@
-.qrcode-result-wrapper{
+.qrcode-result-wrapper {
     /* background-color:red; */
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    margin-top:2cm;
-    margin-bottom:0.75cm;
+    margin-top: 2rem;
+    margin-bottom: 0.75cm;
 }
 
-.qrcode-result {
-    background-color: teal;
+#qrcode-result {
+    background-color: var(--color-white);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+#reader {
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+#reader svg {
+    font-size: 4rem;
+    color: rgba(var(--black), 0.3);
+}
+
+
+#qrcode-result p {
+    display: flex;
+    align-items: center;
+}
+
+#qrcode-result p strong {
+    width: 50%;
+}
+
+#qrcode-result p span {
+    width: 50%;
 }
