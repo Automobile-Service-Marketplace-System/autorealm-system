@@ -1,7 +1,7 @@
-
-
 <?php
+
 use app\components\FormItem;
+use app\components\FormTextareaItem;
 use app\components\FormSelectItem;
 
 /**
@@ -24,15 +24,16 @@ $hasAmountError = $hasErrors && isset($errors['amount']);
 $hasPriceError = $hasErrors && isset($errors['unit_price']);
 $hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
 $hasDateTimeError = $hasErrors && isset($errors['date_time']);
-$hasPriceError= $hasErrors && isset($errors['price'])
+$hasPriceError = $hasErrors && isset($errors['price'])
 
 
 ?>
 
 <div class="stock-manager-add-product-form">
-    <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form" enctype="multipart/form-data">
+    <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form"
+          enctype="multipart/form-data">
         <h2 class="product-form-subheading">Product Details</h2>
-	    <div class="stock-manager-add-products-form__product">
+        <div class="stock-manager-add-products-form__product">
             <?php
             FormItem::render(
                 id: "name",
@@ -90,77 +91,80 @@ $hasPriceError= $hasErrors && isset($errors['price'])
                 id: "selling_price",
                 label: "Selling Price",
                 name: "selling_price",
+                type: "number",
                 hasError: $hasNameError,
                 error: $hasNameError ? $errors['name'] : "",
-
+                additionalAttributes: "step='0.01' min='0.01'"
             );
 
             ?>
             <div id="description-input">
                 <?php
-                FormItem::render(
+                FormTextareaItem::render(
                     id: "description",
                     label: "Description",
                     name: "description",
                     hasError: $hasDescriptionError,
                     error: $hasDescriptionError ? $errors['description'] : "",
-
+                    rows: 4,
                 );
                 ?>
             </div>
         </div>
-		<br>
+        <br>
         <h2 class="order-details-heading product-form-subheading">Order Details</h2>
         <div class="stock-manager-add-products-form__order">
 
-			<?php
-			FormItem::render(
-				id: "quantity",
-				label: "Stock Quantity",
-				name: "quantity",
+            <?php
+            FormItem::render(
+                id: "quantity",
+                label: "Stock Quantity",
+                name: "quantity",
+                type: "number",
                 hasError: $hasAmountError,
                 error: $hasAmountError ? $errors['amount'] : "",
-
-			);
-			FormItem::render(
-				id: "unit_price",
-				label: "Unit Price",
-				name: "unit_price",
+                additionalAttributes: "min='1' step='1'"
+            );
+            FormItem::render(
+                id: "unit_price",
+                label: "Unit Price",
+                name: "unit_price",
+                type: "number",
                 hasError: $hasPriceError,
                 error: $hasPriceError ? $errors['unit_price'] : "",
+                additionalAttributes: "step='0.01' min='0.01'"
 
-			);
-			FormSelectItem::render(
-				id: "supplier_id",
-				label: "Supplier",
-				name: "supplier_id",
+            );
+            FormSelectItem::render(
+                id: "supplier_id",
+                label: "Supplier",
+                name: "supplier_id",
                 hasError: $hasSupplierIdError,
                 error: $hasSupplierIdError ? $errors['supplier_id'] : "",
                 value: "1",
                 options: $suppliers
-			);
-			FormItem::render(
-				id: "date_time",
-				label: "Received Date",
-				name: "date_time",
+            );
+            FormItem::render(
+                id: "date_time",
+                label: "Received Date",
+                name: "date_time",
                 type: "date",
                 hasError: $hasDateTimeError,
                 error: $hasDateTimeError ? $errors['date_time'] : "",
+            );
 
-			);
-
-			?>
+            ?>
         </div>
 
-    <div class="stock-manager-btn">
-        <button class="btn btn--danger btn--block">
-            Reset
-        </button>
+        <div class="stock-manager-btn">
+            <button class="btn btn--danger btn--block" type="reset">
+                Reset
+            </button>
 
-        <button class="btn btn--info btn--block">
-            Add product
-        </button>
-    </div>
+            <button class="btn btn--block">
+                Add product
+            </button>
+        </div>
 
     </form>
 </div>
