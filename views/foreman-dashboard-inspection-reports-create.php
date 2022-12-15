@@ -25,22 +25,523 @@ use app\components\FormItem;
                 <p>Section condition</p>
                 <div class="maintenance-inspection-form__section-condition-check">
                     <div class="form-item--radio">
-                        <input type="radio" name="section1" value="Passed">
-                        <label for=""></label>
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
                     </div>
                 </div>
-                
-                <input type="radio" name="section1" value="Not passed">
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
             </div>
             <div class="maintenance-inspection-form__section-item">
-
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
             </div>
             <div class="maintenance-inspection-form__section-item">
-
-            </div>
-            <div class="maintenance-inspection-form__section-item">
-
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
             </div>
         </div>
     </section>
+    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>    <section class="maintenance-inspection-form__section">
+        <h2>Section Title</h2>
+        <div class="maintenance-inspection-form__section-items">
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value2" value="Passed" id="section1_value2">
+                        <label for="section1_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+            <div class="maintenance-inspection-form__section-item">
+                <p>Section condition</p>
+                <div class="maintenance-inspection-form__section-condition-check">
+                    <div class="form-item--radio">
+                        <input type="radio" name="section1_value1" value="Passed" id="section1_value1">
+                        <label for="section1_value1">Passed</label>
+                    </div>
+                    <div class="form-item--radio">
+                        <input type="radio" name="section2_value2" value="Passed" id="section2_value2">
+                        <label for="section2_value2">Not passed</label>
+                    </div>
+                </div>
+                <?php
+                FormItem::render(id: "section1_value1_remark", label: "Remark", name: "section1_value1_remark");
+                ?>
+            </div>
+        </div>
+    </section>
+    <div class="maintenance-inspection-form__actions">
+        <button class="btn btn--danger">Reset</button>
+        <button class="btn">Create</button>
+    </div>
 </form>

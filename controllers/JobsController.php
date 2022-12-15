@@ -25,8 +25,30 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
+            $formCreated = isset($query["form_created"]) && $query["form_created"] === "true";
+            $suggestions = [
+                "services" => [
+                    "Head Light replacing",
+                    "Head Light replacing",
+                    "Head Light replacing",
+                    "Head Light replacing",
+                    "Head Light replacing",
+
+                ],
+                "products" => [
+                    "Head Lights",
+                    "Head Lights",
+                    "Head Lights",
+                    "Head Lights",
+                    "Head Lights",
+                ]
+            ];
+            if(!$formCreated) {
+                $suggestions = [];
+            }
             return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", pageParams: [
                 'jobId' => $query['id'],
+                'suggestions' => $suggestions,
             ], layoutParams: [
                 'title' => "Job #{$query['id']}",
                 'pageMainHeading' => "Job #{$query['id']}",
