@@ -68,12 +68,13 @@ class DashboardController
             $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
             if ($stockManager) {
                 return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", pageParams: [
-                    'stockmanager' => $stockManager
+                    'stockManager' => $stockManager
 
                 ], layoutParams: [
                     'title' => 'My Profile',
                     'stockManager' => $stockManager,
-                    'pageMainHeading' => 'My Profile'
+                    'pageMainHeading' => 'My Profile',
+                    'employeeId' => $req->session->get("user_id")
                 ]);
             } else {
                 return $res->redirect(path: "/stock-manager-login");
