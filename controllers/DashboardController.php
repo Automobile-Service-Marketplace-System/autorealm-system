@@ -10,6 +10,7 @@ use app\models\Technician;
 use app\models\Foreman;
 use app\models\Officestaff;
 use app\models\Stockmanager;
+use app\models\Securityofficer;
 
 class DashboardController
 {
@@ -166,11 +167,12 @@ class DashboardController
             $securityOfficer = $securityOfficerModel->getSecurityOfficerById($req->session->get("user_id"));
             if ($securityOfficer) {
                 return $res->render(view: "security-officer-dashboard-profile", layout: "security-officer-dashboard", pageParams: [
-                    'security-officer' => $securityOfficer
+                    'securityOfficer' => $securityOfficer
                 ], layoutParams: [
                         'title' => 'Profile',
                         'security-officer' => $securityOfficer,
-                        'pageMainHeading' => 'Profile'
+                        'pageMainHeading' => 'Profile',
+                        'securityOfficerId' => $req->session->get("user_id"),
                     ]);
             }
 
