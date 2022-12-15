@@ -25,7 +25,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "html5-qrcode": "^2.3.4"
+    "html5-qrcode": "^2.3.4",
+    "qr-scanner": "^1.4.2"
   },
   "description": "PHP full stack application for the AutoRealm system",
   "main": "vite.config.js",

@@ -32,7 +32,7 @@ class Customer
         return $stmt->fetchObject();
     }
 
-    public function register(): bool|array
+    public function register(): bool|array|string
     {
         $errors = $this->validateRegisterBody();
 
@@ -95,7 +95,7 @@ class Customer
                     $statement->execute();
                     return true;
                 } catch (\PDOException $e) {
-                    return false;
+                    return $e->getMessage();
                 }
             } else {
                 return $errors;
@@ -166,6 +166,55 @@ class Customer
             $errors['password'] = 'Password length must be at least 6 characters';
         } else if ($this->body['password'] !== $this->body['confirm_password']) {
             $errors['password'] = 'Password & Confirm password must match';
+        }
+
+        //for vehicle
+        if (strlen($this->body['vin']) == 0) {
+            $errors['contact_no'] = 'VIN must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE vin = :vin";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":vin", $this->body["vin"]);
+            //contact_no replace with the contact_no of this->body
+            $statement->execute();
+            // click go
+            if ($statement->rowCount() > 0) {
+                //Return the number of rows
+                $errors['vin'] = 'VIN already in use.';
+            }
+        }
+
+        if (strlen($this->body['engine_no']) == 0) {
+            $errors['contact_no'] = 'Engine No must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":engine_no", $this->body["engine_no"]);
+            //engine_no replace with the engine_no of this->body
+            $statement->execute();
+            // click go
+            if ($statement->rowCount() > 0) {
+                //Return the number of rows
+                $errors['engine_no'] = 'Engine No already in use.';
+            }
+        }
+
+        if (strlen($this->body['reg_no']) == 0) {
+            $errors['contact_no'] = 'Registration No must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":reg_no", $this->body["reg_no"]);
+            //engine_no replace with the engine_no of this->body
+            $statement->execute();
+            // click go
+            if ($statement->rowCount() > 0) {
+                //Return the number of rows
+                $errors['reg_no'] = 'Registration No already in use.';
+            }
         }
 
         return $errors;
