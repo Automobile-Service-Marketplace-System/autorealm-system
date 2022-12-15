@@ -85,6 +85,7 @@ $app->router->post("/office-staff-dashboard/customers/add", [CustomersController
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->post( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
 
 // run the application
 $app->run();
