@@ -2,108 +2,165 @@
 
 <?php
 use app\components\FormItem;
+use app\components\FormSelectItem;
 
 /**
  * @var array $errors
  * @var array $body
+ * @var array $models
+ * @var array $brands
+ * @var array $categories
+ * @var array $suppliers
  */
 
-//$hasErrors = isset($errors) && !empty($errors);
-//$hasEmailError = $hasErrors && isset($errors['email']);
-//$hasNameError = $hasErrors && isset($errors['name']);
-//$hasImageError = $hasErrors && isset($errors['image']);
-//$hasContactNoError = $hasErrors && isset($errors['contact_no']);
-//$hasAddressError = $hasErrors && isset($errors['address']);
-//$hasPasswordError = $hasErrors && isset($errors['password']);
+$hasErrors = isset($errors) && !empty($errors);
+$hasNameError = $hasErrors && isset($errors['name']);
+$hasCategoryError = $hasErrors && isset($errors['category']);
+$hasProductTypeError = $hasErrors && isset($errors['product_type']);
+$hasBrandIdError = $hasErrors && isset($errors['brand_id']);
+$hasModelIdError = $hasErrors && isset($errors['model_id']);
+$hasDescriptionError = $hasErrors && isset($errors['description']);
+$hasAmountError = $hasErrors && isset($errors['amount']);
+$hasPriceError = $hasErrors && isset($errors['unit_price']);
+$hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
+$hasDateTimeError = $hasErrors && isset($errors['date_time']);
+$hasPriceError= $hasErrors && isset($errors['price'])
 
 
 ?>
 
-<div class="stock-manager-add-customer">
+<div class="stock-manager-add-product-form">
     <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form" enctype="multipart/form-data">
-        <h2>Product Details</h2>
+        <h2 class="product-form-subheading">Product Details</h2>
 	    <div class="stock-manager-add-products-form__product">
             <?php
             FormItem::render(
                 id: "name",
                 label: "Product Name",
-                name: "name"
+                name: "name",
+                hasError: $hasNameError,
+                error: $hasNameError ? $errors['name'] : "",
 
             );
 
-            FormItem::render(
-                id: "category",
+            FormSelectItem::render(
+                id: "category_id",
                 label: "Category",
-                name: "category"
+                name: "category_id",
+                hasError: $hasCategoryError,
+                error: $hasCategoryError ? $errors['category'] : "",
+                value: "1",
+                options: $categories
 
             );
 
-            FormItem::render(
+            FormSelectItem::render(
                 id: "product_type",
                 label: "Product Type",
-                name: "product_type"
-
+                name: "product_type",
+                hasError: $hasProductTypeError,
+                error: $hasProductTypeError ? $errors['product_type'] : "",
+                options: [
+                    "spare part" => "Spare Part",
+                    "accessory" => "Accessory"
+                ]
             );
-            FormItem::render(
+
+            FormSelectItem::render(
                 id: "brand_id",
                 label: "Brand",
-                name: "brand_id"
+                name: "brand_id",
+                hasError: $hasBrandIdError,
+                error: $hasBrandIdError ? $errors['brand'] : "",
+                value: "1",
+                options: $brands
 
             );
-            FormItem::render(
+            FormSelectItem::render(
                 id: "model_id",
                 label: "Model",
-                name: "model_id"
-
+                name: "model_id",
+                hasError: $hasModelIdError,
+                error: $hasModelIdError ? $errors['model'] : "",
+                value: "1",
+                options: $models
             );
+
             FormItem::render(
-                id: "description",
-                label: "Description",
-                name: "description"
+                id: "selling_price",
+                label: "Selling Price",
+                name: "selling_price",
+                hasError: $hasNameError,
+                error: $hasNameError ? $errors['name'] : "",
 
             );
+
             ?>
+            <div id="description-input">
+                <?php
+                FormItem::render(
+                    id: "description",
+                    label: "Description",
+                    name: "description",
+                    hasError: $hasDescriptionError,
+                    error: $hasDescriptionError ? $errors['description'] : "",
+
+                );
+                ?>
+            </div>
         </div>
 		<br>
+        <h2 class="order-details-heading product-form-subheading">Order Details</h2>
         <div class="stock-manager-add-products-form__order">
-	        <h2>Order Details</h2>
+
 			<?php
 			FormItem::render(
-				id: "amount",
+				id: "quantity",
 				label: "Stock Quantity",
-				name: "amount"
+				name: "quantity",
+                hasError: $hasAmountError,
+                error: $hasAmountError ? $errors['amount'] : "",
 
 			);
 			FormItem::render(
 				id: "unit_price",
 				label: "Unit Price",
-				name: "unit_price"
+				name: "unit_price",
+                hasError: $hasPriceError,
+                error: $hasPriceError ? $errors['unit_price'] : "",
 
 			);
-			FormItem::render(
+			FormSelectItem::render(
 				id: "supplier_id",
 				label: "Supplier",
-				name: "supplier_id"
-
+				name: "supplier_id",
+                hasError: $hasSupplierIdError,
+                error: $hasSupplierIdError ? $errors['supplier_id'] : "",
+                value: "1",
+                options: $suppliers
 			);
 			FormItem::render(
 				id: "date_time",
-				label: "Recieved Date",
-				name: "date_time"
+				label: "Received Date",
+				name: "date_time",
+                type: "date",
+                hasError: $hasDateTimeError,
+                error: $hasDateTimeError ? $errors['date_time'] : "",
 
 			);
 
 			?>
         </div>
 
-
+    <div class="stock-manager-btn">
         <button class="btn btn--danger btn--block">
             Reset
         </button>
 
-        <button class="btn btn--success btn--block">
-            Create an account
+        <button class="btn btn--info btn--block">
+            Add product
         </button>
+    </div>
 
     </form>
 </div>

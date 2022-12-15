@@ -1,19 +1,19 @@
 <?php
 /**
- * @var object $stockManager
+ * @var object $securityOfficer
  */
 
 ?>
 
 <div class="customer-profile">
-    <img src="<?php echo $stockManager->image ?>" alt="<?php echo $stockManager->f_name . ' ' . $stockManager->l_name . '\'s'; ?>">
-    <div class="stockmanager-profile__info">
+    <img src="<?php echo $securityOfficer->image ?>" alt="<?php echo $securityOfficer->f_name . ' ' . $securityOfficer->l_name . '\'s'; ?>">
+    <div class="customer-profile__info">
         <p>
             <strong>
                 First name
             </strong>
             <span>
-                <?php echo $stockManager->f_name ?>
+                <?php echo $securityOfficer->f_name ?>
             </span>
         </p>
         <p>
@@ -21,7 +21,7 @@
                 Last name
             </strong>
             <span>
-                <?php echo $stockManager->l_name ?>
+                <?php echo $securityOfficer->l_name ?>
             </span>
         </p>
         <p>
@@ -29,7 +29,7 @@
                 Email
             </strong>
             <span>
-                <?php echo $stockManager->email ?>
+                <?php echo $securityOfficer->email ?>
             </span>
 
         </p>
@@ -38,7 +38,7 @@
                 Phone
             </strong>
             <span>
-                <?php echo $stockManager->contact_no ?>
+                <?php echo $securityOfficer->contact_no ?>
             </span>
 
         </p>
@@ -47,7 +47,7 @@
                 Address
             </strong>
             <span>
-                <?php echo $stockManager->address ?>
+                <?php echo $securityOfficer->address ?>
             </span>
 
         </p>

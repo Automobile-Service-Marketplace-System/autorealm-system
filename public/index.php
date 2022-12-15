@@ -77,7 +77,7 @@ $app->router->post( "/stock-manager-login", [AuthenticationController::class,'lo
 $app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 $app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
-//$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProducts']);
+$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
@@ -94,7 +94,9 @@ $app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesContr
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
 $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
+
 
 // run the application
 $app->run();

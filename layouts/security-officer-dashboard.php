@@ -8,16 +8,6 @@
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
-
-//class Admin {
-//    public string $f_name = "John";
-//    public string $l_name = "Doe";
-//    public string $image = "/images/placeholders/profile.webp";
-//
-//}
-//
-//$admin = new Admin();
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -71,7 +61,6 @@ DocumentHead::createHead(
         </nav>
     </aside>
     <div class="employee-dashboard-container__content">
-
         <header class="employee-dashboard-container__content-header">
             <button class="employee-menu-btn  no_highlights">
                 <i class="fa-solid fa-bars"></i>

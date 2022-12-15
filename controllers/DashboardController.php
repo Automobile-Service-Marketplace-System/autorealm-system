@@ -10,6 +10,7 @@ use app\models\Technician;
 use app\models\Foreman;
 use app\models\Officestaff;
 use app\models\Stockmanager;
+use app\models\Securityofficer;
 
 class DashboardController
 {
@@ -68,12 +69,13 @@ class DashboardController
             $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
             if ($stockManager) {
                 return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", pageParams: [
-                    'stockmanager' => $stockManager
+                    'stockManager' => $stockManager
 
                 ], layoutParams: [
                     'title' => 'My Profile',
                     'stockManager' => $stockManager,
-                    'pageMainHeading' => 'My Profile'
+                    'pageMainHeading' => 'My Profile',
+                    'employeeId' => $req->session->get("user_id")
                 ]);
             } else {
                 return $res->redirect(path: "/stock-manager-login");
@@ -165,11 +167,12 @@ class DashboardController
             $securityOfficer = $securityOfficerModel->getSecurityOfficerById($req->session->get("user_id"));
             if ($securityOfficer) {
                 return $res->render(view: "security-officer-dashboard-profile", layout: "security-officer-dashboard", pageParams: [
-                    'security-officer' => $securityOfficer
+                    'securityOfficer' => $securityOfficer
                 ], layoutParams: [
                         'title' => 'Profile',
                         'security-officer' => $securityOfficer,
-                        'pageMainHeading' => 'Profile'
+                        'pageMainHeading' => 'Profile',
+                        'securityOfficerId' => $req->session->get("user_id"),
                     ]);
             }
 

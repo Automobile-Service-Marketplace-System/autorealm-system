@@ -37,7 +37,17 @@ foreach ($products as $product) {
 
     ];
 }
+?>
 
+<div class="stock-manager-add-button-set">
+    <div class="add-button">
+        <a class="btn" href="products/add-products">
+            <i class="fa-solid fa-plus"></i>
+            Add Products</a>
+    </div>
 
+</div>
+
+<?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
-
+?>
