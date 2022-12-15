@@ -161,7 +161,7 @@ $hasPriceError = $hasErrors && isset($errors['price'])
                 Reset
             </button>
 
-            <button class="btn btn--block">
+            <button class="btn btn--block" type="button" id="add-product-btn">
                 Add product
             </button>
         </div>

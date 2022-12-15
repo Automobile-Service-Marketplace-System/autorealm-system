@@ -1,0 +1,85 @@
+.modal {
+    /* height: 400px; */
+    width: 400px;
+    background-color: #fff;
+    color: #222;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    z-index: 100;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: none;
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+}
+
+@keyframes scaleInOverlay {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOutOverlay {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.modal-open {
+    animation: scaleIn 0.2s ease-in-out forwards;
+}
+
+.modal-close {
+    animation: scaleOut 0.2s ease-in-out forwards;
+}
+
+.overlay-open {
+    animation: scaleInOverlay 0.2s ease-in-out forwards;
+}
+
+.overlay-close {
+    animation: scaleOutOverlay 0.2s ease-in-out forwards;
+}

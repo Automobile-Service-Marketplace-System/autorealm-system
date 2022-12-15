@@ -20,6 +20,7 @@
 @import "components/dropdowns.css";
 @import "components/tables.css";
 @import "components/notifiers.css";
+@import "components/modals.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";

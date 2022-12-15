@@ -1,1 +1,1 @@
-<?php
+<button class="btn" id="open-modal">open modal</button>
