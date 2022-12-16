@@ -7,14 +7,17 @@
 // var_dump($vehicles);
 ?>
 
-
 <?php
-
 foreach ($vehicles as $vehicle) {
-    // echo "<pre>";
-    // var_dump($vehicle);
-    // echo "</pre>";
     echo "
+        <strong class='customer-title'>
+        Customer Name: 
+        </strong>
+        <span class='customer-title'>
+            {$vehicle['full_name']}
+        </span>
+
+        <div class='vehicle-card-container'>
             <div class='vehicle-card'>
                 <p>
                     <strong>
@@ -90,10 +93,29 @@ foreach ($vehicles as $vehicle) {
                         {$vehicle['transmission_type']}
                     </span>
                 </p>
+
+                <p>
+                <strong>
+                    Model Name
+                </strong>
+                <span>
+                    {$vehicle['model_name']}
+                </span>
+                </p>
+
+                <p>
+                <strong>
+                    Brand Name
+                </strong>
+                <span>
+                    {$vehicle['brand_name']}
+                </span>
+                </p>
                 
             </div>
         ";
 }
 
 ?>
+</div>
 

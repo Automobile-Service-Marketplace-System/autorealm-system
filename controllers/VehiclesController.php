@@ -52,7 +52,7 @@ class VehiclesController
         if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicle((int) $query["id"]);
+            $vehicles = $vehicleModel->getVehicleByID((int) $query["id"]);
 
             return $res->render(view: "office-staff-dashboard-get-customer-vehicle", layout: "office-staff-dashboard",
                 pageParams: ["vehicles"=>$vehicles], 
