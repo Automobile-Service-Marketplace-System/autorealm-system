@@ -69,13 +69,22 @@ class AuthenticationController
         }
 
         if ($result) {
-            // only reaches here if the customer's login attempt is successful
-            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
-            $req->session->set("user_id", $result->customer_id);
-            $req->session->set("user_role", "customer"); // $_SESSION['user_role'] = "customer";
-            return $res->redirect(path: "/dashboard/profile"); // header("Location: /dashboard/profile");
+            try {
+                if($body['remember'] === '1'){
+                    $req->session->setPersistentCustomerSession($result->customer_id);
+                }
+                $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
+                $req->session->set("user_id", $result->customer_id);
+                $req->session->set("user_role", "customer"); // $_SESSION['user_role'] = "customer";
+                return $res->redirect(path: "/dashboard/profile");
+            } catch (\Exception $e) {
+                $errors = ['system' => 'Internal Error, please try again later.If the issue persists, please contact us.'];
+                return $res->render(view: "customer-login", pageParams: [
+                    'errors' => $errors,
+                    'body' => $body
+                ]);
+            }
         }
-
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
@@ -85,6 +94,7 @@ class AuthenticationController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $req->session->destroy();
+            $req->session->deletePersistentCustomerSession($req->session->get("user_id"));
             return $res->redirect(path: "/");
         }
 

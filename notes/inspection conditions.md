@@ -1,0 +1,48 @@
+# Inspection Conditions
+
+
+- engine_noice
+- viper_blades 
+- mirrors
+- mirrors
+- lights
+  - head
+  - parking
+  - break
+  - signal
+  - license_plate
+- battery_level
+- cables_and_carries
+- fluid_levels
+  - engine_oil
+  - transmission_oil
+  - clutch_fluid
+  - washer_fluid
+  - radiator_fluid
+- air_conditioning
+- filters
+  - fuel_filter
+  - oil_filter
+  - air_filter
+- tyre_pressure
+ - LF
+ - RF
+ - LR
+ - RR
+ - spare
+- breaks
+- hybrid_service
+  - hybrid_cooling
+  - switchable_power_train
+  - high_voltage_thermal_system
+  - charging_components
+  - cell_variations
+  - ev_modes
+- alignments
+- suspension
+  - LF
+  - RF
+  - LR
+  - RR
+- gear_shifting
+- abnormal_noises
