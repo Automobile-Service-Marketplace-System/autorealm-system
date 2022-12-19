@@ -3,14 +3,15 @@
 namespace app\models;
 
 use app\core\Database;
-use app\core\Request;
-use app\core\Response;
+use app\core\Session;
 use app\utils\FSUploader;
+use Exception;
 use PDO;
+use PDOException;
 
 class Customer
 {
-    private \PDO $pdo;
+    private PDO $pdo;
     // PDO is a database access layer that provides a fast and
     // consistent interface for accessing and managing databases in PHP applications
     private array $body;
@@ -39,7 +40,7 @@ class Customer
         if (empty($errors)) {
             try {
                 $imageUrl = FSUploader::upload(innerDir: "customers/profile-photos");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
@@ -65,7 +66,8 @@ class Customer
                 try {
                     $statement->execute();
                     // return true;
-                } catch (\PDOException $e) {
+                } catch (PDOException $e) {
+                    error_log($e->getMessage());
                     return false;
                 }
 
@@ -88,13 +90,13 @@ class Customer
                 $statement->bindValue(":vehicle_type", $this->body["vehicle_type"]);
                 $statement->bindValue(":fuel_type", $this->body["fuel_type"]);
                 $statement->bindValue(":transmission_type", $this->body["transmission_type"]);
-                 $statement->bindValue(":customer_id", $this->pdo->lastInsertId());
+                $statement->bindValue(":customer_id", $this->pdo->lastInsertId());
                 $statement->bindValue(":model", $this->body["model"]);
                 $statement->bindValue(":brand", $this->body["brand"]);
                 try {
                     $statement->execute();
                     return true;
-                } catch (\PDOException $e) {
+                } catch (PDOException $e) {
                     return $e->getMessage();
                 }
             } else {
@@ -111,23 +113,19 @@ class Customer
     {
         $errors = [];
 
-        if (strlen(trim($this->body['f_name'])) == 0) {  //remove whitespaces by trim(string)
+        if (trim($this->body['f_name']) === '') {  //remove whitespaces by trim(string)
             $errors['f_name'] = 'First name must not be empty.';
-        } else {
-            if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
-                $errors['f_name'] = 'First name must contain only letters.';
-            }
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
+            $errors['f_name'] = 'First name must contain only letters.';
         }
 
-        if (strlen($this->body['l_name']) == 0) {
+        if (trim($this->body['l_name']) === '') {
             $errors['l_name'] = 'Last name must not be empty.';
-        } else {
-            if (!preg_match('/^[\p{L} ]+$/u', $this->body['l_name'])) {
-                $errors['l_name'] = 'First name must contain only letters.';
-            }
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['l_name'])) {
+            $errors['l_name'] = 'First name must contain only letters.';
         }
 
-        if (strlen($this->body['contact_no']) == 0) {
+        if (trim($this->body['contact_no']) === '') {
             $errors['contact_no'] = 'Contact number must not be empty.';
         } else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
             $errors['contact_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
@@ -145,7 +143,7 @@ class Customer
             }
         }
 
-        if (strlen($this->body['address']) == 0) {
+        if (trim($this->body['address']) === '') {
             $errors['address'] = 'Address must not be empty.';
         }
         if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
@@ -162,14 +160,14 @@ class Customer
             }
         }
 
-        if (strlen($this->body['password']) == 0) {
+        if ($this->body['password'] === '') {
             $errors['password'] = 'Password length must be at least 6 characters';
         } else if ($this->body['password'] !== $this->body['confirm_password']) {
             $errors['password'] = 'Password & Confirm password must match';
         }
 
         //for vehicle
-        if (strlen($this->body['vin']) == 0) {
+        if ($this->body['vin'] === '') {
             $errors['contact_no'] = 'VIN must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE vin = :vin";
@@ -185,7 +183,7 @@ class Customer
             }
         }
 
-        if (strlen($this->body['engine_no']) == 0) {
+        if ($this->body['engine_no'] === '') {
             $errors['contact_no'] = 'Engine No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no";
@@ -201,7 +199,7 @@ class Customer
             }
         }
 
-        if (strlen($this->body['reg_no']) == 0) {
+        if ($this->body['reg_no'] === '') {
             $errors['contact_no'] = 'Registration No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no";
@@ -220,8 +218,7 @@ class Customer
         return $errors;
     }
 
-
-    public function login(): array |object
+    public function login(): array|object
     {
         $errors = [];
         $customer = null;
@@ -236,10 +233,8 @@ class Customer
             $customer = $statement->fetchObject();
             if (!$customer) {
                 $errors['email'] = 'Email does not exist';
-            } else {
-                if (!password_verify($this->body['password'], $customer->password)) {
-                    $errors['password'] = 'Password is incorrect';
-                }
+            } else if (!password_verify($this->body['password'], $customer->password)) {
+                $errors['password'] = 'Password is incorrect';
             }
         }
         if (empty($errors)) {
@@ -248,7 +243,7 @@ class Customer
         return $errors;
     }
 
-    public function getCustomers(): array 
+    public function getCustomers(): array
     {
 
         return $this->pdo->query("
@@ -261,8 +256,6 @@ class Customer
             FROM customer")->fetchAll(PDO::FETCH_ASSOC);
 
     }
-
-    
 
 
 }

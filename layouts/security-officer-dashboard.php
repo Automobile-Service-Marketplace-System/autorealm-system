@@ -2,14 +2,11 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var string $employeeId
+ * @var string $securityOfficerId
  */
 
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
-
-
-
 
 ?>
 <!doctype html>
@@ -64,13 +61,12 @@ DocumentHead::createHead(
         </nav>
     </aside>
     <div class="employee-dashboard-container__content">
-
         <header class="employee-dashboard-container__content-header">
             <button class="employee-menu-btn  no_highlights">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType: "stock_manager", role: "Stock manager", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $securityOfficerId, employeeType:"security_officer", role: "Security Officer", id: 1);
             ?>
         </header>
 

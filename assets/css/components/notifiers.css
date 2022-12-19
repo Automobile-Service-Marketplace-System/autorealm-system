@@ -1,0 +1,164 @@
+.notifier {
+    --desktop-top: 1rem;
+    --margin-bottom: 0.5rem;
+    --duration: 1000ms;
+    --background-color: var(--color-success);
+    position: fixed;
+    width: 300px;
+    background-color: var(--background-color);
+    color: #fff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem var(--margin-bottom) 0.75rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: all 0.2s ease-in-out;
+}
+
+.notifier__header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    position: relative;
+}
+
+.notifier__header button {
+    position: absolute;
+    top: 0.05rem;
+    right: 0.25rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: normal;
+    width: 24px;
+    display: grid;
+    place-items: center;
+}
+
+.notifier__header button svg {
+    transition: all 0.2s ease-in-out;
+}
+
+.notifier__header button:hover svg {
+    transform: rotate(180deg);
+}
+
+.notifier hr {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: var(--duration-width);
+    display: block;
+    height: 10px;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.notifier hr.leaving {
+    animation: timerRunOut var(--duration) linear forwards;
+}
+
+.notifier--desktop {
+    top: var(--desktop-top);
+    right: 1rem;
+    transform: translateX(100%);
+    animation: comeFromRight 0.3s ease-in-out forwards;
+}
+
+.notifier--desktop--leave {
+    animation: goToRight 0.3s ease-in-out forwards;
+}
+
+.notifier--mobile {
+    top: var(--desktop-top);
+    right: 1rem;
+    width: calc(100vw - 2rem);
+    transform: translateX(100%);
+    animation: comeFromRight 0.3s ease-in-out forwards;
+}
+
+.notifier--mobile--leave {
+    animation: goToRight 0.3s ease-in-out forwards;
+}
+
+@keyframes comeFromRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    60% {
+        transform: translateX(-15%);
+    }
+
+    80% {
+        transform: translateX(10%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes goToRight {
+    0% {
+        transform: translateX(0%);
+    }
+
+    30% {
+        transform: translateX(-15%);
+    }
+
+    60% {
+        transform: translateX(-5%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes timerRunOut {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
+
+.notifier--success {
+    background-color: rgb(var(--success));
+}
+
+.notifier--info {
+    background-color: rgb(var(--info));
+}
+
+.notifier--warning {
+    background-color: rgb(var(--warning));
+}
+
+.notifier--danger {
+    background-color: rgb(var(--danger));
+}
+
+.notifier--light {
+    background-color: rgb(var(--light));
+    color: #000;
+}
+
+.notifier--dark {
+    background-color: rgb(var(--dark));
+}
+
+.notifier--white {
+    background-color: rgb(var(--white));
+    color: #000;
+}
+
+.notifier--black {
+    background-color: rgb(var(--black));
+}

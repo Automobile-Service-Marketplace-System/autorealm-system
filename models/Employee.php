@@ -59,6 +59,7 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                
                 $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
@@ -236,7 +237,8 @@ class Employee
             if (!$employee) {
                 $errors['email'] = 'email does not exist';
             } else if (!password_verify($this->body['password'], $employee->password)) {
-                $errors['password'] = 'Password is incorrect';
+                $errors['password'] = 'password is incorrect';
+
             }
         }
         if (empty($errors)) {

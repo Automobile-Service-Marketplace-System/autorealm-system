@@ -9,8 +9,9 @@ use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
 use app\controllers\JobsController;
+use app\controllers\AppointmentController;
 use app\controllers\VehiclesController;
-
+use app\controllers\SuppliersController;
 
 use Dotenv\Dotenv;
 
@@ -54,7 +55,9 @@ $app->router->get("/foreman-dashboard/overview", [DashboardController::class, 'g
 $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'getForemanDashboardProfile']);
 $app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
 $app->router->get("/foreman-dashboard/jobs/view", [JobsController::class, 'viewJobPage']);
+$app->router->get("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'getCreateInspectionReportPage']);
 // technician routes
+
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/technician-dashboard/profile", [DashboardController::class, 'getTechnicianDashboardProfile']);
 
@@ -74,7 +77,8 @@ $app->router->post( "/stock-manager-login", [AuthenticationController::class,'lo
 $app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 $app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
-//$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProducts']);
+$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
+$app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
@@ -93,6 +97,9 @@ $app->router->post("/office-staff-dashboard/vehicles/add/by-customer", [Vehicles
 //security officer roots
 $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
 $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
+$app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
+
 
 // run the application
 $app->run();
