@@ -6,9 +6,9 @@
 
 use app\components\Table;
 
-var_dump($suppliers);
+//var_dump($suppliers);
 
-$columns = ["ID", "Name", "Address","Sales Manager", "Email", "Actions" ];
+$columns = ["ID", "Name", "Address","Sales Manager","Contact No", "Email", "Actions" ];
 
 $items =[];
 
@@ -19,6 +19,7 @@ foreach($suppliers as $supplier){
         "Name" => $supplier["Name"],
         "Address" => $supplier["Address"],
         "Sales Manager" => $supplier["Sales Manager"],
+        "Contact No" => $supplier["Contact No"],
         "Email" => $supplier["Email"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                             <a href='' class='btn btn--rounded btn--warning'>
