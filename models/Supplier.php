@@ -23,4 +23,19 @@ class Supplier
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getSuppliersList(): array {
+
+        return $this->pdo->query(
+            "SELECT 
+                s.supplier_id as ID, 
+                s.name as Name, 
+                s.address as Address, 
+                s.sales_manager as 'Sales Manager', 
+                s.email as Email
+
+            FROM supplier s
+            ORDER BY s.supplier_id"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

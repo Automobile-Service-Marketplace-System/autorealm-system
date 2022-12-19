@@ -5,7 +5,7 @@ namespace app\models;
 use app\core\Database;
 use PDO;
 
-;
+
 
 use app\core\Request;
 use app\core\Response;
