@@ -23,6 +23,8 @@ class Supplier
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+
     public function getSuppliersList(): array {
 
         return $this->pdo->query(
