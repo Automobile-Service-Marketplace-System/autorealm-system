@@ -32,6 +32,18 @@ foreach($suppliers as $supplier){
     ];
 }
 
+?>
+
+    <div class="stock-manager-add-button-set">
+        <div class="add-button">
+            <a class="btn" href="products/add-suppliers">
+                <i class="fa-solid fa-plus"></i>
+                Add Suppliers</a>
+        </div>
+
+    </div>
+
+<?php
 
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
