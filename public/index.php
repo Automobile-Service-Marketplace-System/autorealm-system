@@ -11,7 +11,7 @@ use app\controllers\ProductsController;
 use app\controllers\JobsController;
 use app\controllers\AppointmentController;
 use app\controllers\VehiclesController;
-
+use app\controllers\SuppliersController;
 
 use Dotenv\Dotenv;
 
@@ -78,6 +78,7 @@ $app->router->get("/stock-manager-dashboard/profile", [DashboardController::clas
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
 $app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
 $app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
+$app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
