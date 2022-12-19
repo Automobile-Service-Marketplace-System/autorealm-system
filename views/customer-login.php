@@ -35,6 +35,10 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             value: $body['password'] ?? null,
             additionalAttributes: "minlength='6' pattern='.{6,}'"
         ); ?>
+        <div class="form-item form-item--checkbox">
+            <input type="checkbox" name="remember" id="remember" value="1">
+            <label for="remember">Remember me</label>
+        </div>
         <a href="/forgot-password" class="link">Forgot password?</a>
         <button class="btn btn--danger btn--block">
             Sign In

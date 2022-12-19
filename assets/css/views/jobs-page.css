@@ -17,17 +17,24 @@
 
 .jobs-col__heading {
     position: absolute;
-    top: 0;
-    left: 50%;
+    top: 0.5rem;
+    left: 0%;
     width: 100%;
-    transform: translateX(-50%);
+    /*transform: translateX(-50%);*/
     text-align: center;
     display: flex;
     align-items: center;
     gap: 1rem;
-    justify-content: space-evenly;
+    /*justify-content: space-evenly;*/
 }
 
+.jobs-col__heading span {
+    font-size: 1.2rem;
+}
+
+.jobs-col__heading span:nth-child(2) {
+    justify-self: right;
+}
 
 .job-status-indicator {
     width: 0.8rem;
@@ -74,11 +81,11 @@
 
 @media screen and (min-width: 1200px) {
     .jobs-grid {
-        grid-gap: 5rem;
+        grid-gap: 2rem;
     }
 
     .jobs-col {
-        gap: 3rem;
+        gap: 1rem;
     }
 
 }

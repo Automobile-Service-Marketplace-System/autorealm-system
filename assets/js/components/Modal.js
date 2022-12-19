@@ -36,7 +36,6 @@ class ModalElement {
         this.addModalContent(content);
         this.showModal();
         this.handleOutsideClick(closable);
-
     }
 
 
