@@ -7,6 +7,10 @@
 // var_dump($vehicles);
 ?>
 
+<div>
+    <button class="btn">Add vehicle</button>
+</div>
+
 <?php
 foreach ($vehicles as $vehicle) {
     echo "

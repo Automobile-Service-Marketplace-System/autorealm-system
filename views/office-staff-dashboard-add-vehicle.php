@@ -14,17 +14,19 @@ $hasVINError = $hasErrors && isset($errors['vin']);
 $hasRegNoError = $hasErrors && isset($errors['reg_no']);
 $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 
+// var_dump($vehicles);
+
 ?>
 
-<strong class='customer-title'>
+<!-- <strong class='customer-title'>
         Customer Name: 
 </strong>
 <span class='customer-title'>
-        { <?php $vehicle['full_name'] ?>}
-</span>
+        { <?php $vehicles['full_name'] ?>}
+</span> -->
 
 <div class="office-staff-add-customer">
-    <form action="/office-staff-dashboard/customers/add" method="post" class="office-staff-add-customer-form"
+    <form action="/office-staff-dashboard/vehicles/add/by-customer" method="post" class="office-staff-add-customer-form"
         enctype="multipart/form-data">
 
         <div class="office-staff-add-customer-form__vehicle">

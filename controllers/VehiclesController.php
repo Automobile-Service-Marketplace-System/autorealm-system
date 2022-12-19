@@ -73,6 +73,7 @@ class VehiclesController
 
             return $res->render(view:"office-staff-dashboard-add-vehicle", layout:"office-staff-dashboard",
                 pageParams:[
+                    "vehicles"=>$vehicles,
                     'models' => $models,
                     'brands' => $brands,
                 ],
@@ -84,6 +85,52 @@ class VehiclesController
         }
 
         return $res->redirect(path:"/employee-login");
+    }
+
+    public function addVehicle(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $vehicle = new Vehicle($body);
+        $result = $vehicle->addVehicle();
+
+        if (is_array($result)) {
+            $modelModel = new Model();
+            $rawModels = $modelModel->getModels();
+            $models = [];
+    
+            foreach ($rawModels as $rawModel) {
+                $models[$rawModel['model_id']] = $rawModel['model_name'];
+            }
+    
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+    
+            foreach ($rawBrands as $rawBrand) {
+                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+            }
+            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
+                pageParams:[
+                    "vehicle" => $vehicle,
+                    'errors' => $result,
+                    'body' => $body,
+                    'models' => $models,
+                    'brands' => $brands,
+                ],
+                layoutParams:[
+                    'title' => 'Add New Vehicle',
+                    'pageMainHeading' => 'Add New Vehicle',
+                    'officeStaffId' => $req->session->get("user_id")
+                ]);
+        }
+
+        if ($result) {
+            return $res->redirect("/office-staff-dashboard/vehicles");
+        }
+
+        return $res->render(view:"500", layout:"plain", pageParams:[
+            "error" => "Something went wrong. Please try again later.",
+        ]);
     }
 
 }
