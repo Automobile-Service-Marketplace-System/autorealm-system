@@ -24,8 +24,8 @@ class Vehicle
         return $this->pdo->query("
             SELECT
                 vin as VIN,
-                reg_no as 'Registration no',
-                engine_no as 'Engine no',
+                reg_no as 'Registration No',
+                engine_no as 'Engine No',
                 manufactured_year as 'Manufactured Year',
                 engine_capacity as 'Engine Capacity',
                 vehicle_type as 'Vehicle Type',
