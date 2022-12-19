@@ -86,7 +86,7 @@ class Product
             $statement->bindValue(":brand_id", $this->body["brand_id"]);
             $statement->bindValue(":model_id", $this->body["model_id"]);
             $statement->bindValue(":description", $this->body["description"]);
-            $statement->bindValue(":price", $this->body["selling_price"]);
+            $statement->bindValue(":price", $this->body["selling_price"]*100);
             $statement->bindValue(":quantity", $this->body["quantity"]);
             try {
                 $statement->execute();
@@ -105,7 +105,7 @@ class Product
                 $statement->bindValue(":item_code", $this->pdo->lastInsertId());
                 $statement->bindValue(":date_time", $this->body["date_time"]);
                 $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
-                $statement->bindValue(":unit_price", $this->body["unit_price"]);
+                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
                 $statement->bindValue(":amount", $this->body["quantity"]);
 
                 try {
