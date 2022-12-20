@@ -35,6 +35,7 @@ $app = new Application(dirname(__DIR__));
 
 // main routes
 $app->router->get("/", [SiteController::class, 'getHomePage']);
+$app->router->get("/products", [SiteController::class, 'getProductsPage']);
 
 // customer's routes
 $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);

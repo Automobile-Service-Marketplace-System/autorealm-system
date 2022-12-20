@@ -84,10 +84,11 @@
 }
 
 .product-card__header {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
     line-height: 1;
+    min-height: 3rem;
 }
 
 .product-card__body {
@@ -102,6 +103,7 @@
 
 .product-card__body p {
     text-align: center;
+    margin-bottom: 1rem;
 }
 
 
@@ -109,4 +111,5 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 100%;
 }

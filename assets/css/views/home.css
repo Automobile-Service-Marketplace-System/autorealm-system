@@ -171,6 +171,19 @@
 }
 
 
+.our-products-link {
+    margin-top: 2rem;
+    text-align: center;
+    display: block;
+    color: var(--color-info);
+    font-size: 1.2rem;
+}
+
+
+.our-products-link:hover {
+    text-decoration: underline;
+}
+
 @media screen and (min-width: 576px) {
     .hero-carousel__text-container {
         justify-content: flex-start;
@@ -244,7 +257,7 @@
 
 @media screen and (min-width: 1200px) {
     .products-gallery {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 2rem 3rem;
     }
 }

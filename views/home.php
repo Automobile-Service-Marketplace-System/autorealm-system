@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array $products
+ * @var bool $is_authenticated
+ */
+
+use app\components\ProductCard;
+
+?>
+
 <img class="carousel-placeholder" src="/images/carousel-item-1.webp" alt="placeholder for carousel1">
 <img class="carousel-placeholder" src="/images/carousel-item-2.webp" alt="placeholder for carousel2">
 <img class="carousel-placeholder" src="/images/carousel-item-3.webp" alt="placeholder for carousel3">
@@ -106,71 +116,12 @@
     <h2>Spare Parts & Accessories</h2>
     <h3>Browse our shop for hundreds of automotive parts</h3>
     <div class="products-gallery">
-        <div class="product-card">
-            <div class="product-card__header">22 inch tyre</div>
-            <div class="product-card__body">
-                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
-                <p>Rs. 20000/=</p>
-            </div>
-            <div class="product-card__footer">
-                <a class="btn btn--danger">More info</a>
-                <button class="btn btn--light-blue btn--square">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-card__header">22 inch tyre</div>
-            <div class="product-card__body">
-                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
-                <p>Rs. 20000/=</p>
-            </div>
-            <div class="product-card__footer">
-                <a class="btn btn--danger">More info</a>
-                <button class="btn btn--light-blue btn--square">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-card__header">22 inch tyre</div>
-            <div class="product-card__body">
-                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
-                <p>Rs. 20000/=</p>
-            </div>
-            <div class="product-card__footer">
-                <a class="btn btn--danger">More info</a>
-                <button class="btn btn--light-blue btn--square">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-card__header">22 inch tyre</div>
-            <div class="product-card__body">
-                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
-                <p>Rs. 20000/=</p>
-            </div>
-            <div class="product-card__footer">
-                <a class="btn btn--danger">More info</a>
-                <button class="btn btn--light-blue btn--square">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-card__header">22 inch tyre</div>
-            <div class="product-card__body">
-                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
-                <p>Rs. 20000/=</p>
-            </div>
-            <div class="product-card__footer">
-                <a class="btn btn--danger btn--block">More info</a>
-                <button class="btn btn--light-blue btn--square">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
+        <?php
+        foreach ($products as $product) {
+            ProductCard::render(product: $product, is_authenticated: $is_authenticated);
+        }
+        ?>
     </div>
+    <a href="/products" class="our-products-link">See all products</a>
 
 </section>

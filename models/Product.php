@@ -6,7 +6,6 @@ use app\core\Database;
 use PDO;
 
 
-
 use app\core\Request;
 use app\core\Response;
 use app\utils\FSUploader;
@@ -26,19 +25,6 @@ class Product
 
     public function getProducts(): array
     {
-
-        // $result = $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
-//        echo "<pre>";
-//        var_dump($result);
-//        echo "</pre>";
-
-        // return $result;
-
-//        $stmt = $this->pdo->prepare("SELECT * FROM product");
-//        $stmt->execute();
-//        return $stmt->fetchAll(PDO::FETCH_OBJ);
-
-        // return $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
 
         return $this->pdo->query(
             "SELECT 
@@ -61,6 +47,40 @@ class Product
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
+    }
+
+    public function getProductsForHomePage(int | null $count = null, int | null $page = 1): array
+    {
+        $whereClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $products =  $this->pdo->query(
+            "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity
+
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id
+            
+                    WHERE  p.quantity > 0 ORDER BY p.item_code $whereClause $pageClause"
+
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        $totlaProducts = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "products" => $products,
+            "total" => $totlaProducts['total']
+        ];
     }
 
     public function addProducts(): bool|array|string
