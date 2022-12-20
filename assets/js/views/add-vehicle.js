@@ -81,7 +81,7 @@ enctype="multipart/form-data">
 addVehicleButton?.addEventListener("click", ()=>{
     Modal.show({
         content: addVehicleForm,
-        closable: false,
+        closable: true,
         key: "addVehicleForm"
     })
 })
