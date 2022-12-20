@@ -19,38 +19,51 @@
 @import "components/links.css";
 @import "components/dropdowns.css";
 @import "components/tables.css";
+@import "components/notifiers.css";
+@import "components/modals.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
 @import "layouts/employee-dashboard.css";
+@import "layouts/employee-auth.css";
 
 /* importing css files for views */
 @import "views/products-page.css";
 @import "views/customer-dashboard-profile.css";
 @import "views/customer-auth.css";
 @import "views/create-employee.css";
+@import "views/employee-login.css";
 @import "views/home.css";
+@import "views/jobs-page.css";
+@import "views/view-job.css";
+@import "views/office-staff-login.css";
+@import "views/office-staff-add-customer.css";
+@import "views/add-products.css";
+@import "views/office-staff-dashboard-customers-page.css";
+@import "views/create-maintenance-report.css";
+@import "views/check-qrcode.css";
+@import "views/view-suppliers-page.css";
+
 
 body {
-    font-family: "Inter", sans-serif;
-    color: var(--color-text-primary);
-    background-color: var(--color-bg-primary);
-    overflow-x: hidden;
-    overflow-y: scroll;
+  font-family: "Inter", sans-serif;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 *,
 html,
 body {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    overflow-x: hidden;
-    display: none;
+  overflow-x: hidden;
+  display: none;
 }
 
-
 .fontawesome-i2svg-active body {
-    display: initial;
+  display: initial;
 }

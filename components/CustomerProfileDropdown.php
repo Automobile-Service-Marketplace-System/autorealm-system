@@ -6,7 +6,7 @@ class CustomerProfileDropdown
 {
     public static function render(object $customer, int $id): void
     {
-        echo "<li class='customer-profile-dropdown__toggle' id='customer-profile-dropdown-$id'>
+        echo "<li class='customer-profile-dropdown__toggle no_highlights' id='customer-profile-dropdown-$id'>
                 <img src='{$customer->image}' alt=\"{$customer->f_name} {$customer->l_name}'s profile photo\">
                 <p>
                     {$customer->f_name[0]}. {$customer->l_name}

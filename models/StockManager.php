@@ -17,6 +17,15 @@ class StockManager
         $this->body = $registerBody;
     }
 
+    public function getStockManagerById(int $employee_id): bool|object
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM employee WHERE employee_id = :employee_id");
+        $stmt->execute([
+            ":employee_id" => $employee_id
+        ]);
+        return $stmt->fetchObject();
+    }
+
 //    public function register(): bool|array
 //    {
 //        $errors = $this->validateRegisterBody();
@@ -147,7 +156,7 @@ class StockManager
                 $errors['email'] = 'Email does not exist';
             } else {
 //                if (!password_verify($this->body['password'], $stockManager->password))
-                if ( $this->body['password'] != $employee->password) {
+                if ( !password_verify(password: $this->body['password'] , hash: $employee->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }

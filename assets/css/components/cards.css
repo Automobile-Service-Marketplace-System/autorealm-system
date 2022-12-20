@@ -5,3 +5,74 @@
   border-radius: 1rem;
   box-shadow: 0rem 0.25rem 1rem rgba(var(--dark), 0.2);
 }
+
+
+
+.job-card {
+  background-color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
+  width: 100%;
+}
+
+
+.job-card:nth-child(2) {
+  margin-top: 3rem;
+}
+
+/*.job-card--in-progress {*/
+/*  height: 250px;*/
+/*}*/
+.job-card__header {
+  border-bottom: 1px solid rgba(var(--black), 0.2);
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.job-card__title {
+  font-size: 1.2rem;
+}
+
+.job-card__subtitle {
+  font-size: 0.8rem;
+  color: rgba(var(--black), 0.6);
+}
+
+.job-card__info {
+  padding-top: 0.75rem;
+}
+
+.job-card__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.job-card__stat {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.job-card__stat h4 {
+  text-align: center;
+  font-weight: 600;
+}
+
+.job-card__stat p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+
+/*.job-card__stat--progress canvas {*/
+/*  width: 2rem;*/
+/*  aspect-ratio: 1;*/
+/*}*/

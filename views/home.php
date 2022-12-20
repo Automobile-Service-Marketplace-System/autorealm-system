@@ -103,7 +103,8 @@
 
 </section>
 <section class="home-section container" id="our-services">
-    <h2>Our Services</h2>
+    <h2>Spare Parts & Accessories</h2>
+    <h3>Browse our shop for hundreds of automotive parts</h3>
     <article>
         <img src="/images/article-image-1.jpg" alt="Article image 1">
         <div>

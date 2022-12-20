@@ -9,8 +9,8 @@
     color: var(--color-danger);
 }
 
-.form-item > input {
-    
+.form-item > input, .form-item > select, .form-item > textarea {
+
     /* sizes */
     padding-inline: 1rem;
     height: 2.5rem;
@@ -26,7 +26,11 @@
     transition: all 0.2s ease-in-out;
 }
 
-.form-item > input:focus {
+.form-item > textarea {
+    height: auto;
+}
+
+.form-item > input:focus, .form-item > select:focus, .form-item > textarea:focus {
     outline: var(--color-primary) 2px solid;
     border: 1px solid transparent;
 }

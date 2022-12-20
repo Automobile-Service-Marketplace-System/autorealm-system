@@ -11,14 +11,20 @@
 <style>
 
     .form-container{
-        margin: 0 auto;
+        /*margin: 0 auto;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*!* background-color: red; *!*/
+        /*vertical-align: middle;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*min-height: 100vh;*/
         display: flex;
-        flex-direction: column;
-        /* background-color: red; */
-        vertical-align: middle;
         align-items: center;
-        justify-content: center;
-        min-height: 100vh;
+    justify-content: center;
+        width: 100vw;
+        height: 100vh;
+       // background-color: red;
     }
 
     .stockmanager-login{
@@ -59,8 +65,8 @@
 </style>
 
 
-<div class="form-container">
-    <form class="stockmanager-login" action="/stockmanager-login" method="post">
+<div class="form-container" >
+    <form class="stockmanager-login" action="/stock-manager-login" method="post">
         <h1>Signup</h1>
         <div class="input-container">
             <label for="email">Email</label>

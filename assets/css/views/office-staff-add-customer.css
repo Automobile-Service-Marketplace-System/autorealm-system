@@ -1,0 +1,28 @@
+.office-staff-add-customer-form {
+  margin-bottom: 2rem;
+}
+
+.office-staff-add-customer-form__customer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.office-staff-add-customer-form__vehicle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.office-staff-header{
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.office-staff-btn{
+  margin-top: 30px;
+  display: flex;
+  gap:500px;
+}
