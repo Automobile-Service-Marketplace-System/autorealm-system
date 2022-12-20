@@ -91,6 +91,8 @@ $app->router->get("/office-staff-dashboard/customers/add", [CustomersController:
 $app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'addCustomer']);
 $app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'getVehiclesPage']);
 $app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
+$app->router->post("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
 
 
 //security officer roots

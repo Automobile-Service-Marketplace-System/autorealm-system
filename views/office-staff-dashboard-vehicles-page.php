@@ -15,7 +15,8 @@ foreach ($vehicles as $vehicle) {
     $items[] = [
 
         "VIN" => $vehicle["VIN"],
-        "Reg no" => $vehicle["Registration no"],
+        "Reg no" => $vehicle["Registration No"],
+        "Engine no" => $vehicle["Engine No"],
         "Manufactured Year" => $vehicle["Manufactured Year"],
         "Engine Capacity" => $vehicle["Engine Capacity"],
         "Vehicle Type" => $vehicle["Vehicle Type"],
