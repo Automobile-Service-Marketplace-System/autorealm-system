@@ -49,7 +49,7 @@ class PersistentSession
         $statement->bindValue(':selector', $selector);
         $statement->execute();
         $session = $statement->fetchObject();
-        if ($session && password_verify($validator, $session->hashed_validator) && time() < $session->expiry) {
+        if ($session && $session->customer_id && password_verify($validator, $session->hashed_validator)   && time() < $session->expiry) {
             return $session->customer_id;
         }
         return false;
@@ -71,7 +71,7 @@ class PersistentSession
      */
     public function setEmployeeSession(int $employee_id, string $role): string
     {
-        $query = "INSERT INTO usersession (selector, hashed_validator, employee_id, expiry, employee_role) VALUES (:selector, :hashed_validator, :employee_id, :expiry, :role)";
+        $query = "INSERT INTO usersession (selector, hashed_validator, employee_id, expiry, employee_role) VALUES (:selector, :hashed_validator, :employee_id, :expiry, :employee_role)";
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':employee_id', $employee_id);
         $selector = $employee_id . bin2hex(random_bytes(16));
@@ -81,9 +81,11 @@ class PersistentSession
         $statement->bindValue(':selector', $selector);
         $statement->bindValue(':hashed_validator', $hashedValidator);
         $statement->bindValue(':employee_id', $employee_id);
-        $statement->bindValue(':role', $role);
+        $statement->bindValue(':employee_role', $role);
         // 30 days
-        $statement->bindValue(':expiry', time() + 2592000);
+        // now + 30 days
+        $expireDateTime = new DateTime("@".(time() + 2592000));
+        $statement->bindValue(':expiry', $expireDateTime->format('Y-m-d H:i:s'));
         $statement->execute();
         return $selector . ':' . $validator;
 
@@ -104,7 +106,7 @@ class PersistentSession
             }
             return [
                 'employee_id' => $employee_id,
-                'role' => $session->role
+                'role' => $session->employee_role
             ];
         }
         return false;

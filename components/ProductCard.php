@@ -1,0 +1,34 @@
+<?php
+
+namespace app\components;
+
+class ProductCard
+{
+
+    /**
+     * @param array $product
+     * @param bool $is_authenticated
+     * @return void
+     */
+    public static function render(array $product, bool $is_authenticated) :void {
+
+
+        $isButtonDisabled = $is_authenticated ? "disabled" : "";
+
+        echo "<div class='product-card' id='product-{$product['ID']}'>
+            <div class='product-card__header'>{$product['Name']}</div>
+            <div class='product-card__body'>
+                <img src='/images/placeholders/product-image-placeholder.jpg' alt='Product Image'>
+                <p>Rs. {$product["Price (LKR)"]}/=</p>
+            </div>
+            <div class='product-card__footer'>
+                <a class='btn btn--danger btn--block' href='/products/view?id={$product['ID']}'>More info</a>
+                <button class='btn btn--light-blue btn--square' $isButtonDisabled>
+                    <i class='fa-solid fa-cart-plus'></i>
+                </button>
+            </div>
+        </div>";
+
+    }
+
+}
