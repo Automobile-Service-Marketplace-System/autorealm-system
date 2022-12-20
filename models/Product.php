@@ -4,7 +4,8 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
-
+use PDOException;
+use Exception;
 
 
 use app\core\Request;
@@ -67,31 +68,38 @@ class Product
     {
         //$errors = $this->validateRegisterBody();
         $errors = [];
-
         if (empty($errors)) {
-            $query = "INSERT INTO product 
+            try {
+                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
+                $imagesAsJSON = json_encode($imageUrls);
+            } catch (Exception $e) {
+                $errors["image"] = $e->getMessage();
+            }
+            if (empty($errors)) {
+                $query = "INSERT INTO product 
                     (
-                        name, category_id,product_type, brand_id, model_id, description, price, quantity
+                        name, category_id,product_type, brand_id, model_id, description, price, quantity,image
                     ) 
                  
                     VALUES 
                     (
-                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity
+                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity, :image
                     )";
-            //for product table
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue("name", $this->body["name"]);
-            $statement->bindValue(":category_id", $this->body["category_id"]);
-            $statement->bindValue(":product_type", $this->body["product_type"]);
-            $statement->bindValue(":brand_id", $this->body["brand_id"]);
-            $statement->bindValue(":model_id", $this->body["model_id"]);
-            $statement->bindValue(":description", $this->body["description"]);
-            $statement->bindValue(":price", $this->body["selling_price"]*100);
-            $statement->bindValue(":quantity", $this->body["quantity"]);
-            try {
-                $statement->execute();
+                //for product table
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue("name", $this->body["name"]);
+                $statement->bindValue(":category_id", $this->body["category_id"]);
+                $statement->bindValue(":product_type", $this->body["product_type"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindValue(":price", $this->body["selling_price"]);
+                $statement->bindValue(":quantity", $this->body["quantity"]);
+                $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                try {
+                    $statement->execute();
 
-                $query = "INSERT INTO stockpurchasereport 
+                    $query = "INSERT INTO stockpurchasereport 
                     (
                        item_code, date_time, supplier_id, unit_price, amount
                     ) 
@@ -112,17 +120,17 @@ class Product
                     $statement->execute();
                     return true;
                 } catch (\PDOException $e) {
-                    return false;
+                    return $e->getMessage();
                 }
-            } catch (\PDOException $e) {
-                return $e->getMessage();
-            }
 
+
+            } else {
+                return $errors;
+            }
 
         } else {
             return $errors;
         }
-
 
     }
 }

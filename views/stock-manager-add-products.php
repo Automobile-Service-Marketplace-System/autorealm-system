@@ -24,7 +24,8 @@ $hasAmountError = $hasErrors && isset($errors['amount']);
 $hasPriceError = $hasErrors && isset($errors['unit_price']);
 $hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
 $hasDateTimeError = $hasErrors && isset($errors['date_time']);
-$hasPriceError = $hasErrors && isset($errors['price'])
+$hasPriceError = $hasErrors && isset($errors['price']);
+$hasImageError = $hasErrors && isset($errors['image']);
 
 
 ?>
@@ -96,6 +97,15 @@ $hasPriceError = $hasErrors && isset($errors['price'])
                 error: $hasNameError ? $errors['name'] : "",
                 additionalAttributes: "step='0.01' min='0.01'"
             );
+
+            FormItem::render(
+                id: "image",
+                label: "Images",
+                name: "image[]",
+                type: "file",
+                hasError: $hasImageError,
+                error: $hasImageError ? $errors['image'] : "",
+                additionalAttributes: "accept='image/*' multiple")
 
             ?>
             <div id="description-input">
