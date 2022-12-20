@@ -7,20 +7,21 @@
 // var_dump($vehicles);
 ?>
 
-<div>
-    <button class="btn">Add vehicle</button>
+<div class="add-vehicle-for-customerj">
+    <button id="add-vehicle-for-customer" class="btn">Add vehicle</button>
 </div>
+
+<strong class='customer-title'>
+        Customer Name: 
+</strong>
+<span class='customer-title'>
+       <?php echo " {$vehicles[0]['full_name']} " ?>
+</span>
+
 
 <?php
 foreach ($vehicles as $vehicle) {
     echo "
-        <strong class='customer-title'>
-        Customer Name: 
-        </strong>
-        <span class='customer-title'>
-            {$vehicle['full_name']}
-        </span>
-
         <div class='vehicle-card-container'>
             <div class='vehicle-card'>
                 <p>
@@ -117,6 +118,7 @@ foreach ($vehicles as $vehicle) {
                 </p>
                 
             </div>
+        </div>
         ";
 }
 

@@ -89,9 +89,10 @@ class VehiclesController
 
     public function addVehicle(Request $req, Response $res): string
     {
+        $query = $req->query();
         $body = $req->body();
         $vehicle = new Vehicle($body);
-        $result = $vehicle->addVehicle();
+        $result = $vehicle->addVehicle(customer_id: $query['id']);
 
         if (is_array($result)) {
             $modelModel = new Model();

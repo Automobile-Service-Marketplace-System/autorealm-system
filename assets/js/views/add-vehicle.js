@@ -1,4 +1,12 @@
-const addVehicleForm = `<form action="/office-staff-dashboard/vehicles/add/by-customer" method="post" class="office-staff-add-customer-form"
+import {Modal} from "../components/Modal"
+
+const addVehicleButton = document.querySelector("#add-vehicle-for-customer")
+
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+console.log(params)
+
+const addVehicleForm = `<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" class="office-staff-add-customer-form"
 enctype="multipart/form-data">
 
 <div class="office-staff-add-customer-form__vehicle">
@@ -69,3 +77,11 @@ enctype="multipart/form-data">
     </button>
 </div>
 </form>`
+
+addVehicleButton?.addEventListener("click", ()=>{
+    Modal.show({
+        content: addVehicleForm,
+        closable: false,
+        key: "addVehicleForm"
+    })
+})

@@ -65,7 +65,7 @@ class Vehicle
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addVehicle() 
+    public function addVehicle(int $customer_id) 
     {
         $errors = $this->validateRegisterBody();
 
@@ -88,7 +88,7 @@ class Vehicle
             $statement->bindValue(":vehicle_type", $this->body["vehicle_type"]);
             $statement->bindValue(":fuel_type", $this->body["fuel_type"]);
             $statement->bindValue(":transmission_type", $this->body["transmission_type"]);
-             $statement->bindValue(":customer_id", $this->pdo->lastInsertId());
+            $statement->bindValue(":customer_id", $customer_id);
             $statement->bindValue(":model", $this->body["model"]);
             $statement->bindValue(":brand", $this->body["brand"]);
             try {
