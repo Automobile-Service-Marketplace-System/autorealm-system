@@ -129,27 +129,28 @@ class Product
                       :item_code, :date_time, :supplier_id, :unit_price, :amount 
                     )";
 
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":item_code", $this->pdo->lastInsertId());
-                $statement->bindValue(":date_time", $this->body["date_time"]);
-                $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
-                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
-                $statement->bindValue(":amount", $this->body["quantity"]);
+                    $statement = $this->pdo->prepare($query);
+                    $statement->bindValue(":item_code", $this->pdo->lastInsertId());
+                    $statement->bindValue(":date_time", $this->body["date_time"]);
+                    $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+                    $statement->bindValue(":unit_price", $this->body["unit_price"] * 100);
+                    $statement->bindValue(":amount", $this->body["quantity"]);
 
-                try {
-                    $statement->execute();
-                    return true;
+                    try {
+                        $statement->execute();
+                        return true;
+                    } catch (\PDOException $e) {
+                        return $e->getMessage();
+                    }
+
+
                 } catch (\PDOException $e) {
                     return $e->getMessage();
                 }
-
-
             } else {
                 return $errors;
             }
 
-        } else {
-            return $errors;
         }
 
     }
