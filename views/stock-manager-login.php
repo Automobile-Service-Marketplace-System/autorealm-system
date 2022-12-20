@@ -21,27 +21,35 @@
         /*min-height: 100vh;*/
         display: flex;
         align-items: center;
-    justify-content: center;
+        justify-content: center;
         width: 100vw;
         height: 100vh;
-        background-color: red;
+        background-color: #f8f8f8;
+
     }
 
     .stockmanager-login{
-        /* background-color:turquoise; */
-        border: 1px solid;
+        background-color:white;
+       /*border: 1px solid;*/
         width: 30%;
         padding: 2rem;
         box-shadow: 0 0.2rem 1.5rem rgba(var(--black), 0.1);
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 1rem;
         border-radius: 1rem;
+    }
+
+    .stock-sign-heading{
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1rem;
     }
 
     .input-container{
         display: flex;
         flex-direction: column;
-        /* background-color: tan; */
+        background-color: white
 
     }
 
@@ -61,13 +69,17 @@
         border: none;
         cursor: pointer;
     }
-
+    label{
+        font-size: 1.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+    }
 </style>
 
 
 <div class="form-container">
     <form class="stockmanager-login" action="/stockmanager-login" method="post">
-        <h1>Signup</h1>
+        <div class="stock-sign-heading">Stock Manager Signup</div>
         <div class="input-container">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email address">
