@@ -78,7 +78,7 @@
 
 
 <div class="form-container">
-    <form class="stock-manager-login" action="/stockmanager-login" method="post">
+    <form class="stock-manager-login" action="/stock-manager-login" method="post">
         <div class="stock-sign-heading">Stock Manager Signup</div>
 
         <div class="input-container">

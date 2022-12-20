@@ -159,7 +159,7 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "stock_manager");
-            return $res->redirect(path: "/stock-manager-dashboard/profile");
+            return $res->redirect(path: "/stock-manager-dashboard/products");
         }
 
         return $res->render("500", "error", [
