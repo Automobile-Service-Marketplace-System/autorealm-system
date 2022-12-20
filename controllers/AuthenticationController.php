@@ -70,7 +70,7 @@ class AuthenticationController
 
         if ($result) {
             try {
-                if($body['remember'] === '1'){
+                if ($body['remember'] === '1') {
                     $req->session->setPersistentCustomerSession($result->customer_id);
                 }
                 $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
@@ -125,7 +125,8 @@ class AuthenticationController
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
             return $res->redirect(path: "/office-staff-dashboard/profile");
-        } {
+        }
+        {
             return $res->render("500", "error", [
                 "error" => "Something went wrong. Please try again later."
             ]);
@@ -195,7 +196,7 @@ class AuthenticationController
         $employee = new Employee($body);
         $result = $employee->login();
         if (is_array($result)) {
-            return $res->render(view: "employee-login", layout: "employee-auth" ,pageParams: [
+            return $res->render(view: "employee-login", layout: "employee-auth", pageParams: [
                 'errors' => $result,
                 'body' => $body
             ], layoutParams: [
@@ -204,26 +205,38 @@ class AuthenticationController
         }
 
         if ($result) {
-            // only reaches here if the employee's login attempt is successful
-            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
-            $req->session->set("user_id", $result->employee_id);
-            $req->session->set("user_role", $result->job_role); // $_SESSION['user_role'] = "employee";
-            $path = "";
-            if ($result->job_role === "admin") {
-                $path = "/admin-dashboard/profile";
-            } elseif ($result->job_role === "foreman") {
-                $path = "/foreman-dashboard/profile";
-            } elseif ($result->job_role === "stock_manager") {
-                $path = "/stock-manager-dashboard/profile";
-            } elseif ($result->job_role === "office_staff_member") {
-                $path = "/office-staff-dashboard/profile";
-            } elseif ($result->job_role === "technician") {
-                $path = "/technician-dashboard/profile";
+
+            try {
+                if ($body['remember'] === '1') {
+                    $req->session->setPersistentEmployeeSession(employeeId: $result->employee_id, role: $result->job_role);
+                }
+                // only reaches here if the employee's login attempt is successful
+                $req->session->set(key: "is_authenticated", value: true); // $_SESSION['is_authenticated'] = true;
+                $req->session->set(key: "user_id", value: $result->employee_id);
+                $req->session->set(key: "user_role", value: $result->job_role); // $_SESSION['user_role'] = "employee";
+                $path = "";
+                if ($result->job_role === "admin") {
+                    $path = "/admin-dashboard/profile";
+                } elseif ($result->job_role === "foreman") {
+                    $path = "/foreman-dashboard/profile";
+                } elseif ($result->job_role === "stock_manager") {
+                    $path = "/stock-manager-dashboard/profile";
+                } elseif ($result->job_role === "office_staff_member") {
+                    $path = "/office-staff-dashboard/profile";
+                } elseif ($result->job_role === "technician") {
+                    $path = "/technician-dashboard/profile";
+                } elseif ($result->job_role === "security_officer") {
+                    $path = "/security-officer-dashboard/check-appointment";
+                }
+                return $res->redirect(path: $path);
+            } catch (\Exception $e) {
+                $errors = ['system' => 'Internal Error, please try again later.If the issue persists, please contact us.'];
+                return $res->render(view: "employee-login", layout: "employee-auth", pageParams: [
+                    'errors' => $errors,
+                    'body' => $body
+                ]);
             }
-            elseif ($result->job_role === "security_officer") {
-                $path = "/security-officer-dashboard/check-appointment";
-            }
-            return $res->redirect(path: $path);
+
         }
 
         return $res->render("500", "error", [
@@ -233,8 +246,13 @@ class AuthenticationController
 
     public function logoutEmployee(Request $req, Response $res): string
     {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
             $req->session->destroy();
+            $req->session->deletePersistentEmployeeSession($req->session->get("user_id"));
             return $res->redirect(path: "/employee-login");
+        }
+
+        return $res->redirect(path: $req->path());
     }
 
     public function getAdminLoginPage(Request $request, Response $response): string

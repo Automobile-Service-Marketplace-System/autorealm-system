@@ -102,58 +102,75 @@
     </article>
 
 </section>
-<section class="home-section container" id="our-services">
+<section class="home-section container" id="our-products">
     <h2>Spare Parts & Accessories</h2>
     <h3>Browse our shop for hundreds of automotive parts</h3>
-    <article>
-        <img src="/images/article-image-1.jpg" alt="Article image 1">
-        <div>
-            <h3>Fluid Replacement</h3>
-            <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias tempora tenetur eius! Iure facilis
-                ea praesentium facere minima illo dolore veritatis asperiores aspernatur, eum iusto nisi eligendi,
-                voluptatibus quis. Adipisci consequuntur, deserunt quia enim doloribus cupiditate repellendus fugit
-                porro provident maxime sed blanditiis minima aut recusandae mollitia eveniet id unde nobis similique ex
-                labore consequatur error voluptate! Esse officiis qui, tenetur dolorum inventore consequatur iure
-                necessitatibus aliquid soluta molestias labore in, pariatur tempora aspernatur reprehenderit at odit
-                incidunt veritatis saepe doloribus atque ipsam nemo unde. Quaerat quam accusamus maxime amet nihil fuga
-                placeat delectus ipsa? Est laudantium sed iure dolorem.
-            </p>
+    <div class="products-gallery">
+        <div class="product-card">
+            <div class="product-card__header">22 inch tyre</div>
+            <div class="product-card__body">
+                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
+                <p>Rs. 20000/=</p>
+            </div>
+            <div class="product-card__footer">
+                <a class="btn btn--danger">More info</a>
+                <button class="btn btn--light-blue btn--square">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
         </div>
-    </article>
-    <article>
-        <div>
-            <h3>Tyres & Wheel Grooming</h3>
-            <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit saepe a vel. Aut eveniet fugit
-                quis maxime quo excepturi nisi natus commodi optio? Enim magnam saepe beatae alias necessitatibus porro
-                ducimus exercitationem accusamus ex dolorum pariatur consequuntur, rem eius qui ipsum voluptatum ipsa
-                quod commodi blanditiis, nostrum deserunt? Cupiditate optio quo itaque, earum velit consequuntur unde
-                nulla quisquam nostrum numquam veritatis tenetur laudantium voluptas, doloremque accusamus, quidem
-                voluptate sit fugiat. Dicta qui praesentium tempora harum quisquam commodi minima reprehenderit placeat
-                quia provident. Alias similique tempora ducimus fugiat eius aliquid, officiis repellendus quo iste
-                dolorum id consequatur rem quam inventore debitis?
-            </p>
+        <div class="product-card">
+            <div class="product-card__header">22 inch tyre</div>
+            <div class="product-card__body">
+                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
+                <p>Rs. 20000/=</p>
+            </div>
+            <div class="product-card__footer">
+                <a class="btn btn--danger">More info</a>
+                <button class="btn btn--light-blue btn--square">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
         </div>
-        <img src="/images/article-image-2.jpg" alt="Article image 2">
-    </article>
-    <article>
-        <img src="/images/article-image-3.jpg" alt="Article image 3">
-
-        <div>
-            <h3>Headlight Replacement</h3>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut praesentium commodi modi culpa fugit libero
-                eligendi, exercitationem voluptate rem quam molestiae, eaque officiis rerum delectus. Obcaecati ut
-                exercitationem ullam cum iure quae aut recusandae natus molestiae alias doloremque perferendis nemo,
-                amet sapiente quas voluptatibus eveniet commodi officiis sequi! Cum eveniet ipsa quod blanditiis quas
-                fuga hic sapiente inventore facere deserunt similique temporibus ex id illo, iste debitis eaque,
-                repellendus beatae placeat rerum quo? Ex nesciunt molestiae quo. Doloremque quam, dignissimos quo
-                tempore rerum unde adipisci, sit recusandae nulla cupiditate aspernatur quasi voluptatem delectus sequi
-                a impedit minus aliquam iure dolorum?
-
-            </p>
+        <div class="product-card">
+            <div class="product-card__header">22 inch tyre</div>
+            <div class="product-card__body">
+                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
+                <p>Rs. 20000/=</p>
+            </div>
+            <div class="product-card__footer">
+                <a class="btn btn--danger">More info</a>
+                <button class="btn btn--light-blue btn--square">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
         </div>
-    </article>
+        <div class="product-card">
+            <div class="product-card__header">22 inch tyre</div>
+            <div class="product-card__body">
+                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
+                <p>Rs. 20000/=</p>
+            </div>
+            <div class="product-card__footer">
+                <a class="btn btn--danger">More info</a>
+                <button class="btn btn--light-blue btn--square">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-card__header">22 inch tyre</div>
+            <div class="product-card__body">
+                <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
+                <p>Rs. 20000/=</p>
+            </div>
+            <div class="product-card__footer">
+                <a class="btn btn--danger btn--block">More info</a>
+                <button class="btn btn--light-blue btn--square">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
 </section>
