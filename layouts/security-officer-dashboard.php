@@ -30,31 +30,19 @@ DocumentHead::createHead(
             <a href="/stock-manager-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
-                    Overview
+                    Home
                 </span>
             </a>
             <a href="/stock-manager-dashboard/products">
                 <i class="fa-solid fa-box"></i>
                 <span>
-                    Products
+                    Admitting Report
                 </span>
             </a>
             <a href="/stock-manager-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    Orders
-                </span>
-            </a>
-            <a href="/stock-manager-dashboard/suppliers">
-                <i class="fa-solid fa-users"></i>
-                <span>
-                    Suppliers
-                </span>
-            </a>
-            <a href="/stock-manager-dashboard/reviews">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>
-                    Reviews
+                    Appointment Details
                 </span>
             </a>
 
