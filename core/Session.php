@@ -78,7 +78,7 @@ class Session
     }
 
 
-    public function deleteEmployeePersistentCookie(int $employee_id): void
+    public function deletePersistentEmployeeSession(int $employee_id): void
     {
         $ps = new PersistentSession();
         $ps->deleteEmployeeSession(employee_id: $employee_id);

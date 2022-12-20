@@ -63,7 +63,7 @@ class DashboardController
 
     public function getStockManagerDashboardProfile(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "stock_manager") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
 
             $stockManagerModel = new Stockmanager();
             $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
@@ -77,13 +77,18 @@ class DashboardController
                     'pageMainHeading' => 'My Profile',
                     'employeeId' => $req->session->get("user_id")
                 ]);
-            } else {
-                return $res->redirect(path: "/stock-manager-login");
             }
+            var_dump($_SESSION);
+            return "";
+//            return $res->redirect(path: "/stock-manager-login");
 
         }
 
-        return $res->redirect(path: "/stock-manager-login");
+//        return $res->redirect(path: "/stock-manager-login");
+        echo "<pre>";
+        var_dump($_SESSION);
+        echo "</pre>";
+        return "";
 
 
     }

@@ -48,21 +48,21 @@ class ProductsController
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
             foreach ($rawBrands as $rawBrand) {
-                $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
 
             $modelCategory = new Category();
             $rawCategories = $modelCategory->getCategories();
             $categories = [];
             foreach ($rawCategories as $rawCategory) {
-                $categories[$rawCategory['category_id']] =  $rawCategory['name'];
+                $categories[$rawCategory['category_id']] = $rawCategory['name'];
             }
 
             $modelSupplier = new Supplier();
             $rawSuppliers = $modelSupplier->getSuppliers();
             $suppliers = [];
             foreach ($rawSuppliers as $rawSupplier) {
-                $suppliers[$rawSupplier['supplier_id']] =  $rawSupplier['name'];
+                $suppliers[$rawSupplier['supplier_id']] = $rawSupplier['name'];
             }
 
             return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
@@ -87,7 +87,7 @@ class ProductsController
         $product = new Product($body);
         $result = $product->addProducts();
 
-        if(is_string($result)) {
+        if (is_string($result)) {
             var_dump($result);
             return "";
         }
@@ -104,25 +104,25 @@ class ProductsController
         $rawBrands = $modelBrand->getBrands();
         $brands = [];
         foreach ($rawBrands as $rawBrand) {
-            $brands[$rawBrand['brand_id']] =  $rawBrand['brand_name'];
+            $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
         }
 
         $modelCategory = new Category();
         $rawCategories = $modelCategory->getCategories();
         $categories = [];
         foreach ($rawCategories as $rawCategory) {
-            $categories[$rawCategory['category_id']] =  $rawCategory['name'];
+            $categories[$rawCategory['category_id']] = $rawCategory['name'];
         }
 
         $modelSupplier = new Supplier();
         $rawSuppliers = $modelSupplier->getSuppliers();
         $suppliers = [];
         foreach ($rawSuppliers as $rawSupplier) {
-            $suppliers[$rawSupplier['supplier_id']] =  $rawSupplier['name'];
+            $suppliers[$rawSupplier['supplier_id']] = $rawSupplier['name'];
         }
 
 
-        if(is_array($result)){
+        if (is_array($result)) {
             return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
                 'models' => $models,
                 'brands' => $brands,
@@ -136,11 +136,11 @@ class ProductsController
             ]);
         }
 
-        if($result){
+        if ($result) {
             return $res->redirect(path: "/stock-manager-dashboard/products");
         }
 
-        return $res->render("500", "error",[
+        return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
 

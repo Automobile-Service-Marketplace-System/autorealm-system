@@ -16,13 +16,13 @@ class DocumentHead
         $isDev = $_ENV["MODE"] === "development";
 
         $cssIncludes = "";
-        if ($isDev) {
-            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
-        } else {
+//        if ($isDev) {
+//            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
+//        } else {
             foreach ($css as $cssFile) {
                 $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
             }
-        }
+//        }
 
 
 

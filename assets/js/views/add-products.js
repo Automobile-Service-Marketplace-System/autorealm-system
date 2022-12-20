@@ -11,21 +11,23 @@ addProductButton?.addEventListener("click", () => {
     const para = document.createElement("p")
     para.innerHTML = "Are you sure you want to add this product?"
     modelContent.appendChild(para)
+
     const actions = document.createElement("div")
+    actions.classList.add("button-area")
     const cancelBtn = document.createElement("button")
+    actions.appendChild(cancelBtn)
     cancelBtn.innerHTML = "Cancel"
-    cancelBtn.classList.add("btn","btn--danger", "modal-close-btn")
+    cancelBtn.classList.add("btn","btn--danger", "btn--thin", "modal-close-btn")
 
 
     const confirmBtn = document.createElement("button")
+    actions.appendChild(confirmBtn)
     confirmBtn.innerHTML = "Confirm"
-    confirmBtn.classList.add("btn", "btn--success")
+    confirmBtn.classList.add("btn", "btn--thin", "btn--success")
     confirmBtn.addEventListener("click", () => {
         addProductForm.submit()
     })
 
-    actions.appendChild(cancelBtn)
-    actions.appendChild(confirmBtn)
     modelContent.appendChild(actions)
 
     Modal.show({

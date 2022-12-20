@@ -4,8 +4,8 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
-
-
+use PDOException;
+use Exception;
 
 use app\core\Request;
 use app\core\Response;
@@ -26,19 +26,6 @@ class Product
 
     public function getProducts(): array
     {
-
-        // $result = $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
-//        echo "<pre>";
-//        var_dump($result);
-//        echo "</pre>";
-
-        // return $result;
-
-//        $stmt = $this->pdo->prepare("SELECT * FROM product");
-//        $stmt->execute();
-//        return $stmt->fetchAll(PDO::FETCH_OBJ);
-
-        // return $this->pdo->query("SELECT * FROM product")-> fetchAll(PDO::FETCH_ASSOC);
 
         return $this->pdo->query(
             "SELECT 
@@ -63,35 +50,76 @@ class Product
 
     }
 
+    public function getProductsForHomePage(int | null $count = null, int | null $page = 1): array
+    {
+        $whereClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $products =  $this->pdo->query(
+            "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity
+
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id
+            
+                    WHERE  p.quantity > 0 ORDER BY p.item_code $whereClause $pageClause"
+
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        $totlaProducts = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "products" => $products,
+            "total" => $totlaProducts['total']
+        ];
+    }
+
     public function addProducts(): bool|array|string
     {
         //$errors = $this->validateRegisterBody();
         $errors = [];
-
         if (empty($errors)) {
-            $query = "INSERT INTO product 
+            try {
+                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
+                $imagesAsJSON = json_encode($imageUrls);
+            } catch (Exception $e) {
+                $errors["image"] = $e->getMessage();
+            }
+            if (empty($errors)) {
+                $query = "INSERT INTO product 
                     (
-                        name, category_id,product_type, brand_id, model_id, description, price, quantity
+                        name, category_id,product_type, brand_id, model_id, description, price, quantity,image
                     ) 
                  
                     VALUES 
                     (
-                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity
+                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity, :image
                     )";
-            //for product table
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue("name", $this->body["name"]);
-            $statement->bindValue(":category_id", $this->body["category_id"]);
-            $statement->bindValue(":product_type", $this->body["product_type"]);
-            $statement->bindValue(":brand_id", $this->body["brand_id"]);
-            $statement->bindValue(":model_id", $this->body["model_id"]);
-            $statement->bindValue(":description", $this->body["description"]);
-            $statement->bindValue(":price", $this->body["selling_price"]);
-            $statement->bindValue(":quantity", $this->body["quantity"]);
-            try {
-                $statement->execute();
+                //for product table
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue("name", $this->body["name"]);
+                $statement->bindValue(":category_id", $this->body["category_id"]);
+                $statement->bindValue(":product_type", $this->body["product_type"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindValue(":price", $this->body["selling_price"]);
+                $statement->bindValue(":quantity", $this->body["quantity"]);
+                $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                try {
+                    $statement->execute();
 
-                $query = "INSERT INTO stockpurchasereport 
+                    $query = "INSERT INTO stockpurchasereport 
                     (
                        item_code, date_time, supplier_id, unit_price, amount
                     ) 
@@ -105,24 +133,24 @@ class Product
                 $statement->bindValue(":item_code", $this->pdo->lastInsertId());
                 $statement->bindValue(":date_time", $this->body["date_time"]);
                 $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
-                $statement->bindValue(":unit_price", $this->body["unit_price"]);
+                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
                 $statement->bindValue(":amount", $this->body["quantity"]);
 
                 try {
                     $statement->execute();
                     return true;
                 } catch (\PDOException $e) {
-                    return false;
+                    return $e->getMessage();
                 }
-            } catch (\PDOException $e) {
-                return $e->getMessage();
-            }
 
+
+            } else {
+                return $errors;
+            }
 
         } else {
             return $errors;
         }
-
 
     }
 }
