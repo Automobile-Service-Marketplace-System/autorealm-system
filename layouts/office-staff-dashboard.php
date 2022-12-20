@@ -2,12 +2,11 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $officeStaff
+ * @var string $officeStaffId
  */
 
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
-
 
 ?>
 <!doctype html>
@@ -40,13 +39,13 @@ DocumentHead::createHead(
                     Invoices
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/office-staff-dashboard/customers">
                 <i class="fa-solid fa-user"></i>
                 <span>
                     Customers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/office-staff-dashboard/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
@@ -68,7 +67,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $officeStaff, role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $officeStaffId,employeeType: 'office_staff', role: "Office staff", id: 1);
             ?>
         </header>
 

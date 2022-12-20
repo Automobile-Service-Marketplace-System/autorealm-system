@@ -2,7 +2,7 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $foreman
+ * @var int $foremanId
  */
 
 use app\components\EmployeeProfileDropdown;
@@ -14,12 +14,11 @@ use app\utils\DocumentHead;
 <?php
 DocumentHead::createHead(
     css: ["/css/style.css"],
-    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
+    title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm",
 );
 ?>
 
 <body style="overflow: hidden">
-<div class="pixel"></div>
 <main class="employee-dashboard-container">
     <aside class="employee-dashboard-container__sidebar">
         <div class="sidebar-brand">
@@ -33,7 +32,7 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/foreman-dashboard/products">
+            <a href="/foreman-dashboard/jobs">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Jobs
@@ -61,17 +60,18 @@ DocumentHead::createHead(
         </nav>
     </aside>
     <div class="employee-dashboard-container__content">
-
         <header class="employee-dashboard-container__content-header">
             <button class="employee-menu-btn  no_highlights">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $foreman, role: "Foreman", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", role: "Foreman", id: 1);
             ?>
         </header>
 
-        <div class="employee-dashboard-page">
+        <div class="employee-dashboard-page" style="position: relative">
+            <div class="employee-pixel"
+                 style="height: 1px; width: 1px; position: absolute;top: 0.5rem;background-color: transparent;"></div>
             <h1>
                 <?php echo $pageMainHeading; ?>
             </h1>

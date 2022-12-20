@@ -10,7 +10,7 @@ export default defineConfig({
     devSourcemap: process.env.MODE === "development",
   },
   build: {
-    sourcemap: process.env.MODE === "development" ? true : false,
+    sourcemap: process.env.MODE === "development",
     cssCodeSplit: false,
     emptyOutDir: false,
     rollupOptions: {

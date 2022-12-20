@@ -5,7 +5,7 @@
     /* shape */
     border-radius: 0.5rem;
     /* size */
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     /* transition */
     transition: all 0.2s ease-in-out;
     /* placement of children elements */
@@ -13,6 +13,7 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    line-height: normal;
 }
 
 .btn:hover {
@@ -41,7 +42,7 @@
 /* button variations with colors */
 
 .btn--success {
-    background-color: var(--color-success);
+    background-color: var(--color-success) !important;
 }
 
 .btn--success:hover {
@@ -49,7 +50,7 @@
 }
 
 .btn--info {
-    background-color: var(--color-info);
+    background-color: var(--color-info) !important;
 }
 
 .btn--info:hover {
@@ -57,7 +58,7 @@
 }
 
 .btn--warning {
-    background-color: var(--color-warning);
+    background-color: var(--color-warning) !important;
 }
 
 .btn--warning:hover {
@@ -65,7 +66,7 @@
 }
 
 .btn--danger {
-    background-color: var(--color-danger);
+    background-color: var(--color-danger) !important;
 }
 
 .btn--danger:hover {
@@ -73,7 +74,7 @@
 }
 
 .btn--light {
-    background-color: var(--color-light);
+    background-color: var(--color-light) !important;
     color: var(--color-black);
 }
 
@@ -82,7 +83,7 @@
 }
 
 .btn--dark {
-    background-color: var(--color-dark);
+    background-color: var(--color-dark) !important;
 }
 
 .btn--dark:hover {
@@ -90,7 +91,7 @@
 }
 
 .btn--white {
-    background-color: var(--color-white);
+    background-color: var(--color-white) !important;
     color: var(--color-dark);
 }
 
@@ -99,7 +100,7 @@
 }
 
 .btn--black {
-    background-color: var(--color-black);
+    background-color: var(--color-black) !important;
 }
 
 .btn--black:hover {
@@ -107,7 +108,7 @@
 }
 
 .btn--dark-blue {
-    background-color: var(--color-dark-blue);
+    background-color: var(--color-dark-blue) !important;
 }
 
 .btn--dark-blue:hover {
@@ -115,7 +116,7 @@
 }
 
 .btn--light-blue {
-    background-color: var(--color-light-blue);
+    background-color: var(--color-light-blue) !important;
 }
 
 .btn--light-blue:hover {
@@ -138,8 +139,50 @@
     border-radius: 50%;
 }
 
+.btn--square {
+    aspect-ratio: 1;
+    padding: 0.75rem;
+}
+
 .btn--thin {
+    /* colors */
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    /* shape */
+    border-radius: 0.5rem;
+    /* size */
     padding: 0.25rem 1rem;
+    /* transition */
+    transition: all 0.2s ease-in-out;
+    /* placement of children elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: normal;
+}
+
+.btn--thin:hover {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
+}
+
+.btn--thin:active {
+    transform: translateY(0.1rem);
+}
+
+.btn--thin:disabled {
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
+}
+
+.btn--thin:disabled:hover {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn--thin:disabled:active {
+    transform: translateY(0);
 }
 
 /* button variations based on size */

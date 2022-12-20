@@ -10,6 +10,7 @@ use app\models\Technician;
 use app\models\Foreman;
 use app\models\Officestaff;
 use app\models\Stockmanager;
+use app\models\Securityofficer;
 
 class DashboardController
 {
@@ -48,7 +49,8 @@ class DashboardController
                 ], layoutParams: [
                     'title' => 'My Profile',
                     'officeStaff' => $officeStaff,
-                    'pageMainHeading' => 'My Profile'
+                    'pageMainHeading' => 'My Profile',
+                    'officeStaffId' => $req->session->get('user_id')
                 ]);
             }
 
@@ -61,26 +63,36 @@ class DashboardController
 
     public function getStockManagerDashboardProfile(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "stock_manager") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
 
             $stockManagerModel = new Stockmanager();
             $stockManager = $stockManagerModel->getStockManagerById($req->session->get("user_id"));
             if ($stockManager) {
                 return $res->render(view: "stock-manager-dashboard-profile", layout: "stock-manager-dashboard", pageParams: [
-                    'stockmanager' => $stockManager
+                    'stockManager' => $stockManager
 
                 ], layoutParams: [
                     'title' => 'My Profile',
                     'stockManager' => $stockManager,
-                    'pageMainHeading' => 'My Profile'
+                    'pageMainHeading' => 'My Profile',
+                    'employeeId' => $req->session->get("user_id")
                 ]);
-            } else {
-                return $res->redirect(path: "/stock-manager-login");
             }
+            var_dump($_SESSION);
+            return "";
+//            return $res->redirect(path: "/stock-manager-login");
 
         }
 
-        return $res->redirect(path: "/stock-manager-login");
+//        return $res->redirect(path: "/stock-manager-login");
+        echo "<pre>";
+        var_dump($_SESSION);
+        echo "</pre>";
+        return "";
+
+
+    }
+
     public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
     {
         return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
@@ -100,13 +112,11 @@ class DashboardController
                     'foreman' => $foreman
                 ], layoutParams: [
                     'title' => 'Profile',
-                    'foreman' => $foreman,
+                    'foremanId' => $req->session->get("user_id"),
                     'pageMainHeading' => 'Profile'
                 ]);
             }
-
             return $res->redirect(path: "/employee-login");
-
         }
         return $res->redirect(path: "/employee-login");
     }
@@ -133,15 +143,48 @@ class DashboardController
         return $res->redirect(path: "/employee-login");
     }
 
-
-    /**
-     * TODO: Complete the method to load stock manager's profile page
-     * @param Request $req
-     * @param Response $res
-     * @return string
-     */
-    public function getStockManagerDashboardProfile(Request $req, Response $res): string
+    public function getAdminDashboardProfile(Request $req, Response $res): string
     {
-        return "WIP, to be completed by Avishka";
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") == "admin") {
+            $adminModel = new Admin();
+            $admin = $adminModel->getAdminById($req->session->get("user_id"));
+            if ($admin) {
+                return $res->render(view: "admin-dashboard-profile", layout: "admin-dashboard", pageParams: [
+                    'admin' => $admin
+                ], layoutParams: [
+                        'title' => 'Profile',
+                        'admin' => $admin,
+                        'pageMainHeading' => 'Profile',
+                        'employeeId'=> $req->session->get("user_id")
+                    ]);
+            }
+
+            return $res->redirect(path: "/employee-login");
+
+        }
+        return $res->redirect(path: "/employee-login");
     }
+    
+    public function getSecurityOfficerDashboardProfile(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
+            $securityOfficerModel = new SecurityOfficer();
+            $securityOfficer = $securityOfficerModel->getSecurityOfficerById($req->session->get("user_id"));
+            if ($securityOfficer) {
+                return $res->render(view: "security-officer-dashboard-profile", layout: "security-officer-dashboard", pageParams: [
+                    'securityOfficer' => $securityOfficer
+                ], layoutParams: [
+                        'title' => 'Profile',
+                        'security-officer' => $securityOfficer,
+                        'pageMainHeading' => 'Profile',
+                        'securityOfficerId' => $req->session->get("user_id"),
+                    ]);
+            }
+
+            return $res->redirect(path: "/employee-login");
+
+        }
+        return $res->redirect(path: "/employee-login");
+    }
+
 }

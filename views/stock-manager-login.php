@@ -24,8 +24,8 @@
         justify-content: center;
         width: 100vw;
         height: 100vh;
-        background-color: #f8f8f8;
 
+        background-color: #f8f8f8;
     }
 
     .stock-manager-login{
@@ -76,9 +76,11 @@
 </style>
 
 
+
 <div class="form-container">
     <form class="stock-manager-login" action="/stockmanager-login" method="post">
         <div class="stock-sign-heading">Stock Manager Signup</div>
+
         <div class="input-container">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email address">

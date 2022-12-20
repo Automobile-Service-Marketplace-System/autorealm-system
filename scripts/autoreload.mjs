@@ -22,6 +22,7 @@ const paths = [
   "models",
   `public/index.php`,
   `public/js/index.js`,
+  `public/css/style.css`,
   "core",
   "layouts",
   "views",

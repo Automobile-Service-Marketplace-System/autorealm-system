@@ -1,0 +1,25 @@
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-block: 2rem;
+}
+
+
+.pagination-item {
+    background-color: var(--color-white);
+    outline: 2px  var(--color-light-blue) solid;
+    color: var(--color-light-blue);
+    border-radius: 0.5rem;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    aspect-ratio: 1;
+}
+
+
+.pagination-item--active {
+    background-color: var(--color-light-blue);
+    color: var(--color-white);
+}

@@ -10,25 +10,29 @@ class DocumentHead
      * @param string $title
      * @return void
      */
-    public static function createHead(array $css = [], array $js = [], string $title = "AutoRealm"): void
+    public static function createHead(array $css = [], array $js = [], string $title = "AutoRealm", array $cdnJS = []): void
     {
 
         $isDev = $_ENV["MODE"] === "development";
 
         $cssIncludes = "";
-        if ($isDev) {
-            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
-        } else {
+//        if ($isDev) {
+//            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
+//        } else {
             foreach ($css as $cssFile) {
                 $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
             }
-        }
+//        }
 
 
 
         $jsIncludes = "";
         foreach ($js as $jsFile) {
             $jsIncludes .= "<script src='$jsFile'></script>";
+        }
+
+        foreach ($cdnJS as $jsFile) {
+            $jsIncludes .= $jsFile;
         }
 
 

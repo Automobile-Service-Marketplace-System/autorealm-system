@@ -59,4 +59,12 @@ class Request
         return $body;
     }
 
+    public function cookies() : array
+    {
+        $cookies = [];
+        foreach ($_COOKIE as $key => $value) {
+            $cookies[$key] = filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        return $cookies;
+    }
 }

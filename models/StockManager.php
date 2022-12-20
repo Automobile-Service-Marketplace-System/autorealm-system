@@ -156,7 +156,7 @@ class StockManager
                 $errors['email'] = 'Email does not exist';
             } else {
 //                if (!password_verify($this->body['password'], $stockManager->password))
-                if ( $this->body['password'] != $employee->password) {
+                if ( !password_verify(password: $this->body['password'] , hash: $employee->password)) {
                     $errors['password'] = 'Password is incorrect';
                 }
             }

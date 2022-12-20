@@ -36,7 +36,10 @@ use app\components\FormItem;
         additionalAttributes: "minlength='6' pattern='.{6,}'"
     );
     ?>
-
+    <div class="form-item form-item--checkbox">
+        <input type="checkbox" name="remember" id="remember" value="1">
+        <label for="remember">Remember me</label>
+    </div>
     <a href="tel:+94703614315" class="link">Forgot password? contact admin to reset</a>
     <button class="btn btn--danger btn--block">
         Sign In

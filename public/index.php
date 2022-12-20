@@ -5,10 +5,14 @@ use app\controllers\SiteController;
 
 use app\controllers\EmployeeController;
 use app\controllers\AuthenticationController;
+use app\controllers\CustomersController;
 use app\controllers\DashboardController;
 use app\controllers\ProductsController;
-
-use app\utils\DevOnly;
+use app\controllers\JobsController;
+use app\controllers\AppointmentController;
+use app\controllers\VehiclesController;
+use app\controllers\SuppliersController;
+use app\controllers\ServicesController;
 
 use Dotenv\Dotenv;
 
@@ -21,9 +25,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
-DevOnly::printToBrowserConsole(password_hash("aq1sw2de3fr4", PASSWORD_DEFAULT));
-DevOnly::printToBrowserConsole($_COOKIE);
-
 
 
 // Instantiate the application object
@@ -35,6 +36,7 @@ $app = new Application(dirname(__DIR__));
 
 // main routes
 $app->router->get("/", [SiteController::class, 'getHomePage']);
+$app->router->get("/products", [SiteController::class, 'getProductsPage']);
 
 // customer's routes
 $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
@@ -48,12 +50,16 @@ $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustome
 // definitive employee routes
 $app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);
 $app->router->post("/employee-login", [AuthenticationController::class, 'loginEmployee']);
+$app->router->post("/employee-logout", [AuthenticationController::class, 'logoutEmployee']);
 
 // foreman routes
 $app->router->get("/foreman-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'getForemanDashboardProfile']);
-
+$app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
+$app->router->get("/foreman-dashboard/jobs/view", [JobsController::class, 'viewJobPage']);
+$app->router->get("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'getCreateInspectionReportPage']);
 // technician routes
+
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
 $app->router->get("/technician-dashboard/profile", [DashboardController::class, 'getTechnicianDashboardProfile']);
 
@@ -61,21 +67,42 @@ $app->router->get("/technician-dashboard/profile", [DashboardController::class, 
 // administrator routes
 $app->router->get("/admin-login", [AuthenticationController::class, "getAdminLoginPage"]);
 $app->router->post('/admin-login', [AuthenticationController::class, "loginAdmin"]);
-$app->router->get("/admin-dashboard/create-employee", [EmployeeController::class, 'getCreateEmployeePage']);
-$app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
+$app->router->get("/admin-dashboard/employees", [EmployeeController::class, 'getViewEmployeesPage']);
+$app->router->get("/admin-dashboard/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
+$app->router->post("/admin-dashboard/employees/add",[EmployeeController::class,'registerEmployee']);
+$app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
+// $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
+$app->router->get("/admin-dashboard/services", [ServicesController::class, 'getServicesPage']);
+// $app->router->get("/admin-dashboard/services/add-services",[ServicesController::class,'getAddServicesPage']);
 
 // stock manager routes
 $app->router->get( "/stock-manager-login", [AuthenticationController::class,'getStockManagerLoginPage']);
 $app->router->post( "/stock-manager-login", [AuthenticationController::class,'loginStockManager']);
 $app->router->get("/stock-manager-dashboard/profile", [DashboardController::class, 'getStockManagerDashboardProfile']);
 $app->router->get("/stock-manager-dashboard/products", [ProductsController::class, 'getProductsPage']);
+$app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
+$app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
+$app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
 
-
-//officeStaff-login
+//office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
 $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
 $app->router->get("/office-staff-dashboard/overview", [DashboardController::class,'getOfficeStaffDashboardOverview']);
 $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
+$app->router->get("/office-staff-dashboard/customers", [CustomersController::class, 'getCustomersPage']);
+$app->router->get("/office-staff-dashboard/customers/add", [CustomersController::class, 'getAddCustomerPage']);
+$app->router->post("/office-staff-dashboard/customers/add", [CustomersController::class, 'addCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles", [VehiclesController::class, 'getVehiclesPage']);
+$app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
+$app->router->get("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
+$app->router->post("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
+
+
+//security officer roots
+$app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
+$app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
+$app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
 
 
 // run the application
