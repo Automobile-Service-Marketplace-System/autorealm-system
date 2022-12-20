@@ -32,6 +32,15 @@
     font-weight: lighter;
     margin-bottom: 0.75rem;
 }
+
+.button-area{
+    display:flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
 /*.stock-manager-add-products-form__product #name{*/
 
 /*}*/
