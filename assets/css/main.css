@@ -38,11 +38,13 @@
 @import "views/view-job.css";
 @import "views/office-staff-login.css";
 @import "views/office-staff-add-customer.css";
+@import "views/office-staff-dashboard-get-customer-vehicle.css"; 
 @import "views/add-products.css";
 @import "views/office-staff-dashboard-customers-page.css";
 @import "views/create-maintenance-report.css";
 @import "views/check-qrcode.css";
 @import "views/view-suppliers-page.css";
+@import "views/office-staff-dashboard-get-vehicle-by-customer.css";
 
 
 body {
