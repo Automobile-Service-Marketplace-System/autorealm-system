@@ -20,8 +20,9 @@ $hasProductTypeError = $hasErrors && isset($errors['product_type']);
 $hasBrandIdError = $hasErrors && isset($errors['brand_id']);
 $hasModelIdError = $hasErrors && isset($errors['model_id']);
 $hasDescriptionError = $hasErrors && isset($errors['description']);
-$hasAmountError = $hasErrors && isset($errors['amount']);
+$hasSellingPriceError = $hasErrors && isset($errors['selling_price']);
 $hasPriceError = $hasErrors && isset($errors['unit_price']);
+$hasQuantityError = $hasErrors && isset($errors['quantity']);
 $hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
 $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 $hasPriceError = $hasErrors && isset($errors['price']);
@@ -93,8 +94,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
                 label: "Selling Price",
                 name: "selling_price",
                 type: "number",
-                hasError: $hasNameError,
-                error: $hasNameError ? $errors['name'] : "",
+                hasError: $hasSellingPriceError,
+                error: $hasSellingPriceError ? $errors['selling_price'] : "",
                 additionalAttributes: "step='0.01' min='0.01'"
             );
 
@@ -131,8 +132,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
                 label: "Stock Quantity",
                 name: "quantity",
                 type: "number",
-                hasError: $hasAmountError,
-                error: $hasAmountError ? $errors['amount'] : "",
+                hasError: $hasQuantityError,
+                error: $hasQuantityError ? $errors['quantity'] : "",
                 additionalAttributes: "min='1' step='1'"
             );
             FormItem::render(
