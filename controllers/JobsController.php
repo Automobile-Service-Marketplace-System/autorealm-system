@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Foreman;
+use app\models\InspectionCondition;
 
 class JobsController
 {
@@ -63,12 +64,24 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
-            return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", layoutParams: [
+            $conditionModel = new InspectionCondition();
+            $conditions = $conditionModel->getConditions();
+            return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", pageParams: [
+                "conditions" => $conditions,
+            ], layoutParams: [
                 'title' => "Maintenance Inspection report for job #{$query['job_id']}",
                 'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
         return $res->redirect(path: "/employee-login");
+    }
+
+    public function createInspectionReport(Request $req, Response $res) : string {
+        echo "<pre>";
+        var_dump($_POST);
+        echo "</pre>";
+        echo "hello";
+        return "";
     }
 }
