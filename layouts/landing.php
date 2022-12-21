@@ -2,6 +2,7 @@
 /**
  * @var string $title
  * @var object $customer
+ * @var string $current_url
  */
 
 use app\utils\DocumentHead;
@@ -35,7 +36,7 @@ DocumentHead::createHead(
                 <?php if (isset($customer)) {
                 CustomerProfileDropdown::render($customer, 1);
             } else {
-                echo "<li><a href='/login' class='btn btn--thin btn--white login-btn'>Login</a></li>";
+                echo "<li><a href='/login?redirect_url=$current_url' class='btn btn--thin btn--white login-btn'>Login</a></li>";
             }
             ?>
 

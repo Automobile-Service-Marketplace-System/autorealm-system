@@ -51,13 +51,21 @@ class AuthenticationController
 
     public function getCustomerLoginForm(Request $req, Response $res): string
     {
-        return $res->render(view: "customer-login", layout: "main", layoutParams: [
+        $query = $req->query();
+        if ($req->session->get("is_authenticated")) {
+            return $res->redirect(path: $query['redirect_url'] ?? "/dashboard/profile");
+        }
+        return $res->render(view: "customer-login", layout: "main", pageParams: [
+            'redirect_url' => $query['redirect_url'] ?? "/dashboard/profile"
+        ], layoutParams: [
             'title' => 'Login'
         ]);
     }
 
     public function loginCustomer(Request $req, Response $res): string
     {
+        $query = $req->query();
+        $previousPath = $query['redirect_url'] ?? "/dashboard/profile";
         $body = $req->body();
         $customer = new Customer($body);
         $result = $customer->login();
@@ -76,7 +84,7 @@ class AuthenticationController
                 $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
                 $req->session->set("user_id", $result->customer_id);
                 $req->session->set("user_role", "customer"); // $_SESSION['user_role'] = "customer";
-                return $res->redirect(path: "/dashboard/profile");
+                return $res->redirect(path: $previousPath);
             } catch (\Exception $e) {
                 $errors = ['system' => 'Internal Error, please try again later.If the issue persists, please contact us.'];
                 return $res->render(view: "customer-login", pageParams: [
@@ -184,6 +192,23 @@ class AuthenticationController
 
     public function getEmployeeLoginPage(Request $req, Response $res): string
     {
+        if ($req->session->get("is_authenticated")) {
+            $job_role = $req->session->get("user_role");
+            if ($job_role === "admin") {
+                $path = "/admin-dashboard/profile";
+            } elseif ($job_role === "foreman") {
+                $path = "/foreman-dashboard/profile";
+            } elseif ($job_role === "stock_manager") {
+                $path = "/stock-manager-dashboard/profile";
+            } elseif ($job_role === "office_staff_member") {
+                $path = "/office-staff-dashboard/profile";
+            } elseif ($job_role === "technician") {
+                $path = "/technician-dashboard/profile";
+            } elseif ($job_role === "security_officer") {
+                $path = "/security-officer-dashboard/check-appointment";
+            }
+            return $res->redirect(path: $path);
+        }
         return $res->render(view: "employee-login", layout: "employee-auth", layoutParams: [
             'title' => 'Login'
         ]);

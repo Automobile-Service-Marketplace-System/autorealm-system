@@ -138,6 +138,21 @@ class Product
                 try {
                     $statement->execute();
                     return true;
+                    $statement = $this->pdo->prepare($query);
+                    $statement->bindValue(":item_code", $this->pdo->lastInsertId());
+                    $statement->bindValue(":date_time", $this->body["date_time"]);
+                    $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+                    $statement->bindValue(":unit_price", $this->body["unit_price"] * 100);
+                    $statement->bindValue(":amount", $this->body["quantity"]);
+
+                    try {
+                        $statement->execute();
+                        return true;
+                    } catch (\PDOException $e) {
+                        return $e->getMessage();
+                    }
+
+
                 } catch (\PDOException $e) {
                     return $e->getMessage();
                 }
@@ -145,8 +160,6 @@ class Product
                 return $errors;
             }
 
-        } else {
-            return $errors;
         }
 
     }
