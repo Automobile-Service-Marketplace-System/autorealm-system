@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
-use app\models\Foreman;
+use app\models\JobCard;
 use app\models\InspectionCondition;
 
 class JobsController
@@ -13,7 +13,18 @@ class JobsController
     public function getJobsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
-            return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", layoutParams: [
+
+            $jobCardModel = new JobCard();
+            $jobCards = $jobCardModel->getAllJobsByForemanID(foremanId: $req->session->get("user_id"));
+
+echo "<pre>";
+var_dump($jobCards);
+echo "</pre>";
+return "";
+
+            return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", pageParams: [
+                'jobs' => $jobCards,
+            ], layoutParams: [
                 'title' => 'Assigned Jobs',
                 'pageMainHeading' => 'Assigned Jobs',
                 'foremanId' => $req->session->get("user_id"),
