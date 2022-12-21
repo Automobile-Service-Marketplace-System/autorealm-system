@@ -57,7 +57,7 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
                 type: "file",
                 hasError: $hasImageError,
                 error: $hasImageError ? $errors['image'] : "",
-                additionalAttributes: "accept='image/*'"
+                additionalAttributes: "accept='image/*'",
 
             );
 
