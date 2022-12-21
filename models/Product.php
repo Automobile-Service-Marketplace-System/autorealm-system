@@ -84,6 +84,10 @@ class Product
         ];
     }
 
+    private function validateAddProducts(): array{
+
+    }
+
     public function addProducts(): bool|array|string
     {
         //$errors = $this->validateRegisterBody();
