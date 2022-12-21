@@ -110,19 +110,19 @@ class VehiclesController
             foreach ($rawBrands as $rawBrand) {
                 $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
-            // return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
-            //     pageParams:[
-            //         "vehicle" => $vehicle,
-            //         'errors' => $result,
-            //         'body' => $body,
-            //         'models' => $models,
-            //         'brands' => $brands,
-            //     ],
-            //     layoutParams:[
-            //         'title' => 'Add New Vehicle',
-            //         'pageMainHeading' => 'Add New Vehicle',
-            //         'officeStaffId' => $req->session->get("user_id")
-            //     ]);
+            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
+                pageParams:[
+                    "vehicle" => $vehicle,
+                    'errors' => $result,
+                    'body' => $body,
+                    'models' => $models,
+                    'brands' => $brands,
+                ],
+                layoutParams:[
+                    'title' => 'Add New Vehicle',
+                    'pageMainHeading' => 'Add New Vehicle',
+                    'officeStaffId' => $req->session->get("user_id")
+                ]);
             return $res->json([
                 "errors" => $result
             ]);
@@ -136,5 +136,6 @@ class VehiclesController
             "error" => "Something went wrong. Please try again later.",
         ]);
     }
+
 
 }
