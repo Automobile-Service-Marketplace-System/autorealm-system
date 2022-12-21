@@ -23,3 +23,69 @@
     background-color: var(--color-light-blue);
     color: var(--color-white);
 }
+
+.product-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 2rem;
+}
+
+.product-filters  input:focus, .product-filters select:focus  {
+    outline: none;
+}
+
+
+.product-search {
+    position: relative;
+}
+
+
+.product-search input {
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    box-shadow: 0rem 0.25rem 1rem rgba(var(--dark), 0.2);
+    min-width: 250px;
+}
+
+.product-search svg {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+.product-filter--select {
+    padding: 0.61rem 1rem;
+    border-radius: 100px;
+    box-shadow: 0rem 0.25rem 1rem rgba(var(--dark), 0.2);
+}
+
+.product-price {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    border-radius: 100px;
+    background-color: var(--color-white);
+    box-shadow: 0rem 0.25rem 1rem rgba(var(--dark), 0.2);
+}
+
+.product-price span {
+    margin-right: 1rem;
+}
+
+.product-price input {
+    width: 80px;
+    border-left: 2px solid var(--color-text-secondary);
+    border-right: 2px solid var(--color-text-secondary);
+}
+
+.product-price input:nth-child(3) {
+    width: 80px;
+    border-left: none;
+    border-right: none;
+}
+
+.product-price input::placeholder {
+    text-align: center;
+}

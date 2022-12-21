@@ -33,7 +33,7 @@ use app\components\ProductCard;
                     BUY<br>
                     <strong>HIGH QUALITY</strong><br> PRODUCTS
                 </h1>
-                <a class="cta-btn">
+                <a class="cta-btn" href="#our-products">
                     See our products
                 </a>
             </div>
