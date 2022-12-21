@@ -26,6 +26,7 @@ $hasSupplierIdError = $hasErrors && isset($errors['supplier_id']);
 $hasDateTimeError = $hasErrors && isset($errors['date_time']);
 $hasPriceError = $hasErrors && isset($errors['price']);
 $hasImageError = $hasErrors && isset($errors['image']);
+$hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
 
 
 ?>
@@ -140,8 +141,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
                 label: "Unit Price",
                 name: "unit_price",
                 type: "number",
-                hasError: $hasPriceError,
-                error: $hasPriceError ? $errors['unit_price'] : "",
+                hasError: $hasUnitPriceError,
+                error: $hasUnitPriceError ? $errors['unit_price'] : "",
                 additionalAttributes: "step='0.01' min='0.01'"
 
             );

@@ -39,7 +39,7 @@ class Supplier
                 
                 FROM supplier s LEFT JOIN stockpurchasereport s2 on s.supplier_id = s2.supplier_id 
                                 INNER JOIN ( SELECT s3.supplier_id, s3.amount, MAX(s3.date_time) as 'Last Purchase Date' FROM stockpurchasereport s3 GROUP BY s3.supplier_id) 
-                                s4 on s2.supplier_id=s4.supplier_id and s4.`Last Purchase Date`=s2.date_time ORDER BY s.supplier_id 
+                                s4 on s2.supplier_id=s4.supplier_id and s4.`Last Purchase Date`=s2.date_time GROUP BY s.supplier_id ORDER BY s.supplier_id 
 
 "
         )->fetchAll(PDO::FETCH_ASSOC);
