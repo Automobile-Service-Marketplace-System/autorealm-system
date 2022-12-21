@@ -70,7 +70,7 @@ class CustomersController
     {
         $body = $req->body();
         $customer = new Customer($body);
-        $result = $customer->register();
+        $result = $customer->registerWithVehicle();
 
         if (is_array($result)) {
             $modelModel = new Model();
