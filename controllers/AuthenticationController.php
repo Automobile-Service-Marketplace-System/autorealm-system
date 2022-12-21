@@ -192,7 +192,7 @@ class AuthenticationController
 
     public function getEmployeeLoginPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated")) {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
             $job_role = $req->session->get("user_role");
             if ($job_role === "admin") {
                 $path = "/admin-dashboard/profile";
