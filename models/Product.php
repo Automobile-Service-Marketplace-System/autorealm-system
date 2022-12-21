@@ -116,7 +116,6 @@ class Product
                 $statement->bindValue(":price", $this->body["selling_price"]);
                 $statement->bindValue(":quantity", $this->body["quantity"]);
                 $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
-                try {
                     $statement->execute();
 
                     $query = "INSERT INTO stockpurchasereport 
@@ -135,15 +134,13 @@ class Product
                 $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
                 $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
                 $statement->bindValue(":amount", $this->body["quantity"]);
-
+                    
                 try {
                     $statement->execute();
                     return true;
                 } catch (\PDOException $e) {
                     return $e->getMessage();
                 }
-
-
             } else {
                 return $errors;
             }
