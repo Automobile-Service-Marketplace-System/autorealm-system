@@ -58,6 +58,7 @@ $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'ge
 $app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
 $app->router->get("/foreman-dashboard/jobs/view", [JobsController::class, 'viewJobPage']);
 $app->router->get("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'getCreateInspectionReportPage']);
+$app->router->post("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'createInspectionReport']);
 // technician routes
 
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);

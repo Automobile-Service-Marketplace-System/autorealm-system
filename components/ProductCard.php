@@ -13,7 +13,8 @@ class ProductCard
     public static function render(array $product, bool $is_authenticated) :void {
 
 
-        $isButtonDisabled = $is_authenticated ? "disabled" : "";
+        $isButtonDisabled = !$is_authenticated ? "disabled" : "";
+        $buttonTitle = !$is_authenticated ? "Login to add to cart" : "Add to cart";
 
         echo "<div class='product-card' id='product-{$product['ID']}'>
             <div class='product-card__header'>{$product['Name']}</div>
@@ -23,7 +24,7 @@ class ProductCard
             </div>
             <div class='product-card__footer'>
                 <a class='btn btn--danger btn--block' href='/products/view?id={$product['ID']}'>More info</a>
-                <button class='btn btn--light-blue btn--square' $isButtonDisabled>
+                <button class='btn btn--light-blue btn--square' title='$buttonTitle'  $isButtonDisabled>
                     <i class='fa-solid fa-cart-plus'></i>
                 </button>
             </div>

@@ -80,6 +80,7 @@ class Response
         foreach ($params as $key => $value) {
             $$key = $value;
         }
+        $current_url = urlencode(filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL));
         ob_start();
         include_once Application::$rootDir . "/layouts/$layout.php";
         return ob_get_clean();
