@@ -123,6 +123,15 @@
     box-shadow: 0 0.5rem 0.5rem rgba(var(--light-blue), 0.2);
 }
 
+
+.btn--light-blue:disabled {
+    background-color: var(--color-disabled) !important;
+}
+
+.btn--dark-blue:disabled {
+    background-color: var(--color-disabled) !important;
+}
+
 /* button variations based on state */
 .btn--loading {
     pointer-events: none;
@@ -145,21 +154,7 @@
 }
 
 .btn--thin {
-    /* colors */
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    /* shape */
-    border-radius: 0.5rem;
-    /* size */
     padding: 0.25rem 1rem;
-    /* transition */
-    transition: all 0.2s ease-in-out;
-    /* placement of children elements */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    line-height: normal;
 }
 
 .btn--thin:hover {

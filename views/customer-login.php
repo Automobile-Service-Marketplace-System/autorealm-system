@@ -2,6 +2,7 @@
 /**
  * @var array $errors
  * @var array $body
+ * @var string $redirect_url
  */
 
 use app\components\FormItem;
@@ -13,7 +14,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 ?>
 
 <div class="customer-auth">
-    <form action="/login" method="post" class="customer-auth-form">
+    <form action="/login?redirect_url=<?php echo $redirect_url ?>" method="post" class="customer-auth-form">
         <h1>Welcome back !</h1>
         <?php
         FormItem::render(

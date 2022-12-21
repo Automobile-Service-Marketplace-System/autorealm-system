@@ -12,6 +12,37 @@ use app\components\ProductCard;
 
 ?>
 
+<div class="product-filters">
+    <div class="product-search">
+        <input type="text" placeholder="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+        <select name="type" id="product-type" class="product-filter--select">
+            <option value="Tyres">Tyres</option>
+            <option value="Tyres">Tyres</option>
+            <option value="Tyres">Tyres</option>
+            <option value="Tyres">Tyres</option>
+            <option value="Tyres">Tyres</option>
+            <option value="Tyres">Tyres</option>
+        </select>
+    <div class="product-price">
+    <p>
+        <i class="fa-solid fa-dollar-sign"></i>
+        <span>Price</span>
+    </p>
+        <input type="number" placeholder="Min">
+        <input type="number" placeholder="Max">
+    </div>
+    <select name="type" id="product-type" class="product-filter--select">
+        <option value="Tyres">Tyres</option>
+        <option value="Tyres">Tyres</option>
+        <option value="Tyres">Tyres</option>
+        <option value="Tyres">Tyres</option>
+        <option value="Tyres">Tyres</option>
+        <option value="Tyres">Tyres</option>
+    </select>
+</div>
+
 <p class="product-count">
     Showing <?php echo $limit; ?> of <?php echo $total; ?> products
 </p>
