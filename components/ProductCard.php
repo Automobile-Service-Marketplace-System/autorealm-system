@@ -24,7 +24,7 @@ class ProductCard
             </div>
             <div class='product-card__footer'>
                 <a class='btn btn--danger btn--block' href='/products/view?id={$product['ID']}'>More info</a>
-                <button class='btn btn--light-blue btn--square' title='$buttonTitle'  $isButtonDisabled>
+                <button class='btn btn--light-blue btn--square add-to-cart' title='$buttonTitle'  $isButtonDisabled data-productId='{$product['ID']}'>
                     <i class='fa-solid fa-cart-plus'></i>
                 </button>
             </div>
