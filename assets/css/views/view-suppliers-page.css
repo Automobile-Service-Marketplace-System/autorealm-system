@@ -12,7 +12,17 @@
 
 }
 
+#stock-manager-add-supplier-form .top-part-form {
+
+    margin-bottom: 2rem;
+    background-color: #e53030;
+}
+
+
 #stock-manager-add-supplier-form h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -22,6 +32,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    margin-bottom: 1.5rem;
 
 }
 
@@ -42,7 +53,7 @@
 }
 
 #stock-manager-add-supplier-form .add-supplier-actions {
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     display: flex;
     justify-content: flex-end;
     gap: 1rem;

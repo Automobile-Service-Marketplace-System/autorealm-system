@@ -8,11 +8,18 @@ const addSupplierBtn = document.querySelector('#add-supplier-btn');
 const addSupplierForm = htmlToElement(`<div>
 
             <form action="/stock-manager-dashboard/suppliers" method="post" class="stock-manager-add-supplier-form" enctype="multipart/form-data" id="stock-manager-add-supplier-form">
-                <button class="modal-close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-            <h1>Supplier Details</h1>
-            
+      
+            <div class="top-part-form">
+                <div>
+                    <h1>Supplier Details</h1>
+                </div>
+                <div>
+                    <button class="modal-close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+            </div>
            
             <div class="add-supplier-input-wrapper">
                 <div class="form-item">
