@@ -41,8 +41,15 @@ addSupplierBtn?.addEventListener('click', () => {
                 <label for='sales_manager'>Sales Manager Name.<sup>*</sup></label>
                 <input type='text' name='sales_manager' id='sales_manager' placeholder='' required  value=''   >
             
-            <div class="form-container"></div>
-            <button class="btn" id="open-another">Open another modal</button>
+            <div class="add-supplier-actions">
+                <div>
+                    <button class="btn btn--danger" type="reset">Reset</button>
+                </div>
+                <div>
+<!--                <button class="btn" id="open-another">Open another modal</button>-->
+                    <button class="btn add-sup-button" >Submit</button>
+                </div>
+            </div>
            </div>`
     //console.log(template)
     const element = htmlToElement(addSupplier);
