@@ -8,9 +8,17 @@ const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
 const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
-<button class="modal-close-btn">
-    <i class="fas fa-times"></i>
-</button>
+
+<div class="add-vehicle-form_title">
+    <h1 class="office-staff-add-customer-form__vehicle__title">
+        Add New Vehicle
+    </h1>
+
+    <button class="modal-close-btn">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
 <div class="office-staff-add-customer-form__vehicle">
 
     <div class='form-item '>
@@ -42,7 +50,7 @@ const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehi
       </div><div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
-                <option value='1' selected>Motorcycle</option><option value='2' >Motor Tricycle</option><option value='3' >Motor Vehicle</option><option value='4' >Motor Lorry</option><option value='5' >Motor Coach</option><option value='6' >Special Purpose Vehicle</option>
+                <option value='1' selected>Bike</option><option value='2' >Car</option><option value='3' >Jeep</option><option value='4' >Van</option><option value='5' >Lorry</option><option value='6' >Bus</option><option value='7' >Other</option>
             </select>
             
       </div><div class='form-item '>

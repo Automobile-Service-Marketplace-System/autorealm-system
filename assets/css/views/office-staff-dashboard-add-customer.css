@@ -1,0 +1,13 @@
+.office-staff-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.office-staff-add-customer-form__vehicle__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
