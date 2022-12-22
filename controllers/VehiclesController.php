@@ -123,6 +123,9 @@ class VehiclesController
                     'pageMainHeading' => 'Add New Vehicle',
                     'officeStaffId' => $req->session->get("user_id")
                 ]);
+            return $res->json([
+                "errors" => $result
+            ]);
         }
 
         if ($result) {
@@ -133,5 +136,6 @@ class VehiclesController
             "error" => "Something went wrong. Please try again later.",
         ]);
     }
+
 
 }

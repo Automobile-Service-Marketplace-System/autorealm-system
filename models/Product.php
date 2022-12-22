@@ -103,7 +103,7 @@ class Product
         if (trim($this->body['selling_price']) === "") {
             $errors['selling_price'] = "Price must not be empty";
         } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
-            $errors['selling_price'] = "Price must be a positive integer";
+            $errors['selling_price'] = "Price can not be a negative number";
         }
 
         if (trim($this->body['quantity']) === "") {
@@ -152,7 +152,6 @@ class Product
                 $statement->bindValue(":price", $this->body["selling_price"]);
                 $statement->bindValue(":quantity", $this->body["quantity"]);
                 $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
-                try {
                     $statement->execute();
 
                     $query = "INSERT INTO stockpurchasereport 
@@ -165,6 +164,16 @@ class Product
                       :item_code, :date_time, :supplier_id, :unit_price, :amount 
                     )";
 
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":item_code", $this->pdo->lastInsertId());
+                $statement->bindValue(":date_time", $this->body["date_time"]);
+                $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
+                $statement->bindValue(":amount", $this->body["quantity"]);
+                    
+                try {
+                    $statement->execute();
+                    return true;
                     $statement = $this->pdo->prepare($query);
                     $statement->bindValue(":item_code", $this->pdo->lastInsertId());
                     $statement->bindValue(":date_time", $this->body["date_time"]);
