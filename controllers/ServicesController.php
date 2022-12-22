@@ -18,7 +18,7 @@ class ServicesController
              $services = $serviceModel->getServices();
 
 
-            return $res->render(view: "services-page", layout: "admin-dashboard", pageParams: [
+            return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $services], layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'services',
@@ -50,27 +50,28 @@ class ServicesController
     public function AddServices(Request $req, Response $res): string
     {
         $body = $req->body();
-        var_dump($body);
         $service = new Service($body);
         $result = $service->addServices();
 
         if (is_string($result)) {
-            var_dump($result);
-            return "";
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
         }
 
         if (is_array($result)) {
-            return $res->render(view: "admin-add-services", layout: "admin-dashboard", pageParams: [
-                'errors' => $result
-            ], layoutParams: [
-                'title' => 'Add Services',
-                'pageMainHeading' => 'Add Services',
-                'employeeId' => $req->session->get("user_id"),
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
             ]);
         }
 
         if ($result) {
-            return $res->redirect(path: "/admin-dashboard/services");
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Vehicle added successfully"
+            ]);
         }
 
         return $res->render("500", "error", [

@@ -34,9 +34,10 @@ foreach ($services as $service) {
 
 <div class="admin-add-button-set">
     <div class="add-button">
-        <a class="btn" href="services/add-services">
+        <button class="btn" id="add-service">
             <i class="fa-solid fa-plus"></i>
-            Add Services</a>
+            Add Service
+        </button>
     </div>
 
 </div>

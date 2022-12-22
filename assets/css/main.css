@@ -41,7 +41,7 @@
 @import "views/office-staff-add-customer.css";
 @import "views/office-staff-dashboard-get-customer-vehicle.css"; 
 @import "views/add-products.css";
-@import "views/add-services.css";
+@import "views/add-service.css";
 @import "views/office-staff-dashboard-customers-page.css";
 @import "views/create-maintenance-report.css";
 @import "views/check-qrcode.css";
@@ -51,7 +51,7 @@
 
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Nunito", sans-serif;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   overflow-x: hidden;

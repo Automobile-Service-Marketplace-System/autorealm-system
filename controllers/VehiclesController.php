@@ -95,43 +95,38 @@ class VehiclesController
         $result = $vehicle->addVehicle(customer_id: $query['id']);
 
         if (is_array($result)) {
-            $modelModel = new Model();
-            $rawModels = $modelModel->getModels();
-            $models = [];
-    
-            foreach ($rawModels as $rawModel) {
-                $models[$rawModel['model_id']] = $rawModel['model_name'];
-            }
-    
-            $modelBrand = new Brand();
-            $rawBrands = $modelBrand->getBrands();
-            $brands = [];
-    
-            foreach ($rawBrands as $rawBrand) {
-                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
-            }
-            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
-                pageParams:[
-                    "vehicle" => $vehicle,
-                    'errors' => $result,
-                    'body' => $body,
-                    'models' => $models,
-                    'brands' => $brands,
-                ],
-                layoutParams:[
-                    'title' => 'Add New Vehicle',
-                    'pageMainHeading' => 'Add New Vehicle',
-                    'officeStaffId' => $req->session->get("user_id")
-                ]);
+//            $modelModel = new Model();
+//            $rawModels = $modelModel->getModels();
+//            $models = [];
+//
+//            foreach ($rawModels as $rawModel) {
+//                $models[$rawModel['model_id']] = $rawModel['model_name'];
+//            }
+//
+//            $modelBrand = new Brand();
+//            $rawBrands = $modelBrand->getBrands();
+//            $brands = [];
+//
+//            foreach ($rawBrands as $rawBrand) {
+//                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+//            }
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
         }
 
         if ($result) {
-            return $res->redirect("/office-staff-dashboard/vehicles");
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Vehicle added successfully"
+            ]);
         }
 
         return $res->render(view:"500", layout:"plain", pageParams:[
             "error" => "Something went wrong. Please try again later.",
         ]);
     }
+
 
 }

@@ -58,6 +58,7 @@ $app->router->get("/foreman-dashboard/profile", [DashboardController::class, 'ge
 $app->router->get("/foreman-dashboard/jobs", [JobsController::class, 'getJobsPage']);
 $app->router->get("/foreman-dashboard/jobs/view", [JobsController::class, 'viewJobPage']);
 $app->router->get("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'getCreateInspectionReportPage']);
+$app->router->post("/foreman-dashboard/inspection-reports/create", [JobsController::class, 'createInspectionReport']);
 // technician routes
 
 $app->router->get("/technician-dashboard/overview", [DashboardController::class, 'getForemanDashboardOverview']);
@@ -73,7 +74,7 @@ $app->router->post("/admin-dashboard/employees/add",[EmployeeController::class,'
 $app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
 $app->router->get("/admin-dashboard/services", [ServicesController::class, 'getServicesPage']);
 $app->router->get("/admin-dashboard/services/add-services", [ServicesController::class, 'getAddServicesPage']);
-$app->router->post("/admin-dashboard/services/add-services", [ServicesController::class, 'AddServices']);
+$app->router->post("/admin-dashboard/services/add", [ServicesController::class, 'AddServices']);
 
 // stock manager routes
 $app->router->get( "/stock-manager-login", [AuthenticationController::class,'getStockManagerLoginPage']);
