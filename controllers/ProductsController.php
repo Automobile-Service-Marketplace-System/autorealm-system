@@ -21,7 +21,7 @@ class ProductsController
             $products = $productModel->getProducts();
 
 
-            return $res->render(view: "products-page", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
                 "products" => $products], layoutParams: [
                 'title' => 'Products',
                 'pageMainHeading' => 'Products',
@@ -65,7 +65,7 @@ class ProductsController
                 $suppliers[$rawSupplier['supplier_id']] = $rawSupplier['name'];
             }
 
-            return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-add-products", layout: "stock-manager-dashboard", pageParams: [
                 'models' => $models,
                 'brands' => $brands,
                 'categories' => $categories,
@@ -123,7 +123,7 @@ class ProductsController
 
 
         if (is_array($result)) {
-            return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-add-products", layout: "stock-manager-dashboard", pageParams: [
                 'models' => $models,
                 'brands' => $brands,
                 'categories' => $categories,

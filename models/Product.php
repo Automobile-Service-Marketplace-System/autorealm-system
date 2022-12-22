@@ -50,11 +50,11 @@ class Product
 
     }
 
-    public function getProductsForHomePage(int | null $count = null, int | null $page = 1): array
+    public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
     {
         $whereClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $products =  $this->pdo->query(
+        $products = $this->pdo->query(
             "SELECT 
                         p.item_code as ID, 
                         p.name as Name, 
@@ -84,10 +84,46 @@ class Product
         ];
     }
 
+    private function validateAddProducts(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['name']) === "") {
+            $errors['name'] = "Product name must not be empty";
+        } else {
+            $query = "SELECT * FROM product WHERE lower(name) = lower(:name)";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name", $this->body['name']);
+            $statement->execute();
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = "Product name already exists";
+            }
+        }
+
+        if (trim($this->body['selling_price']) === "") {
+            $errors['selling_price'] = "Price must not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
+            $errors['selling_price'] = "Price can not be a negative number";
+        }
+
+        if (trim($this->body['quantity']) === "") {
+            $errors['quantity'] = "Quantity not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['quantity'])) {
+            $errors['quantity'] = "Quantity must be a positive";
+        }
+
+        if (trim($this->body['unit_price']) === "") {
+            $errors['unit_price'] = "Price must not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['unit_price'])) {
+            $errors['unit_price'] = "Price must be a positive";
+        }
+
+        return $errors;
+    }
+
     public function addProducts(): bool|array|string
     {
-        //$errors = $this->validateRegisterBody();
-        $errors = [];
+        $errors = $this->validateAddProducts();
         if (empty($errors)) {
             try {
                 $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
@@ -116,7 +152,6 @@ class Product
                 $statement->bindValue(":price", $this->body["selling_price"]);
                 $statement->bindValue(":quantity", $this->body["quantity"]);
                 $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
-                try {
                     $statement->execute();
 
                     $query = "INSERT INTO stockpurchasereport 
@@ -129,6 +164,16 @@ class Product
                       :item_code, :date_time, :supplier_id, :unit_price, :amount 
                     )";
 
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":item_code", $this->pdo->lastInsertId());
+                $statement->bindValue(":date_time", $this->body["date_time"]);
+                $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
+                $statement->bindValue(":amount", $this->body["quantity"]);
+                    
+                try {
+                    $statement->execute();
+                    return true;
                     $statement = $this->pdo->prepare($query);
                     $statement->bindValue(":item_code", $this->pdo->lastInsertId());
                     $statement->bindValue(":date_time", $this->body["date_time"]);
@@ -151,7 +196,11 @@ class Product
                 return $errors;
             }
 
+        }else{
+            return $errors;
         }
 
     }
 }
+
+
