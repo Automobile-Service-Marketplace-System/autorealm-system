@@ -86,6 +86,7 @@ $app->router->get("/stock-manager-dashboard/products", [ProductsController::clas
 $app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
 $app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
 $app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
+$app->router->post("/stock-manager-dashboard/suppliers/add", [ProductsController::class, 'addSuppliers']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
