@@ -7,7 +7,6 @@ use app\core\Response;
 use app\models\Brand;
 use app\models\Vehicle;
 use app\models\Model;
-use app\models\Type;
 
 class VehiclesController
 {
@@ -95,6 +94,7 @@ class VehiclesController
         $result = $vehicle->addVehicle(customer_id: $query['id']);
 
         if (is_array($result)) {
+
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
             $models = [];
@@ -106,9 +106,9 @@ class VehiclesController
             $modelBrand = new Brand();
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
-    
+
             foreach ($rawBrands as $rawBrand) {
-                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
 
             return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
@@ -117,7 +117,7 @@ class VehiclesController
                     'errors' => $result,
                     'body' => $body,
                     'models' => $models,
-                    'brands' => $brands
+                    'brands' => $brands,
                 ],
                 layoutParams:[
                     'title' => 'Add New Vehicle',

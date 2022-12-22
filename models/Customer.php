@@ -80,7 +80,7 @@ class Customer
     }
 
     public function registerWithVehicle() : bool | array | string {
-        $errors = $this->validateRegisterBody();
+        $errors = $this->validateRegisterWithVehicleBody();
 
         if (empty($errors)) {
             try {
