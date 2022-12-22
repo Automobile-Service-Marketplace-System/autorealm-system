@@ -13,6 +13,7 @@ use app\controllers\AppointmentController;
 use app\controllers\VehiclesController;
 use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
+use app\controllers\ShoppingCartController;
 
 use Dotenv\Dotenv;
 
@@ -45,7 +46,8 @@ $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginF
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
 $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
-
+$app->router->get("/shopping-cart", [ShoppingCartController::class, 'getCartPage']);
+$app->router->post("/shopping-cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
 
 // definitive employee routes
 $app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);

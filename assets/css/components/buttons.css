@@ -281,5 +281,28 @@
         display: none;
     }
 
+}
 
+#cart-link {
+    position: relative;
+}
+
+#cart-link svg {
+    font-size: 1.1rem;
+}
+
+
+.cart-count {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    background-color: var(--color-info);
+    color: var(--color-white);
+    font-size: 0.8rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    line-height: normal;
+    display: grid;
+    place-items: center;
 }
