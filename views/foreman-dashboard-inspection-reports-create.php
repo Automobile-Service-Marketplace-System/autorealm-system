@@ -4,6 +4,7 @@ use app\components\FormItem;
 
 /**
  * @var array $conditions
+ * @var array $vehicleDetails
  */
 
 ?>
@@ -12,11 +13,15 @@ use app\components\FormItem;
 <ul class="job-vehicle-details">
     <li>
         <strong>Vehicle:</strong>
-        Toyota GR Supra A91 CF Edition
+        <?php  echo $vehicleDetails['vehicle_name']  ?>
     </li>
     <li>
         <strong>Reg No:</strong>
-        QL 9904
+        <?php echo $vehicleDetails['reg_no']  ?>
+    </li>
+    <li>
+        <strong>Customer:</strong>
+        <?php echo $vehicleDetails['customer_name']  ?>
     </li>
 </ul>
 
