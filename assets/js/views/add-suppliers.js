@@ -75,17 +75,19 @@ addSupplierForm?.querySelector("#add-supplier-modal-btn")?.addEventListener("cli
                             <button class="btn modal-close-btn" id="add-supplier-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
+
+
     const element = htmlToElement(template);
+
     element.querySelector("#add-supplier-confirm-btn").addEventListener('click', () => {
         const submitBtn = addSupplierForm?.querySelector("#add-supplier-final-btn");
         console.log("clicked")
-        return
         submitBtn?.click();
     })
 
     Modal.show({
         content: element,
-        key: "Add vehicle confirmation",
+        key: "Add Supplier confirmation",
         closable: true,
     })
 })
