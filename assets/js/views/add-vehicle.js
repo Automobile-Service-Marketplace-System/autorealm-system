@@ -74,14 +74,38 @@ const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehi
         Reset
     </button>
 
-    <button class="btn">
-        Create an account
+    <button class="btn" id="add-vehicle-modal-btn" type="button">
+        Add vehicle
     </button>
+    <button style="display: none" type="submit" id="add-vehicle-final-btn"></button>
 </div>
 </form>`)
 
 
-addVehicleForm.addEventListener('submit', async (e) => {
+addVehicleForm?.querySelector("#add-vehicle-modal-btn")?.addEventListener("click", (e) => {
+
+    const template =  `<div>
+                        <h3>Are you sure you want to add this vehicle?</h3>
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
+                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
+                        </div>
+                        </div>`
+    const element = htmlToElement(template);
+    element.querySelector("#add-vehicle-confirm-btn").addEventListener('click', () => {
+        const submitBtn = addVehicleForm?.querySelector("#add-vehicle-final-btn");
+        submitBtn?.click();
+    })
+
+    Modal.show({
+        content: element,
+        key: "Add vehicle confirmation",
+        closable: true,
+    })
+})
+
+
+addVehicleForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
@@ -117,7 +141,7 @@ addVehicleForm.addEventListener('submit', async (e) => {
     }
 })
 
-addVehicleForm.addEventListener('reset', (e) => {
+addVehicleForm?.addEventListener('reset', (e) => {
     const formItems = addVehicleForm.querySelectorAll('.form-item')
     formItems.forEach(item => {
         item.classList.remove('form-item--error')
