@@ -15,6 +15,7 @@ class JobsController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
 
             $jobCardModel = new JobCard();
+            // get all job cards
             $jobCards = $jobCardModel->getAllJobsByForemanID(foremanId: $req->session->get("user_id"));
             return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", pageParams: [
                 'jobs' => $jobCards,
