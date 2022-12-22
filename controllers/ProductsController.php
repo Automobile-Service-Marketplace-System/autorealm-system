@@ -152,6 +152,30 @@ class ProductsController
         $body = $req->body();
         $supplier = new Supplier($body);
         $result = $supplier->addSuppliers();
+
+        if(is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if(is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "errors" => [
+                    "error" => "Internal Server Error"
+                ]
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Supplier added successfully"
+            ]);
+        }
+
     }
 
 }

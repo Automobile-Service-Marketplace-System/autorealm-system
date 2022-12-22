@@ -9,7 +9,7 @@ const params = Object.fromEntries(urlSearchParams.entries());
 
 const addSupplierForm = htmlToElement(`<div>
 
-            <form action="/stock-manager-dashboard/suppliers" method="post" class="stock-manager-add-supplier-form" enctype="multipart/form-data" id="stock-manager-add-supplier-form">
+            <form class="stock-manager-add-supplier-form" id="stock-manager-add-supplier-form">
       
             <div class="top-part-form">
                 <div>
@@ -59,20 +59,40 @@ const addSupplierForm = htmlToElement(`<div>
             <div class="add-supplier-actions">
                 
                     <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
-                    <button class="btn add-sup-button" >Submit</button>
-                
+                    <button class="btn add-sup-button" type="button" id="add-supplier-modal-btn">Submit</button>
+                    <button style="display: none" type="submit" id="add-supplier-final-btn"></button>
+
             </div>
             </form>
            </div>`)
 
+addSupplierForm?.querySelector("#add-supplier-modal-btn")?.addEventListener("click", (e) => {
+
+    const template =  `<div>
+                        <h3>Are you sure you want to add this supplier?</h3>
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
+                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn modal-close-btn" id="add-supplier-confirm-btn">Confirm</button>                        
+                        </div>
+                        </div>`
+    const element = htmlToElement(template);
+    element.querySelector("#add-supplier-confirm-btn").addEventListener('click', () => {
+        const submitBtn = addSupplierForm?.querySelector("#add-supplier-final-btn");
+        console.log("clicked")
+        return
+        submitBtn?.click();
+    })
+
+    Modal.show({
+        content: element,
+        key: "Add vehicle confirmation",
+        closable: true,
+    })
+})
+
+
 addSupplierBtn?.addEventListener('click', () => {
 
-    //const addSupplier =
-    //console.log(template)
-    //const element = htmlToElement(addSupplier);
-    //console.log(element)
-    //const openAnotherBtn = element.querySelector('#open-another');
-   // openAnotherBtn?.addEventListener('click', () => {
        Modal.show({
            closable: true,
            key: "add-supplier",
@@ -80,32 +100,13 @@ addSupplierBtn?.addEventListener('click', () => {
        })
     } )
 
-addSupplierForm.addEventListener('reset', (e) => {
-    const formItems = addSupplierForm.querySelectorAll('.form-item')
-    formItems.forEach(item => {
-        item.classList.remove('form-item--error')
-        const errorElement = item.querySelector('small')
-        if (errorElement) {
-            item.removeChild(errorElement)
-        }
-    })
-})
-// import {Modal} from "../components/Modal"
-
-//     Modal.show({
-//         key: "add-supplier",
-//         closable: false,
-//         content: element
-//     })
-// })
-// const addSupplierButton = document.querySelector("#add-supplier")
 
 
 addSupplierForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/stock-manager-dashboard/suppliers`, {
+        const result = await fetch(`/stock-manager-dashboard/suppliers/add`, {
             body: formData,
             method: 'POST'
         })
@@ -138,6 +139,16 @@ addSupplierForm?.addEventListener('submit', async (e) => {
     }
 })
 
+addSupplierForm.addEventListener('reset', (e) => {
+    const formItems = addSupplierForm.querySelectorAll('.form-item')
+    formItems.forEach(item => {
+        item.classList.remove('form-item--error')
+        const errorElement = item.querySelector('small')
+        if (errorElement) {
+            item.removeChild(errorElement)
+        }
+    })
+})
 
 
 window.addEventListener('load', () => {

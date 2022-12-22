@@ -38,7 +38,7 @@ class Supplier
                 s4.amount as 'Last Supply Amount'
                 
                 FROM supplier s LEFT JOIN stockpurchasereport s2 on s.supplier_id = s2.supplier_id 
-                                INNER JOIN ( SELECT s3.supplier_id, s3.amount, MAX(s3.date_time) as 'Last Purchase Date' FROM stockpurchasereport s3 GROUP BY s3.supplier_id) 
+                                LEFT JOIN ( SELECT s3.supplier_id, s3.amount, MAX(s3.date_time) as 'Last Purchase Date' FROM stockpurchasereport s3 GROUP BY s3.supplier_id) 
                                 s4 on s2.supplier_id=s4.supplier_id and s4.`Last Purchase Date`=s2.date_time GROUP BY s.supplier_id ORDER BY s.supplier_id 
 
 "
@@ -68,6 +68,12 @@ class Supplier
             $statement->bindValue(":sales_manager", $this->body["sales_manager"]);
 
             try{
+                $statement->execute();
+
+                $query = "INSERT INTO suppliercontact (supplier_id, contact_no) VALUES (:supplier_id, :contact_no)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":supplier_id", $this->pdo->lastInsertId());
+                $statement->bindValue(":contact_no", $this->body["contact_no"]);
                 $statement->execute();
                 return true;
 
