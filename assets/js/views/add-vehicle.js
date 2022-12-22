@@ -81,7 +81,7 @@ const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehi
 </form>`)
 
 
-addVehicleForm.addEventListener('submit', async (e) => {
+addVehicleForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
@@ -117,7 +117,7 @@ addVehicleForm.addEventListener('submit', async (e) => {
     }
 })
 
-addVehicleForm.addEventListener('reset', (e) => {
+addVehicleForm?.addEventListener('reset', (e) => {
     const formItems = addVehicleForm.querySelectorAll('.form-item')
     formItems.forEach(item => {
         item.classList.remove('form-item--error')
