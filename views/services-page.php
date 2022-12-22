@@ -12,8 +12,6 @@ $columns = ["Service Code", "Service Name", "Description", "Price","Action" ];
 
 $items = [];
 foreach ($services as $service) {
-    // $quantityColor= $product["Quantity"]>20?"success":($product["Quantity"]>10?"warning":"danger");
-    // $quantityElement= "<p class='product-quantity'>  <span class='status status--$quantityColor'></span>{$product["Quantity"]}</p>";
     $items[] = [
         "ID" => $service["ID"],
         "Name" => $service["Name"],

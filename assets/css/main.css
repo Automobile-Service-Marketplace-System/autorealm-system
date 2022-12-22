@@ -29,6 +29,7 @@
 
 /* importing css files for views */
 @import "views/products-page.css";
+@import "views/services-page.css";
 @import "views/customer-dashboard-profile.css";
 @import "views/customer-auth.css";
 @import "views/create-employee.css";
@@ -40,6 +41,7 @@
 @import "views/office-staff-add-customer.css";
 @import "views/office-staff-dashboard-get-customer-vehicle.css"; 
 @import "views/add-products.css";
+@import "views/add-services.css";
 @import "views/office-staff-dashboard-customers-page.css";
 @import "views/create-maintenance-report.css";
 @import "views/check-qrcode.css";
