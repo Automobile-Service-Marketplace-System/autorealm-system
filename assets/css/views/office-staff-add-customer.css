@@ -1,28 +1,53 @@
 .office-staff-add-customer-form {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
+
 .office-staff-add-customer-form__customer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
 }
 
 .office-staff-add-customer-form__vehicle {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
 }
 
-.office-staff-header{
-  margin-top: 30px;
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-size: 1.5rem;
+.office-staff-header {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.5rem;
 }
 
-.office-staff-btn{
-  margin-top: 30px;
-  display: flex;
-  gap:500px;
+.add-vehicle-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+
+#add-vehicle-form {
+    position: relative;
+    padding-top: 1rem;
+}
+
+
+#add-vehicle-form .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+
+#add-vehicle-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+#add-vehicle-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
 }
