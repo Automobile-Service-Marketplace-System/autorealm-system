@@ -45,4 +45,38 @@ class Supplier
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addSuppliers(){
+        //$errors = $this->validateAddSupplierForm();
+        $errors = [];
+
+        if(empty($errors)){
+            $query = "INSERT INTO supplier 
+                (
+                 name, company_reg_no, email , address, sales_manager
+                ) 
+            VALUES 
+                (
+                :name, :company_reg_no, :email, :address, :sales_manager
+                 )";
+
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":name", $this->body["name"]);
+            $statement->bindValue(":company_reg_no", $this->body["company_reg_no"]);
+            $statement->bindValue(":email", $this->body["email"]);
+            $statement->bindValue(":address", $this->body["address"]);
+            $statement->bindValue(":sales_manager", $this->body["sales_manager"]);
+
+            try{
+                $statement->execute();
+                return true;
+
+            }
+            catch(\PDOException $e){
+                return $e->getMessage();
+            }
+        }
+
+    }
+
 }

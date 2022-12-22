@@ -4,6 +4,8 @@ import Notifier from "../components/Notifier";
 
 const addSupplierBtn = document.querySelector('#add-supplier-btn');
 
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
 
 const addSupplierForm = htmlToElement(`<div>
 
@@ -97,3 +99,56 @@ addSupplierForm.addEventListener('reset', (e) => {
 //     })
 // })
 // const addSupplierButton = document.querySelector("#add-supplier")
+
+
+addSupplierForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    try {
+        const result = await fetch(`/stock-manager-dashboard/suppliers`, {
+            body: formData,
+            method: 'POST'
+        })
+
+        if(result.status === 400) {
+            const resultBody = await result.json()
+            for (const inputName in resultBody.errors) {
+                const inputWrapper = addSupplierForm.querySelector(`#${inputName}`).parentElement
+                inputWrapper.classList.add('form-item--error')
+                const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                inputWrapper.appendChild(errorElement)
+            }
+        }
+        else if (result.status === 201) {
+
+            // add success message to url search params
+            window.location.search = new URLSearchParams({
+                ...params,
+                success: 'Supplier added successfully'
+            }).toString()
+            location.reload()
+        }
+    } catch (e) {
+        Notifier.show({
+            closable: true,
+            header: 'Error',
+            type: 'danger',
+            text: e.message
+        })
+    }
+})
+
+
+
+window.addEventListener('load', () => {
+    const success = params['success']
+    if (success) {
+        Notifier.show({
+            closable: true,
+            header: 'Success',
+            text: "Supplier added successfully",
+            type: 'success',
+            duration: 5000
+        })
+    }
+})

@@ -9,6 +9,7 @@ use app\models\Model;
 use app\models\Brand;
 use app\models\Category;
 use app\models\Supplier;
+use app\models\Vehicle;
 
 class ProductsController
 {
@@ -144,6 +145,13 @@ class ProductsController
             "error" => "Something went wrong. Please try again later."
         ]);
 
+    }
+
+    public function addSuppliers(Request $req, Response $res): string{
+        $query = $req->query();
+        $body = $req->body();
+        $supplier = new Supplier($body);
+        $result = $supplier->addSuppliers();
     }
 
 }
