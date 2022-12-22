@@ -18,7 +18,7 @@ class ServicesController
              $services = $serviceModel->getServices();
 
 
-            return $res->render(view: "services-page", layout: "admin-dashboard", pageParams: [
+            return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $services], layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'services',
