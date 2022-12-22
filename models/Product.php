@@ -103,7 +103,7 @@ class Product
         if (trim($this->body['selling_price']) === "") {
             $errors['selling_price'] = "Price must not be empty";
         } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
-            $errors['selling_price'] = "Price must be a positive integer";
+            $errors['selling_price'] = "Price can not be a negative number";
         }
 
         if (trim($this->body['quantity']) === "") {
