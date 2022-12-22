@@ -8,12 +8,12 @@ use app\components\Table;
 
 //var_dump($suppliers);
 
-$columns = ["ID", "Name", "Address","Sales Manager","Last Purchase Date", "Last Supply Amount", "Email", "Actions" ];
+$columns = ["ID", "Name", "Address", "Sales Manager", "Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
 
-$items =[];
+$items = [];
 
 
-foreach($suppliers as $supplier){
+foreach ($suppliers as $supplier) {
     $items[] = [
         "ID" => $supplier["ID"],
         "Name" => $supplier["Name"],
@@ -37,9 +37,10 @@ foreach($suppliers as $supplier){
 
     <div class="stock-manager-add-button-set">
         <div class="add-button">
-            <a class="btn" href="products/add-suppliers">
+            <button class="btn" id="add-supplier-btn">
                 <i class="fa-solid fa-plus"></i>
-                Add Suppliers</a>
+                Add Suppliers
+            </button>
         </div>
 
     </div>
