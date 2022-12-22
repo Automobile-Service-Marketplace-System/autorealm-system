@@ -1,10 +1,12 @@
 import {Modal} from "../components/Modal"
 
-
+const receivedDateInput = document.querySelector("#date_time")
 const addProductForm = document.querySelector(".stock-manager-add-products-form")
 const addProductButton = document.querySelector("#add-product-btn")
 
-
+if(receivedDateInput){
+    receivedDateInput.max = new Date().toISOString().split("T")[0];
+}
 addProductButton?.addEventListener("click", () => {
 
     const modelContent = document.createElement("div")

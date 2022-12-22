@@ -11,6 +11,7 @@ html {
   --dark-blue: 15, 14, 21;
   --light-blue: 24, 23, 40;
   --disabled: 0, 0, 0, 0.5;
+  --info: 0, 83, 243;
   --text-primary: 40, 40, 40;
   --text-secondary: 85, 85, 85;
   --bg-primary: var(--light);
