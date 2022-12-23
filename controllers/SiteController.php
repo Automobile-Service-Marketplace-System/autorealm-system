@@ -43,7 +43,7 @@ class SiteController
     public function getProductsPage(Request $req, Response $res): string
     {
         $query = $req->query();
-        $limit = isset($query['limit']) ? (int)$query['limit'] : 12;
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
         $page = isset($query['page']) ? (int)$query['page'] : 1;
         $productModel = new Product();
         $result = $productModel->getProductsForHomePage(count: $limit, page: $page);

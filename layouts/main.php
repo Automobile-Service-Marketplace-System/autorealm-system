@@ -7,6 +7,7 @@
 
 use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
+use app\components\CustomerHeader;
 
 ?>
 <!doctype html>
@@ -27,25 +28,9 @@ DocumentHead::createHead(
             <p class="brand__name">AutoRealm</p>
         </a>
     </div>
-    <nav class="main-nav">
-        <ul>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/about-us">About Us</a></li>
-            <li><a href="/contact-us">Contact Us</a></li>
-            <?php if (isset($customer)) {
-                echo "<li> <a href='/shopping-cart' class='btn btn--round btn--light' id='cart-link'> 
-                            <i class='fa-solid fa-cart-shopping'></i>
-                            <div class='cart-count'>
-                                1
-                            </div>
-                          </a> </li>";
-                CustomerProfileDropdown::render($customer, 1);
-            } else {
-                echo "<li><a href='/login?redirect_url=$current_url' class='btn btn--thin btn--dark-blue login-btn'>Login</a></li>";
-            } ?>
-        </ul>
-    </nav>
+    <?php
+    CustomerHeader::render(customer: $customer, current_url: $current_url);
+    ?>
     <button class="menu-btn menu-btn--solid no_highlights">
         <div class="menu-btn__bar"></div>
     </button>

@@ -121,13 +121,13 @@ class NotifierElement {
     handleDragClose(wrapper) {
         wrapper.addEventListener("touchstart", (e) => {
             this.x1 = e.touches[0].clientX;
-        });
+        }, {passive: true});
         wrapper.addEventListener("touchend", (e) => {
             this.x2 = e.changedTouches[0].clientX;
             if (this.x2 >= this.x1 + 100) {
                 this.close(wrapper);
             }
-        });
+        }, {passive: true});
     }
 
     /**

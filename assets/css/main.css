@@ -46,6 +46,7 @@
 @import "views/view-suppliers-page.css";
 @import "views/products.css";
 @import "views/office-staff-dashboard-get-vehicle-by-customer.css";
+@import "views/cart.css";
 
 
 body {
