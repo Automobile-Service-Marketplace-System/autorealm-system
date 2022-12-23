@@ -33,29 +33,18 @@ DocumentHead::createHead(
                 </span>
             </a>
             <a href="/foreman-dashboard/jobs">
-                <i class="fa-solid fa-box"></i>
+                <i class="fa-solid fa-clock"></i>
                 <span>
                     Jobs
                 </span>
             </a>
-            <a href="/foreman-dashboard/orders">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/foreman-dashboard/inspection-reports">
+                <i class="fa-solid fa-file"></i>
                 <span>
-                    Orders
+                    Inspection reports
                 </span>
             </a>
-            <a href="/foreman-dashboard/suppliers">
-                <i class="fa-solid fa-users"></i>
-                <span>
-                    Suppliers
-                </span>
-            </a>
-            <a href="/foreman-dashboard/reviews">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>
-                    Reviews
-                </span>
-            </a>
+
 
         </nav>
     </aside>
