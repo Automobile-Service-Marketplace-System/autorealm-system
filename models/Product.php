@@ -62,7 +62,8 @@ class Product
                         m.model_name as Model,
                         b.brand_name as Brand,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
-                        p.quantity as Quantity
+                        p.quantity as Quantity,
+                        p.image as Image
 
                     FROM product p 
                         
@@ -149,9 +150,11 @@ class Product
                 $statement->bindValue(":brand_id", $this->body["brand_id"]);
                 $statement->bindValue(":model_id", $this->body["model_id"]);
                 $statement->bindValue(":description", $this->body["description"]);
-                $statement->bindValue(":price", $this->body["selling_price"]);
+                $statement->bindValue(":price", $this->body["selling_price"] * 100);
                 $statement->bindValue(":quantity", $this->body["quantity"]);
                 $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+
+                try {
                     $statement->execute();
 
                     $query = "INSERT INTO stockpurchasereport 
@@ -164,16 +167,6 @@ class Product
                       :item_code, :date_time, :supplier_id, :unit_price, :amount 
                     )";
 
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":item_code", $this->pdo->lastInsertId());
-                $statement->bindValue(":date_time", $this->body["date_time"]);
-                $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
-                $statement->bindValue(":unit_price", $this->body["unit_price"]*100);
-                $statement->bindValue(":amount", $this->body["quantity"]);
-                    
-                try {
-                    $statement->execute();
-                    return true;
                     $statement = $this->pdo->prepare($query);
                     $statement->bindValue(":item_code", $this->pdo->lastInsertId());
                     $statement->bindValue(":date_time", $this->body["date_time"]);
@@ -188,15 +181,15 @@ class Product
                         return $e->getMessage();
                     }
 
-
-                } catch (\PDOException $e) {
+                } catch (Exception $e) {
                     return $e->getMessage();
                 }
+
             } else {
                 return $errors;
             }
 
-        }else{
+        } else {
             return $errors;
         }
 

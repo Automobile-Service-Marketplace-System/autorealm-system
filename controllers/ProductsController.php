@@ -9,6 +9,7 @@ use app\models\Model;
 use app\models\Brand;
 use app\models\Category;
 use app\models\Supplier;
+use app\models\Vehicle;
 
 class ProductsController
 {
@@ -21,7 +22,7 @@ class ProductsController
             $products = $productModel->getProducts();
 
 
-            return $res->render(view: "products-page", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
                 "products" => $products], layoutParams: [
                 'title' => 'Products',
                 'pageMainHeading' => 'Products',
@@ -65,7 +66,7 @@ class ProductsController
                 $suppliers[$rawSupplier['supplier_id']] = $rawSupplier['name'];
             }
 
-            return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-add-products", layout: "stock-manager-dashboard", pageParams: [
                 'models' => $models,
                 'brands' => $brands,
                 'categories' => $categories,
@@ -123,7 +124,7 @@ class ProductsController
 
 
         if (is_array($result)) {
-            return $res->render(view: "stock-manager-add-products", layout: "stock-manager-dashboard", pageParams: [
+            return $res->render(view: "stock-manager-dashboard-add-products", layout: "stock-manager-dashboard", pageParams: [
                 'models' => $models,
                 'brands' => $brands,
                 'categories' => $categories,
@@ -143,6 +144,37 @@ class ProductsController
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
+
+    }
+
+    public function addSuppliers(Request $req, Response $res): string{
+        $query = $req->query();
+        $body = $req->body();
+        $supplier = new Supplier($body);
+        $result = $supplier->addSuppliers();
+
+        if(is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if(is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "errors" => [
+                    "error" => "Internal Server Error"
+                ]
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Supplier added successfully"
+            ]);
+        }
 
     }
 

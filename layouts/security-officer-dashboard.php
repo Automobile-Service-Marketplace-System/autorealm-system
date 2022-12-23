@@ -27,34 +27,22 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/security-officer-dashboard/check-appointment">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
-                    Overview
+                    Home
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/employee-login">
                 <i class="fa-solid fa-box"></i>
                 <span>
-                    Products
+                    Admitting Reports
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/employee-login">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    Orders
-                </span>
-            </a>
-            <a href="/stock-manager-dashboard/suppliers">
-                <i class="fa-solid fa-users"></i>
-                <span>
-                    Suppliers
-                </span>
-            </a>
-            <a href="/stock-manager-dashboard/reviews">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>
-                    Reviews
+                    Appointments
                 </span>
             </a>
 

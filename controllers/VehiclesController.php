@@ -8,7 +8,6 @@ use app\models\Brand;
 use app\models\Vehicle;
 use app\models\Model;
 
-
 class VehiclesController
 {
     public function getVehiclesPage(Request $req, Response $res) : string {
@@ -95,6 +94,7 @@ class VehiclesController
         $result = $vehicle->addVehicle(customer_id: $query['id']);
 
         if (is_array($result)) {
+
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
             $models = [];
@@ -106,30 +106,21 @@ class VehiclesController
             $modelBrand = new Brand();
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
-    
+
             foreach ($rawBrands as $rawBrand) {
-                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
-            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
-                pageParams:[
-                    "vehicle" => $vehicle,
-                    'errors' => $result,
-                    'body' => $body,
-                    'models' => $models,
-                    'brands' => $brands,
-                ],
-                layoutParams:[
-                    'title' => 'Add New Vehicle',
-                    'pageMainHeading' => 'Add New Vehicle',
-                    'officeStaffId' => $req->session->get("user_id")
-                ]);
+            $res->setStatusCode(code: 400);
             return $res->json([
                 "errors" => $result
             ]);
         }
 
         if ($result) {
-            return $res->redirect("/office-staff-dashboard/vehicles");
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Vehicle added successfully"
+            ]);
         }
 
         return $res->render(view:"500", layout:"plain", pageParams:[

@@ -80,7 +80,7 @@ class Customer
     }
 
     public function registerWithVehicle() : bool | array | string {
-        $errors = $this->validateRegisterBody();
+        $errors = $this->validateRegisterWithVehicleBody();
 
         if (empty($errors)) {
             try {
@@ -271,7 +271,7 @@ class Customer
 
         //for vehicle
         if ($this->body['vin'] === '') {
-            $errors['contact_no'] = 'VIN must not be empty.';
+            $errors['vin'] = 'VIN must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE vin = :vin";
             $statement = $this->pdo->prepare($query);
@@ -287,7 +287,7 @@ class Customer
         }
 
         if ($this->body['engine_no'] === '') {
-            $errors['contact_no'] = 'Engine No must not be empty.';
+            $errors['engine_no'] = 'Engine No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no";
             $statement = $this->pdo->prepare($query);
@@ -303,7 +303,7 @@ class Customer
         }
 
         if ($this->body['reg_no'] === '') {
-            $errors['contact_no'] = 'Registration No must not be empty.';
+            $errors['reg_no'] = 'Registration No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no";
             $statement = $this->pdo->prepare($query);

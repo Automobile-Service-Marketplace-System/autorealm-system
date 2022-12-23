@@ -12,8 +12,6 @@ $columns = ["Service Code", "Service Name", "Description", "Price","Action" ];
 
 $items = [];
 foreach ($services as $service) {
-    // $quantityColor= $product["Quantity"]>20?"success":($product["Quantity"]>10?"warning":"danger");
-    // $quantityElement= "<p class='product-quantity'>  <span class='status status--$quantityColor'></span>{$product["Quantity"]}</p>";
     $items[] = [
         "ID" => $service["ID"],
         "Name" => $service["Name"],
@@ -36,9 +34,10 @@ foreach ($services as $service) {
 
 <div class="admin-add-button-set">
     <div class="add-button">
-        <a class="btn" href="services/add-services">
+        <button class="btn" id="add-service">
             <i class="fa-solid fa-plus"></i>
-            Add Services</a>
+            Add Service
+        </button>
     </div>
 
 </div>
