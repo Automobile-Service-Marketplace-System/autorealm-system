@@ -1,7 +1,7 @@
 import Notifier from "./Notifier";
 
 const addToCartButtons = document.querySelectorAll('.add-to-cart');
-
+const cartCountElement = document.querySelector('#cart-count')
 
 
 addToCartButtons.forEach((addToCartButton) => {
@@ -13,7 +13,7 @@ addToCartButtons.forEach((addToCartButton) => {
                 method: "POST",
                 body: formData,
             })
-            if(result.status === 201) {
+            if (result.status === 201) {
                 Notifier.show({
                     closable: true,
                     duration: 5000,
@@ -21,8 +21,9 @@ addToCartButtons.forEach((addToCartButton) => {
                     text: "Item added to cart successfully",
                     type: "success",
                 })
-            }
-            else if(result.status === 200) {
+                const currentCount = parseInt(cartCountElement.innerHTML.trim())
+                cartCountElement.innerHTML = `${currentCount + 1}`
+            } else if (result.status === 200) {
                 Notifier.show({
                     closable: true,
                     duration: 5000,
@@ -30,15 +31,14 @@ addToCartButtons.forEach((addToCartButton) => {
                     text: "Item already in cart",
                     type: "info",
                 })
-            }
-            else if(result.status === 401) {
+            } else if (result.status === 401) {
                 Notifier.show({
                     closable: true,
                     header: "Error",
                     text: "You must login to add to cart",
                     type: "danger",
                 })
-            } else  {
+            } else {
                 Notifier.show({
                     closable: true,
                     header: "Error",
@@ -46,7 +46,7 @@ addToCartButtons.forEach((addToCartButton) => {
                     type: "danger",
                 })
             }
-        } catch(e) {
+        } catch (e) {
             Notifier.show({
                 closable: true,
                 header: "Error",

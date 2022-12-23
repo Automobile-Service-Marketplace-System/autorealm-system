@@ -48,6 +48,8 @@ $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer'
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
 $app->router->get("/shopping-cart", [ShoppingCartController::class, 'getCartPage']);
 $app->router->post("/shopping-cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
+$app->router->post("/shopping-cart/update", [ShoppingCartController::class, 'updateCartItem']);
+$app->router->post("/shopping-cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
 
 // definitive employee routes
 $app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);

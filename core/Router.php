@@ -21,22 +21,14 @@ class Router
 
     public function get(string $path, callable|string|array $callback): void
     {
-        // $path = "/"
-        // $callback = [HomeController::class, 'getHomePage']
         $this->routes["get"][$path] = $callback;
-        // routes = {
-        //              "get" :
-        //                    {
-        //                       "/" : [HomeController::class, 'getHomePage']
-        //                    }
-        //  }
-
     }
 
     public function post(string $path, callable|string|array $callback): void
     {
         $this->routes["post"][$path] = $callback;
     }
+
 
     public function resolve(): string
     {

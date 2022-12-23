@@ -2,6 +2,8 @@
 
 namespace app\components;
 
+use JsonException;
+
 class ProductCard
 {
 
@@ -15,11 +17,15 @@ class ProductCard
 
         $isButtonDisabled = !$is_authenticated ? "disabled" : "";
         $buttonTitle = !$is_authenticated ? "Login to add to cart" : "Add to cart";
-
+        try {
+            $image = $product['Image'] === 'null' ? "/images/placeholders/product-image-placeholder.jpg" : json_decode($product['Image'], false, 512, JSON_THROW_ON_ERROR)[0];
+        } catch (JsonException $e) {
+            $image = "/images/placeholders/product-image-placeholder.jpg";
+        }
         echo "<div class='product-card' id='product-{$product['ID']}'>
             <div class='product-card__header'>{$product['Name']}</div>
             <div class='product-card__body'>
-                <img src='/images/placeholders/product-image-placeholder.jpg' alt='Product Image'>
+                <img src='$image' alt='Product Image for {$product['Name']}'>
                 <p>Rs. {$product["Price (LKR)"]}/=</p>
             </div>
             <div class='product-card__footer'>
