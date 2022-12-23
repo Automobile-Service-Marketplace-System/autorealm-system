@@ -8,7 +8,6 @@ use app\models\Brand;
 use app\models\Vehicle;
 use app\models\Model;
 
-
 class VehiclesController
 {
     public function getVehiclesPage(Request $req, Response $res) : string {
@@ -95,21 +94,22 @@ class VehiclesController
         $result = $vehicle->addVehicle(customer_id: $query['id']);
 
         if (is_array($result)) {
-//            $modelModel = new Model();
-//            $rawModels = $modelModel->getModels();
-//            $models = [];
-//
-//            foreach ($rawModels as $rawModel) {
-//                $models[$rawModel['model_id']] = $rawModel['model_name'];
-//            }
-//
-//            $modelBrand = new Brand();
-//            $rawBrands = $modelBrand->getBrands();
-//            $brands = [];
-//
-//            foreach ($rawBrands as $rawBrand) {
-//                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
-//            }
+
+            $modelModel = new Model();
+            $rawModels = $modelModel->getModels();
+            $models = [];
+    
+            foreach ($rawModels as $rawModel) {
+                $models[$rawModel['model_id']] = $rawModel['model_name'];
+            }
+    
+            $modelBrand = new Brand();
+            $rawBrands = $modelBrand->getBrands();
+            $brands = [];
+
+            foreach ($rawBrands as $rawBrand) {
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+            }
             $res->setStatusCode(code: 400);
             return $res->json([
                 "errors" => $result

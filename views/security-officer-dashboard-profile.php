@@ -5,9 +5,9 @@
 
 ?>
 
-<div class="customer-profile">
+<div class="employee-profile">
     <img src="<?php echo $securityOfficer->image ?>" alt="<?php echo $securityOfficer->f_name . ' ' . $securityOfficer->l_name . '\'s'; ?>">
-    <div class="customer-profile__info">
+    <div class="employee-profile__info">
         <p>
             <strong>
                 First name
@@ -52,7 +52,7 @@
 
         </p>
     </div>
-    <div class="customer-profile__actions">
+    <div class="employee-profile__actions">
         <button class="btn btn--danger" id="edit-customer-password">
             <i class="fa-solid fa-lock"></i>
             Edit password</button>

@@ -103,12 +103,13 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
                 // error: $hasFNameError ? $errors['vehicle_type'] : "",
                 value: "1",
                 options: [
-                    "1" => "Motorcycle",
-                    "2" => "Motor Tricycle",
-                    "3" => "Motor Vehicle",
-                    "4" => "Motor Lorry",
-                    "5" => "Motor Coach",
-                    "6" => "Special Purpose Vehicle"
+                    "1" => "Bike",
+                    "2" => "Car",
+                    "3" => "Jeep",
+                    "4" => "Van",
+                    "5" => "Lorry",
+                    "6" => "Bus",
+                    "7" => "Other"
                 ]
             );
 

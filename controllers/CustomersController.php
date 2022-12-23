@@ -73,10 +73,10 @@ class CustomersController
         $result = $customer->registerWithVehicle();
 
         if (is_array($result)) {
+
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
             $models = [];
-    
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
@@ -84,10 +84,11 @@ class CustomersController
             $modelBrand = new Brand();
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
-    
             foreach ($rawBrands as $rawBrand) {
-                $models[$rawBrand['brand_id']] = $rawBrand['brand_name'];
+                $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
+
+
             return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
                 pageParams:[
                     "customer" => $customer,
