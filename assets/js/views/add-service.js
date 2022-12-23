@@ -116,16 +116,3 @@ addServiceButton?.addEventListener("click", () => {
     })
 })
 
-
-window.addEventListener('load', () => {
-    const success = params['success']
-    if (success) {
-        Notifier.show({
-            closable: true,
-            header: 'Success',
-            text: "Vehicle added successfully",
-            type: 'success',
-            duration: 5000
-        })
-    }
-})

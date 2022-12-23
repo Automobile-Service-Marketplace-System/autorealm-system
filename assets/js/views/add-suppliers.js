@@ -70,9 +70,9 @@ addSupplierForm?.querySelector("#add-supplier-modal-btn")?.addEventListener("cli
 
     const template =  `<div>
                         <h3>Are you sure you want to add this supplier?</h3>
-                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
-                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
-                            <button class="btn modal-close-btn" id="add-supplier-confirm-btn">Confirm</button>                        
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin modal-close-btn" id="add-supplier-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
 
@@ -96,7 +96,7 @@ addSupplierForm?.querySelector("#add-supplier-modal-btn")?.addEventListener("cli
 addSupplierBtn?.addEventListener('click', () => {
 
        Modal.show({
-           closable: true,
+           closable: false,
            key: "add-supplier",
            content: addSupplierForm
        })
@@ -153,15 +153,4 @@ addSupplierForm.addEventListener('reset', (e) => {
 })
 
 
-window.addEventListener('load', () => {
-    const success = params['success']
-    if (success) {
-        Notifier.show({
-            closable: true,
-            header: 'Success',
-            text: "Supplier added successfully",
-            type: 'success',
-            duration: 5000
-        })
-    }
-})
+

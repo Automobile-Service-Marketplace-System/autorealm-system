@@ -19,8 +19,8 @@ foreach ($suppliers as $supplier) {
         "Name" => $supplier["Name"],
         "Address" => $supplier["Address"],
         "Sales Manager" => $supplier["Sales Manager"],
-        "Last Purchase Date" => $supplier["Last Purchase Date"],
-        "Last Supply Amount" => $supplier["Last Supply Amount"],
+        "Last Purchase Date" => $supplier["Last Purchase Date"] ?? "N/A",
+        "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
         "Email" => $supplier["Email"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                             <a href='' class='btn btn--rounded btn--warning'>

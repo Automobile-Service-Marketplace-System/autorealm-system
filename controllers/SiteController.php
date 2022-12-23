@@ -31,12 +31,17 @@ class SiteController
             return $res->render(view: "site-home", layout: "landing", pageParams: [
                 'products' => $result['products'],
                 "is_authenticated" => false,
+            ], layoutParams: [
+                'customer' => null,
             ]);
         }
 
         return $res->render(view: "site-home", layout: "landing", pageParams: [
             'products' => $result['products'],
             "is_authenticated" => false,
+        ], layoutParams:
+        [
+            'customer' => null,
         ]);
     }
 
@@ -72,6 +77,7 @@ class SiteController
                 "is_authenticated" => false,
             ], layoutParams: [
                 'title' => 'Products',
+                'customer' => null,
             ]);
         }
 
@@ -83,6 +89,7 @@ class SiteController
             "is_authenticated" => false,
         ], layoutParams: [
             'title' => 'Products',
+            'customer' => null,
         ]);
     }
 }

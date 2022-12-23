@@ -1,25 +1,27 @@
-<?php 
+<?php
 
 /**
  * @var array $vehicles
+ * @var object $customer
  */
 
 // var_dump($vehicles);
 ?>
-<div class="customer-details">
-    <strong class='customer-title'>
-        Customer Name:
-    </strong>
-    <?php echo " {$vehicles[0]['full_name']} " ?>
-</div>
+
 
 <div class="add-vehicle-for-customer">
+    <div class="customer-details">
+        <strong class='customer-title'>
+            Customer Name:
+        </strong>
+        <?php echo "{$customer->f_name} $customer->l_name" ?>
+    </div>
     <button id="add-vehicle-for-customer" class="btn">Add vehicle</button>
 </div>
 <div class='vehicle-card-container'>
     <?php
-foreach ($vehicles as $vehicle) {
-    echo "
+    foreach ($vehicles as $vehicle) {
+        echo "
 
             <div class='vehicle-card'>
                 <p>
@@ -97,7 +99,7 @@ foreach ($vehicles as $vehicle) {
                 
             </div>
         ";
-}
+    }
 
-?>
+    ?>
 </div>

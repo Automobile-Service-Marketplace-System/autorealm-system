@@ -44,7 +44,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "name",
                 hasError: $hasNameError,
                 error: $hasNameError ? $errors['name'] : "",
-
+                value: $hasNameError ? $body['name'] : "",
             );
 
             FormSelectItem::render(
@@ -53,7 +53,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "category_id",
                 hasError: $hasCategoryError,
                 error: $hasCategoryError ? $errors['category'] : "",
-                value: "1",
+                value: $hasCategoryError ? $body['category_id'] : "",
                 options: $categories
 
             );
@@ -64,10 +64,11 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "product_type",
                 hasError: $hasProductTypeError,
                 error: $hasProductTypeError ? $errors['product_type'] : "",
+                value: $hasProductTypeError ? $body['product_type'] : "",
                 options: [
                     "spare part" => "Spare Part",
                     "accessory" => "Accessory"
-                ]
+                ],
             );
 
             FormSelectItem::render(
@@ -76,7 +77,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "brand_id",
                 hasError: $hasBrandIdError,
                 error: $hasBrandIdError ? $errors['brand'] : "",
-                value: "1",
+                value: $hasBrandIdError ? $body['brand_id'] : "",
                 options: $brands
 
             );
@@ -86,7 +87,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "model_id",
                 hasError: $hasModelIdError,
                 error: $hasModelIdError ? $errors['model'] : "",
-                value: "1",
+                value: $hasModelIdError ? $body['model_id'] : "",
                 options: $models
             );
 
@@ -97,6 +98,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 type: "number",
                 hasError: $hasSellingPriceError,
                 error: $hasSellingPriceError ? $errors['selling_price'] : "",
+                value: $hasSellingPriceError ? $body['selling_price'] : "",
                 additionalAttributes: "step='0.01' min='0.01'"
             );
 
@@ -107,6 +109,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 type: "file",
                 hasError: $hasImageError,
                 error: $hasImageError ? $errors['image'] : "",
+                value: $hasImageError ? $body['image'] : "",
                 additionalAttributes: "accept='image/*' multiple")
 
             ?>
@@ -118,6 +121,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                     name: "description",
                     hasError: $hasDescriptionError,
                     error: $hasDescriptionError ? $errors['description'] : "",
+                    value: $hasDescriptionError ? $body['description'] : "",
                     rows: 4,
                 );
                 ?>
@@ -135,6 +139,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 type: "number",
                 hasError: $hasQuantityError,
                 error: $hasQuantityError ? $errors['quantity'] : "",
+                value: $hasQuantityError ? $body['quantity'] : "",
                 additionalAttributes: "min='1' step='1'"
             );
             FormItem::render(
@@ -144,6 +149,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 type: "number",
                 hasError: $hasUnitPriceError,
                 error: $hasUnitPriceError ? $errors['unit_price'] : "",
+                value: $hasUnitPriceError ? $body['unit_price'] : "",
                 additionalAttributes: "step='0.01' min='0.01'"
 
             );
@@ -153,7 +159,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 name: "supplier_id",
                 hasError: $hasSupplierIdError,
                 error: $hasSupplierIdError ? $errors['supplier_id'] : "",
-                value: "1",
+                value: $hasSupplierIdError ? $body['supplier_id'] : "",
                 options: $suppliers
             );
             FormItem::render(
@@ -163,6 +169,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
                 type: "date",
                 hasError: $hasDateTimeError,
                 error: $hasDateTimeError ? $errors['date_time'] : "",
+                value: $hasDateTimeError ? $body['date_time'] : "",
             );
 
             ?>

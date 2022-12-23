@@ -9,7 +9,7 @@ const params = Object.fromEntries(urlSearchParams.entries());
 
 const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
 
-<div class="add-vehicle-form_title">
+<div class="add-vehicle-form_title" style="margin-top: -1rem">
     <h1 class="office-staff-add-customer-form__vehicle__title">
         Add New Vehicle
     </h1>
@@ -94,9 +94,9 @@ addVehicleForm?.querySelector("#add-vehicle-modal-btn")?.addEventListener("click
 
     const template =  `<div>
                         <h3>Are you sure you want to add this vehicle?</h3>
-                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
-                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
-                            <button class="btn modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
     const element = htmlToElement(template);
@@ -169,15 +169,3 @@ addVehicleButton?.addEventListener("click", () => {
 })
 
 
-window.addEventListener('load', () => {
-    const success = params['success']
-    if (success) {
-        Notifier.show({
-            closable: true,
-            header: 'Success',
-            text: "Vehicle added successfully",
-            type: 'success',
-            duration: 5000
-        })
-    }
-})

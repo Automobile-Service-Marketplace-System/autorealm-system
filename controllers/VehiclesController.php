@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Brand;
+use app\models\Customer;
 use app\models\Vehicle;
 use app\models\Model;
 
@@ -34,9 +35,11 @@ class VehiclesController
             $query = $req->query();
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicleByID((int) $query["id"]);
+            $customerModel = new Customer();
+            $customer = $customerModel->getCustomerByID((int) $query["id"]);
 
             return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
-                pageParams: ["vehicles"=>$vehicles], 
+                pageParams: ["vehicles"=>$vehicles, 'customer' => $customer],
                 layoutParams: [
                     'title' => 'Vehicles',
                     'pageMainHeading' => 'Vehicles',

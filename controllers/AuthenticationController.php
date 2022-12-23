@@ -24,6 +24,7 @@ class AuthenticationController
         }
         return $res->render("customer-signup", layoutParams: [
             "title" => "Register",
+            'customer' => null
         ]);
     }
 
@@ -58,7 +59,8 @@ class AuthenticationController
         return $res->render(view: "customer-login", layout: "main", pageParams: [
             'redirect_url' => $query['redirect_url'] ?? "/dashboard/profile"
         ], layoutParams: [
-            'title' => 'Login'
+            'title' => 'Login',
+            'customer' => null
         ]);
     }
 

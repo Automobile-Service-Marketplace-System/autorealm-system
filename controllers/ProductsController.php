@@ -129,7 +129,8 @@ class ProductsController
                 'brands' => $brands,
                 'categories' => $categories,
                 'suppliers' => $suppliers,
-                'errors' => $result
+                'errors' => $result,
+                'body' => $body
             ], layoutParams: [
                 'title' => 'Add Products',
                 'pageMainHeading' => 'Add Products',

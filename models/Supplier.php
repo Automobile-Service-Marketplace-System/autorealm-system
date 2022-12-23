@@ -46,8 +46,7 @@ class Supplier
     }
 
     public function addSuppliers(){
-        //$errors = $this->validateAddSupplierForm();
-        $errors = [];
+        $errors = $this->validateAddSupplierForm();
 
         if(empty($errors)){
             $query = "INSERT INTO supplier 
@@ -83,6 +82,8 @@ class Supplier
             }
         }
 
+        return $errors;
+
     }
 
     private function validateAddSupplierForm(): array
@@ -104,7 +105,7 @@ class Supplier
         }
 
         if(empty($this->body["company_reg_no"])){
-            $errors["company_reg_no"] = "Company Registration Number is required";
+            $errors["company_reg_no"] = "Business reg no is required";
         }else{
             $query = "SELECT * FROM supplier WHERE company_reg_no = :company_reg_no";
             $statement = $this->pdo->prepare($query);
