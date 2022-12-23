@@ -34,13 +34,13 @@ DocumentHead::createHead(
                 </span>
             </a>
             <a href="/admin-dashboard/employees">
-                <i class="fa-solid fa-box"></i>
+                <i class="fa-solid fa-user-tie"></i>
                 <span>
                     Employee
                 </span>
             </a>
             <a href="/stock-manager-dashboard/products">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-box"></i>
                 <span>
                     Products
                 </span>
@@ -64,31 +64,31 @@ DocumentHead::createHead(
                 </span>
             </a>
             <a href="/admin-dashboard/services">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span>
                     Services
                 </span>
             </a>
             <a href="/employee-dashboard/services/jobs">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-clock"></i>
                 <span>
                     Service/Repair Jobs
                 </span>
             </a>
             <a href="/employee-dashboard/vehicle-maintenance-reports">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-file"></i>
                 <span>
                     Vehicle Maintenance Reports
                 </span>
             </a>
             <a href="/office-staff-dashboard/customers">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-users"></i>
                 <span>
                     Customers
                 </span>
             </a>            
             <a href="/office-staff-dashboard/vehicles">
-                <i class="fa-solid fa-money-bill"></i>
+                <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
                 </span>
