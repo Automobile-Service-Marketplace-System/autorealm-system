@@ -110,19 +110,6 @@ class VehiclesController
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
-//            return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard",
-//                pageParams:[
-//                    "vehicle" => $vehicle,
-//                    'errors' => $result,
-//                    'body' => $body,
-//                    'models' => $models,
-//                    'brands' => $brands,
-//                ],
-//                layoutParams:[
-//                    'title' => 'Add New Vehicle',
-//                    'pageMainHeading' => 'Add New Vehicle',
-//                    'officeStaffId' => $req->session->get("user_id")
-//                ]);
             $res->setStatusCode(code: 400);
             return $res->json([
                 "errors" => $result

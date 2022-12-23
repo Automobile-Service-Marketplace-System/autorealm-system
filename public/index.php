@@ -13,6 +13,7 @@ use app\controllers\AppointmentController;
 use app\controllers\VehiclesController;
 use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
+use app\controllers\ShoppingCartController;
 
 use Dotenv\Dotenv;
 
@@ -45,7 +46,10 @@ $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginF
 $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
 $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
 $app->router->get("/dashboard/profile", [DashboardController::class, 'getCustomerDashboardProfile']);
-
+$app->router->get("/shopping-cart", [ShoppingCartController::class, 'getCartPage']);
+$app->router->post("/shopping-cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
+$app->router->post("/shopping-cart/update", [ShoppingCartController::class, 'updateCartItem']);
+$app->router->post("/shopping-cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
 
 // definitive employee routes
 $app->router->get("/employee-login", [AuthenticationController::class, 'getEmployeeLoginPage']);
@@ -72,9 +76,9 @@ $app->router->get("/admin-dashboard/employees", [EmployeeController::class, 'get
 $app->router->get("/admin-dashboard/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
 $app->router->post("/admin-dashboard/employees/add",[EmployeeController::class,'registerEmployee']);
 $app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
-// $app->router->get("/admin-dashboard", [ProductsController::class, 'getProductsPage']);
 $app->router->get("/admin-dashboard/services", [ServicesController::class, 'getServicesPage']);
-// $app->router->get("/admin-dashboard/services/add-services",[ServicesController::class,'getAddServicesPage']);
+$app->router->get("/admin-dashboard/services/add-services", [ServicesController::class, 'getAddServicesPage']);
+$app->router->post("/admin-dashboard/services/add", [ServicesController::class, 'AddServices']);
 
 // stock manager routes
 $app->router->get( "/stock-manager-login", [AuthenticationController::class,'getStockManagerLoginPage']);
@@ -84,6 +88,7 @@ $app->router->get("/stock-manager-dashboard/products", [ProductsController::clas
 $app->router->get("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'getAddProductsPage']);
 $app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
 $app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
+$app->router->post("/stock-manager-dashboard/suppliers/add", [ProductsController::class, 'addSuppliers']);
 
 //office staff routes
 $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage'] );
