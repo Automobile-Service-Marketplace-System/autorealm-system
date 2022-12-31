@@ -2,6 +2,7 @@
 /**
  * @var array $errors
  * @var array $body
+ * @var string $redirect_url
  */
 
 use app\components\FormItem;
@@ -13,7 +14,7 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
 ?>
 
 <div class="customer-auth">
-    <form action="/login" method="post" class="customer-auth-form">
+    <form action="/login?redirect_url=<?php echo $redirect_url ?>" method="post" class="customer-auth-form">
         <h1>Welcome back !</h1>
         <?php
         FormItem::render(
@@ -35,6 +36,10 @@ $hasPasswordError = $hasErrors && isset($errors['password']);
             value: $body['password'] ?? null,
             additionalAttributes: "minlength='6' pattern='.{6,}'"
         ); ?>
+        <div class="form-item form-item--checkbox">
+            <input type="checkbox" name="remember" id="remember" value="1">
+            <label for="remember">Remember me</label>
+        </div>
         <a href="/forgot-password" class="link">Forgot password?</a>
         <button class="btn btn--danger btn--block">
             Sign In

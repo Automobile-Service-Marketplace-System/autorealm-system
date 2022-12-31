@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use JsonException;
+
 /**
  * Class Response
  * @package app\core
@@ -64,12 +66,13 @@ class Response
      * Use this method to send data as a JSON value
      * @param mixed $data - Data that needs to be sent
      * @return string
+     * @throws JsonException
      */
     public function json(mixed $data): string
     {
         $this->setHeader(key: "Content-Type", value: "application/json");
         $this->setHeader(key: "charset", value: "utf-8");
-        return json_encode($data);
+        return json_encode($data, JSON_THROW_ON_ERROR);
     }
 
     private function getLayout(string $layout = "main", array $params = []): string
@@ -77,6 +80,7 @@ class Response
         foreach ($params as $key => $value) {
             $$key = $value;
         }
+        $current_url = urlencode(filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL));
         ob_start();
         include_once Application::$rootDir . "/layouts/$layout.php";
         return ob_get_clean();
@@ -85,6 +89,7 @@ class Response
 
     private function getView(string $view, array $params = []): string
     {
+
         foreach ($params as $key => $value) {
             $$key = $value;
         }

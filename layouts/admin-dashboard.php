@@ -2,23 +2,11 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $admin
+ * @var string $employeeId
  */
-
 use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
-
-//for now, a dummy StockManger class
-class Admin
-{
-    public string $f_name = "John";
-    public string $l_name = "Doe";
-    public string $image = "/images/placeholders/profile.webp";
-
-}
-
-$admin = new StockManager();
 
 ?>
 <!doctype html>
@@ -30,7 +18,7 @@ DocumentHead::createHead(
 );
 ?>
 
-<body>
+<body style="overflow: hidden">
 <div class="pixel"></div>
 <main class="employee-dashboard-container">
     <aside class="employee-dashboard-container__sidebar">
@@ -39,34 +27,70 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/dashboard/overview">
+            <a href="/employee-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-calendar-check"></i>
+            <a href="/admin-dashboard/employees">
+                <i class="fa-solid fa-user-tie"></i>
                 <span>
-                    My appointments
+                    Employee
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-stopwatch"></i>
+            <a href="/stock-manager-dashboard/products">
+                <i class="fa-solid fa-box"></i>
                 <span>
-                    Ongoing services/Repairs
+                    Products
                 </span>
             </a>
-            <a href="/dashboard/overview">
-                <i class="fa-solid fa-car"></i>
-                <span>
-                    My vehicles
-                </span>
-            </a>
-            <a href="/dashboard/overview">
+            <a href="/employee-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
-                    My orders
+                    Orders
+                </span>
+            </a>
+            <a href="/stock-manager-dashboard/suppliers">
+                <i class="fa-solid fa-users"></i>
+                <span>
+                    Suppliers
+                </span>
+            </a>
+            <a href="/employee-dashboard/reviews">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span>
+                    Reviews
+                </span>
+            </a>
+            <a href="/admin-dashboard/services">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>
+                    Services
+                </span>
+            </a>
+            <a href="/employee-dashboard/services/jobs">
+                <i class="fa-solid fa-clock"></i>
+                <span>
+                    Service/Repair Jobs
+                </span>
+            </a>
+            <a href="/employee-dashboard/vehicle-maintenance-reports">
+                <i class="fa-solid fa-file"></i>
+                <span>
+                    Vehicle Maintenance Reports
+                </span>
+            </a>
+            <a href="/office-staff-dashboard/customers">
+                <i class="fa-solid fa-users"></i>
+                <span>
+                    Customers
+                </span>
+            </a>            
+            <a href="/office-staff-dashboard/vehicles">
+                <i class="fa-solid fa-car"></i>
+                <span>
+                    Vehicles
                 </span>
             </a>
 
@@ -79,13 +103,14 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $admin, role: "Admin", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  role: "admin", id: 1);
             ?>
         </header>
-        <h1>
-            <?php echo $pageMainHeading; ?>
-        </h1>
+
         <div class="employee-dashboard-page">
+            <h1>
+                <?php echo $pageMainHeading; ?>
+            </h1>
             {{content}}
         </div>
     </div>

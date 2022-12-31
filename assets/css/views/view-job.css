@@ -1,0 +1,31 @@
+.job-vehicle-details {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.job-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 3rem;
+}
+
+
+.job-actions a  {
+    color: var(--color-info);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.new-job-notice {
+    margin-top: 6rem;
+    text-align: center;
+    font-size: 3.5rem;
+    line-height: 1;
+    font-weight: bold;
+    color:rgba(0, 0, 0, 0.2);
+    width: 80%;
+    margin-inline: auto;
+}

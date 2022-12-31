@@ -1,7 +1,6 @@
 <?php
 /**
  * @var string $title
- * @var object $customer
  */
 
 use app\utils\DocumentHead;
@@ -15,11 +14,9 @@ use app\utils\DocumentHead;
             title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm"
         );
 ?>
-<body>
+<body style="display: initial">
 
-<main class="container container-fh">
     {{content}}
-</main>
 
 <script type="module" src="/js/index.js"></script>
 </body>
