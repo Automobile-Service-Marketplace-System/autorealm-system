@@ -30,6 +30,10 @@ foreach ($vehicles as $vehicle) {
                             <button class='btn btn--rounded btn--danger'>
                                 <i class='fa-solid fa-pencil'></i>
                             </button>
+                            <a href='/office-staff-dashboard/appointments/for-vin?id={$vehicle['VIN']}' class='btn btn--rounded btn--info'>
+                                <i class='fa-regular fa-calendar-check'></i>
+                            </a>
+
                         </div>"
     ];
 }
