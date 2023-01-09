@@ -1,0 +1,10 @@
+.appoitment-owner-info {
+    display: flex;
+}
+
+.appointment-btn {
+    margin-top: 2rem;;
+    display: flex;
+    justify-content: space-between;
+}
+}

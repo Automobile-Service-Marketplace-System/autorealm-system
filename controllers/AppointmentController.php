@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Customer;
 use app\models\Vehicle;
 use app\models\Appointment;
+use app\models\Service;
 
 class AppointmentController
 {
@@ -33,8 +34,17 @@ class AppointmentController
                 $appointmentModel = new Appointment();
                 $appointment = $appointmentModel->getOwnerInfo((int) $query["id"]);
 
+                $modelService= new Service();
+                $rawServices = $modelService->getServices();
+                $services = [];
+                foreach ($rawServices as $rawService) {
+                    $services[$rawService['ID']] = $rawService['Name'];
+                }
+
                 return $res->render(view: "office-staff-dashboard-get-appointment-for-customer", layout: "office-staff-dashboard",
-                pageParams: ["appointment"=>$appointment],
+                pageParams: [
+                    "appointment"=>$appointment,
+                    "service"=>$services],
                 layoutParams: [
                     'title' => 'Create an appointment',
                     'pageMainHeading' => 'Create an appointment',

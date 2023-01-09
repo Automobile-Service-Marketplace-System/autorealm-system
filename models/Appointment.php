@@ -31,9 +31,9 @@ class Appointment
                 m.model_name,
                 b.brand_name
             FROM vehicle v 
-                INNER JOIN model m ON m.model_id = v.model_id
-                INNER JOIN brand b ON b.brand_id = v.brand_id
-                INNER JOIN customer c ON c.customer_id = v.customer_id
+                RIGHT JOIN model m ON m.model_id = v.model_id
+                RIGHT JOIN brand b ON b.brand_id = v.brand_id
+                RIGHT JOIN customer c ON c.customer_id = v.customer_id
             WHERE
                 v.vin = $vin"
         )->fetchAll(PDO::FETCH_ASSOC);
