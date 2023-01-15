@@ -9,7 +9,7 @@ addToCartButtons.forEach((addToCartButton) => {
         const formData = new FormData();
         formData.append('item_code', addToCartButton.getAttribute('data-productId'));
         try {
-            const result = await fetch("/shopping-cart/add", {
+            const result = await fetch("/cart/add", {
                 method: "POST",
                 body: formData,
             })

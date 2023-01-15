@@ -39,13 +39,13 @@ DocumentHead::createHead(
                     Invoices
                 </span>
             </a>
-            <a href="/office-staff-dashboard/customers">
+            <a href="/customers">
                 <i class="fa-solid fa-user"></i>
                 <span>
                     Customers
                 </span>
             </a>
-            <a href="/office-staff-dashboard/vehicles">
+            <a href="/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles

@@ -7,7 +7,7 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer")
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
+const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
 
 <div class="add-vehicle-form_title" style="margin-top: -1rem">
     <h1 class="office-staff-add-customer-form__vehicle__title">
@@ -117,7 +117,7 @@ addVehicleForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}`, {
+        const result = await fetch(`/vehicles/add/by-customer?id=${params.id}`, {
             body: formData,
             method: 'POST'
         })

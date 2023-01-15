@@ -26,7 +26,7 @@ class VehiclesController
             ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function getVehiclesByCustomer(Request $req, Response $res) : string {
@@ -47,7 +47,7 @@ class VehiclesController
             ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function getAddVehiclePage(Request $req, Response $res): string
@@ -86,7 +86,7 @@ class VehiclesController
                 ]);
         }
 
-        return $res->redirect(path:"/employee-login");
+        return $res->redirect(path:"/login");
     }
 
     public function addVehicle(Request $req, Response $res): string

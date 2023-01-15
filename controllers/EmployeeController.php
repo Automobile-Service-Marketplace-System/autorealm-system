@@ -17,7 +17,7 @@ class EmployeeController
                 'employeeId'=> $req->session->get("user_id")
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 
@@ -30,7 +30,7 @@ class EmployeeController
                 'employeeId'=> $req->session->get("user_id")
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 
@@ -52,7 +52,7 @@ class EmployeeController
         }
 
         if ($result) {
-            return $res->redirect("/admin-dashboard/employees");
+            return $res->redirect("/employees");
         }
 
         return $res->render("500", "error", [

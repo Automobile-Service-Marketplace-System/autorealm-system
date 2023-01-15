@@ -37,7 +37,7 @@ class SiteController
         }
 
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
         }
 
         return $res->render(view: "site-home", layout: "landing", pageParams: [
@@ -73,7 +73,7 @@ class SiteController
             }
 
             if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
-                return $res->redirect(path: "/employee-login");
+                return $res->redirect(path: "/login");
             }
 
             return $res->render(view: "site-products", layout: "main", pageParams: [

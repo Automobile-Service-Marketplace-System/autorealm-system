@@ -60,7 +60,7 @@ class EmployeeProfileDropdown
                                     <i class='fa-solid fa-user'></i>
                                     My profile
                                 </a>
-                                <form action='/employee-logout' method='post'>
+                                <form action='/logout' method='post'>
                                     <button>
                                         <i class='fa-solid fa-sign-out'></i>
                                         Logout
