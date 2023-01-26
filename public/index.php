@@ -21,7 +21,6 @@ use Dotenv\Dotenv;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-
 // loading the .env file
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -103,10 +102,10 @@ $app->router->get("/office-staff-dashboard/vehicles/by-customer", [VehiclesContr
 $app->router->get("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
 $app->router->post("/office-staff-dashboard/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
 
-  
+
 //security officer roots
-// $app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
-// $app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
+$app->router->get( "/security-officer-login", [AuthenticationController::class,'getSecurityOfficerLoginPage']);
+$app->router->post( "/security-officer-login", [AuthenticationController::class,'loginSecurityOfficer']);
 $app->router->get( "/security-officer-dashboard/profile", [DashboardController::class,'getSecurityOfficerDashboardProfile']);
 $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
 
