@@ -27,7 +27,7 @@ class CustomerHeader
             <li><a href='/about-us'>About Us</a></li>
             <li><a href='/contact-us'>Contact Us</a></li>";
         if (isset($customer)) {
-            echo "<li> <a href='/shopping-cart' id='cart-link'> 
+            echo "<li> <a href='/cart' id='cart-link'> 
                             <i class='fa-solid fa-cart-shopping'></i>
                             <div class='cart-count' id='cart-count' style='position: absolute;top: 0;right: 0'>
                                 $cart_count

@@ -26,7 +26,7 @@ use app\components\FormItem;
 </ul>
 
 
-<form class="maintenance-inspection-form" action="/foreman-dashboard/inspection-reports/create" method="post">
+<form class="maintenance-inspection-form" action="/inspection-reports/create" method="post">
     <?php
     foreach ($conditions as $condition_section => $condition_names) {
         if ($condition_section === "condition_less") {

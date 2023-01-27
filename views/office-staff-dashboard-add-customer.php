@@ -27,7 +27,7 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 
 
 <div class="office-staff-add-customer">
-    <form action="/office-staff-dashboard/customers/add" method="post" class="office-staff-add-customer-form"
+    <form action="/customers/add" method="post" class="office-staff-add-customer-form"
           enctype="multipart/form-data">
         <div class="office-staff-add-customer-form__customer">
             <?php

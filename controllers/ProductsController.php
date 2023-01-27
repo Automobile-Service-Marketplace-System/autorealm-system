@@ -30,7 +30,7 @@ class ProductsController
             ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 
@@ -78,7 +78,7 @@ class ProductsController
             ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 

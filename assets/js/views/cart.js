@@ -20,7 +20,7 @@ async function updateCart({productId, by, price}) {
         const formData = new FormData();
         formData.append('item_code', productId.toString());
         formData.append('by', by.toString());
-        const result = await fetch(`/shopping-cart/update`, {
+        const result = await fetch(`/cart/update`, {
             body: formData,
             method: 'post'
         })
@@ -107,7 +107,7 @@ async function deleteItemFromCart({productId, price}) {
     try {
         const formData = new FormData();
         formData.append('item_code', productId.toString());
-        const result = await fetch(`/shopping-cart/delete`, {
+        const result = await fetch(`/cart/delete`, {
             body: formData,
             method: 'post'
         })

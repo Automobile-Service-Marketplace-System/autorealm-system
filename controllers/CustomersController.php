@@ -27,7 +27,7 @@ class CustomersController
                 ]);
         }
 
-        return $res->redirect(path:"/employee-login");
+        return $res->redirect(path:"/login");
     }
 
     public function getAddCustomerPage(Request $req, Response $res): string
@@ -63,7 +63,7 @@ class CustomersController
             ]);
         }
 
-        return $res->redirect(path:"/employee-login");
+        return $res->redirect(path:"/login");
     }
 
     public function addCustomer(Request $req, Response $res): string
@@ -105,7 +105,7 @@ class CustomersController
         }
 
         if ($result) {
-            return $res->redirect("/office-staff-dashboard/customers");
+            return $res->redirect("/customers");
         }
 
         return $res->render(view:"500", layout:"plain", pageParams:[

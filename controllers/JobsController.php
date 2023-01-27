@@ -25,7 +25,7 @@ class JobsController
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function viewJobPage(Request $req, Response $res): string
@@ -67,7 +67,7 @@ class JobsController
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 
@@ -89,7 +89,7 @@ class JobsController
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function createInspectionReport(Request $req, Response $res) : string {

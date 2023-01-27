@@ -197,13 +197,13 @@ class AuthenticationController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
             $job_role = $req->session->get("user_role");
             if ($job_role === "admin") {
-                $path = "/admin-dashboard/services";
+                $path = "/services";
             } elseif ($job_role === "foreman") {
-                $path = "/foreman-dashboard/jobs";
+                $path = "/jobs";
             } elseif ($job_role === "stock_manager") {
                 $path = "/stock-manager-dashboard/products";
             } elseif ($job_role === "office_staff_member") {
-                $path = "/office-staff-dashboard/customers";
+                $path = "/customers";
             } elseif ($job_role === "technician") {
                 $path = "/technician-dashboard/profile";
             } elseif ($job_role === "security_officer") {
@@ -276,7 +276,7 @@ class AuthenticationController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
             $req->session->destroy();
             $req->session->deletePersistentEmployeeSession($req->session->get("user_id"));
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
         }
 
         return $res->redirect(path: $req->path());
