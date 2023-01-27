@@ -29,8 +29,9 @@ DocumentHead::createHead(
         </a>
     </div>
     <?php
-    CustomerHeader::render(customer: $customer, current_url: $current_url);
-    ?>
+
+        CustomerHeader::render(customer: isset($customer) && $customer ? $customer : null, current_url: $current_url);
+     ?>
     <button class="menu-btn menu-btn--solid no_highlights">
         <div class="menu-btn__bar"></div>
     </button>

@@ -56,6 +56,8 @@ if(!$isInternal) {
 // customer's routes
     $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
+    $app->router->get("/verify-email", [AuthenticationController::class, 'getEmailVerificationStatusPage']);
+    $app->router->get("/contact-verification", [AuthenticationController::class, 'getCustomerContactVerificationPage']);
     $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
     $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
