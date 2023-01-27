@@ -18,10 +18,9 @@
     "vite-plugin-compress": "^2.1.1"
   },
   "scripts": {
-    "dev:server": "php -S localhost:3000 -t public",
     "dev:client": "vite build --watch=true",
     "dev:reloader": "node ./scripts/autoreload.mjs",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:reloader\"",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:reloader\"",
     "build": "vite build"
   },
   "dependencies": {

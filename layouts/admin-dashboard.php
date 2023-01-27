@@ -33,7 +33,7 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/admin-dashboard/employees">
+            <a href="/employees">
                 <i class="fa-solid fa-user-tie"></i>
                 <span>
                     Employee
@@ -63,7 +63,7 @@ DocumentHead::createHead(
                     Reviews
                 </span>
             </a>
-            <a href="/admin-dashboard/services">
+            <a href="/services">
                 <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span>
                     Services
@@ -81,13 +81,13 @@ DocumentHead::createHead(
                     Vehicle Maintenance Reports
                 </span>
             </a>
-            <a href="/office-staff-dashboard/customers">
+            <a href="/customers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Customers
                 </span>
             </a>            
-            <a href="/office-staff-dashboard/vehicles">
+            <a href="/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles

@@ -17,7 +17,7 @@ class AppointmentController
             ]);
         }
 
-        return $res->redirect(path:"/employee-login");
+        return $res->redirect(path:"/login");
 
     }
 

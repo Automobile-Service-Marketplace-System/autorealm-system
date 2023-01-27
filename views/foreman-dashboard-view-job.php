@@ -23,13 +23,13 @@
 
 <ul class="job-actions">
     <li>
-        <a href="/foreman-dashboard/inspection-reports/create?job_id=<?php echo $jobId; ?>">
+        <a href="/inspection-reports/create?job_id=<?php echo $jobId; ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             Create Inspection report for this job
         </a>
     </li>
     <li>
-        <a href="/foreman-dashboard/job-reports?vehicle=QL 9904">
+        <a href="/job-reports?vehicle=QL 9904">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View previous jobs for this vehicle
         </a>

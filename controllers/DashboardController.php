@@ -116,9 +116,9 @@ class DashboardController
                     'pageMainHeading' => 'Profile'
                 ]);
             }
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 
@@ -137,10 +137,10 @@ class DashboardController
                 ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function getAdminDashboardProfile(Request $req, Response $res): string
@@ -159,10 +159,10 @@ class DashboardController
                     ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
     
     public function getSecurityOfficerDashboardProfile(Request $req, Response $res): string
@@ -181,10 +181,10 @@ class DashboardController
                     ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 }

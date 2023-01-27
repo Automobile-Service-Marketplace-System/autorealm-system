@@ -65,7 +65,7 @@ addServiceForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch("/admin-dashboard/services/add", {
+        const result = await fetch("/services/add", {
             body: formData,
             method: 'POST'
         })
