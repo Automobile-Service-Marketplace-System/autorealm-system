@@ -120,6 +120,7 @@ if($isInternal) {
     $app->router->get("/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
     $app->router->get("/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
     $app->router->post("/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
+    $app->router->get("/appointments", [AppointmentController::class, 'getAppointmentsPage']);
 
 
 //security officer roots

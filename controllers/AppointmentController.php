@@ -57,4 +57,25 @@ class AppointmentController
         }
     }
 
+    public function getAppointmentsPage(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $appointmenteModel = new Appointment();
+            $appointments = $appointmenteModel->getAppointments();
+
+            return $res->render(view:"office-staff-dashboard-appointments-page", layout:"office-staff-dashboard",
+            pageParams:[
+                "appointments"=>$appointments
+            ],
+            layoutParams:[
+                "title" => "Appointments",
+                "pageMainHeading" => "Appointments",
+                'officeStaffId' => $req->session->get('user_id')
+            ]);
+        }
+
+        return $res->redirect(path:"/employee-login");
+
+    }
+
 }

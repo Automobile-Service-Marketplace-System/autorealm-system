@@ -51,7 +51,7 @@ DocumentHead::createHead(
                     Vehicles
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/appointments">
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>
                     Appointments
