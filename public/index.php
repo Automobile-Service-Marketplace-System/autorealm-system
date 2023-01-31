@@ -14,7 +14,7 @@ use app\controllers\VehiclesController;
 use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
-
+use app\controllers\OverviewController;
 use Dotenv\Dotenv;
 
 
@@ -97,6 +97,7 @@ if($isInternal) {
     $app->router->get("/services", [ServicesController::class, 'getServicesPage']);
     $app->router->get("/services/add-services", [ServicesController::class, 'getAddServicesPage']);
     $app->router->post("/services/add", [ServicesController::class, 'AddServices']);
+    $app->router->get("/overview",[OverviewController::class,'getOverviewPage']);
 
 // stock manager routes
     $app->router->get("/stock-manager-login", [AuthenticationController::class, 'getStockManagerLoginPage']);
