@@ -22,7 +22,7 @@ foreach ($appointments as $appointments) {
         "Date and Time" => $appointments["Date & Time"],
         "Time ID" => $appointments["Time ID"],
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='/office-staff-dashboard/appointments/?id={$appointments['Appointment ID']}' class='btn btn--rounded btn--info'>
+                            <a href='/office-staff-dashboard/create-jobCard?id={$appointments['Appointment ID']}' class='btn btn--rounded btn--info'>
                                 <i class='fa-solid fa-rectangle-history-circle-plus'></i>
                             </a>
                             <button class='btn btn--rounded btn--danger'>

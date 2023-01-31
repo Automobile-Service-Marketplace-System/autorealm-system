@@ -57,4 +57,18 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAppointmentInfo(int $customer_id): array
+    {
+
+        return $this->pdo->query(
+            "SELECT
+            CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+            vehicle_reg_no
+            FROM appointment a 
+                INNER JOIN customer c ON c.customer_id = a.customer_id
+            WHERE 
+                c.customer_id = $customer_id"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
