@@ -192,9 +192,10 @@ class AuthenticationController
 
     //    Regarding foreman authentication
 
-    public function getEmployeeLoginPage(Request $req, Response $res): string
+    public function getEmployeeLoginPage(Request $req, Response $res): string  
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
+            //when employees already logged in
             $job_role = $req->session->get("user_role");
             if ($job_role === "admin") {
                 $path = "/services";
@@ -223,8 +224,10 @@ class AuthenticationController
         $employee = new Employee($body);
         $result = $employee->login();
         if (is_array($result)) {
+            // When results are equal to array, It means there are errors.
             return $res->render(view: "employee-login", layout: "employee-auth", pageParams: [
                 'errors' => $result,
+                // Display errors
                 'body' => $body
             ], layoutParams: [
                 'title' => 'Login'
