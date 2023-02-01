@@ -39,7 +39,7 @@ DocumentHead::createHead(
                     Admitting Reports
                 </span>
             </a>
-            <a href="/login">
+            <a href="/security-officer-dashboard/view-appointment">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Appointments
