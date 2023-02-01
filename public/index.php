@@ -128,8 +128,8 @@ if($isInternal) {
     $app->router->post("/security-officer-login", [AuthenticationController::class, 'loginSecurityOfficer']);
     $app->router->get("/security-officer-dashboard/profile", [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
+    $app->router->get("/security-officer-dashboard/view-appointment",[AppointmentController::class, 'getAppointmentDetails']);
 
 }
-
 // run the application
 $app->run();
