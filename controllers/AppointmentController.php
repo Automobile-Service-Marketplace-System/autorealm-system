@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Appointment;
 
 class AppointmentController
 {
@@ -23,16 +24,16 @@ class AppointmentController
 
     public function getAppointmentDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
-            // $appointmentModel=new Appointment();
+            $appointmentModel=new Appointment();
+            $appointments=$appointmentModel->getAppointments();
 
-            return $res->render(view: "security-officer-dashboard-view-appointment",layout:"security-officer-dashboard",layoutParams:[
+            return $res->render(view: "security-officer-dashboard-view-appointment",layout:"security-officer-dashboard",pageParams:[
+                    "appointments"=>$appointments],layoutParams:[
                     "title"=>'Appointments',
                     'pageMainHeading'=>'Appointments',
                     'securityOfficerId'=>$req->session->get("user_id"),
             ]);
         }
-
         return $res->redirect(path:"/login");
     }
-
 }
