@@ -15,6 +15,7 @@ use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
 use app\controllers\OverviewController;
+use app\controllers\OrdersController;
 use Dotenv\Dotenv;
 
 
@@ -108,6 +109,7 @@ if($isInternal) {
     $app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
     $app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post("/stock-manager-dashboard/suppliers/add", [ProductsController::class, 'addSuppliers']);
+    $app->router->get("/stock-manager-dashboard/orders", [OrdersController::class,'getOrdersPage']);
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
