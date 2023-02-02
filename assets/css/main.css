@@ -50,6 +50,7 @@
 @import "views/office-staff-dashboard-get-vehicle-by-customer.css";
 @import "views/employee-dashboard-profile.css";
 @import "views/cart.css";
+@import "views/overview.css";
 
 
 body {
