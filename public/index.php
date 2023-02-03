@@ -15,6 +15,7 @@ use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
 use app\controllers\OverviewController;
+use app\controllers\AdmittingController;
 use Dotenv\Dotenv;
 
 
@@ -129,7 +130,7 @@ if($isInternal) {
     $app->router->get("/security-officer-dashboard/profile", [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
     $app->router->get("/security-officer-dashboard/view-appointment",[AppointmentController::class, 'getAppointmentDetails']);
-
+    $app->router->get("/security-officer-dashboard/view-admitting-report",[AdmittingController::class, 'getAdmittingReports']);
 }
 // run the application
 $app->run();
