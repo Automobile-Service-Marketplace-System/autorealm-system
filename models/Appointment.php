@@ -24,10 +24,13 @@ class Appointment{
     public function getAppointments():array{
         return $this->pdo->query(
             "SELECT
-                vehicle_reg_no as RegNo,
-                date_and_time as DateandTime
-                
-            FROM appointment"
+                concat(f_name, ' ', l_name) as Name,
+                appointment.vehicle_reg_no as RegNo,
+                appointment.date as Date,
+                appointment.from_time as FromTime,
+                appointment.to_time as ToTime            
+            FROM appointment 
+            inner join customer on customer.customer_id=appointment.customer_id"
             
         )->fetchAll(PDO::FETCH_ASSOC);
     }
