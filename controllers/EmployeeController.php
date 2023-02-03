@@ -24,13 +24,18 @@ class EmployeeController
     public function getViewEmployeesPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
-            return $res->render(view: "admin-dashboard-view-employees", layout: "admin-dashboard", layoutParams: [
+
+            $employeeModel=new Employee();
+            $employees=$employeeModel->getEmployees();
+
+            return $res->render(view: "admin-dashboard-view-employees", layout: "admin-dashboard", pageParams:[
+                "employees"=>$employees], layoutParams: [
                 'title' => 'Employees',
                 'pageMainHeading' => 'Employees',
                 'employeeId'=> $req->session->get("user_id")
             ]);
         }
-        return $res->redirect(path: "/login");
+        return $res->redirect(path: "/login"); 
 
     }
 

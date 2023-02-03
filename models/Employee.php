@@ -253,16 +253,18 @@ class Employee
         return $errors;
     }
 
-    public function getEmployee(): array
+    public function getEmployees(): array
     {
 
         return $this->pdo->query("
             SELECT 
                 employee_id as ID,
-                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                CONCAT(f_name, ' ', l_name) as 'Name',
                 contact_no as 'Contact No',
-                address as Address,
-                email as email
+                email as Email,
+                job_role as JobType,
+                is_active as isActive,
+                image as Image
             FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 
     }
