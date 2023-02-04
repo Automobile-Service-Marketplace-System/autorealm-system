@@ -69,7 +69,7 @@ DocumentHead::createHead(
                     Services
                 </span>
             </a>
-            <a href="/employee-dashboard/services/jobs">
+            <a href="/jobs">
                 <i class="fa-solid fa-clock"></i>
                 <span>
                     Service/Repair Jobs
