@@ -64,4 +64,12 @@ class EmployeeController
             "error" => "Something went wrong. Please try again later."
         ]);
     }
+
+    public function getEditEmployeePage(Request $req, Response $res):string{
+        return $res->render(view: "admin-dashboard-edit-employees", layout: "admin-dashboard", layoutParams: [
+            'title' => 'Manage Employees',
+            'pageMainHeading' => 'Update employee profile',
+            'employeeId'=> $req->session->get("user_id")
+        ]);        
+    }
 }

@@ -56,6 +56,10 @@
         text-align:center;       
     }
 
+    .line6{
+        padding-left: 1.25cm;
+    }
+
 </style>
 
 <?php
@@ -121,7 +125,10 @@
                             <?php echo $employee["Contact No"]?>
                         </div>
                         <div class="line5">
-                            <p style="color:blue;"><?php echo $employee["Email"]?></p>
+                            <p style="color:blue;"><?php echo $employee["Email"]?></p><br>
+                        </div>
+                        <div class="line6">
+                            <button class="btn" onclick="window.location.href ='/employee/edit';">Edit</button>
                         </div>
                     </div>
                 </div>
