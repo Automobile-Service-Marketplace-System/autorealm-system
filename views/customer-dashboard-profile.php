@@ -6,6 +6,7 @@
 ?>
 
 <div class="customer-profile">
+
     <img src="<?php echo $customer->image ?>" alt="<?php echo $customer->f_name . ' ' . $customer->l_name . '\'s'; ?>">
     <div class="customer-profile__info">
         <p>
@@ -55,10 +56,12 @@
     <div class="customer-profile__actions">
         <button class="btn btn--danger" id="edit-customer-password">
             <i class="fa-solid fa-lock"></i>
-            Edit password</button>
+            Reset Password
+        </button>
         <button class="btn btn--warning" id="edit-customer-profile">
             <i class="fa-solid fa-pencil"></i>
 
-            Edit profile</button>
+            Edit profile
+        </button>
     </div>
 </div>

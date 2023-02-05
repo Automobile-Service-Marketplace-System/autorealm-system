@@ -16,6 +16,7 @@ use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
 use app\controllers\OverviewController;
 use app\controllers\OrdersController;
+use app\controllers\AdmittingController;
 use Dotenv\Dotenv;
 
 
@@ -57,6 +58,8 @@ if(!$isInternal) {
 // customer's routes
     $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
+    $app->router->get("/verify-email", [AuthenticationController::class, 'getEmailVerificationStatusPage']);
+    $app->router->get("/contact-verification", [AuthenticationController::class, 'getCustomerContactVerificationPage']);
     $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
     $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
@@ -65,7 +68,8 @@ if(!$isInternal) {
     $app->router->post("/cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post("/cart/update", [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post("/cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
-
+    $app->router->get("/dashboard/vehicles", [VehiclesController::class, 'getCustomerVehiclePage']);
+    $app->router->get("/dashboard/records", [ServicesController::class, 'getPastServiceRecordsByVehicleIdCustomerPage']);
 }
 
 if($isInternal) {
@@ -131,7 +135,7 @@ if($isInternal) {
     $app->router->get("/security-officer-dashboard/profile", [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
     $app->router->get("/security-officer-dashboard/view-appointment",[AppointmentController::class, 'getAppointmentDetails']);
-
+    $app->router->get("/security-officer-dashboard/view-admitting-report",[AdmittingController::class, 'getAdmittingReports']);
 }
 // run the application
 $app->run();

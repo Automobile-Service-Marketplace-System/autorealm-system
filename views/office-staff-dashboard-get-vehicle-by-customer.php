@@ -21,85 +21,36 @@
 <div class='vehicle-card-container'>
     <?php
     foreach ($vehicles as $vehicle) {
+        $manufacturedYear = explode('-', $vehicle['manufactured_year'])[0];
         echo "
-
             <div class='vehicle-card'>
-                <p>
-                    <strong>
-                        VIN
-                    </strong>
-                        {$vehicle['vin']}
-                </p>
-
-                <p>
-                    <strong>
-                        Registration No
-                 </strong>
-                        {$vehicle['reg_no']}
-                </p>
-
-                <p>
-                    <strong>
-                        Engine No
-                    </strong>
-                        {$vehicle['engine_no']}
-
-                </p>
-
-                <p>
-                    <strong>
-                        Manufactured Year
-                    </strong>
-                        {$vehicle['manufactured_year']}
-
-                </p>
-
-                <p>
-                    <strong>
-                        Engine Capacity
-                    </strong>
-                        {$vehicle['engine_capacity']}
-
-                </p>
-
-                <p>
-                    <strong>
-                        Vehicle Type 
-                    </strong>
-                        {$vehicle['vehicle_type']}
-                </p>
-
-                <p>
-                    <strong>
-                        Fuel Type
-                    </strong>
-                        {$vehicle['fuel_type']}
-                </p>
-
-                <p>
-                    <strong>
-                        Trasmission Type
-                    </strong>
-                        {$vehicle['transmission_type']}
-                </p>
-
-                <p>
-                    <strong>
-                        Model Name
-                    </strong>
-                        {$vehicle['model_name']}
-                </p>
-
-                <p>
-                    <strong>
-                        Brand Name
-                    </strong>
-                        {$vehicle['brand_name']}
-                </p>
-                
+                <img src='/images/placeholders/car-placeholder.svg' alt='vehicle-image' class='vehicle-card__image'>
+                <div class='vehicle-card__info'>
+                    <h2>
+                        {$vehicle['brand_name']} {$vehicle['model_name']} {$manufacturedYear}
+                        <span>
+                            Registration Number: {$vehicle['reg_no']}
+                        </span>
+                    </h2>
+                    <ul class='vehicle-card__info-more'>
+                        <li><span>Brand: </span>{$vehicle['brand_name']}</li>
+                        <li><span>Model: </span>{$vehicle['model_name']}</li>
+                        <li><span>Year of manufacture: </span>{$manufacturedYear}</li>
+                        <li><span>Engine Capacity: </span>{$vehicle['engine_capacity']}</li>
+                        <li><span>Transmission: </span>{$vehicle['transmission_type']}</li>
+                    </ul>
+                </div>
+                <div class='vehicle-card__service-info'>
+                    <div>
+                        <p><span>Last Service Mileage:</span> 268635 KM</p>
+                        <p><span>Last Service Date:</span> 12/12/2020</p>
+                    </div>
+                    <a class='btn btn--danger' href='/dashboard/services?vehicle_id=123'>
+                        View service history
+                    </a>
+                </div>
             </div>
         ";
     }
-
     ?>
 </div>
