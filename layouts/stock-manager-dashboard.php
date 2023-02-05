@@ -9,8 +9,6 @@ use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
 
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -70,7 +68,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType: "stock_manager", role: "Stock manager", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType: "stock_manager", id: 1);
             ?>
         </header>
 

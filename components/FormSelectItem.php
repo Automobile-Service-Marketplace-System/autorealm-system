@@ -31,7 +31,7 @@ class FormSelectItem
         $requiredIndicator = $required ? "<sup>*</sup>" : "";
         $optionsGroup = "";
         foreach ($options as $optionId => $optionValue) {
-            $isSelected = $optionId == $value ? "selected" : "";
+            $isSelected = $optionId === $value ? "selected" : "";
             $optionsGroup .= "<option value='$optionId' $isSelected>$optionValue</option>";
         }
 

@@ -1,0 +1,46 @@
+.vehicles-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+
+.vehicle-card {
+    background-color: var(--color-white);
+    width: 100%;
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.2);
+    display: flex;
+    align-items: stretch;
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.vehicle-card img {
+    width: 25%;
+}
+
+.vehicle-card__info {
+    flex: 1;
+}
+
+.vehicle-card__info h2 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.vehicle-card__info h2 span {
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.vehicle-card__service-info {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1rem;
+}
