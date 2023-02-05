@@ -6,7 +6,7 @@
 
 use app\components\Table;
 
-$columns = ["ID", "Customer Name", "Shipping Address", "Order Date","Payment Amount","Status"];
+$columns = ["ID", "Customer Name", "Shipping Address", "Order Date","Payment Amount","Status", " "];
 $items = [];
 
 foreach ($orders as $order){
@@ -16,7 +16,14 @@ foreach ($orders as $order){
         "Shipping Address" => $order["Shipping Address"],
         "Order Date" => $order["Order Date"],
         "Payment Amount" => $order["Payment Amount"],
-        "Status" => $order["Status"]
+        "Status" => $order["Status"],
+        " " => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+                            <a href='' class='btn btn--rounded'>
+                                <i class='fa-solid fa-arrow-up-right-from-square'></i>
+                            </a>
+                            
+   
+                      </div>"
     ];
 }
 
