@@ -8,7 +8,7 @@ use app\models\Order;
 
 class OrdersController
 {
-    public function getOrdersPage(Request $req, Response $res):string
+    public function getOrdersPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
             $orderModel = new Order();
@@ -20,6 +20,18 @@ class OrdersController
                 layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
         }
 
+        return $res->redirect(path: "/login");
+    }
+
+
+    public function getCustomerDashboardOrdersPage(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get("user_id");
+
+            return $res->render(view: "customer-dashboard-orders", layout: "customer-dashboard",
+                layoutParams: ['title' => 'My Orders', 'pageMainHeading' => 'My Orders', 'customerId' => $customerId]);
+        }
         return $res->redirect(path: "/login");
     }
 }
