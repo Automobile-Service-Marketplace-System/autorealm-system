@@ -21,12 +21,13 @@
 <div class='vehicle-card-container'>
     <?php
     foreach ($vehicles as $vehicle) {
+        $manufacturedYear = explode('-', $vehicle['manufactured_year'])[0];
         echo "
             <div class='vehicle-card'>
                 <img src='/images/placeholders/car-placeholder.svg' alt='vehicle-image' class='vehicle-card__image'>
                 <div class='vehicle-card__info'>
                     <h2>
-                        {$vehicle['brand_name']} {$vehicle['model_name']} {$vehicle['manufactured_year']}
+                        {$vehicle['brand_name']} {$vehicle['model_name']} {$manufacturedYear}
                         <span>
                             Registration Number: {$vehicle['reg_no']}
                         </span>
@@ -34,7 +35,7 @@
                     <ul class='vehicle-card__info-more'>
                         <li><span>Brand: </span>{$vehicle['brand_name']}</li>
                         <li><span>Model: </span>{$vehicle['model_name']}</li>
-                        <li><span>Year of manufacture: </span>{$vehicle['manufactured_year']}</li>
+                        <li><span>Year of manufacture: </span>{$manufacturedYear}</li>
                         <li><span>Engine Capacity: </span>{$vehicle['engine_capacity']}</li>
                         <li><span>Transmission: </span>{$vehicle['transmission_type']}</li>
                     </ul>
