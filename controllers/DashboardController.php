@@ -26,7 +26,7 @@ class DashboardController
                     'customer' => $customer,
                 ], layoutParams: [
                     'title' => 'My Profile',
-                    'customer' => $customer,
+                    'customerId' => $req->session->get('user_id'),
                     'pageMainHeading' => 'My Profile'
                 ]);
             }

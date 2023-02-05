@@ -57,6 +57,8 @@ if(!$isInternal) {
 // customer's routes
     $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
+    $app->router->get("/verify-email", [AuthenticationController::class, 'getEmailVerificationStatusPage']);
+    $app->router->get("/contact-verification", [AuthenticationController::class, 'getCustomerContactVerificationPage']);
     $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
     $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
@@ -65,7 +67,7 @@ if(!$isInternal) {
     $app->router->post("/cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post("/cart/update", [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post("/cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
-
+    $app->router->get("/dashboard/vehicles", [VehiclesController::class, 'getCustomerVehiclePage']);
 }
 
 if($isInternal) {

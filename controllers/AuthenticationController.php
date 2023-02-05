@@ -31,8 +31,18 @@ class AuthenticationController
     public function registerCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
+//        try {
+//            EmailClient::sendEmail(
+//                receiverEmail: $body['email'],
+//                receiverName: $body['f_name']." ".$body['l_name'],
+//                subject: "Welcome to AutoRealm",
+//                htmlContent: "You have successfully registered to AutoRealm. Thank you for choosing us.");
+//            return "Success";
+//        } catch (ApiException $e) {
+//            return $e->getMessage();
+//        }
         $customer = new Customer($body);
-        $result = $customer->register();
+        $result = $customer->tempRegister();
 
         if (is_array($result)) {
             return $res->render(view: "customer-signup", pageParams: [
@@ -41,12 +51,48 @@ class AuthenticationController
             ]);
         }
 
-        if ($result) {
-            return $res->redirect("/login?success=1");
+        if ($result === true) {
+            return $res->render(view: "customer-contact-verification", pageParams: [
+                'customer' => null
+            ], layoutParams: [
+                'title' => 'Verify your email & phone number'
+            ]);
         }
 
+        return $result;
+    }
+
+    public function getEmailVerificationStatusPage(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $customer = new Customer($query);
+        $result = $customer->register();
+        if (is_array($result)) {
+            return $res->render(view: "customer-email-verification", pageParams: [
+                "errors" => $result,
+            ], layoutParams: [
+                "title" => "Email Verification",
+                'errors' => $result,
+                "customer" => null
+            ]);
+        }
+        if ($result) {
+            return $res->render(view: "customer-email-verification",  layoutParams: [
+                "title" => "Email Verification",
+                'success' => 1,
+                "customer" => null
+            ]);
+        }
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
+        ]);
+    }
+
+
+    public function getCustomerContactVerificationPage (Request $req, Response $res) : string {
+        return $res->render(view: 'customer-contact-verification', layoutParams: [
+            'title' => 'Verify your email & phone number',
+            'customer' => null
         ]);
     }
 
@@ -56,7 +102,7 @@ class AuthenticationController
         if ($req->session->get("is_authenticated")) {
             return $res->redirect(path: $query['redirect_url'] ?? "/dashboard/profile");
         }
-        return $res->render(view: "customer-login", layout: "main", pageParams: [
+        return $res->render(view: "customer-login",  pageParams: [
             'redirect_url' => $query['redirect_url'] ?? "/dashboard/profile"
         ], layoutParams: [
             'title' => 'Login',
@@ -310,11 +356,11 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "admin");
             return $response->redirect(path: "/admin-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
     // Regarding security officer authentication
@@ -344,10 +390,10 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "security-officer");
             return $response->redirect(path: "/security-officer-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 }
