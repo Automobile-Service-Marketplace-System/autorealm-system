@@ -28,6 +28,17 @@
         <textarea name="" id="" cols="90" rows="5"></textarea>
 
         <p>Assign a Foreman</p>
+        <!-- <?php var_dump($foremanAvailability) ?> -->
+        <?php 
+            foreach($foremanAvailability as $foremans){
+                echo "<div>
+                    Name = $foremans[Name]
+                    Availability = $foremans[Availability]
+                    <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'
+                </div>";
+            }
+        ?>
+
 
         <div class="office-staff-btn">
             <button class="btn btn--danger btn--block">
@@ -35,7 +46,7 @@
             </button>
 
             <button class="btn btn--blue btn--block">
-                Create an account
+                Create a JobCard
             </button>
         </div>
 

@@ -78,29 +78,6 @@ class AppointmentController
 
     }
 
-    public function getCreateJobCardPage(Request $req, Response $res)
-    {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            $query = $req -> query();
-            $appointmenteModel = new Appointment();
-            $appointmentInfo = $appointmenteModel->getAppointmentInfo((int) $query["id"]);
-
-            return $res->render(view:"office-staff-dashboard-jobcard-page", layout:"office-staff-dashboard",
-            pageParams:[
-                "appointmentInfo"=>$appointmentInfo
-            ],
-            layoutParams:[
-                "title" => "Job Card",
-                "pageMainHeading" => "Create a JobCard",
-                'officeStaffId' => $req->session->get('user_id')
-            ]);
-        }
-
-        return $res->redirect(path:"/employee-login");
-
-    }
-
-
     public function getAppointmentDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
             $appointmentModel=new Appointment();
