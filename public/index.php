@@ -98,6 +98,8 @@ if($isInternal) {
     $app->router->get("/employees", [EmployeeController::class, 'getViewEmployeesPage']);
     $app->router->get("/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post("/employees/add", [EmployeeController::class, 'registerEmployee']);
+    $app->router->get("/employee/edit",[EmployeeController::class,'getEditEmployeePage']);   
+    $app->router->post("/employee/edit",[EmployeeController::class,'editEmployee']);
     $app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get("/services", [ServicesController::class, 'getServicesPage']);
     $app->router->get("/services/add-services", [ServicesController::class, 'getAddServicesPage']);
