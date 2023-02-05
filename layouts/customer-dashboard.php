@@ -87,7 +87,7 @@ DocumentHead::createHead(
                     </a>
                 </li>
                 <li>
-                    <a href="/dashboard/overview">
+                    <a href="/dashboard/orders">
                         <i class="fa-solid fa-money-bill"></i>
                         My orders
                     </a>

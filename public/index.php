@@ -70,6 +70,7 @@ if(!$isInternal) {
     $app->router->post("/cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
     $app->router->get("/dashboard/vehicles", [VehiclesController::class, 'getCustomerVehiclePage']);
     $app->router->get("/dashboard/records", [ServicesController::class, 'getPastServiceRecordsByVehicleIdCustomerPage']);
+    $app->router->get("/dashboard/orders", [OrdersController::class, 'getCustomerDashboardOrdersPage']);
 }
 
 if($isInternal) {

@@ -88,10 +88,10 @@
 </div>
 
 <div class="pagination-container">
-    <a class='pagination-item pagination-item--active' href='/dashboard/records?vahicle_id=123&page=1&limit=2'>1</a>
-    <a class='pagination-item' href='/dashboard/records?vahicle_id=123&page=2&limit=2'>2</a>
-    <a class='pagination-item' href='/dashboard/records?vahicle_id=123&page=3&limit=2'>3</a>
-    <a class='pagination-item' href='/dashboard/records?vahicle_id=123&page=4&limit=2'>4</a>
-    <a class='pagination-item' href='/dashboard/records?vahicle_id=123&page=5&limit=2'>5</a>
-    <a class='pagination-item' href='/dashboard/records?vahicle_id=123&page=6&limit=2'>6</a>
+    <a class='pagination-item pagination-item--active' href='/dashboard/records?vehicle_id=123&page=1&limit=2'>1</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=2&limit=2'>2</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=3&limit=2'>3</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=4&limit=2'>4</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=5&limit=2'>5</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=6&limit=2'>6</a>
 </div>

@@ -259,7 +259,8 @@ class Employee
         return $this->pdo->query("
             SELECT 
                 employee_id as ID,
-                CONCAT(f_name, ' ', l_name) as 'Name',
+                f_name as 'First Name',
+                l_name as 'Last Name',
                 contact_no as 'Contact No',
                 email as Email,
                 job_role as JobType,
