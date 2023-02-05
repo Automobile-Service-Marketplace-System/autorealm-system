@@ -31,7 +31,7 @@
                 <p><span>Last Service Mileage:</span> 268635 KM</p>
                 <p><span>Last Service Date:</span> 12/12/2020</p>
             </div>
-            <a class="btn btn--danger" href="/dashboard/services?vehicle_id=123">
+            <a class="btn btn--danger" href="/dashboard/records?vehicle_id=123">
                 View service history
             </a>
         </div>
@@ -58,7 +58,7 @@
                 <p><span>Last Service Mileage:</span> 268635 KM</p>
                 <p><span>Last Service Date:</span> 12/12/2020</p>
             </div>
-            <a class="btn btn--danger" href="/dashboard/services?vehicle_id=123">
+            <a class="btn btn--danger" href="/dashboard/records?vehicle_id=123">
                 View service history
             </a>
         </div>

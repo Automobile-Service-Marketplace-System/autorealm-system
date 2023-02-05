@@ -14,8 +14,8 @@ class ServicesController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
 
-             $serviceModel = new Service();
-             $services = $serviceModel->getServices();
+            $serviceModel = new Service();
+            $services = $serviceModel->getServices();
 
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
@@ -35,7 +35,7 @@ class ServicesController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
 
             return $res->render(view: "admin-add-services", layout: "admin-dashboard", pageParams: [
-                
+
             ], layoutParams: [
                 'title' => 'Add Services',
                 'pageMainHeading' => 'Add Services',
@@ -77,5 +77,22 @@ class ServicesController
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
+    }
+
+    public function getPastServiceRecordsByVehicleIdCustomerPage(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $query = $req->query();
+            $vehicleId = $query["vehicle_id"];
+            $customerId = $req->session->get("user_id");
+
+            return $res->render(view: "customer-dashboard-records", layout: "customer-dashboard", pageParams: [
+                "vehicleId" => $vehicleId
+            ], layoutParams: [
+                "title" => "Service History",
+                "pageMainHeading" => "Service History",
+                "customerId" => $customerId
+            ]);
+        }
     }
 }
