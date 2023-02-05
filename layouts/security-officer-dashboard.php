@@ -33,13 +33,13 @@ DocumentHead::createHead(
                     Home
                 </span>
             </a>
-            <a href="/login">
+            <a href="/security-officer-dashboard/view-admitting-report">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Admitting Reports
                 </span>
             </a>
-            <a href="/login">
+            <a href="/security-officer-dashboard/view-appointment">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Appointments
