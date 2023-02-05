@@ -21,7 +21,7 @@
     </p>
 </div>
 
-<div class="additional-info">
+<div class="office-staff-dashboard/create-jobCard-additional-info">
     <form action="office-staff-dashboard/create-jobCard" method="post" class="office-staff-dashboard/create-jobCard-form" enctype="multipart/form-data">
 
         <p>Customer Observation:</p>

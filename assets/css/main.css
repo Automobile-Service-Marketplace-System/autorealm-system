@@ -51,6 +51,7 @@
 @import "views/employee-dashboard-profile.css";
 @import "views/cart.css";
 @import "views/office-staff-dashboard-get-appointment-for-customer.css";
+@import "views/office-staff-dashboard-jobcard-page.css";
 
 
 body {

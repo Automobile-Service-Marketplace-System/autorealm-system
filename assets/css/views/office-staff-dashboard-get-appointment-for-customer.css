@@ -1,11 +1,7 @@
 .appoitment-owner-info {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
+    background-color: blue;
 }
 
-.appointment-btn {
-    margin-top: 5rem;;
-    display: flex;
-    justify-content: space-between;
+.appointment-form{
+    background-color: blue;
 }
-
