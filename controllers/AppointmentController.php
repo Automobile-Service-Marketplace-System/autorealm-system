@@ -61,7 +61,7 @@ class AppointmentController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $appointmenteModel = new Appointment();
-            $appointments = $appointmenteModel->getAppointments();
+            $appointments = $appointmenteModel->getAllAppointments();
 
             return $res->render(view:"office-staff-dashboard-appointments-page", layout:"office-staff-dashboard",
             pageParams:[
