@@ -1,7 +1,7 @@
 <?php
 /**
  * @var string $title
- * @var object $customer
+ * @var int $customerId
  * @var string $current_url
  */
 
@@ -30,10 +30,10 @@ DocumentHead::createHead(
     </div>
     <?php
 
-        CustomerHeader::render(customer: isset($customer) && $customer ? $customer : null, current_url: $current_url);
+        CustomerHeader::render(customerId: isset($customerId) && $customerId ? $customerId : null, current_url: $current_url);
      ?>
     <button class="menu-btn menu-btn--solid no_highlights">
-        <div class="menu-btn__bar"></div>
+        <span class="menu-btn__bar"></span>
     </button>
 </header>
 <nav class="dropdown-nav">
@@ -59,7 +59,7 @@ DocumentHead::createHead(
     <div>
         <div class="brand-and-address">
             <div>
-                <img src="/images/logo.webp" alt="AutoRealm Logo" class="brand__image" width="48px" height="48px">
+                <img src="/images/logo-mini.webp" alt="AutoRealm Logo" class="brand__image" width="48" height="48">
                 <p class="brand__name">AutoRealm</p>
             </div>
             <p>

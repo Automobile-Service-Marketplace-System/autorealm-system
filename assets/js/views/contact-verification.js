@@ -1,80 +1,113 @@
 import Notifier from "../components/Notifier";
 
+// #region Elements
 /**
- *
  * @type {NodeListOf<HTMLInputElement>}
  */
 const emailOtpInputs = document.querySelectorAll("#email-otp-1, #email-otp-2, #email-otp-3, #email-otp-4, #email-otp-5, #email-otp-6")
 /**
- *
+ * @type {NodeListOf<HTMLInputElement>}
+ */
+const mobileOtpInputs = document.querySelectorAll("#mobile-otp-1, #mobile-otp-2, #mobile-otp-3, #mobile-otp-4, #mobile-otp-5, #mobile-otp-6")
+/**
  * @type {NodeListOf<HTMLDivElement>}
  */
 const verificationSteps = document.querySelectorAll(".verification__step#verification__step-1, .verification__step#verification__step-2")
 
 /**
- *
  * @type {NodeListOf<HTMLParagraphElement>}
  */
 const verificationStepIndicators = document.querySelectorAll(".step-indicator")
 /**
- *
  * @type {HTMLDivElement}
  */
 const verificationProgress = document.querySelector(".verification__progress")
+// #endregion
 
 emailOtpInputs[0]?.addEventListener('paste', handlePaste)
+mobileOtpInputs[0]?.addEventListener('paste', handlePaste)
 emailOtpInputs.forEach((emailOtpInput, index) => {
-
     emailOtpInput.addEventListener('beforeinput', e => {
         handleBeforeNormalInput(e, index)
     })
-
     emailOtpInput.addEventListener('input', async (e) => {
-        await handleNormalInput(e, index)
+        await handleNormalInput(e, index, 'email')
+    })
+})
+
+
+mobileOtpInputs.forEach((mobileOtpInput, index) => {
+
+    mobileOtpInput.addEventListener('beforeinput', e => {
+        handleBeforeNormalInput(e, index)
+    })
+    mobileOtpInput.addEventListener('input', async (e) => {
+        await handleNormalInput(e, index, 'mobile')
     })
 })
 
 /**
  * @param {ClipboardEvent} e
+ * @param {"email" | "mobile"} mode
  */
-function handlePaste(e) {
+function handlePaste(e, mode) {
     e.preventDefault();
     const data = e.clipboardData.getData("text/plain")
-    // exit if data is not a integer string (preceding 0 is ok)
+    // exit if data is not an integer string (preceding 0 is ok)
     if (!/^\d+$/.test(data)) {
         return
     }
     data.split("").forEach(async (char, index) => {
         // if char is a digit
         if (char.match(/\d/)) {
-            emailOtpInputs[index].value = char
-            if (index < emailOtpInputs.length - 1) {
-                emailOtpInputs[index + 1].focus()
-            } else {
-                disableEmailInputs();
-                await handleCompleteEmailOTPInput(e)
+            if (mode === "email") {
+                emailOtpInputs[index].value = char
+                if (index < emailOtpInputs.length - 1) {
+                    emailOtpInputs[index + 1].focus()
+                } else {
+                    disableInputs('email');
+                    await handleCompleteOTPInput(e, 'email')
+                }
+            } else if (mode === "mobile") {
+                mobileOtpInputs[index].value = char
+                if (index < mobileOtpInputs.length - 1) {
+                    mobileOtpInputs[index + 1].focus()
+                } else {
+                    disableInputs('mobile');
+                    await handleCompleteOTPInput(e, 'mobile')
+                }
             }
+
         }
     })
 }
 
 /**
  *
- * @param {InputEvent} e
+ * @param {Event | InputEvent} e
  * @param {number} index
+ * @param {"email" | "mobile"} mode
  */
-async function handleNormalInput(e, index) {
-    console.log(emailOtpInputs[index].value)
+async function handleNormalInput(e, index, mode) {
     if (e.inputType === "deleteContentBackward") {
         if (index > 0) {
-            emailOtpInputs[index - 1].focus()
+            mode === 'email' ? emailOtpInputs[index - 1].focus() : mode === 'mobile' ? mobileOtpInputs[index - 1].focus() : null
         }
     } else if (e.inputType === "insertText") {
-        if (index < emailOtpInputs.length - 1) {
-            emailOtpInputs[index + 1].focus()
-        } else {
-            disableEmailInputs();
-            await handleCompleteEmailOTPInput(e)
+        if (mode === "email") {
+            if (index < emailOtpInputs.length - 1) {
+                emailOtpInputs[index + 1].focus()
+            } else {
+                disableInputs('email')
+                await handleCompleteOTPInput(e, 'email')
+            }
+        } else if (mode === "mobile") {
+            if (index < mobileOtpInputs.length - 1) {
+                mobileOtpInputs[index + 1].focus()
+            } else {
+                disableInputs('mobile');
+                await handleCompleteOTPInput(e, 'mobile')
+            }
         }
     }
 }
@@ -86,11 +119,11 @@ async function handleNormalInput(e, index) {
  * @param {number} index
  */
 function handleBeforeNormalInput(e, index) {
-    if(e.data === null) return
-    const digit= Number(e.data + e.target.value)
+    if (e.data === null) return
+    const digit = Number(e.data + e.target.value)
     // if valid digit between 0 and 9
-    if (!Number.isNaN(digit) && digit >= 0 && digit <= 9) {}
-    else {
+    if (!Number.isNaN(digit) && digit >= 0 && digit <= 9) {
+    } else {
         e.preventDefault();
     }
 }
@@ -98,41 +131,84 @@ function handleBeforeNormalInput(e, index) {
 /**
  *
  * @param {InputEvent | ClipboardEvent} e
+ * @param {"email" | "mobile"} mode
  */
-async function handleCompleteEmailOTPInput(e) {
-    try {
-        verificationProgress?.classList.add("verification__progress--in-progress")
-        await verifyEmail()
-        Notifier.show({
-            header: "Success",
-            type: "success",
-            closable: true,
-            duration: 5000,
-            text: "Your email has been verified successfully"
+async function handleCompleteOTPInput(e, mode) {
+    if (mode === "email") {
+        try {
+            verificationProgress?.classList.add("verification__progress--in-progress")
+            await verifyEmail()
+            Notifier.show({
+                header: "Success",
+                type: "success",
+                closable: true,
+                duration: 5000,
+                text: "Your email has been verified successfully"
+            })
+            completeStep(0)
+        } catch (e) {
+            enableInputs('email');
+            alert(e)
+        } finally {
+            verificationProgress?.classList.remove("verification__progress--in-progress")
+        }
+    } else if (mode === "mobile") {
+        try {
+            verificationProgress?.classList.add("verification__progress--in-progress")
+            await verifyMobile()
+            Notifier.show({
+                header: "Success",
+                type: "success",
+                closable: true,
+                duration: 5000,
+                text: "Your mobile has been verified successfully"
+            })
+            completeStep(1)
+        } catch (e) {
+            enableInputs('mobile');
+            alert(e)
+        } finally {
+            verificationProgress?.classList.remove("verification__progress--in-progress")
+        }
+    }
+
+}
+
+/**
+ *
+ * @param {"email"|"mobile"}mode
+ */
+function disableInputs(mode) {
+    if (mode === "email") {
+        emailOtpInputs.forEach((element) => {
+            element.disabled = true;
+            element.readOnly = true;
         })
-        completeStep(0)
-    } catch (e) {
-        enableEmailInputs();
-        alert(e)
-    } finally {
-        verificationProgress?.classList.remove("verification__progress--in-progress")
+    } else if (mode === "mobile") {
+        mobileOtpInputs.forEach((element) => {
+            element.disabled = true;
+            element.readOnly = true;
+        })
     }
 }
 
 
-function disableEmailInputs() {
-    emailOtpInputs.forEach((element) => {
-        element.disabled = true;
-        element.readOnly = true;
-    })
-}
-
-
-function enableEmailInputs() {
-    emailOtpInputs.forEach((element) => {
-        element.disabled = false;
-        element.readOnly = false;
-    })
+/**
+ *
+ * @param {"email"|"mobile"}mode
+ */
+function enableInputs(mode) {
+    if (mode === "email") {
+        emailOtpInputs.forEach((element) => {
+            element.disabled = false;
+            element.readOnly = false;
+        })
+    } else if (mode === "mobile") {
+        mobileOtpInputs.forEach((element) => {
+            element.disabled = false;
+            element.readOnly = false;
+        })
+    }
 }
 
 
@@ -147,7 +223,7 @@ function completeStep(index) {
         verificationSteps[index].style.display = "none"
         verificationStepIndicators[0].classList.add("step-indicator--disabled")
         verificationStepIndicators[1].classList.remove("step-indicator--disabled")
-        if(index === 0 ) {
+        if (index === 0) {
             verificationSteps[1].classList.remove("verification__step--disabled")
             verificationSteps[1].classList.add("verification__step--active")
         }
@@ -155,6 +231,15 @@ function completeStep(index) {
 }
 
 function verifyEmail() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+                resolve("something")
+            },
+            3000)
+    })
+}
+
+function verifyMobile() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
                 resolve("something")

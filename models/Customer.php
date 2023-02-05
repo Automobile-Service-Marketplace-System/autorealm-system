@@ -66,20 +66,18 @@ class Customer
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
 
-//                //cryptographically secure pseudo-random bytes that is unique for every user
+//                //cryptographically secure 6-digits OTP code
                 try {
-                    $email_verification_code = bin2hex(random_bytes(64));
-                    $statement->bindValue(":email_verification_code", $email_verification_code);
+                    $email_otp = (string) random_int(100000, 999999);
+                    $statement->bindValue(":email_verification_code", $email_otp);
                 } catch (Exception $e) {
-                    error_log($e->getMessage());
                     return $e->getMessage();
                 }
 
                 try {
-                    $mobile_verification_code = bin2hex(random_bytes(64));
-                    $statement->bindValue(":mobile_verification_code", $mobile_verification_code);
+                    $mobile_otp = (string) random_int(100000, 999999);
+                    $statement->bindValue(":mobile_verification_code", $mobile_otp);
                 } catch (Exception $e) {
-                    error_log($e->getMessage());
                     return $e->getMessage();
                 }
 
@@ -100,7 +98,7 @@ class Customer
 //                    }
                     return true;
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
+
                     return $e->getMessage();
                 }
             } else {
@@ -150,7 +148,6 @@ class Customer
                     ]);
                     return true;
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
                     return false;
                 }
             } else {
@@ -196,7 +193,6 @@ class Customer
                     $statement->execute();
                     // return true;
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
                     return false;
                 }
 

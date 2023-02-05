@@ -13,8 +13,6 @@ use app\models\Admin;
 use app\models\Employee;
 use app\models\OfficeStaff;
 use app\models\SecurityOfficer;
-use app\utils\EmailClient;
-use SendinBlue\Client\ApiException;
 
 class AuthenticationController
 {
@@ -104,7 +102,7 @@ class AuthenticationController
         if ($req->session->get("is_authenticated")) {
             return $res->redirect(path: $query['redirect_url'] ?? "/dashboard/profile");
         }
-        return $res->render(view: "customer-login", layout: "main", pageParams: [
+        return $res->render(view: "customer-login",  pageParams: [
             'redirect_url' => $query['redirect_url'] ?? "/dashboard/profile"
         ], layoutParams: [
             'title' => 'Login',
@@ -355,11 +353,11 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "admin");
             return $response->redirect(path: "/admin-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
     // Regarding security officer authentication
@@ -389,10 +387,10 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "security-officer");
             return $response->redirect(path: "/security-officer-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 }

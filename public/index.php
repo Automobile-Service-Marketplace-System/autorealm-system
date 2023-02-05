@@ -66,7 +66,7 @@ if(!$isInternal) {
     $app->router->post("/cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post("/cart/update", [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post("/cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
-
+    $app->router->get("/dashboard/vehicles", [VehiclesController::class, 'getCustomerVehiclePage']);
 }
 
 if($isInternal) {
