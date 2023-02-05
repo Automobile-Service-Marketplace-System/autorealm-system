@@ -52,6 +52,7 @@
 @import "views/employee-dashboard-profile.css";
 @import "views/cart.css";
 @import "views/customer-contact-verification.css";
+@import "views/overview.css";
 
 
 body {
