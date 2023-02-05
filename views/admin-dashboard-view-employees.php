@@ -1,137 +1,57 @@
-<style>
-    .employee{
-        background-color: var(--color-white);
-        box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2); 
-        padding: 1rem;
-        border-radius: 0.5rem;
-        width: 75%;
-        max-width: 450px;
-        gap:0.5cm;
-        display: flex;
-        margin:1cm;
-    }
-    .grid{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;     
-    }
-
-    .line{
-        display: flex;
-        flex-direction: column;
-    }
-
-    .dot1{
-        height: 12px;
-        width: 12px;
-        background-color: aqua;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-    .dot2{
-        height: 12px;
-        width: 12px;
-        border-radius: 50%;
-        display: inline-block;
-        background-color:darkorange;
-    }
-
-    .line2{
-        align-items: center;
-        border-radius: 100px;
-        padding-left:1.3cm;
-    }
-
-    .job_role{
-        background-color:darkgray;
-        border-radius: 8px; 
-        text-align:center;
-        padding: 0.25rem;
-        width: 4cm;
-    }
-
-    .line3{
-        padding-left:1cm;
-        text-align:center;       
-    }
-
-    .line6{
-        padding-left: 1.25cm;
-    }
-
-</style>
-
 <?php
-
-
 /**
  * @var array $employees
  */
 
 ?>
 
-<div class="admin-add-button-set">
-    <div class="add-button">
-        <a class="btn" href="/employees/add">
-            <i class="fa-solid fa-plus"></i>
-            Add Employee</a>
-    </div>
+<div class="flex items-center justify-end mb-4">
+    <a class="btn" href="/employees/add">
+        <i class="fa-solid fa-plus"></i>
+        Add Employee
+    </a>
 </div>
 
-<div class="grid">
+<div class="employee-container">
     <?php
-        foreach($employees as $employee){ ?>
-            <div class="employee">
-                <div class="line">
-                    <div class="line1">
-                        <?php if($employee["isActive"]===1){ ?>
-                            <span class="dot1"></span>
-                            <b> Available</b>
-                        <?php } 
-                        else{ ?>
-                            <span class="dot2"></span>
-                            <b> Busy</b>
-                        <?php } ?>
-                    </div>
-                    <div class="line2">
-                        <?php echo "<img src='{$employee['Image']}' style='width:128px;height:128px;border-radius: 100px;'>"; ?>
-                    </div>
-                    <div class="line3">
-                        <b><?php echo $employee["Name"]?></b>
-                        <div class="job_role">
-                            <?php 
-                                if($employee["JobType"]==="stock_manager"){?>
-                                    Stock Manager
-                                <?php }
-                                else if($employee["JobType"]==="office_staff_member"){?>
-                                    Office Staff
-                                <?php }
-                                else if($employee["JobType"]==="security_officer"){?>
-                                    Security Officer
-                                <?php }
-                                else if($employee["JobType"]==="technician"){?>
-                                    Technician
-                                <?php }
-                                else if($employee["JobType"]==="foreman"){?>
-                                    Security Officer
-                                <?php }
-                                else if($employee["JobType"]==="admin"){?>
-                                    Admin
-                                <?php } 
-                            ?>
-                        </div>
-                        <div class="line4">
-                            <?php echo $employee["Contact No"]?>
-                        </div>
-                        <div class="line5">
-                            <p style="color:blue;"><?php echo $employee["Email"]?></p><br>
-                        </div>
-                        <div class="line6">
-                            <button class="btn" onclick="window.location.href ='/employee/edit';">Edit</button>
-                        </div>
-                    </div>
+    foreach ($employees as $employee) {
+
+        $isActive = $employee["isActive"] === 1 ? "<p class='employee-card__status'><i class='indicator indicator--success'></i> Available</p>" : "<p class='employee-card__status'><i class='indicator'> </i> Busy</p>";
+        $employeeRole = "";
+        switch ($employee['JobType']) {
+            case "stock_manager":
+                $employeeRole = "Stock Manager";
+                break;
+            case "office_staff_member":
+                $employeeRole = "Office Staff";
+                break;
+            case "technician":
+                $employeeRole = "Technician";
+                break;
+            case "foreman":
+                $employeeRole = "Foreman";
+                break;
+            case "security_officer":
+                $employeeRole = "Security Officer";
+                break;
+            case "admin":
+                $employeeRole = "Admin";
+                break;
+        }
+
+        echo "<div class='employee-card'>
+                <div class='employee-card__header'>
+                       $isActive
+                       <i class='fa-solid fa-ellipsis'></i>
                 </div>
-            </div>
-        <?php } ?>
+                <div class='employee-card__info'>
+                    <img src='{$employee['Image']}'>
+                    <p class='employee-card__name'> {$employee['First Name'][0]}. {$employee['Last Name']}</p>
+                    <p class='employee-card__role'>$employeeRole</p>
+                    <a class='employee-card__contact' href='tel:{$employee['Contact No']}'>{$employee['Contact No']}</a>
+                    <a class='employee-card__contact' href='mailto:{$employee['Email']}'>{$employee['Email']}</a>
+                </div> 
+              </div>";
+    }
+    ?>
 </div>
