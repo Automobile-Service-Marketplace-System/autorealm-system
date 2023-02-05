@@ -8,6 +8,7 @@ use app\models\Customer;
 use app\models\Vehicle;
 use app\models\Appointment;
 use app\models\Service;
+use app\models\Appointment;
 
 class AppointmentController
 {
@@ -100,4 +101,19 @@ class AppointmentController
 
     }
 
+
+    public function getAppointmentDetails(Request $req, Response $res):string{
+        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
+            $appointmentModel=new Appointment();
+            $appointments=$appointmentModel->getAppointments();
+
+            return $res->render(view: "security-officer-dashboard-view-appointment",layout:"security-officer-dashboard",pageParams:[
+                    "appointments"=>$appointments],layoutParams:[
+                    "title"=>'Appointments',
+                    'pageMainHeading'=>'Appointments',
+                    'securityOfficerId'=>$req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path:"/login");
+    }
 }

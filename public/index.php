@@ -14,7 +14,9 @@ use app\controllers\VehiclesController;
 use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
-
+use app\controllers\OverviewController;
+use app\controllers\OrdersController;
+use app\controllers\AdmittingController;
 use Dotenv\Dotenv;
 
 
@@ -56,6 +58,8 @@ if(!$isInternal) {
 // customer's routes
     $app->router->get("/register", [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post("/register", [AuthenticationController::class, 'registerCustomer']);
+    $app->router->get("/verify-email", [AuthenticationController::class, 'getEmailVerificationStatusPage']);
+    $app->router->get("/contact-verification", [AuthenticationController::class, 'getCustomerContactVerificationPage']);
     $app->router->get("/login", [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post("/login", [AuthenticationController::class, 'loginCustomer']);
     $app->router->post("/logout", [AuthenticationController::class, 'logoutCustomer']);
@@ -64,7 +68,8 @@ if(!$isInternal) {
     $app->router->post("/cart/add", [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post("/cart/update", [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post("/cart/delete", [ShoppingCartController::class, 'deleteCartItem']);
-
+    $app->router->get("/dashboard/vehicles", [VehiclesController::class, 'getCustomerVehiclePage']);
+    $app->router->get("/dashboard/records", [ServicesController::class, 'getPastServiceRecordsByVehicleIdCustomerPage']);
 }
 
 if($isInternal) {
@@ -93,10 +98,13 @@ if($isInternal) {
     $app->router->get("/employees", [EmployeeController::class, 'getViewEmployeesPage']);
     $app->router->get("/employees/add", [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post("/employees/add", [EmployeeController::class, 'registerEmployee']);
+    $app->router->get("/employee/edit",[EmployeeController::class,'getEditEmployeePage']);   
+    $app->router->post("/employee/edit",[EmployeeController::class,'editEmployee']);
     $app->router->get("/admin-dashboard/profile", [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get("/services", [ServicesController::class, 'getServicesPage']);
     $app->router->get("/services/add-services", [ServicesController::class, 'getAddServicesPage']);
     $app->router->post("/services/add", [ServicesController::class, 'AddServices']);
+    $app->router->get("/overview",[OverviewController::class,'getOverviewPage']);
 
 // stock manager routes
     $app->router->get("/stock-manager-login", [AuthenticationController::class, 'getStockManagerLoginPage']);
@@ -107,6 +115,7 @@ if($isInternal) {
     $app->router->post("/stock-manager-dashboard/products/add-products", [ProductsController::class, 'AddProducts']);
     $app->router->get("/stock-manager-dashboard/suppliers", [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post("/stock-manager-dashboard/suppliers/add", [ProductsController::class, 'addSuppliers']);
+    $app->router->get("/stock-manager-dashboard/orders", [OrdersController::class,'getOrdersPage']);
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
@@ -130,8 +139,8 @@ if($isInternal) {
     $app->router->post("/security-officer-login", [AuthenticationController::class, 'loginSecurityOfficer']);
     $app->router->get("/security-officer-dashboard/profile", [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get("/security-officer-dashboard/check-appointment", [AppointmentController::class, 'getAppointmentPage']);
-
+    $app->router->get("/security-officer-dashboard/view-appointment",[AppointmentController::class, 'getAppointmentDetails']);
+    $app->router->get("/security-officer-dashboard/view-admitting-report",[AdmittingController::class, 'getAdmittingReports']);
 }
-
 // run the application
 $app->run();

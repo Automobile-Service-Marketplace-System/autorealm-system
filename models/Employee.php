@@ -227,16 +227,22 @@ class Employee
         $employee = null;
 
         if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
+            //filter_var: filters variables
             $errors['email'] = 'email must be a valid email address';
         } else {
             $query = "SELECT * FROM employee WHERE email = :email";
+            //Creates a SQL query with a parameter placeholder named ":email".
             $statement = $this->pdo->prepare($query);
+            //Uses the PDO object's "prepare" method to prepare the query for execution.
             $statement->bindValue(':email', $this->body['email']);
+            //Binds the value of the ":email" parameter placeholder to the value of the "email" key in the "body" array.
             $statement->execute();
             $employee = $statement->fetchObject();
+            //Fetches the first result of the executed query as an object using the "fetchObject" method.
             if (!$employee) {
                 $errors['email'] = 'email does not exist';
             } else if (!password_verify($this->body['password'], $employee->password)) {
+                //checks if the hash of the provided password matches the hashed password stored in the "$employee->password" property.
                 $errors['password'] = 'password is incorrect';
 
             }
@@ -247,16 +253,18 @@ class Employee
         return $errors;
     }
 
-    public function getEmployee(): array
+    public function getEmployees(): array
     {
 
         return $this->pdo->query("
             SELECT 
                 employee_id as ID,
-                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                CONCAT(f_name, ' ', l_name) as 'Name',
                 contact_no as 'Contact No',
-                address as Address,
-                email as email
+                email as Email,
+                job_role as JobType,
+                is_active as isActive,
+                image as Image
             FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 
     }
