@@ -59,10 +59,10 @@ use app\components\FormTextareaItem;
 
         <p>
             <strong>
-                Brand Name:
+                Model Name:
             </strong>
             <span>
-                <?php echo $appointment[0]['brand_name'] ?>
+                <?php echo $appointment[0]['model_name'] ?>
             </span>
         </p>
     </div>
@@ -118,7 +118,7 @@ use app\components\FormTextareaItem;
                     Create an Appointment
                 </button>
             </div>
-            
+
         </div>
     </form>
 </div>

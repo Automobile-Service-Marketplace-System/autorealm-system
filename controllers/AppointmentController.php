@@ -8,7 +8,6 @@ use app\models\Customer;
 use app\models\Vehicle;
 use app\models\Appointment;
 use app\models\Service;
-use app\models\Appointment;
 
 class AppointmentController
 {
