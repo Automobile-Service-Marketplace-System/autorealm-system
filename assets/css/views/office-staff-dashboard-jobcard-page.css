@@ -1,0 +1,17 @@
+.appointment-info{
+    display: flex;
+}
+
+.appointment-info p{
+    width: 50%;
+}
+
+.office-staff-dashboard-create-jobCard-other-info{
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.foreman-card{
+    /* margin-top: 0.5rem;
+    border: 0.1rem solid black; */
+}

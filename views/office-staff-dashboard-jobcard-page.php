@@ -1,5 +1,6 @@
 <?php
-// var_dump($appointmentInfo) ?>
+// var_dump($appointmentInfo) 
+?>
 
 <div class="appointment-info">
     <p>
@@ -21,31 +22,30 @@
     </p>
 </div>
 
-<div class="office-staff-dashboard/create-jobCard-additional-info">
+<div class="office-staff-dashboard-create-jobCard-other-info">
     <form action="office-staff-dashboard/create-jobCard" method="post" class="office-staff-dashboard/create-jobCard-form" enctype="multipart/form-data">
+        <div class="assign-a-foreman">
+            <p>Customer Observation:</p>
+            <textarea name="" id="" cols="90" rows="3"></textarea>
 
-        <p>Customer Observation:</p>
-        <textarea name="" id="" cols="90" rows="5"></textarea>
-
-        <p>Assign a Foreman</p>
-        <!-- <?php var_dump($foremanAvailability) ?> -->
-        <?php 
-            foreach($foremanAvailability as $foremans){
-                echo "<div>
-                    Name = $foremans[Name]
-                    Availability = $foremans[Availability]
-                    <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'
-                </div>";
+            <p>Assign a Foreman</p>
+            <?php
+            foreach ($foremanAvailability as $foremans) {
+                echo "<div class='foreman-card'>
+                        $foremans[Name]
+                        Availability = ($foremans[Availability])
+                        <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'
+                    </div>";
             }
-        ?>
-
+            ?>
+        </div>
 
         <div class="office-staff-btn">
-            <button class="btn btn--danger btn--block">
+            <button class="btn btn--danger">
                 Reset
             </button>
 
-            <button class="btn btn--blue btn--block">
+            <button class="btn btn--blue">
                 Create a JobCard
             </button>
         </div>
