@@ -15,6 +15,7 @@ use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
 use app\controllers\OverviewController;
+use app\controllers\InvoicesController;
 use Dotenv\Dotenv;
 
 
@@ -121,6 +122,7 @@ if($isInternal) {
     $app->router->get("/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
     $app->router->get("/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
     $app->router->post("/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
+    $app->router->get("/invoices", [InvoicesController::class, 'getInvoicesPage']);
 
 
 //security officer roots
