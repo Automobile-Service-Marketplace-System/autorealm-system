@@ -54,6 +54,7 @@
 @import "views/customer-contact-verification.css";
 @import "views/customer-dashboard-records.css";
 @import "views/customer-dashboard-orders.css";
+@import "views/customer-dashboard-appointments.css";
 @import "views/admin-dashboard-employees.css";
 @import "views/overview.css";
 

@@ -95,4 +95,18 @@ class ServicesController
             ]);
         }
     }
+
+
+    public function geOngoingServicesForCustomerPage(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get("user_id");
+
+            return $res->render(view: "customer-dashboard-services", layout: "customer-dashboard", layoutParams: [
+                "title" => "Ongoing Services / Repairs",
+                "pageMainHeading" => "Ongoing Services / Repairs",
+                "customerId" => $customerId
+            ]);
+        }
+    }
 }

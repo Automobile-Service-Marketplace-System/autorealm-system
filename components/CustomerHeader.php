@@ -7,7 +7,7 @@ use app\models\ShoppingCart;
 class CustomerHeader
 {
 
-    public static function render(int|null $customerId, string $current_url): void
+    public static function render(int|null $customerId, string $current_url = ""): void
     {
         $cartModel = new ShoppingCart();
         if (isset($customerId)) {

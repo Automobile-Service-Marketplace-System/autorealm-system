@@ -5,6 +5,7 @@
  * @var int $customerId
  */
 
+use app\components\CustomerHeader;
 use app\components\CustomerProfileDropdown;
 use app\utils\DocumentHead;
 
@@ -27,18 +28,10 @@ DocumentHead::createHead(
             <p class="brand__name">AutoRealm</p>
         </a>
     </div>
-    <nav class="main-nav">
-        <ul>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/about-us">About Us</a></li>
-            <li><a href="/contact-us">Contact Us</a></li>
-            <?php
-            CustomerProfileDropdown::render(customerId: $customerId, id: 1);
-            ?>
+    <?php
 
-        </ul>
-    </nav>
+    CustomerHeader::render(customerId: isset($customerId) && $customerId ? $customerId : null);
+    ?>
     <div class="main-header__actions">
         <button class="menu-btn menu-btn--solid no_highlights">
             <span class="menu-btn__bar"></span>
@@ -75,9 +68,9 @@ DocumentHead::createHead(
                 </li>
 
                 <li>
-                    <a href="/dashboard/repairs-and-services">
+                    <a href="/dashboard/services">
                         <i class="fa-solid fa-stopwatch"></i>
-                        Ongoing services/Repairs
+                        Ongoing Services / Repairs
                     </a>
                 </li>
                 <li>
