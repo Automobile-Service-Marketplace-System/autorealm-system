@@ -31,6 +31,7 @@
 @import "views/products-page.css";
 @import "views/services-page.css";
 @import "views/customer-dashboard-profile.css";
+@import "views/customer-dashboard-vehicles.css";
 @import "views/customer-auth.css";
 @import "views/create-employee.css";
 @import "views/employee-login.css";
@@ -50,6 +51,11 @@
 @import "views/office-staff-dashboard-get-vehicle-by-customer.css";
 @import "views/employee-dashboard-profile.css";
 @import "views/cart.css";
+@import "views/customer-contact-verification.css";
+@import "views/customer-dashboard-records.css";
+@import "views/customer-dashboard-orders.css";
+@import "views/customer-dashboard-appointments.css";
+@import "views/admin-dashboard-employees.css";
 @import "views/overview.css";
 
 
