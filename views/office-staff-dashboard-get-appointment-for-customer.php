@@ -12,63 +12,54 @@ use app\components\FormTextareaItem;
 
 <div class="office-staff-add-appointment">
     <div class="appoitment-owner-info">
-        <p>
-            <strong>
-                Customer Name:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['full_name'] ?>
-            </span>
-        </p>
+        <div class="customer_info">
+            <p>
+                <strong>
+                    Customer Name:
+                </strong>
+                    <?php echo $appointment[0]['full_name'] ?>
+            </p>
 
-        <p>
-            <strong>
-                Contact No:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['contact_no'] ?>
-            </span>
-        </p>
+            <p>
+                <strong>
+                    Contact No:
+                </strong>
+                    <?php echo $appointment[0]['contact_no'] ?>
+            </p>
 
-        <p>
-            <strong>
-                Email:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['email'] ?>
-            </span>
-        </p>
+            <p>
+                <strong>
+                    Email:
+                </strong>
+                    <?php echo $appointment[0]['email'] ?>
+            </p>
+        </div>
+        <div class="vehicle_info">
+            <p>
+                <strong>
+                    Reg No:
+                </strong>
+                    <?php echo $appointment[0]['reg_no'] ?>
+            </p>
 
-        <p>
-            <strong>
-                Reg No:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['reg_no'] ?>
-            </span>
-        </p>
+            <p>
+                <strong>
+                    Engine No:
+                </strong>
+                    <?php echo $appointment[0]['engine_no'] ?>
+            </p>
 
-        <p>
-            <strong>
-                Engine No:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['engine_no'] ?>
-            </span>
-        </p>
-
-        <p>
-            <strong>
-                Model Name:
-            </strong>
-            <span>
-                <?php echo $appointment[0]['model_name'] ?>
-            </span>
-        </p>
+            <p>
+                <strong>
+                    Model Name:
+                </strong>
+                    <?php echo $appointment[0]['model_name'] ?>
+            </p>
+        </div>
     </div>
 
     <form action="/appointments/for-vin" method="post" class="office-staff-add-appointment-form" enctype="multipart/form-data">
-        <div class="appointment-form">
+        <div class="office-staff-appointment-form">
             <?php
             FormItem::render(
                 id: "milage",
@@ -97,7 +88,7 @@ use app\components\FormTextareaItem;
                 // hasError: $hasDescriptionError,
                 // error: $hasDescriptionError ? $errors['description'] : "",
                 // value: $hasDescriptionError ? $body['description'] : "",
-                rows: 4,
+                rows: 2,
             );
 
             ?>
@@ -110,11 +101,11 @@ use app\components\FormTextareaItem;
 
 
             <div class="office-staff-btn">
-                <button class="btn btn--danger btn--block" type="reset">
+                <button class="btn btn--danger" type="reset">
                     Reset
                 </button>
 
-                <button class="btn btn--block" type="button" id="add-product-btn">
+                <button class="btn" type="button" id="add-product-btn">
                     Create an Appointment
                 </button>
             </div>
