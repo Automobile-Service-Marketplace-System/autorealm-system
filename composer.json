@@ -30,7 +30,13 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "sendinblue/api-v3-sdk": "8.x.x",
+        "guzzlehttp/guzzle": "^7.5"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {

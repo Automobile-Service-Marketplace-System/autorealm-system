@@ -45,24 +45,23 @@ class ModalElement {
      */
     addModalContent(content) {
 
-        if(content instanceof  HTMLElement) {
+        if (content instanceof HTMLElement) {
             this.modalEl.appendChild(content);
-            const closeBtns = this.modalEl.querySelectorAll(".modal-close-btn");
-            closeBtns.forEach((closeBtn) => {
+            const closeButtons = this.modalEl.querySelectorAll(".modal-close-btn");
+            closeButtons.forEach((closeBtn) => {
                 closeBtn.addEventListener("click", () => {
                     this.destroy();
-                    Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
                 });
             })
             return
         }
 
         const modalContentEl = htmlToElement(content);
-        const closeBtns = modalContentEl.querySelectorAll(".modal-close-btn");
-        closeBtns.forEach((closeBtn) => {
+        const closeButtons = modalContentEl.querySelectorAll(".modal-close-btn");
+        closeButtons.forEach((closeBtn) => {
             closeBtn.addEventListener("click", () => {
                 this.destroy();
-                Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
+                // Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
             });
         })
         this.modalEl.appendChild(modalContentEl);
@@ -84,7 +83,7 @@ class ModalElement {
             this.overlayEl.addEventListener("click", (e) => {
                 if (e.target === this.overlayEl) {
                     this.destroy();
-                    Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
+                    // Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
                 }
             });
         }
@@ -92,24 +91,27 @@ class ModalElement {
 
 
     destroy() {
-        this.overlayEl.classList.remove("overlay-open");
-        this.modalEl.classList.remove("modal-open");
-        this.modalEl.classList.add("modal-close");
-        this.overlayEl.classList.add("overlay-close");
+        if (this.modalEl && this.overlayEl) {
+            this.overlayEl.classList.remove("overlay-open");
+            this.modalEl.classList.remove("modal-open");
+            this.modalEl.classList.add("modal-close");
+            this.overlayEl.classList.add("overlay-close");
 
-        setTimeout(() => {
-            this.modalEl.style.display = "none";
-            this.overlayEl.style.display = "none";
-            this.modalEl.classList.remove("modal-close");
-            this.overlayEl.classList.remove("overlay-close");
+            setTimeout(() => {
+                this.modalEl.style.display = "none";
+                this.overlayEl.style.display = "none";
+                this.modalEl.classList.remove("modal-close");
+                this.overlayEl.classList.remove("overlay-close");
 
-            this.modalEl.remove();
-            this.overlayEl.remove();
-            this.modalEl = undefined;
-            this.overlayEl = undefined;
-        }, 200);
+                this.modalEl.remove();
+                this.overlayEl.remove();
+                this.modalEl = undefined;
+                this.overlayEl = undefined;
+            }, 200);
+
+            Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
+        }
     }
-
 }
 
 export class Modal {

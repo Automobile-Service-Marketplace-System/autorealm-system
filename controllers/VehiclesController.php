@@ -11,42 +11,75 @@ use app\models\Model;
 
 class VehiclesController
 {
-    public function getVehiclesPage(Request $req, Response $res) : string {
+    public function getVehiclesPage(Request $req, Response $res): string
+    {
 
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicles();
 
-            return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
-                pageParams: ["vehicles"=>$vehicles], 
-                layoutParams: [
-                    'title' => 'Vehicles',
-                    'pageMainHeading' => 'Vehicles',
-                    'officeStaffId' => $req->session->get('user_id')
-            ]);
+            if($req->session->get("user_role") === "office_staff_member"){
+                return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
+                    pageParams: ["vehicles" => $vehicles],
+                    layoutParams: [
+                        'title' => 'Vehicles',
+                        'pageMainHeading' => 'Vehicles',
+                        'officeStaffId' => $req->session->get('user_id')
+                ]);
+            }
+
+            if($req->session->get("user_role") === "admin"){
+                return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "admin-dashboard",
+                    pageParams: ["vehicles" => $vehicles],
+                    layoutParams: [
+                        'title' => 'Vehicles',
+                        'pageMainHeading' => 'Vehicles',
+                        'employeeId' => $req->session->get('user_id')
+                ]);
+            }
+
         }
 
         return $res->redirect(path: "/login");
     }
 
-    public function getVehiclesByCustomer(Request $req, Response $res) : string {
+    public function getVehiclesByCustomer(Request $req, Response $res): string
+    {
 
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID((int) $query["id"]);
+            $vehicles = $vehicleModel->getVehicleByID((int)$query["id"]);
             $customerModel = new Customer();
-            $customer = $customerModel->getCustomerByID((int) $query["id"]);
+            $customer = $customerModel->getCustomerByID((int)$query["id"]);
 
             return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
-                pageParams: ["vehicles"=>$vehicles, 'customer' => $customer],
+                pageParams: ["vehicles" => $vehicles, 'customer' => $customer],
                 layoutParams: [
                     'title' => 'Vehicles',
                     'pageMainHeading' => 'Vehicles',
                     'officeStaffId' => $req->session->get('user_id')
-            ]);
+                ]);
         }
 
+        return $res->redirect(path: "/login");
+    }
+
+    public function getCustomerVehiclePage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get('user_id');
+            $vehicleModel = new Vehicle();
+            $vehicles = $vehicleModel->getVehicleByID($customerId);
+
+            return $res->render(view: "customer-dashboard-vehicles", layout: "customer-dashboard",
+                pageParams: ["vehicles" => $vehicles],
+                layoutParams: [
+                    'title' => 'Vehicles',
+                    'pageMainHeading' => 'Vehicles',
+                    'customerId' => $customerId
+                ]);
+        }
         return $res->redirect(path: "/login");
     }
 
@@ -57,7 +90,7 @@ class VehiclesController
 
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID((int) $query["id"]);
+            $vehicles = $vehicleModel->getVehicleByID((int)$query["id"]);
 
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
@@ -73,20 +106,20 @@ class VehiclesController
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
 
-            return $res->render(view:"office-staff-dashboard-add-vehicle", layout:"office-staff-dashboard",
-                pageParams:[
-                    "vehicles"=>$vehicles,
+            return $res->render(view: "office-staff-dashboard-add-vehicle", layout: "office-staff-dashboard",
+                pageParams: [
+                    "vehicles" => $vehicles,
                     'models' => $models,
                     'brands' => $brands,
                 ],
-                layoutParams:[
+                layoutParams: [
                     'title' => 'Add Vehicle',
                     'pageMainHeading' => 'Add Vehicle',
                     'officeStaffId' => $req->session->get('user_id'),
                 ]);
         }
 
-        return $res->redirect(path:"/login");
+        return $res->redirect(path: "/login");
     }
 
     public function addVehicle(Request $req, Response $res): string
@@ -101,11 +134,11 @@ class VehiclesController
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
             $models = [];
-    
+
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
-    
+
             $modelBrand = new Brand();
             $rawBrands = $modelBrand->getBrands();
             $brands = [];
@@ -126,7 +159,7 @@ class VehiclesController
             ]);
         }
 
-        return $res->render(view:"500", layout:"plain", pageParams:[
+        return $res->render(view: "500", layout: "plain", pageParams: [
             "error" => "Something went wrong. Please try again later.",
         ]);
     }

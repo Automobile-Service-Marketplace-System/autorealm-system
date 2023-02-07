@@ -35,6 +35,11 @@
     border: 1px solid transparent;
 }
 
+/*.form-input > input:focus, .form-input > select:focus, .form-input > textarea:focus {*/
+/*    outline: var(--color-primary) 2px solid;*/
+/*    border: 1px solid transparent;*/
+/*}*/
+
 label {
     padding: 0;
     margin: 0;

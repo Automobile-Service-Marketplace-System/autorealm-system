@@ -54,7 +54,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", role: "Foreman", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", id: 1);
             ?>
         </header>
 
