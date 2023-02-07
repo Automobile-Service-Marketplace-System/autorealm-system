@@ -16,18 +16,29 @@ class ProductsController
 
     public function getProductsPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $productModel = new Product();
             $products = $productModel->getProducts();
 
+            if($req->session->get("user_role") === "stock_manager"){
+                return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
+                    "products" => $products], layoutParams: [
+                    'title' => 'Products',
+                    'pageMainHeading' => 'Products',
+                    'employeeId' => $req->session->get("user_id"),
+                ]);
+            }
 
-            return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
-                "products" => $products], layoutParams: [
-                'title' => 'Products',
-                'pageMainHeading' => 'Products',
-                'employeeId' => $req->session->get("user_id"),
-            ]);
+            if($req->session->get("user_role") === "admin"){
+                return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
+                    "products" => $products], layoutParams: [
+                    'title' => 'Products',
+                    'pageMainHeading' => 'Products',
+                    'employeeId' => $req->session->get("user_id"),
+                ]);
+            }
+
         }
 
         return $res->redirect(path: "/login");

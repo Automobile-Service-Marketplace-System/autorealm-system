@@ -14,17 +14,30 @@ class VehiclesController
     public function getVehiclesPage(Request $req, Response $res): string
     {
 
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicles();
 
-            return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
-                pageParams: ["vehicles" => $vehicles],
-                layoutParams: [
-                    'title' => 'Vehicles',
-                    'pageMainHeading' => 'Vehicles',
-                    'officeStaffId' => $req->session->get('user_id')
+            if($req->session->get("user_role") === "office_staff_member"){
+                return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
+                    pageParams: ["vehicles" => $vehicles],
+                    layoutParams: [
+                        'title' => 'Vehicles',
+                        'pageMainHeading' => 'Vehicles',
+                        'officeStaffId' => $req->session->get('user_id')
                 ]);
+            }
+
+            if($req->session->get("user_role") === "admin"){
+                return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "admin-dashboard",
+                    pageParams: ["vehicles" => $vehicles],
+                    layoutParams: [
+                        'title' => 'Vehicles',
+                        'pageMainHeading' => 'Vehicles',
+                        'employeeId' => $req->session->get('user_id')
+                ]);
+            }
+
         }
 
         return $res->redirect(path: "/login");

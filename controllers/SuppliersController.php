@@ -10,12 +10,13 @@ class SuppliersController
 {
     public function getSuppliersPage(Request $req, Response $res): string
     {
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager"){
+        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")){
 
             $supplierModel = new Supplier();
             $suppliers = $supplierModel->getSuppliersList();
 
-            return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "stock-manager-dashboard",
+            if($req->session->get("user_role") === "stock_manager"){
+                return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "stock-manager-dashboard",
                 pageParams: [
                 'suppliers' => $suppliers
                 ],
@@ -24,6 +25,19 @@ class SuppliersController
                 'pageMainHeading' => 'Suppliers',
                 'employeeId' => $req->session->get('user_id')
             ]);
+            }
+
+            if($req->session->get("user_role") === "admin"){
+                return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "admin-dashboard",
+                pageParams: [
+                'suppliers' => $suppliers
+                ],
+                layoutParams: [
+                'title' => 'Suppliers',
+                'pageMainHeading' => 'Suppliers',
+                'employeeId' => $req->session->get('user_id')
+            ]);
+            }
         }
 
         return $res->redirect(path: "/login");
