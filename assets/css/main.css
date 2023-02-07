@@ -57,6 +57,7 @@
 @import "views/customer-dashboard-appointments.css";
 @import "views/admin-dashboard-employees.css";
 @import "views/overview.css";
+@import "views/admin-overview.css";
 
 
 body {
