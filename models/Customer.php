@@ -4,10 +4,12 @@ namespace app\models;
 
 use app\core\Database;
 use app\core\Session;
+use app\utils\EmailClient;
 use app\utils\FSUploader;
 use Exception;
 use PDO;
 use PDOException;
+use SendinBlue\Client\ApiException;
 
 class Customer
 {
@@ -33,9 +35,9 @@ class Customer
         return $stmt->fetchObject();
     }
 
-    public function register(): bool|array|string
+    public function tempRegister(): bool|array|string
     {
-        $errors = $this->validateRegisterBody();
+        $errors = $this->validateTempRegisterBody();
 
         if (empty($errors)) {
             try {
@@ -45,13 +47,13 @@ class Customer
             }
             if (empty($errors)) {
                 //for customer table
-                $query = "INSERT INTO customer 
+                $query = "INSERT INTO temp_customer 
                     (
-                        f_name, l_name, contact_no, address, email, password, image
+                        f_name, l_name, contact_no, address, email, password, image, email_verification_code, mobile_verification_code
                     ) 
                     VALUES 
                     (
-                        :f_name, :l_name, :contact_no, :address, :email, :password, :image
+                        :f_name, :l_name, :contact_no, :address, :email, :password, :image, :email_verification_code, :mobile_verification_code
                     )";
 
                 $statement = $this->pdo->prepare($query);
@@ -63,12 +65,41 @@ class Customer
                 $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
+
+//                //cryptographically secure 6-digits OTP code
+                try {
+                    $email_otp = (string) random_int(100000, 999999);
+                    $statement->bindValue(":email_verification_code", $email_otp);
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+
+                try {
+                    $mobile_otp = (string) random_int(100000, 999999);
+                    $statement->bindValue(":mobile_verification_code", $mobile_otp);
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+
                 try {
                     $statement->execute();
-                     return true;
+//                    try {
+//                        EmailClient::sendEmail(
+//                            receiverEmail: $this->body["email"],
+//                            receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
+//                            subject: "Email Verification",
+//                            params: [
+//                                "CODE" => $email_verification_code
+//                            ]
+//                        );
+//                    } catch (ApiException $e) {
+//                        error_log($e->getMessage());
+//                        return false;
+//                    }
+                    return true;
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
-                    return false;
+
+                    return $e->getMessage();
                 }
             } else {
                 return $errors;
@@ -79,7 +110,57 @@ class Customer
         }
     }
 
-    public function registerWithVehicle() : bool | array | string {
+    public function register(): bool|array|string
+    {
+        $errors = $this->validateRegisterBody();
+        if (empty($errors)) {
+            $sql = "SELECT * FROM temp_customer WHERE email_verification_code = :code";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ":code" => $this->body["code"]
+            ]);
+            $tempCustomer = $stmt->fetchObject();
+            if ($tempCustomer) {
+                $query = "INSERT INTO customer 
+                    (
+                        f_name, l_name, contact_no, address, email, password, image
+                    ) 
+                    VALUES 
+                    (
+                        :f_name, :l_name, :contact_no, :address, :email, :password, :image
+                    )";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":f_name", $tempCustomer->f_name);
+                $statement->bindValue(":l_name", $tempCustomer->l_name);
+                $statement->bindValue(":contact_no", $tempCustomer->contact_no);
+                $statement->bindValue(":address", $tempCustomer->address);
+                $statement->bindValue(":email", $tempCustomer->email);
+                $statement->bindValue(":password", $tempCustomer->password);
+                $statement->bindValue(":image", $tempCustomer->image);
+
+                try {
+                    $statement->execute();
+                    $sql = "DELETE FROM temp_customer WHERE email_verification_code = :code";
+                    $stmt = $this->pdo->prepare($sql);
+                    $stmt->execute([
+                        ":code" => $this->body["code"]
+                    ]);
+                    return true;
+                } catch (PDOException $e) {
+                    return false;
+                }
+            } else {
+                $errors["verification_code"] = "Invalid verification code";
+                return $errors;
+            }
+        } else {
+            return $errors;
+        }
+    }
+
+    public function registerWithVehicle(): bool|array|string
+    {
         $errors = $this->validateRegisterWithVehicleBody();
 
         if (empty($errors)) {
@@ -112,7 +193,6 @@ class Customer
                     $statement->execute();
                     // return true;
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
                     return false;
                 }
 
@@ -153,7 +233,7 @@ class Customer
         }
     }
 
-    private function validateRegisterBody(): array
+    private function validateTempRegisterBody(): array
     {
         $errors = [];
 
@@ -213,7 +293,8 @@ class Customer
         return $errors;
     }
 
-    private function validateRegisterWithVehicleBody() : array {
+    private function validateRegisterWithVehicleBody(): array
+    {
         $errors = [];
 
         if (trim($this->body['f_name']) === '') {  //remove whitespaces by trim(string)
@@ -358,6 +439,22 @@ class Customer
                 email as Email
             FROM customer")->fetchAll(PDO::FETCH_ASSOC);
 
+    }
+
+    private function validateRegisterBody(): array
+    {
+        $errors = [];
+
+        $verificationCode = $this->body['code'];
+        $sql = "SELECT * FROM temp_customer WHERE email_verification_code = :code";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':code', $verificationCode);
+        $statement->execute();
+        $tempCustomer = $statement->fetchObject();
+        if (!$tempCustomer) {
+            $errors['verification_code'] = 'Invalid verification code';
+        }
+        return $errors;
     }
 
 

@@ -22,7 +22,7 @@ class CompletedJobCard
             </div>
             <div class='job-card__info'>
                 <p class='job-card-new-notice'>
-                    Took {$hours} hr {$minutes} minutes to complete.
+                    Took $hours hr $minutes minutes to complete.
                 </p>
             </div>
         </div>

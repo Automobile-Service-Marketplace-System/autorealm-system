@@ -1,0 +1,28 @@
+.image-card {
+    background-color: var(--color-white);
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.2);
+    border-radius: 0.5rem;
+    /* padding: 1rem; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin:1cm;
+}
+
+.btn3{
+    color: white;
+    background-color: var(--color-success);
+    border-radius: 100px;
+    height: 1cm;
+    width: 4cm;
+    float: right;
+    margin-bottom: 1cm;
+    text-align: center;
+}
+
+.Chart-Grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:.25cm;
+}
