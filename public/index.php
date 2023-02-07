@@ -15,6 +15,7 @@ use app\controllers\SuppliersController;
 use app\controllers\ServicesController;
 use app\controllers\ShoppingCartController;
 use app\controllers\OverviewController;
+use app\controllers\InvoicesController;
 use app\controllers\OrdersController;
 use app\controllers\AdmittingController;
 use Dotenv\Dotenv;
@@ -121,17 +122,18 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
 
 //office staff routes
-    $app->router->get(path: "/office-staff-login", callback: [AuthenticationController::class, 'getOfficeStaffLoginPage']);
-    $app->router->post(path: "/office-staff-login", callback: [AuthenticationController::class, 'loginOfficeStaff']);
-    $app->router->get(path: "/office-staff-dashboard/overview", callback: [DashboardController::class, 'getOfficeStaffDashboardOverview']);
-    $app->router->get(path: "/office-staff-dashboard/profile", callback: [DashboardController::class, 'getOfficeStaffDashboardProfile']);
-    $app->router->get(path: "/customers", callback: [CustomersController::class, 'getCustomersPage']);
-    $app->router->get(path: "/customers/add", callback: [CustomersController::class, 'getAddCustomerPage']);
-    $app->router->post(path: "/customers/add", callback: [CustomersController::class, 'addCustomer']);
-    $app->router->get(path: "/vehicles", callback: [VehiclesController::class, 'getVehiclesPage']);
-    $app->router->get(path: "/vehicles/by-customer", callback: [VehiclesController::class, 'getVehiclesByCustomer']);
-    $app->router->get(path: "/vehicles/add/by-customer", callback: [VehiclesController::class, 'getAddVehiclePage']);
-    $app->router->post(path: "/vehicles/add/by-customer", callback: [VehiclesController::class, 'addVehicle']);
+    $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
+    $app->router->post("/office-staff-login", [AuthenticationController::class, 'loginOfficeStaff']);
+    $app->router->get("/office-staff-dashboard/overview", [DashboardController::class, 'getOfficeStaffDashboardOverview']);
+    $app->router->get("/office-staff-dashboard/profile", [DashboardController::class, 'getOfficeStaffDashboardProfile']);
+    $app->router->get("/customers", [CustomersController::class, 'getCustomersPage']);
+    $app->router->get("/customers/add", [CustomersController::class, 'getAddCustomerPage']);
+    $app->router->post("/customers/add", [CustomersController::class, 'addCustomer']);
+    $app->router->get("/vehicles", [VehiclesController::class, 'getVehiclesPage']);
+    $app->router->get("/vehicles/by-customer", [VehiclesController::class, 'getVehiclesByCustomer']);
+    $app->router->get("/vehicles/add/by-customer", [VehiclesController::class, 'getAddVehiclePage']);
+    $app->router->post("/vehicles/add/by-customer", [VehiclesController::class, 'addVehicle']);
+    $app->router->get("/invoices", [InvoicesController::class, 'getInvoicesPage']);
 
 
 //security officer roots
