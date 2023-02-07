@@ -27,7 +27,7 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/overview">
+            <a href="/officeStaff-overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
