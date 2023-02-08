@@ -1,0 +1,15 @@
+.appoitment-owner-info{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.customer_info , .vehicle_info{
+    width: 100%;
+}
+
+.office-staff-appointment-form {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

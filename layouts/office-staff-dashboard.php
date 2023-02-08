@@ -27,13 +27,13 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/officeStaff-overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/invoices">
                 <i class="fa-solid fa-file-invoice"></i>
                 <span>
                     Invoices
@@ -51,7 +51,7 @@ DocumentHead::createHead(
                     Vehicles
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/appointments">
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>
                     Appointments
