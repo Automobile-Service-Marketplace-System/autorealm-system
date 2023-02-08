@@ -18,6 +18,8 @@ use app\controllers\OverviewController;
 use app\controllers\InvoicesController;
 use app\controllers\OrdersController;
 use app\controllers\AdmittingController;
+use app\controllers\AppointmentController;
+
 use Dotenv\Dotenv;
 
 
@@ -137,6 +139,7 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/appointments/for-vin", [AppointmentController::class, 'getCreateAppointmentPage']);
     $app->router->get("/appointments", [AppointmentController::class, 'getAppointmentsPage']);
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
+    $app->router->get("/overview", [OverviewController::class, 'getofficeStaffOverviewPage']);
 
 
 //security officer roots
