@@ -61,6 +61,7 @@
 @import "views/overview.css";
 @import "views/admin-overview.css";
 @import "views/create-admitting-reports";
+@import "views/view-appointment";
 
 body {
   font-family: "Nunito", sans-serif;

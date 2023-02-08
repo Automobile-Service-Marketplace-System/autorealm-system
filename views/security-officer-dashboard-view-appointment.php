@@ -1,16 +1,3 @@
-<style>
-    .appointment{
-        background-color: var(--color-white);
-        box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
-        padding: 1rem;
-        border-radius: 0.5rem;
-        width: 100%;
-        max-width: 400px;
-        margin: 1cm auto;
-        align-items: center;
-    }
-</style>
-
 <?php
 
 /**
