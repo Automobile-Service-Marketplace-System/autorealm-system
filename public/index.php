@@ -140,7 +140,7 @@ if ($isInternal) {
     $app->router->get(path: "/security-officer-dashboard/profile", callback: [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get(path: "/security-officer-dashboard/check-appointment", callback: [AppointmentsController::class, 'getAppointmentPage']);
     $app->router->get(path: "/security-officer-dashboard/view-appointment", callback: [AppointmentsController::class, 'getAppointmentDetails']);
-    $app->router->get(path: "/security-officer-dashboard/view-admitting-report", callback: [AdmittingController::class, 'getAdmittingReports']);
+    $app->router->get(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'getCreateAdmittingReportPage']);
 }
 // run the application
 $app->run();

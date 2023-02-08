@@ -1,0 +1,27 @@
+.cansel-button button{
+    margin-top: 1cm;
+    background-color: #e53030;
+    color: #fff;
+    border-color: #e53030;
+    width: 350px;
+    height: 50px;
+    border-radius: 8px;
+    margin-left: 2cm;
+}
+
+.create-button button{
+    margin-top: 1cm;
+    width: 350px;
+    height: 50px;
+    background: #6100FF;
+    border-color: #6100ff;
+    border-radius: 8px;
+    color: #fff;
+    float: right;
+    margin-right: 2cm;
+}
+
+.images{
+    width:200px;
+    display: flex;
+}
