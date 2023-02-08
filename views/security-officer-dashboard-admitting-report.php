@@ -18,8 +18,8 @@ use app\components\FormItem;
 </div>
 
 <div class="images">
-    <img src="images/placeholders/vehicle1.png">
-    <img src="images/placeholders/vehicle2.png">
+    <img src="/images/placeholders/vehicle1.png">
+    <img src="/images/placeholders/vehicle2.png">
 </div>
 
 <p><b><br>Light</b></p>

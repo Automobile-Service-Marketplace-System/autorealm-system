@@ -39,7 +39,7 @@
                 break;
         }
 
-        echo "<div class='employee-card'>
+        echo "<div class='employee-card' data-employeeid='{$employee['ID']}'>
                 <div class='employee-card__header'>
                        $isActive
                        <i class='fa-solid fa-ellipsis'></i>

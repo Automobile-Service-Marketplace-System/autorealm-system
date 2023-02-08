@@ -102,8 +102,8 @@ if ($isInternal) {
     $app->router->get(path: "/employees", callback: [EmployeeController::class, 'getViewEmployeesPage']);
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
-    $app->router->get(path: "/employee/edit", callback: [EmployeeController::class, 'getEditEmployeePage']);
-    $app->router->post(path: "/employee/edit", callback: [EmployeeController::class, 'editEmployee']);
+    $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getViewEmployeePage']);
+    $app->router->post(path: "/employees/view", callback: [EmployeeController::class, 'viewEmployee']);
     $app->router->get(path: "/admin-dashboard/profile", callback: [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get(path: "/services", callback: [ServicesController::class, 'getServicesPage']);
     $app->router->get(path: "/services/add-services", callback: [ServicesController::class, 'getAddServicesPage']);
