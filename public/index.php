@@ -18,6 +18,9 @@ use app\controllers\OverviewController;
 use app\controllers\InvoicesController;
 use app\controllers\OrdersController;
 use app\controllers\AdmittingController;
+use app\controllers\AppointmentController;
+use app\controllers\ReviewController;
+
 use Dotenv\Dotenv;
 
 
@@ -120,6 +123,7 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/stock-manager-dashboard/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
+    $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
@@ -137,6 +141,7 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/appointments/for-vin", [AppointmentController::class, 'getCreateAppointmentPage']);
     $app->router->get("/appointments", [AppointmentController::class, 'getAppointmentsPage']);
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
+    $app->router->get("/overview", [OverviewController::class, 'getofficeStaffOverviewPage']);
 
 
 //security officer roots

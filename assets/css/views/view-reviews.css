@@ -1,0 +1,6 @@
+.reviews-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    background-color: #e53030;
+}
