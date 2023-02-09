@@ -2,6 +2,7 @@
     gap: 1.5rem;
     display: flex;
     flex-direction: column;
+    margin-bottom: 2rem;
 }
 .order-details-card{
     background-color: white;

@@ -162,6 +162,87 @@
             </div>
         </div>
     </section>
+
+    <section class="cus-order-cards">
+        <div class="order-details-card order-customer-details-card">
+            <h2 class="item-summery-title order-details-title-under">
+                Deliver Details
+            </h2>
+            <div class="order-customer-details-section item-summery-products-section">
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Name
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Mr. Avishka Sathyanjana
+                    </span>
+                    <span class="order-customer-details-row--column3">
+                        N/A
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Email
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        avishka.sathyanjana@gmail.com
+                    </span>
+                    <span class="order-customer-details-row--column3">
+                        N/A
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Address
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        48/55, Epitamulla road, Pita Kotte
+                    </span>
+                    <span class="order-customer-details-row--column3">
+                        N/A
+                    </span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="order-details-card order-summery-card">
+            <h2 class="item-summery-title order-details-title-under">
+                Status
+            </h2>
+            <div class="order-customer-details-section item-summery-products-section">
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Order Date
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Not Prepared
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Order Time
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Prepared
+                    </span>
+                </div>
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Order Time
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Delivery
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
 </main>
 
 
