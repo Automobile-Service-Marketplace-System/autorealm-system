@@ -113,7 +113,7 @@ dates.forEach((date) => {
 
 });
 
-createAppointmentButton.addEventListener("click", () => {
+createAppointmentButton?.addEventListener("click", () => {
     Modal.show({
         closable: false,
         content: createAppointmentModal,
