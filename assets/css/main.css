@@ -63,6 +63,7 @@
 @import "views/office-staff-dashboard-overview.css";
 @import "views/view-appointment";
 @import "views/view-reviews.css";
+@import "views/view-order-details.css";
 
 
 body {

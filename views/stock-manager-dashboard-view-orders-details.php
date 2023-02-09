@@ -1,20 +1,20 @@
 <main class= "order-details-grid">
-    <section class="item-summery-card">
+    <section class="order-details-card">
         <h2 class="item-summery-title">
             Item Summery
         </h2>
         <div class="item-summery-products-section">
-            <div class="order-product-row">
-                <span class="order-product-row--column1 item-summery-title">
+            <div class="order-product-row item-summery-title order-details-title-under">
+                <span class="order-product-row--column1 ">
                     Product
                 </span>
-                <span class="order-product-row--column2 item-summery-title">
+                <span class="order-product-row--column2 ">
                     QTY
                 </span>
-                <span class="order-product-row--column3 item-summery-title">
+                <span class="order-product-row--column3 ">
                     Unit Price
                 </span>
-                <span class="order-product-row--column4 item-summery-title">
+                <span class="order-product-row--column4 ">
                     Total
                 </span>
 
@@ -75,50 +75,56 @@
         </div>
 
     </section>
+
+    <section class="cus-order-cards">
+        <div class="order-details-card order-customer-details-card">
+            <h2 class="item-summery-title order-details-title-under">
+                Customer Details
+            </h2>
+            <div class="order-customer-details-section item-summery-products-section">
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Name
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Mr. Avishka Sathyanjana
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Email
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        avishka.sathyanjana@gmail.com
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Address
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        48/55, Epitamulla road, Pita Kotte
+                    </span>
+                </div>
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Mobile Number
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        0717753749
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <div class="order-details-card order-summery-card">
+            <h2 class="item-summery-title order-details-title-under">
+                Order Summery
+            </h2>
+        </div>
+    </section>
 </main>
 
 
-<style>
-
-    .item-summery-card{
-        background-color: white;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
-        width: 100%;
-    }
-
-    .order-product-row{
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(1, min-content);
-        gap: 1.5rem;
-    }
-
-    .order-product-row--column1{
-        grid-column: 1 / 3;
-    }
-    /*.order-product-row--column2{*/
-    /*    grid-column: 3 / 4;*/
-    /*}*/
-    /*.order-product-row--column3{*/
-    /*    grid-column: 1 / 3;*/
-    /*}*/
-    /*.order-product-row--column4{*/
-    /*    grid-column: 1 / 3;*/
-    /*}*/
-
-    .item-summery-title{
-        font-weight: bold;
-    }
-
-    .item-summery-products-section{
-        display: flex;
-        flex-direction: column;
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-        margin-top: 1rem;
-        gap: 1rem;
-    }
-
-</style>
