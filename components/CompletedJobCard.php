@@ -16,13 +16,13 @@ class CompletedJobCard
                     <h3 class='job-card__title'>Job #{$job['id']}</h3>
                     <h4 class='job-card__subtitle'>Reg No: {$job['regNo']}</h4>
                 </div>
-                <a href='/foreman-dashboard/jobs/view?id={$job['id']}' class='btn btn--square'>
+                <a href='/jobs/view?id={$job['id']}' class='btn btn--square'>
                     <i class='fa-solid fa-arrow-right'></i>
                 </a>
             </div>
             <div class='job-card__info'>
                 <p class='job-card-new-notice'>
-                    Took {$hours} hr {$minutes} minutes to complete.
+                    Took $hours hr $minutes minutes to complete.
                 </p>
             </div>
         </div>

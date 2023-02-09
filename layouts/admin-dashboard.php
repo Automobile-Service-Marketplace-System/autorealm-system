@@ -27,13 +27,13 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/employee-dashboard/overview">
+            <a href="/admin-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/admin-dashboard/employees">
+            <a href="/employees">
                 <i class="fa-solid fa-user-tie"></i>
                 <span>
                     Employee
@@ -45,7 +45,7 @@ DocumentHead::createHead(
                     Products
                 </span>
             </a>
-            <a href="/employee-dashboard/orders">
+            <a href="/stock-manager-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
@@ -57,19 +57,19 @@ DocumentHead::createHead(
                     Suppliers
                 </span>
             </a>
-            <a href="/employee-dashboard/reviews">
+            <a href="/stock-manager-dashboard/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews
                 </span>
             </a>
-            <a href="/admin-dashboard/services">
+            <a href="/services">
                 <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span>
                     Services
                 </span>
             </a>
-            <a href="/employee-dashboard/services/jobs">
+            <a href="/jobs">
                 <i class="fa-solid fa-clock"></i>
                 <span>
                     Service/Repair Jobs
@@ -81,13 +81,13 @@ DocumentHead::createHead(
                     Vehicle Maintenance Reports
                 </span>
             </a>
-            <a href="/office-staff-dashboard/customers">
+            <a href="/customers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Customers
                 </span>
             </a>            
-            <a href="/office-staff-dashboard/vehicles">
+            <a href="/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
@@ -103,7 +103,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  role: "admin", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  id: 1);
             ?>
         </header>
 

@@ -13,7 +13,7 @@ class Response
 
     /**
      * Use this method to set the response status code
-     * @param int $code
+     * @param int $code 
      * @return void
      */
     public function setStatusCode(int $code): void

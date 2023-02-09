@@ -11,29 +11,30 @@ use JsonException;
 class ShoppingCartController
 {
 
+    /**
+     * @throws JsonException
+     */
     public function getCartPage(Request $req, Response $res): string
     {
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
-            $customerModel = new Customer();
-            $customer = $customerModel->getCustomerById($req->session->get("user_id"));
-
-            if ($customer) {
+            $customerId = $req->session->get("user_id");
+            if ($customerId) {
                 $cartModel = new ShoppingCart();
-                $result = $cartModel->getCartItemsByCustomerId($req->session->get("user_id"));
+                $result = $cartModel->getCartItemsByCustomerId(customerId: $customerId);
                 if (is_string($result)) {
-                    return $res->render(view: "site-cart", layout: "main", pageParams: [
+                    return $res->render(view: "site-cart", pageParams: [
                         "error" => $result,
                         'cartItems' => [],
                     ], layoutParams: [
-                        'customer' => $customer,
+                        'customerId' => $customerId,
                         'title' => 'Shopping Cart',
                     ]);
                 }
 
-                return $res->render(view: "site-cart", layout: "main", pageParams: [
+                return $res->render(view: "site-cart", pageParams: [
                     'cartItems' => $result
                 ], layoutParams: [
-                    'customer' => $customer,
+                    'customerId' => $customerId,
                     'title' => 'Shopping Cart',
                 ]);
 
@@ -97,7 +98,8 @@ class ShoppingCartController
         return $res->json(['message' => 'You must login!']);
     }
 
-    public function deleteCartItem(Request $req,Response $res) : string {
+    public function deleteCartItem(Request $req, Response $res): string
+    {
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
             $body = $req->body();
             $cartModel = new ShoppingCart();

@@ -22,7 +22,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
 
 <main class="create-employee">
-    <form action="/admin-dashboard/employees/add" method="post" enctype="multipart/form-data">
+    <form action="/employees/add" method="post" enctype="multipart/form-data">
         <p>Add a new staff account, these accounts will allow your employees to<br> access their respective dashboards</p>
         <b>Choose the account type</b>
         <div class="role-input">

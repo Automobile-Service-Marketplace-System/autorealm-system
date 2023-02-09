@@ -17,7 +17,7 @@ $hasDescriptionError = $hasErrors && isset($errors['description']);
 ?>
 
 <div class="admin-add-service-form">
-    <form action="/admin-dashboard/services/add-services" method="post" class="admin-add-services-form"
+    <form action="/services/add-services" method="post" class="admin-add-services-form"
           enctype="multipart/form-data">
         <h2 class="service-form-subheading">Service Details</h2>
         <div class="admin-add-services-form__service">

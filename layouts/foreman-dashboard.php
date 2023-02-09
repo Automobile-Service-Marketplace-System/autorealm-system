@@ -32,13 +32,13 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/foreman-dashboard/jobs">
+            <a href="/jobs">
                 <i class="fa-solid fa-clock"></i>
                 <span>
                     Jobs
                 </span>
             </a>
-            <a href="/foreman-dashboard/inspection-reports">
+            <a href="/inspection-reports">
                 <i class="fa-solid fa-file"></i>
                 <span>
                     Inspection reports
@@ -54,7 +54,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", role: "Foreman", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", id: 1);
             ?>
         </header>
 

@@ -83,3 +83,26 @@
 .overlay-close {
     animation: scaleOutOverlay 0.2s ease-in-out forwards;
 }
+
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modal-header .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+
+.modal-header .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}
