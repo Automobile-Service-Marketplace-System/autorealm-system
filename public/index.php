@@ -75,6 +75,8 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/orders", callback: [OrdersController::class, 'getCustomerDashboardOrdersPage']);
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
     $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
+
+    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
 if ($isInternal) {
