@@ -65,7 +65,7 @@ class EmployeeController
         ]);
     }
 
-    public function getViewEmployeePage(Request $req, Response $res):string{
+    public function getEditEmployeePage(Request $req, Response $res):string{
         return $res->render(view: "admin-dashboard-edit-employees", layout: "admin-dashboard", layoutParams: [
             'title' => 'Manage Employees',
             'pageMainHeading' => 'Update employee profile',
