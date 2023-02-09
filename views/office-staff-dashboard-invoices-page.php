@@ -12,7 +12,9 @@
 use app\components\Table;
 
 $columns = [];
-
+if (empty($invoices)) {
+    echo "<p class='no-data'>No Invoices as of now </p>";
+} else {
 foreach ($invoices[0] as $key => $value) {
     $columns[] = $key;
 }
@@ -40,3 +42,5 @@ foreach ($invoices as $invoice) {
 }
 
 Table::render(items: $items, columns: $columns, keyColumns: ["Invoice No", "Actions"]);
+
+}
