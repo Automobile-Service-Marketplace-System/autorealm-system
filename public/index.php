@@ -110,7 +110,7 @@ if ($isInternal) {
     $app->router->get(path: "/services", callback: [ServicesController::class, 'getServicesPage']);
     $app->router->get(path: "/services/add-services", callback: [ServicesController::class, 'getAddServicesPage']);
     $app->router->post(path: "/services/add", callback: [ServicesController::class, 'AddServices']);
-    $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
+    $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 
 // stock manager routes
     $app->router->get(path: "/stock-manager-login", callback: [AuthenticationController::class, 'getStockManagerLoginPage']);
