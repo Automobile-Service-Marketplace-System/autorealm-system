@@ -55,12 +55,15 @@ class Response
      * @param array $layoutParams
      * @return string
      */
+
     public function render(string $view, string $layout = "main", array $pageParams = [], array $layoutParams = []): string
     {
         $layoutContent = $this->getLayout($layout, $layoutParams);
         $viewContent = $this->getView($view, $pageParams);
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
+
+    
 
     /**
      * Use this method to send data as a JSON value
