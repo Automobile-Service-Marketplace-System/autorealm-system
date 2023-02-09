@@ -1,7 +1,9 @@
-<div style='float:right; width:50px'>
-    <a href='/security-officer-dashboard/admitting-reports/add' class='btn btn--rounded btn--info'>
-    <i class="fa-solid fa-square-plus"></i>
+<div class="office-staff-button-set">
+<div class="add-button">
+    <a class="btn btn--square" href="/security-officer-dashboard/admitting-reports/add">
+        <i class="fa-solid fa-plus"></i>
     </a>
+</div>
 </div>
 
 <div class="admitting-reports">
