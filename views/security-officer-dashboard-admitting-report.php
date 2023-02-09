@@ -18,8 +18,9 @@ use app\components\FormItem;
 </div>
 
 <div class="images">
-    <img src="/images/placeholders/vehicle1.png">
+    <br><img src="/images/placeholders/vehicle1.png">
     <img src="/images/placeholders/vehicle2.png">
+
 </div>
 
 <p><b><br>Light</b></p>
@@ -42,20 +43,14 @@ use app\components\FormItem;
     );?>
 </div>
 
-<div class="form-input">
-<?php
-    FormItem::render(
-        id: "spare_wheel",
-        // type: "checkbox",
-        label: "Spare Wheel",
-        name: "spare_wheel"
-    );?>  
+
+<br><br><input type="checkbox" id="spare_wheel" name="spare_wheel" value="spare_wheel">
+<label for="spre_wheel"> Spare Wheel</label><br>
+
+<div>
+    <button type="submit" id="create-button" >Create</button>
 </div>
 
-<div class="create-button">
-    <button type="submit">Create</button>
-</div>
-
-<div class="cancel-button">
-    <button type="submit">Cancel</button>
+<div>
+    <button type="submit" id="cancel-button">Cancel</button>
 </div>
