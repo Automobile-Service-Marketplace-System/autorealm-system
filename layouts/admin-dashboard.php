@@ -57,7 +57,7 @@ DocumentHead::createHead(
                     Suppliers
                 </span>
             </a>
-            <a href="/employee-dashboard/reviews">
+            <a href="/stock-manager-dashboard/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews
