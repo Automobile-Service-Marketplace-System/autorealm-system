@@ -29,7 +29,6 @@
             <textarea name="" id="" cols="90" rows="3"></textarea>
 
             <p>Assign a Foreman</p>
-
             <div class="select-foreman-cards">
                 <?php
                 foreach ($foremanAvailability as $foreman) {
