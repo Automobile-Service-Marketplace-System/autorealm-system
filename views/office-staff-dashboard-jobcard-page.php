@@ -34,7 +34,7 @@
                 echo "<div class='foreman-card'>
                         $foremans[Name]
                         Availability = ($foremans[Availability])
-                        <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'
+                        <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'>
                     </div>";
             }
             ?>
