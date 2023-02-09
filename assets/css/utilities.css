@@ -15,6 +15,14 @@
     text-align: center;
 }
 
+
+.no-data {
+    text-align: center;
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.3);
+    margin-top: 10rem;
+}
+
 @media screen and (min-width: 576px) {
     .container {
         max-width: 540px;

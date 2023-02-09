@@ -25,6 +25,9 @@ foreach($customers as $customer) {
                                          <button class='btn btn--rounded btn--warning'>
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
+                                         <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn'>
+                                            <i class='fa-regular fa-calendar-check'></i>
+                                         </button>
                         </div>"
     ];
 }
