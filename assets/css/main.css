@@ -64,6 +64,7 @@
 @import "views/office-staff-dashboard-overview.css";
 @import "views/view-appointment";
 @import "views/view-reviews.css";
+@import "views/view-admitting-reports.css";
 
 body {
   font-family: "Nunito", sans-serif;
