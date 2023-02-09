@@ -121,7 +121,9 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/stock-manager-dashboard/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
+    $app->router->get(path: "/stock-manager-dashboard/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
+
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
