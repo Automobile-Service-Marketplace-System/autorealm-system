@@ -33,7 +33,7 @@ DocumentHead::createHead(
                     Home
                 </span>
             </a>
-            <a href="/security-officer-dashboard/admitting-reports/add">
+            <a href="/security-officer-dashboard/view-admitting-reports">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Admitting Reports
