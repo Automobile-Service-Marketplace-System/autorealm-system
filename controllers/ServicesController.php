@@ -21,7 +21,7 @@ class ServicesController
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $services], layoutParams: [
                 'title' => 'services',
-                'pageMainHeading' => 'services',
+                'pageMainHeading' => 'Services',
                 'employeeId' => $req->session->get("user_id"),
             ]);
         }

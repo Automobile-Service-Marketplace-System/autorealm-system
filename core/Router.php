@@ -24,6 +24,7 @@ class Router
         $this->routes["get"][$path] = $callback;
     }
 
+
     public function post(string $path, callable|string|array $callback): void
     {
         $this->routes["post"][$path] = $callback;

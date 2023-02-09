@@ -22,7 +22,7 @@ class ReviewController
             }
 
             if($req->session->get("user_role") === "admin"){
-                return $res->render(view: "stock-manager-dashboard-view-reviews", layout: "stock-manager-dashboard",
+                return $res->render(view: "stock-manager-dashboard-view-reviews", layout: "admin-dashboard",
                     pageParams: [],
                     layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
             }

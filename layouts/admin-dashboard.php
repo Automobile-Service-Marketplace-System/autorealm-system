@@ -27,7 +27,7 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/overview">
+            <a href="/admin-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
@@ -57,7 +57,7 @@ DocumentHead::createHead(
                     Suppliers
                 </span>
             </a>
-            <a href="/employee-dashboard/reviews">
+            <a href="/stock-manager-dashboard/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews

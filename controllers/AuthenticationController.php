@@ -244,7 +244,7 @@ class AuthenticationController
             //when employees already logged in
             $job_role = $req->session->get("user_role");
             if ($job_role === "admin") {
-                $path = "/services";
+                $path = "/admin-dashboard/overview";
             } elseif ($job_role === "foreman") {
                 $path = "/jobs";
             } elseif ($job_role === "stock_manager") {
@@ -292,13 +292,13 @@ class AuthenticationController
                 $req->session->set(key: "user_role", value: $result->job_role); // $_SESSION['user_role'] = "employee";
                 $path = "";
                 if ($result->job_role === "admin") {
-                    $path = "/admin-dashboard/services";
+                    $path = "/admin-dashboard/overview";
                 } elseif ($result->job_role === "foreman") {
                     $path = "/foreman-dashboard/jobs";
                 } elseif ($result->job_role === "stock_manager") {
                     $path = "/stock-manager-dashboard/products";
                 } elseif ($result->job_role === "office_staff_member") {
-                    $path = "/office-staff-dashboard/customers";
+                    $path = "/overview";
                 } elseif ($result->job_role === "technician") {
                     $path = "/technician-dashboard/profile";
                 } elseif ($result->job_role === "security_officer") {
