@@ -123,6 +123,43 @@
             <h2 class="item-summery-title order-details-title-under">
                 Order Summery
             </h2>
+            <div class="order-customer-details-section item-summery-products-section">
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Order Date
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        2022/10/25
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Order Time
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        8.34 PM
+                    </span>
+                </div>
+
+                <div class="order-customer-details-row">
+                    <span class="order-customer-details-row--column1">
+                        Total Products
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        8
+                    </span>
+                </div>
+                <div class="order-customer-details-row item-summery-title">
+                    <span class="order-customer-details-row--column1">
+                        Total Amount
+                    </span>
+                    <span class="order-customer-details-row--column2">
+                        Rs. 22 958
+                    </span>
+                </div>
+
+            </div>
         </div>
     </section>
 </main>
