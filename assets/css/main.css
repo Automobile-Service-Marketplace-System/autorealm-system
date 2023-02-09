@@ -65,6 +65,7 @@
 @import "views/view-appointment";
 @import "views/view-reviews.css";
 @import "views/view-admitting-reports.css";
+@import "views/office-staff-dashboard-generate-invoice-page.css";
 
 body {
   font-family: "Nunito", sans-serif;
