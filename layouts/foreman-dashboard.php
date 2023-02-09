@@ -35,13 +35,13 @@ DocumentHead::createHead(
             <a href="/jobs">
                 <i class="fa-solid fa-clock"></i>
                 <span>
-                    Jobs
+                    Assigned Jobs
                 </span>
             </a>
-            <a href="/inspection-reports">
+            <a href="/all-jobs">
                 <i class="fa-solid fa-file"></i>
                 <span>
-                    Inspection reports
+                    All Jobs
                 </span>
             </a>
 

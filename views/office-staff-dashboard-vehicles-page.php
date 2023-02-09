@@ -27,13 +27,9 @@ foreach ($vehicles as $vehicle) {
         "ID" => $vehicle["Customer ID"],
 
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--danger'>
+                            <button class='btn btn--rounded btn--warning'>
                                 <i class='fa-solid fa-pencil'></i>
                             </button>
-                            <a href='/office-staff-dashboard/appointments/for-vin?id={$vehicle['VIN']}' class='btn btn--rounded btn--info'>
-                                <i class='fa-regular fa-calendar-check'></i>
-                            </a>
-
                         </div>"
     ];
 }
