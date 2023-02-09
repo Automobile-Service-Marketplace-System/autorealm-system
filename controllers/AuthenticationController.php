@@ -298,7 +298,7 @@ class AuthenticationController
                 } elseif ($result->job_role === "stock_manager") {
                     $path = "/stock-manager-dashboard/products";
                 } elseif ($result->job_role === "office_staff_member") {
-                    $path = "/office-staff-dashboard/customers";
+                    $path = "/customers";
                 } elseif ($result->job_role === "technician") {
                     $path = "/technician-dashboard/profile";
                 } elseif ($result->job_role === "security_officer") {
