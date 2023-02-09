@@ -51,12 +51,18 @@
 @import "views/office-staff-dashboard-get-vehicle-by-customer.css";
 @import "views/employee-dashboard-profile.css";
 @import "views/cart.css";
+@import "views/office-staff-dashboard-get-appointment-for-customer.css";
+@import "views/office-staff-dashboard-jobcard-page.css";
 @import "views/customer-contact-verification.css";
 @import "views/customer-dashboard-records.css";
 @import "views/customer-dashboard-orders.css";
 @import "views/customer-dashboard-appointments.css";
 @import "views/admin-dashboard-employees.css";
 @import "views/overview.css";
+@import "views/admin-overview.css";
+@import "views/office-staff-dashboard-overview.css";
+@import "views/view-appointment";
+@import "views/view-reviews.css";
 
 
 body {

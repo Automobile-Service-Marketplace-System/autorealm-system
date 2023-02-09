@@ -45,7 +45,7 @@ DocumentHead::createHead(
                     Products
                 </span>
             </a>
-            <a href="/employee-dashboard/orders">
+            <a href="/stock-manager-dashboard/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
