@@ -8,7 +8,7 @@
 
 .employee-card {
     background-color: var(--color-white);
-    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.2);
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);
     border-radius: 0.5rem;
     padding: 1rem;
     display: flex;
@@ -16,6 +16,13 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.employee-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0.25rem 1.5rem rgba(var(--dark), 0.2);
 }
 
 
