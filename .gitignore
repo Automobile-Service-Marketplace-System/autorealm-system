@@ -2,6 +2,7 @@
 /vendor/
 .idea
 .vscode
+.metals
 node_modules
 /public/js/index.js
 /public/js/index.js.map
