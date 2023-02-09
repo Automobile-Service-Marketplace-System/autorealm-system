@@ -56,7 +56,7 @@ $app = new Application(dirname(__DIR__));
 if (!$isInternal) {
     $app->router->get(path: "/", callback: [SiteController::class, 'getHomePage']);
     $app->router->get(path: "/products", callback: [SiteController::class, 'getProductsPage']);
-
+    $app->router->get(path: "/services", callback: [SiteController::class, 'getServicesPage']);
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post(path: "/register", callback: [AuthenticationController::class, 'registerCustomer']);
