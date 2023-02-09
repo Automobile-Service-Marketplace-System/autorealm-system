@@ -2,15 +2,14 @@ import {Modal} from "../components/Modal"
 import {htmlToElement} from "../utils";
 
 
-const createAppointmentButtons = document.querySelectorAll(".create-appointment-btn");
-
+const createAppointmentButton = document.querySelector("#create-appointment-btn");
 
 
 const createAppointmentModal = htmlToElement(`
 <div class="create-appointment">
-<div class="add-vehicle-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
+<div class="add-vehicle-form_title" style="margin-top: -0.5rem;margin-bottom: 1rem">
     <h1 class="office-staff-add-customer-form__vehicle__title">
-        Create an appointment for N.S Elvitigala
+        Fill in details
     </h1>
 
     <button class="modal-close-btn">
@@ -114,12 +113,10 @@ dates.forEach((date) => {
 
 });
 
-createAppointmentButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        Modal.show({
-            closable: false,
-            content: createAppointmentModal,
-            key: `CreateAppointment${button.id}`,
-        });
+createAppointmentButton.addEventListener("click", () => {
+    Modal.show({
+        closable: false,
+        content: createAppointmentModal,
+        key: `CreateAppointmentForCustomer`,
     });
-})
+});

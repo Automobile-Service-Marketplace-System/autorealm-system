@@ -14,6 +14,10 @@
     <select name="type" id="product-type" class="product-filter--select">
         <option value="Tyres">Sort By</option>
     </select>
+    <button id="create-appointment-btn" class="btn">
+        <i class="fa-regular fa-calendar-check"></i>
+        Get an Appointment
+    </button>
 </div>
 
 <div class="appointments-container">
