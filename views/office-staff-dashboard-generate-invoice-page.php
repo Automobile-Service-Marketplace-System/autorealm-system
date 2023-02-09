@@ -47,7 +47,7 @@
             <td>Rs. 17558.00</td>
         </tr>
         <tr>
-            <td>Air Filter 17220-5AY-H01 Honda Civic FK6</td>
+            <td>Air Filter 17220-5AY-H01</td>
             <td>Rs. 3350.00</td>
         </tr>
         <tr>
