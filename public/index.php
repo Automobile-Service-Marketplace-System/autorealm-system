@@ -75,6 +75,8 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/orders", callback: [OrdersController::class, 'getCustomerDashboardOrdersPage']);
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
     $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
+
+    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
 if ($isInternal) {
@@ -89,6 +91,7 @@ if ($isInternal) {
     $app->router->get(path: "/foreman-dashboard/profile", callback: [DashboardController::class, 'getForemanDashboardProfile']);
     $app->router->get(path: "/jobs", callback: [JobsController::class, 'getJobsPage']);
     $app->router->get(path: "/jobs/view", callback: [JobsController::class, 'viewJobPage']);
+    $app->router->get(path: "/all-jobs", callback: [JobsController::class, 'getListOfJobsPage']);
     $app->router->get(path: "/inspection-reports/create", callback: [JobsController::class, 'getCreateInspectionReportPage']);
     $app->router->post(path: "/inspection-reports/create", callback: [JobsController::class, 'createInspectionReport']);
 // technician routes
@@ -121,7 +124,9 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/stock-manager-dashboard/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
+    $app->router->get(path: "/stock-manager-dashboard/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
+
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
@@ -140,6 +145,7 @@ if ($isInternal) {
     $app->router->get("/appointments", [AppointmentsController::class, 'getOfficeAppointmentsPage']);
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
     $app->router->get("/overview", [OverviewController::class, 'getofficeStaffOverviewPage']);
+    $app->router->get("/invoices/create", [InvoicesController::class, 'getCreateInvoicePage']);
 
 
 //security officer roots

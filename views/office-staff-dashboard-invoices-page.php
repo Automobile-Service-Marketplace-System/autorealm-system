@@ -1,17 +1,28 @@
+<div class="office-staff-button-set">
+    <div class="add-button">
+        <a class="btn" href="invoices/create">
+            <i class="fa-solid fa-plus"></i>
+            Create Invoice</a>
+    </div>
+
+</div>
+
 <?php
 
 use app\components\Table;
 
 $columns = [];
-
-foreach($invoices[0] as $key=>$value){
+if (empty($invoices)) {
+    echo "<p class='no-data'>No Invoices as of now </p>";
+} else {
+foreach ($invoices[0] as $key => $value) {
     $columns[] = $key;
 }
 $columns[] = "Actions";
 
 $items = [];
 
-foreach($invoices as $invoice) {
+foreach ($invoices as $invoice) {
     $items[] = [
         "Invoice No" => $invoice["Invoice No"],
         "Customer Name" => $invoice["Customer Name"],
@@ -32,3 +43,4 @@ foreach($invoices as $invoice) {
 
 Table::render(items: $items, columns: $columns, keyColumns: ["Invoice No", "Actions"]);
 
+}

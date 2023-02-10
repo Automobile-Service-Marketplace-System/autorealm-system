@@ -1,33 +1,32 @@
 <div class="product-filters justify-between">
     <div class="flex gap-4 items-center">
         <div class="product-search">
-            <input type="text" placeholder="Search">
+            <input type="text" placeholder="Search by VIN">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <select name="type" id="product-type" class="product-filter--select">
-            <option value="Tyres">Coming Soon</option>
-            <option value="Tyres">Shipped</option>
-            <option value="Tyres">Completed</option>
+            <option value="Tyres">My Jobs</option>
             <option value="Tyres">All</option>
+        </select>
+        <select name="type" id="product-type" class="product-filter--select">
+            <option value="Tyres">This Month</option>
+            <option value="Tyres">This Year</option>
+            <option value="Tyres">All Time</option>
         </select>
     </div>
     <select name="type" id="product-type" class="product-filter--select">
         <option value="Tyres">Sort By</option>
     </select>
-    <button id="create-appointment-btn" class="btn">
-        <i class="fa-regular fa-calendar-check"></i>
-        Get an Appointment
-    </button>
 </div>
 
 <div class="appointments-container">
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
+    <div class="job-info-card">
+        <div class="job-info-card__header">
+            <p>Reg No: QL 9904</p>
+            <p class="job-date">Started Date: 2022/12/09</p>
         </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
+        <div class="job-info-card__info">
+            <div class="job-info-card__info-date">
                 <div>
                     <h3>Made on</h3>
                     <p>
@@ -36,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="appointment-card__footer">
+        <div class="job-info-card__footer">
             <div><strong>
                     For:
                 </strong>
@@ -52,13 +51,13 @@
             </div>
         </div>
     </div>
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
+    <div class="job-info-card">
+        <div class="job-info-card__header">
+            <p>Reg No: QL 9904</p>
+            <p class="job-date">Started Date: 2022/12/09</p>
         </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
+        <div class="job-info-card__info">
+            <div class="job-info-card__info-date">
                 <div>
                     <h3>Made On</h3>
                     <p>
@@ -67,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="appointment-card__footer">
+        <div class="job-info-card__footer">
             <div><strong>
                     For:
                 </strong>
@@ -83,13 +82,13 @@
             </div>
         </div>
     </div>
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
+    <div class="job-info-card">
+        <div class="job-info-card__header">
+            <p>Reg No: QL 9904</p>
+            <p class="job-date">Started Date: 2022/12/09</p>
         </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
+        <div class="job-info-card__info">
+            <div class="job-info-card__info-date">
                 <div>
                     <h3>Made On</h3>
                     <p>
@@ -98,7 +97,7 @@
                 </div>
             </div>
         </div>
-        <div class="appointment-card__footer">
+        <div class="job-info-card__footer">
             <div><strong>
                     For:
                 </strong>

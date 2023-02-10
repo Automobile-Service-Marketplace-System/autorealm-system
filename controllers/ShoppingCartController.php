@@ -122,4 +122,34 @@ class ShoppingCartController
         $res->setStatusCode(401);
         return $res->json(['message' => 'You must login!']);
     }
+
+    public function getCartCheckoutPage(Request $req, Response $res): string
+    {
+        if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
+            $customerId = $req->session->get("user_id");
+            if ($customerId) {
+                $cartModel = new ShoppingCart();
+                $result = $cartModel->getCartItemsByCustomerId(customerId: $customerId);
+                if (is_string($result)) {
+                    return $res->render(view: "site-cart-checkout-page", pageParams: [
+
+                    ], layoutParams: [
+                        'customerId' => $customerId,
+                        'title' => 'Checkout',
+                    ]);
+                }
+
+                return $res->render(view: "site-cart-checkout-page", pageParams: [
+
+                ], layoutParams: [
+                    'customerId' => $customerId,
+                    'title' => 'Checkout',
+                ]);
+
+            }
+
+        }
+        $res->setStatusCode(401);
+        return $res->json(['message' => 'You must login!']);
+    }
 }

@@ -42,4 +42,18 @@ class OrdersController
         }
         return $res->redirect(path: "/login");
     }
+
+    public function getOrderDetailsPage(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
+
+
+
+            return $res->render(view: "stock-manager-dashboard-view-orders-details", layout: "stock-manager-dashboard",
+                pageParams: [],
+                layoutParams: ['title' => 'Order Details', 'pageMainHeading' => 'Order Details', 'employeeId' => $req->session->get("user_id")]);
+        }
+
+        return $res->redirect(path: "/login");
+    }
 }
