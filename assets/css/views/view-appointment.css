@@ -7,3 +7,20 @@
     margin-bottom: 1cm;
     align-items: center;
 }
+
+.appointment-card-wrapper{
+    display: flex;
+    flex-direction: column ;
+    gap: 1.5rem;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.appointment-card__row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.appointment-card-title{
+    font-weight: bold;
+}
