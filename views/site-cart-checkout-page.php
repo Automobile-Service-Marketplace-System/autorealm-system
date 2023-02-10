@@ -6,7 +6,7 @@
 <h2 class="cart-heading">Cart Checkout</h2>
 
 <section class="cart-grid">
-    <div class="cart-elevated-card">
+    <div class="cart-elevated-card" style="width: 60%">
         <div class="cart-item__small">
             <img src="/images/placeholders/product-image-placeholder.jpg" alt="Product Image">
            <div class="cart-item__info_small">
@@ -84,9 +84,9 @@
         </div>
 
 
-    </div>
+    </div >
 
-    <div class="cart-elevated-card checkout-order-summery">
+    <div class="cart-elevated-card checkout-order-summery" style="width: 40%">
 
         <div class="card-checkout-card-title">
             <span>Total Amount</span>

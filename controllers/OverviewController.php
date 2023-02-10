@@ -27,4 +27,16 @@ class OverviewController{
         }
         return $res->redirect(path:"/login");
     }
+
+
+    public function getCustomerOverviewPage(Request $req, Response $res):string{
+        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="customer"){
+            return $res->render(view:"customer-dashboard-overview", layout:"customer-dashboard",layoutParams:[
+                "title"=>"Overview",
+                "pageMainHeading"=>"Your account at a glance",
+                "customerId"=>$req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path:"/login");
+    }
 }

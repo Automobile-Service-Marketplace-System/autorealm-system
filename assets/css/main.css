@@ -69,6 +69,7 @@
 @import "views/office-staff-dashboard-generate-invoice-page.css";
 @import "views/cart-checkout.css";
 @import "views/all-jobs.css";
+@import "views/assigned-job.css";
 
 body {
   font-family: "Nunito", sans-serif;

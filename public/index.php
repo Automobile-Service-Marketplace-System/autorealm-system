@@ -65,11 +65,12 @@ if (!$isInternal) {
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginCustomer']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutCustomer']);
-    $app->router->get(path: "/dashboard/profile", callback: [DashboardController::class, 'getCustomerDashboardProfile']);
     $app->router->get(path: "/cart", callback: [ShoppingCartController::class, 'getCartPage']);
     $app->router->post(path: "/cart/add", callback: [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post(path: "/cart/update", callback: [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post(path: "/cart/delete", callback: [ShoppingCartController::class, 'deleteCartItem']);
+    $app->router->get(path: "/dashboard/overview", callback: [OverviewController::class, 'getCustomerOverviewPage']);
+    $app->router->get(path: "/dashboard/profile", callback: [DashboardController::class, 'getCustomerDashboardProfile']);
     $app->router->get(path: "/dashboard/vehicles", callback: [VehiclesController::class, 'getCustomerVehiclePage']);
     $app->router->get(path: "/dashboard/records", callback: [ServicesController::class, 'getPastServiceRecordsByVehicleIdCustomerPage']);
     $app->router->get(path: "/dashboard/orders", callback: [OrdersController::class, 'getCustomerDashboardOrdersPage']);
@@ -81,7 +82,9 @@ if (!$isInternal) {
 
 if ($isInternal) {
 
-// definitive employee routes
+//    $app->router->get("/");
+
+// definitive employ/ee routes
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getEmployeeLoginPage']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginEmployee']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutEmployee']);
@@ -96,9 +99,9 @@ if ($isInternal) {
     $app->router->post(path: "/inspection-reports/create", callback: [JobsController::class, 'createInspectionReport']);
 // technician routes
 
-    $app->router->get(path: "/technician-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
+    $app->router->get(path: "/technician-dashboard/overview", callback: [DashboardController::class, 'getTechnicianDashboardOverview']);
     $app->router->get(path: "/technician-dashboard/profile", callback: [DashboardController::class, 'getTechnicianDashboardProfile']);
-
+    $app->router->get(path: "/assigned-job", callback: [JobsController::class, 'getAssignedJobOverviewPage']);
 
 // administrator routes
     $app->router->get(path: "/admin-login", callback: [AuthenticationController::class, "getAdminLoginPage"]);

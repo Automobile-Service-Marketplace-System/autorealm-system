@@ -1,26 +1,24 @@
 <?php
 
 /**
- *  @var array $errors
+ * @var array $errors
  */
 
 use app\components\FormItem;
 
 ?>
 
-<div class="form-input">
-    <?php
-    FormItem::render(
-        id: "regNo",
-        label: "Registration Number",
-        name: "regNo"
-    );?>
-</div>
 
-<div class="images">
-    <br><img src="/images/placeholders/vehicle1.png">
+<?php
+FormItem::render(
+    id: "regNo",
+    label: "Registration Number",
+    name: "regNo"
+); ?>
+
+<div class="admitting-images">
+    <img src="/images/placeholders/vehicle1.png">
     <img src="/images/placeholders/vehicle2.png">
-
 </div>
 
 <p><b><br>Light</b></p>
@@ -31,7 +29,7 @@ use app\components\FormItem;
         id: "LF",
         label: "LF",
         name: "LF"
-    );?>
+    ); ?>
 </div>
 
 <div class="form-input">
@@ -40,17 +38,14 @@ use app\components\FormItem;
         id: "RF",
         label: "RF",
         name: "RF"
-    );?>
+    ); ?>
 </div>
 
 
 <br><br><input type="checkbox" id="spare_wheel" name="spare_wheel" value="spare_wheel">
 <label for="spre_wheel"> Spare Wheel</label><br>
 
-<div>
-    <button type="submit" id="create-button" >Create</button>
-</div>
-
-<div>
-    <button type="submit" id="cancel-button">Cancel</button>
+<div class="flex items-center justify-between mt-4 mb-8">
+    <button type="submit" id="create-button" class="btn">Create</button>
+    <button type="submit" id="cancel-button" class="btn btn--danger">Cancel</button>
 </div>

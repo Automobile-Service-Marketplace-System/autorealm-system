@@ -1,32 +1,37 @@
-#cancel-button{
-    margin-top: 1cm;
-    background-color: #e53030;
-    color: #fff;
-    border-color: #e53030;
-    width: 100px;
-    height: 50px;
-    border-radius: 8px;
-    margin-left: 2cm;
-}
+/*#cancel-button{*/
+/*    margin-top: 1cm;*/
+/*    background-color: #e53030;*/
+/*    color: #fff;*/
+/*    border-color: #e53030;*/
+/*    width: 100px;*/
+/*    height: 50px;*/
+/*    border-radius: 8px;*/
+/*    margin-left: 2cm;*/
+/*}*/
 
-#create-button{
-    margin-top: 1cm;
-    width: 100px;
-    height: 50px;
-    background: #6100FF;
-    border-color: #6100ff;
-    border-radius: 8px;
-    color: #fff;
-    margin-left: 1.5cm;
-    float: left;
-}
+/*#create-button{*/
+/*    margin-top: 1cm;*/
+/*    width: 100px;*/
+/*    height: 50px;*/
+/*    background: #6100FF;*/
+/*    border-color: #6100ff;*/
+/*    border-radius: 8px;*/
+/*    color: #fff;*/
+/*    margin-left: 1.5cm;*/
+/*    float: left;*/
+/*}*/
 
 
-.images{
-    max-width: 60%;
-    height: auto;
+.admitting-images{
     display: flex;
-    width: 100px;
-    gap: 0.5cm;
-    margin: .5cm;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+
+.admitting-images img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
 }
