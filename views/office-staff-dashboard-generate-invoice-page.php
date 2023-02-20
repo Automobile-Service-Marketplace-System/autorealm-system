@@ -33,7 +33,7 @@
             <td>Rs. 300</td>
         </tr>
         <tr>
-            <td><a class="invoice-add-service">Add Service <i class="fa-solid fa-plus"></i></a></td>
+            <td><button class="btn btn--thin">Add Service <i class="fa-solid fa-plus"></i></button></td>
             <td><strong>Total Labor: Rs.1800</strong></td>
         </tr>
     </table>
@@ -55,7 +55,7 @@
             <td>Rs. 2050.00</td>
         </tr>
         <tr>
-            <td><a class="invoice-add-service">Add Service <i class="fa-solid fa-plus"></i></a></td>
+            <td><button class="btn btn--thin">Add Product <i class="fa-solid fa-plus"></i></button></td>
             <td><strong>Total Labor: Rs.22958.00</strong></td>
         </tr>
     </table>
@@ -66,7 +66,7 @@
 </div>
 
 <div class="invoice-button-set">
-    <button class="btn btn--success btn--squar"e>
+    <button class="btn btn--success btn--square"e>
         <i class="fa-solid fa-print"></i>
     </button>
     <button class="btn btn--warning btn--square">

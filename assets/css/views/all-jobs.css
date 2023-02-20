@@ -62,8 +62,8 @@
 }
 
 .job-info-card__header p.job-date:last-child {
-    background-color: rgba(var(--info), 0.3);
-    color: var(--color-info);
+    /*background-color: rgba(var(--info), 0.3);*/
+    color: var(--color-dark);
 
 }
 
@@ -143,12 +143,9 @@
     gap: 1rem;
 }
 
-.job-info-card__footer button {
+.job-info-card__footer a {
     display: flex;
     align-items: center;
-    color: var(--color-success);
+    color: var(--color-info);
 }
 
-.job-info-card__footer button:last-child {
-    color: var(--color-danger);
-}

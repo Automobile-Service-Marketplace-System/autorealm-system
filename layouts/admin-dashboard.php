@@ -36,7 +36,7 @@ DocumentHead::createHead(
             <a href="/employees">
                 <i class="fa-solid fa-user-tie"></i>
                 <span>
-                    Employee
+                    Employees
                 </span>
             </a>
             <a href="/stock-manager-dashboard/products">
@@ -69,18 +69,18 @@ DocumentHead::createHead(
                     Services
                 </span>
             </a>
-            <a href="/jobs">
+            <a href="/all-jobs">
                 <i class="fa-solid fa-clock"></i>
                 <span>
                     Service/Repair Jobs
                 </span>
             </a>
-            <a href="/employee-dashboard/vehicle-maintenance-reports">
-                <i class="fa-solid fa-file"></i>
-                <span>
-                    Vehicle Maintenance Reports
-                </span>
-            </a>
+<!--            <a href="/employee-dashboard/vehicle-maintenance-reports">-->
+<!--                <i class="fa-solid fa-file"></i>-->
+<!--                <span>-->
+<!--                    Vehicle Maintenance Reports-->
+<!--                </span>-->
+<!--            </a>-->
             <a href="/customers">
                 <i class="fa-solid fa-users"></i>
                 <span>

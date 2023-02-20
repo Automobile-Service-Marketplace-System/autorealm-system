@@ -18,7 +18,7 @@ if (empty($invoices)) {
 foreach ($invoices[0] as $key => $value) {
     $columns[] = $key;
 }
-$columns[] = "Actions";
+//$columns[] = "Actions";
 
 $items = [];
 
@@ -30,14 +30,14 @@ foreach ($invoices as $invoice) {
         "Type" => $invoice["Type"],
         "Employee ID" => $invoice["Employee ID"],
         "JobCard ID" => $invoice["JobCard ID"],
-        "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                                        <a href='/vehicles/by-customer?id={$invoice['Invoice No']}' class='btn btn--rounded btn--info'>
-                                            <i class='fa-solid fa-car-side'></i>
-                                         </a>
-                                         <button class='btn btn--rounded btn--warning'>
-                                            <i class='fa-solid fa-pencil'></i>
-                                         </button>
-                        </div>"
+//        "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+//                                        <a href='/vehicles/by-customer?id={$invoice['Invoice No']}' class='btn btn--rounded btn--info'>
+//                                            <i class='fa-solid fa-car-side'></i>
+//                                         </a>
+//                                         <button class='btn btn--rounded btn--warning'>
+//                                            <i class='fa-solid fa-pencil'></i>
+//                                         </button>
+//                        </div>"
     ];
 }
 

@@ -292,15 +292,15 @@ class AuthenticationController
                 $req->session->set(key: "user_role", value: $result->job_role); // $_SESSION['user_role'] = "employee";
                 $path = "";
                 if ($result->job_role === "admin") {
-                    $path = "/admin-dashboard/overview";
+                    $path = "/employees";
                 } elseif ($result->job_role === "foreman") {
                     $path = "/jobs";
                 } elseif ($result->job_role === "stock_manager") {
                     $path = "/stock-manager-dashboard/products";
                 } elseif ($result->job_role === "office_staff_member") {
-                    $path = "/overview";
+                    $path = "/customers";
                 } elseif ($result->job_role === "technician") {
-                    $path = "/technician-dashboard/profile";
+                    $path = "/assigned-job";
                 } elseif ($result->job_role === "security_officer") {
                     $path = "/security-officer-dashboard/check-appointment";
                 }

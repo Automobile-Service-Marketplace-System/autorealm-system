@@ -1,73 +1,99 @@
-<?php
-
-/**
- * @var array $appointments
- */
-
-//    foreach($appointments as $appointment){ ?>
-<!--        <div class="appointment">-->
-<!--            <p><b>Name: </b>--><?php //echo $appointment["Name"] ?>
-<!--            <br><b>Registrain Number: </b>--><?php //echo $appointment["RegNo"]?>
-<!--            <br><b>Time Slot: </b>--><?php //echo $appointment['FromTime']?><!-- - --><?php //echo $appointment['ToTime']?><!-- -->
-<!--            <br><b>Date: </b>--><?php //echo $appointment["Date"]?>
-<!--        </div>-->
-<!--    --><?php //
-//    }
-  ?>
-<section class="appointment-card-wrapper">
+<div class="appointments-container">
     <div class="appointment-card">
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Name</span>
-            <span>Sanduni Gunathilaka</span>
+        <div class="appointment-card__header">
+            <p>Appointment Date: 2023/2/3</p>
+            <p class="due">Coming Soon</p>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Registration Number</span>
-            <span>BCM 4576</span>
+        <div class="appointment-card__info">
+            <div class="appointment-card__info-date">
+                <div>
+                    <h3>Made on</h3>
+                    <p>
+                        2023/1/3
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Time Slot</span>
-            <span>03.00 - 04.30</span>
-        </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Date</span>
-            <span>01/02/2022</span>
+        <div class="appointment-card__footer">
+            <div><strong>
+                    For:
+                </strong>
+                Aston Martin DB11
+            </div>
+            <div class="flex items-center gap-4">
+                <button style="color: var(--color-info)">
+                    View QR Code
+                </button>
+
+            </div>
         </div>
     </div>
     <div class="appointment-card">
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Name</span>
-            <span>Sanduni Gunathilaka</span>
+        <div class="appointment-card__header">
+            <p>Appointment Date: 2023/2/3</p>
+            <p class="due">Coming Soon</p>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Registration Number</span>
-            <span>BCM 4576</span>
+        <div class="appointment-card__info">
+            <div class="appointment-card__info-date">
+                <div>
+                    <h3>Made On</h3>
+                    <p>
+                        2023/1/3
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Time Slot</span>
-            <span>03.00 - 04.30</span>
-        </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Date</span>
-            <span>01/02/2022</span>
+        <div class="appointment-card__footer">
+            <div><strong>
+                    For:
+                </strong>
+                Aston Martin DB11
+            </div>
+            <div class="flex items-center gap-4">
+                <button style="color: var(--color-info)">
+                    View QR Code
+                </button>
+
+            </div>
         </div>
     </div>
     <div class="appointment-card">
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Name</span>
-            <span>Sanduni Gunathilaka</span>
+        <div class="appointment-card__header">
+            <p>Appointment Date: 2023/2/3</p>
+            <p class="due">Coming Soon</p>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Registration Number</span>
-            <span>BCM 4576</span>
+        <div class="appointment-card__info">
+            <div class="appointment-card__info-date">
+                <div>
+                    <h3>Made On</h3>
+                    <p>
+                        2023/1/3
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Time Slot</span>
-            <span>03.00 - 04.30</span>
-        </div>
-        <div class="appointment-card__row">
-            <span class="appointment-card-title">Date</span>
-            <span>01/02/2022</span>
+        <div class="appointment-card__footer">
+            <div><strong>
+                    For:
+                </strong>
+                Aston Martin DB11
+            </div>
+            <div class="flex items-center gap-4">
+                <button style="color: var(--color-info)">
+                    View QR Code
+                </button>
+
+            </div>
         </div>
     </div>
-</section>
 
+</div>
+
+<div class="pagination-container">
+    <a class='pagination-item pagination-item--active' href='/dashboard/records?vehicle_id=123&page=1&limit=2'>1</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=2&limit=2'>2</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=3&limit=2'>3</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=4&limit=2'>4</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=5&limit=2'>5</a>
+    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=6&limit=2'>6</a>
+</div>
