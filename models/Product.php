@@ -33,9 +33,14 @@ class Product
                         p.item_code as ID, 
                         p.name as Name, 
                         c.name as Category,
+                        c.category_id as CategoryID,
                         m.model_name as Model,
+                        m.model_id as ModelID,
                         b.brand_name as Brand,
+                        b.brand_id as BrandID,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.image as Image,
+                        p.description as Description,
                         p.quantity as Quantity
 
                     FROM product p 
