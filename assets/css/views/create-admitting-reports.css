@@ -1,4 +1,4 @@
-#cancel-button{
+/* #cancel-button{
     margin-top: 1cm;
     background-color: #e53030;
     color: #fff;
@@ -19,7 +19,7 @@
     color: #fff;
     margin-left: 1.5cm;
     float: left;
-}
+} */
 
 
 .images{
@@ -29,4 +29,35 @@
     width: 100px;
     gap: 0.5cm;
     margin: .5cm;
+}
+
+.create-admitting-report-btn{
+    display: flex;
+    gap: 10rem;
+    margin-left: 20rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#create-btn, #cansel-btn{
+    width: 10rem;
+}
+
+.Fix-Grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+#spare_wheel{
+    margin-left: 42rem;
+}
+
+.add-extra-image{
+    /* background-color:red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 0.75cm;
 }
