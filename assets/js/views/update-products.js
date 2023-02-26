@@ -8,10 +8,10 @@ productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
     btn.addEventListener("click", function () {
         //assigning dataset values to variables
-        const productId = btn.dataset.productid
+        const productId = Number(btn.dataset.productid)
         const categoryId = Number(btn.dataset.categoryid)
-        const modelId = btn.dataset.modelid
-        const brandId = btn.dataset.brandid
+        const modelId = Number(btn.dataset.modelid)
+        const brandId = Number(btn.dataset.brandid)
         const image = btn.dataset.image
         const description = btn.dataset.description
 
@@ -43,6 +43,9 @@ productUpdateButtons.forEach(function (btn) {
          * @type {Array<{model_id:number, brand_id:number, model_name:string}>}
          */
         const models = JSON.parse(localStorage.getItem("models") || "[]")
+        const modelOptions = models.map( function(mod){
+            return `<option value="${mod.model_id}" ${mod.model_id === productInfo.modelId ? "selected" : "" }>${mod.model_name}</option>`
+        }).join("")
 
         /**
          * @type {Array<{category_id:number, name:string}>}
@@ -51,33 +54,39 @@ productUpdateButtons.forEach(function (btn) {
         const categoryOptions = categories.map( function(cat){
             return `<option value="${cat.category_id}" ${cat.category_id === productInfo.categoryId ? "selected" : "" }>${cat.name}</option>`
         }).join("")
+        //"" is to convert it into a string
+
+
         /**
          * @type {Array<{brand_id:number, brand_name:string}>}
          */
         const brands = JSON.parse(localStorage.getItem("brands") || "[]")
+        const brandOptions =  brands.map( function(brand){
+            return `<option value = "${brand.brand_id}" ${brand.brand_id === productInfo.brandId ? "selected" : ""}>${brand.brand_name}</option> `
+        }).join("")
 
         // console.log(models)
         // console.log(categories)
         // console.log(brands)
 
-        const nameInput = document.createElement("input")
-        nameInput.value = productInfo.productName
+        // const nameInput = document.createElement("input")
+        // nameInput.value = productInfo.productName
+        //
+        // form.appendChild(nameInput)
 
-        form.appendChild(nameInput)
+        // const modelSelect = document.createElement("select")
+        // models.forEach(function (model) {
+        //     const option = document.createElement("option")
+        //     option.value = model.model_id
+        //     option.textContent = model.model_name
+        //     modelSelect.appendChild(option)
+        // })
 
-        const modelSelect = document.createElement("select")
-        models.forEach(function (model) {
-            const option = document.createElement("option")
-            option.value = model.model_id
-            option.textContent = model.model_name
-            modelSelect.appendChild(option)
-        })
-
-        form.appendChild(modelSelect)
-
-        const submiBtn = document.createElement("button")
-
-        form.appendChild(submiBtn)
+        // form.appendChild(modelSelect)
+        //
+        // const submiBtn = document.createElement("button")
+        //
+        // form.appendChild(submiBtn)
 
 
         const updateProductForm = htmlToElement(
@@ -98,9 +107,7 @@ productUpdateButtons.forEach(function (btn) {
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
                                 <select name="category" id="category" >
-                                    ${
-                                        categoryOptions 
-                                    }
+                                    ${categoryOptions}
                                 </select>  
                                 
                             </div>  
@@ -113,11 +120,15 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='brand'>Brand<sup>*</sup></label>
-                                <select name="brand" id="brand"></select>
+                                <select name="brand" id="brand">
+                                    ${brandOptions}
+                                </select>
                             </div>
                             <div class="form-item">
                                 <label for='model'>Model<sup>*</sup></label>
-                                <select name="model" id="model"></select>
+                                <select name="model" id="model">
+                                    ${modelOptions}
+                                </select>
                             </div>
                             <div class="form-item">
                                 <label for='price'>Selling Price<sup>*</sup></label>
@@ -133,14 +144,16 @@ productUpdateButtons.forEach(function (btn) {
                                 <label for='image'>Image<sup>*</sup></label>
                                 <input type='file' name='image' id='image' placeholder='' required  value='${productInfo.image}'   >
                             </div>
-                            
-                            <div class="add-product-actions">
+                          </div>  
+                          
+                          <div class="update-product-actions">
                 
-                                <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
-                                <button class="btn add-sup-button" type="button" id="update-product-modal-btn">Submit</button>
-                                <button style="display: none" type="submit" id="update-product-final-btn"></button>
+                            <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
+                            <button class="btn update-product-modal-btn" type="button" id="update-product-modal-btn">Submit</button>
+                            
+                            <button style="display: none" type="submit" id="update-product-final-btn"></button>
             
-                            </div>
+                          </div>
                     </form>`
         )
 
@@ -148,8 +161,29 @@ productUpdateButtons.forEach(function (btn) {
         Modal.show({
             key: "update-product",
             content: updateProductForm ,
-            closable: true
+            closable: true,
         })
+
+        updateProductForm?.querySelector("#update-product-modal-btn")?.addEventListener("click",(e)=>{
+            const UpdateConfModal = htmlToElement(`<div>
+                                       <h3>Are you sure you want to update this details</h3>
+                                       <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                                            <button class="btn btn--thin modal-close-btn" id="update-product-confirm-btn">Confirm</button>                        
+                                       </div>
+                                    </div>`)
+
+            Modal.show({
+                closable: true,
+                content: UpdateConfModal,
+                key: "Update Product Confirmation",
+            })
+        })
+
+
+
+
+
     })
 })
 
