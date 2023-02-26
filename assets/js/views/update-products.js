@@ -88,7 +88,7 @@ productUpdateButtons.forEach(function (btn) {
         //
         // form.appendChild(submiBtn)
 
-
+        //form modal
         const updateProductForm = htmlToElement(
             `
                     <form class="stock-manager-update-product-form" id="stock-manager-update-product-form">
@@ -164,6 +164,8 @@ productUpdateButtons.forEach(function (btn) {
             closable: true,
         })
 
+
+        //Confirmation modal
         updateProductForm?.querySelector("#update-product-modal-btn")?.addEventListener("click",(e)=>{
             const UpdateConfModal = htmlToElement(`<div>
                                        <h3>Are you sure you want to update this details</h3>
