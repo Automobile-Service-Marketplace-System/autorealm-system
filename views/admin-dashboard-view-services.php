@@ -19,9 +19,9 @@ foreach ($services as $service) {
         "Price" => $service["Price"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                         
-                            <a href='' class='btn btn--rounded btn--warning'>
+                            <button class='btn btn--rounded btn--warning update-service-btn' data-serviceId='{$service["ID"]}'>
                                 <i class='fa-solid fa-pencil'></i>
-                            </a>
+                            </button>
                             <button class='btn btn--rounded btn--danger'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
