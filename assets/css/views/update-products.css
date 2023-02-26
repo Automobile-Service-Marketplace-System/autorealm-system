@@ -35,5 +35,17 @@
 
 .update-product-description {
     grid-column: 1 / 3;
-    grid-row: 3 / 5;
+
+}
+.update-product-description textarea {
+    width: 100%;
+    height: 50%;
+    resize: none;
+}
+
+#stock-manager-update-product-form .add-product-actions {
+    /*margin-top: 30px;*/
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
 }

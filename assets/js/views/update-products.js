@@ -33,16 +33,30 @@ productUpdateButtons.forEach(function (btn) {
             price
         }
 
-        console.log(productInfo)
+        // console.log(productInfo)
 
 
         const  form = document.createElement("form")
         form.action = "/products/update"
 
-
+        /**
+         * @type {Array<{model_id:number, brand_id:number, model_name:string}>}
+         */
         const models = JSON.parse(localStorage.getItem("models") || "[]")
+
+        /**
+         * @type {Array<{category_id:number, name:string}>}
+         */
         const categories = JSON.parse(localStorage.getItem("categories") || "[]")
+
+        /**
+         * @type {Array<{brand_id:number, brand_name:string}>}
+         */
         const brands = JSON.parse(localStorage.getItem("brands") || "[]")
+
+        // console.log(models)
+        // console.log(categories)
+        // console.log(brands)
 
         const nameInput = document.createElement("input")
         nameInput.value = productInfo.productName
@@ -82,7 +96,14 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
-                                <select name="category" id="category"></select>  
+                                <select name="category" id="category" >
+                                    ${
+                                        categories.map( function(cat){
+                                            return `<option value="">`
+                                        })
+                                    }
+                                </select>  
+                                
                             </div>  
                             <div class="form-item">
                                  <label for='product-type'>Product Type<sup>*</sup></label>
@@ -110,8 +131,17 @@ productUpdateButtons.forEach(function (btn) {
                                 <label for='image'>Image<sup>*</sup></label>
                                 <input type='file' name='image' id='image' placeholder='' required  value='${productInfo.image}'   >
                             </div>
+                            
+                            <div class="add-product-actions">
+                
+                                <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
+                                <button class="btn add-sup-button" type="button" id="update-product-modal-btn">Submit</button>
+                                <button style="display: none" type="submit" id="update-product-final-btn"></button>
+            
+                            </div>
+                    </form>
                           
-                        </div>`
+                    </div>`
         )
 
 
