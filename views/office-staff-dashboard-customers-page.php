@@ -22,7 +22,7 @@ foreach($customers as $customer) {
                                         <a href='/vehicles/by-customer?id={$customer['ID']}' class='btn btn--rounded btn--info'>
                                             <i class='fa-solid fa-car-side'></i>
                                          </a>
-                                         <button class='btn btn--rounded btn--warning'>
+                                         <button class='btn btn--rounded btn--warning update-customer-btn' data-customerID='{$customer['ID']}'>
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
                                          <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn'>
@@ -45,3 +45,5 @@ foreach($customers as $customer) {
 <?php
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
+
+<script src="index.js"></script>
