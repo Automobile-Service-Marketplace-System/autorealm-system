@@ -149,7 +149,8 @@ productUpdateButtons.forEach(function (btn) {
                           <div class="update-product-actions">
                 
                             <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
-                            <button class="btn add-sup-button" type="button" id="update-product-modal-btn">Submit</button>
+                            <button class="btn update-product-modal-btn" type="button" id="update-product-modal-btn">Submit</button>
+                            
                             <button style="display: none" type="submit" id="update-product-final-btn"></button>
             
                           </div>
@@ -160,8 +161,29 @@ productUpdateButtons.forEach(function (btn) {
         Modal.show({
             key: "update-product",
             content: updateProductForm ,
-            closable: true
+            closable: true,
         })
+
+        updateProductForm?.querySelector("#update-product-modal-btn")?.addEventListener("click",(e)=>{
+            const UpdateConfModal = htmlToElement(`<div>
+                                       <h3>Are you sure you want to update this details</h3>
+                                       <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                                            <button class="btn btn--thin modal-close-btn" id="update-product-confirm-btn">Confirm</button>                        
+                                       </div>
+                                    </div>`)
+
+            Modal.show({
+                closable: true,
+                content: UpdateConfModal,
+                key: "Update Product Confirmation",
+            })
+        })
+
+
+
+
+
     })
 })
 
