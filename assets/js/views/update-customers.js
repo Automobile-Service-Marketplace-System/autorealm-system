@@ -30,7 +30,7 @@ cutomerUpdateButtons.forEach(function (btn) {
       customerEmail,
     };
 
-    const updateCustomerProfileForm = htmlToElement(
+    const updateCustomerDetailsForm = htmlToElement(
       `<form action="/customers" method="post" enctype="multipart/form-data" id="update-customer-details">
                         <div class="modal-header">
                             <h3>
@@ -100,7 +100,7 @@ cutomerUpdateButtons.forEach(function (btn) {
 
     Modal.show({
       key: "Update-customer",
-      content: updateCustomerProfileForm,
+      content: updateCustomerDetailsForm,
       closable: false,
     });
 
