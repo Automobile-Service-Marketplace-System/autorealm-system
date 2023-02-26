@@ -44,13 +44,18 @@ productUpdateButtons.forEach(function (btn) {
          */
         const models = JSON.parse(localStorage.getItem("models") || "[]")
 
+
         /**
          * @type {Array<{category_id:number, name:string}>}
          */
         const categories = JSON.parse(localStorage.getItem("categories") || "[]")
+
         const categoryOptions = categories.map( function(cat){
             return `<option value="${cat.category_id}" ${cat.category_id === productInfo.categoryId ? "selected" : "" }>${cat.name}</option>`
         }).join("")
+        //"" is to convert it into a string
+
+
         /**
          * @type {Array<{brand_id:number, brand_name:string}>}
          */
@@ -133,8 +138,8 @@ productUpdateButtons.forEach(function (btn) {
                                 <label for='image'>Image<sup>*</sup></label>
                                 <input type='file' name='image' id='image' placeholder='' required  value='${productInfo.image}'   >
                             </div>
-                            
-                            <div class="add-product-actions">
+                          </div>  
+                            <div class="update-product-actions">
                 
                                 <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
                                 <button class="btn add-sup-button" type="button" id="update-product-modal-btn">Submit</button>
