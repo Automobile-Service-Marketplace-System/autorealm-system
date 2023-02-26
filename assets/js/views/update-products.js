@@ -9,7 +9,7 @@ productUpdateButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
         //assigning dataset values to variables
         const productId = btn.dataset.productid
-        const categoryId = btn.dataset.categoryid
+        const categoryId = Number(btn.dataset.categoryid)
         const modelId = btn.dataset.modelid
         const brandId = btn.dataset.brandid
         const image = btn.dataset.image
@@ -48,7 +48,9 @@ productUpdateButtons.forEach(function (btn) {
          * @type {Array<{category_id:number, name:string}>}
          */
         const categories = JSON.parse(localStorage.getItem("categories") || "[]")
-
+        const categoryOptions = categories.map( function(cat){
+            return `<option value="${cat.category_id}" ${cat.category_id === productInfo.categoryId ? "selected" : "" }>${cat.name}</option>`
+        }).join("")
         /**
          * @type {Array<{brand_id:number, brand_name:string}>}
          */
@@ -79,8 +81,7 @@ productUpdateButtons.forEach(function (btn) {
 
 
         const updateProductForm = htmlToElement(
-            `<div>
-
+            `
                     <form class="stock-manager-update-product-form" id="stock-manager-update-product-form">
                           <div class="top-part-form">  
                             <h1 class="">Update Product Details</h1>
@@ -98,16 +99,17 @@ productUpdateButtons.forEach(function (btn) {
                                 <label for='category'>Category<sup>*</sup></label>
                                 <select name="category" id="category" >
                                     ${
-                                        categories.map( function(cat){
-                                            return `<option value="">`
-                                        })
+                                        categoryOptions 
                                     }
                                 </select>  
                                 
                             </div>  
                             <div class="form-item">
                                  <label for='product-type'>Product Type<sup>*</sup></label>
-                                 <select name="product-type" id="product-type"></select>
+                                 <select name="product-type" id="product-type">
+                                     <option value="spare part">Spare Part</option>
+                                     <option value="accessory">Accessory</option> 
+                                </select>
                             </div>
                             <div class="form-item">
                                 <label for='brand'>Brand<sup>*</sup></label>
@@ -139,9 +141,7 @@ productUpdateButtons.forEach(function (btn) {
                                 <button style="display: none" type="submit" id="update-product-final-btn"></button>
             
                             </div>
-                    </form>
-                          
-                    </div>`
+                    </form>`
         )
 
 
