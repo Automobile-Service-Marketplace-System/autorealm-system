@@ -1,6 +1,8 @@
 const cutomerUpdateButtons = document.querySelectorAll(".update-customer-btn");
 import { Modal } from "../components/Modal";
 import { htmlToElement } from "../utils";
+import Notifier from "../components/Notifier";
+
 
 cutomerUpdateButtons.forEach(function (btn) {
   btn.addEventListener("click", function () {
@@ -83,19 +85,19 @@ cutomerUpdateButtons.forEach(function (btn) {
                     </form>`
     );
 
-    const firstNameInput = updateCustomerProfileForm.querySelector("#f_name");
+    const firstNameInput = updateCustomerDetailsForm.querySelector("#f_name");
     firstNameInput.value = customerInfo.customerFirstName;
 
-    const lastNameInput = updateCustomerProfileForm.querySelector("#l_name");
+    const lastNameInput = updateCustomerDetailsForm.querySelector("#l_name");
     lastNameInput.value = customerInfo.customerLastName;
 
-    const ContactNoInput =updateCustomerProfileForm.querySelector("#contact_no");
+    const ContactNoInput = updateCustomerDetailsForm.querySelector("#contact_no");
     ContactNoInput.value = customerInfo.customerContactNo;
 
-    const addressInput = updateCustomerProfileForm.querySelector("#address");
+    const addressInput = updateCustomerDetailsForm.querySelector("#address");
     addressInput.value = customerInfo.customerAddress;
 
-    const emailInput = updateCustomerProfileForm.querySelector("#email");
+    const emailInput = updateCustomerDetailsForm.querySelector("#email");
     emailInput.value = customerInfo.customerEmail;
 
     Modal.show({
@@ -103,6 +105,58 @@ cutomerUpdateButtons.forEach(function (btn) {
       content: updateCustomerDetailsForm,
       closable: false,
     });
+
+    // updateCustomerDetailsForm?.querySelector("#update-customer-profile-bt")?.addEventListener("click", (e) => {
+
+    //     const template =  `<div>
+    //                         <h3>Are you sure you want to update customer details?</h3>
+    //                         <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+    //                             <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+    //                             <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
+    //                         </div>
+    //                         </div>`
+    //     const element = htmlToElement(template);
+
+    //     element.querySelector("#update-customer-profile-btn").addEventListener('click', () => {
+    //         const submitBtn = updateCustomerDetailsForm?.querySelector("#update-customer-profile-btn");
+    //         submitBtn?.click();
+    //     })
+
+    //     updateCustomerDetailsForm?.addEventListener('submit', async (e) => {
+    //     e.preventDefault();
+    //     const formData = new FormData(e.target);
+    //     try {
+    //         const result = await fetch(`/customers`, {
+    //             body: formData,
+    //             method: 'POST'
+    //         })
+    //         if(result.status === 400) {
+    //             const resultBody = await result.json()
+    //             for (const inputName in resultBody.errors) {
+    //                 const inputWrapper = updateCustomerDetailsForm.querySelector(`#${inputName}`).parentElement
+    //                 inputWrapper.classList.add('form-item--error')
+    //                 const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+    //                 inputWrapper.appendChild(errorElement)
+    //             }
+    //         }
+    //          else if (result.status === 201) {
+    
+    //             // add success message to url search params
+    //             window.location.search = new URLSearchParams({
+    //                 ...params,
+    //                 success: 'Customer updated successfully'
+    //             }).toString()
+    //             location.reload()
+    //         }
+    //     } catch (e) {
+    //         Notifier.show({
+    //             closable: true,
+    //             header: 'Error',
+    //             type: 'danger',
+    //             text: e.message
+    //         })
+    //     }
+    // })
 
   });
 });
