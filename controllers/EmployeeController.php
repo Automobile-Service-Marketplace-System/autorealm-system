@@ -65,11 +65,43 @@ class EmployeeController
         ]);
     }
 
-    public function getViewEmployeePage(Request $req, Response $res):string{
-        return $res->render(view: "admin-dashboard-edit-employees", layout: "admin-dashboard", layoutParams: [
+    public function getEditEmployeePage(Request $req, Response $res):string{
+        $body = $req->body();
+        $query=$req->query();
+        $employeeModel=new Employee();
+        $employee=$employeeModel->getEmployeeById((int)$query["employee_id"]);
+        return $res->render(view: "admin-dashboard-edit-employees", layout: "admin-dashboard", pageParams: [
+            'employee' => $employee,
+            'body' => $body
+        ],layoutParams: [
             'title' => 'Manage Employees',
             'pageMainHeading' => 'Update employee profile',
             'employeeId'=> $req->session->get("user_id")
         ]);        
+    }
+
+    public function editEmployee(Request $req, Response $res):string{
+        $body = $req->body();
+        $employee = new Employee($body);
+        $result = $employee->update();
+
+        if (is_array($result)) {
+            return $res->render(view: "admin-dashboard-edit-employee", layout: "admin-dashboard", pageParams: [
+                'errors' => $result,
+                'body' => $body
+            ], layoutParams: [
+                "title" => "Update an employee",
+                'pageMainHeading' => 'Update an employee',
+                'employeeId'=> $req->session->get("user_id")
+            ]);
+        }
+
+        if ($result) {
+            return $res->redirect("/employees");
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 }

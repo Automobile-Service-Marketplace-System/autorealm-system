@@ -28,8 +28,16 @@ foreach ($products as $product) {
                             <button class='btn btn--rounded btn--info'>
                                 <i class='fa-solid fa-cart-shopping'></i>
                             </button>
-                            <button class='btn btn--rounded btn--warning update-product-btn' data-productId='{$product["ID"]}' data-categoryId='{$product["CategoryID"]}' data-brandId='{$product["BrandID"]}' data-modelId='{$product["ModelID"]}' data-image='{$product["Image"]}' data-description='{$product["Description"]}'>
-                                <i class='fa-solid fa-pencil'></i>
+                            <button class='btn btn--rounded btn--warning update-product-btn' 
+                                
+                                data-productId='{$product["ID"]}'              
+                                data-categoryId='{$product["CategoryID"]}' 
+                                data-brandId='{$product["BrandID"]}' 
+                                data-modelId='{$product["ModelID"]}' 
+                                data-image='{$product["Image"]}' 
+                                data-description='{$product["Description"]}'>
+                                
+                                        <i class='fa-solid fa-pencil'></i>
                             </button>
                             <button class='btn btn--rounded btn--danger'>
                                 <i class='fa-solid fa-trash'></i>

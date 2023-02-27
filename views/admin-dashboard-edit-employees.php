@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  @var array $errors
+ *  @var object $employee
  */
 
 use app\components\FormItem;
@@ -15,16 +15,14 @@ $hasNICError = $hasErrors && isset($errors['nic']);
 $hasAddressError = $hasErrors && isset($errors['address']);
 $hasContactNoError = $hasErrors && isset($errors['contact_no']);
 $hasEmailError = $hasErrors && isset($errors['email']);
-$hasPasswordError = $hasErrors && isset($errors['password']);
-$hasConfirmPasswordError = $hasErrors && isset($errors['confirm_password']);
 $hasImageError = $hasErrors && isset($errors['image']);
+
 ?>
 
-
-<main class="create-employee">
-    <form action="/employees/add" method="post" enctype="multipart/form-data">
-        <p>Update the account of ***********</p><br>
-        <b>Choose the account type</b>
+<main class="update-employee">
+    <form action="/employees/edit" method="post" enctype="multipart/form-data">
+        <p>Update the account of <?php echo $employee->f_name ?></p><br>
+        <b>Choose the account type</b> 
         <div class="role-input">
             <div class="role-input-item">
                 <input type="radio" id="security-officer" name="job_role" value="security_officer">
@@ -53,16 +51,16 @@ $hasImageError = $hasErrors && isset($errors['image']);
             <div class="part1">
                 <div class="form-input">
                     <?php
+                    // var_dump($employee);
                     FormItem::render(
                         id: "f_name",
                         label: "First Name",
                         name: "f_name",
                         hasError: $hasFNameError,
                         error: $hasFNameError ? $errors['f_name'] : "",
-                        value: $body['f_name'] ?? null,
+                        value: $employee->f_name ?? ($body['f_name'] ?? null) ,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
-
                     ?>
                 </div>
                 <div class="form-input">
@@ -73,7 +71,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         name: "l_name",
                         hasError: $hasLNameError,
                         error: $hasLNameError ? $errors['l_name'] : "",
-                        value: $body['l_name'] ?? null,
+                        value: $employee->l_name ?? ($body['l_name'] ?? null) ,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
 
@@ -88,7 +86,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         name: "fi",
                         hasError: $hasFIError,
                         error: $hasFIError ? $errors['fi'] : "",
-                        value: $body['fi'] ?? null,
+                        value: $employee->fi ?? ($body['fi'] ?? null) ,
                     );
 
                     ?>
@@ -104,7 +102,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                             type: "date",
                             hasError: $hasDOBError,
                             error: $hasDOBError ? $errors['dob'] : "",
-                            value: $body['dob'] ?? null,
+                            value: $employee->dob ?? ($body['dob'] ?? null) ,
                         );
 
                         ?>
@@ -119,7 +117,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                             name: "nic",
                             hasError: $hasNICError,
                             error: $hasNICError ? $errors['nic'] : "",
-                            value: $body['nic'] ?? null,
+                            value: $employee->NIC ?? ($body['NIC'] ?? null) ,
                             additionalAttributes: "pattern='^(\d{9}[xXvV]|\d{12})$'"
                         );
                         ?>
@@ -134,7 +132,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         name: "address",
                         hasError: $hasAddressError,
                         error: $hasAddressError ? $errors['address'] : "",
-                        value: $body['address'] ?? null,
+                        value: $employee->address ?? ($body['address'] ?? null) ,
                     );
                     ?>
                 </div>
@@ -147,7 +145,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         name: "contact_no",
                         hasError: $hasContactNoError,
                         error: $hasContactNoError ? $errors['contact_no'] : "",
-                        value: $body['contact_no'] ?? null,
+                        value: $employee->contact_no ?? ($body['contact_no'] ?? null) ,
                     );
                     ?>
                 </div>
@@ -161,50 +159,21 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         type: "email",
                         hasError: $hasEmailError,
                         error: $hasEmailError ? $errors['email'] : "",
-                        value: $body['email'] ?? null,
+                        value: $employee->email ?? ($body['email'] ?? null) ,
                     );
                     ?>
                 </div>
-
-                <div class="line">
-                    <div class="form-input-small">
-                        <?php
-                        FormItem::render(
-                            id: "password",
-                            label: "Password",
-                            name: "password",
-                            type: "password",
-                            hasError: $hasPasswordError,
-                            error: $hasPasswordError ? $errors['password'] : "",
-                            value: $body['password'] ?? null,
-                        );
-                        ?>
-                    </div>
-
-                    <div class="form-input-small">
-                        <?php
-                        FormItem::render(
-                            id: "confirm_password",
-                            label: "Confirm Password",
-                            name: "confirm_password",
-                            type: "password",
-                            hasError: $hasConfirmPasswordError,
-                            error: $hasConfirmPasswordError ? $errors['confirm_password'] : "",
-                            value: $body['confirm_password'] ?? null,
-                        );
-                        ?>
-                    </div>
-
-                </div>
-                <button type="reset" id="rst" class="btn1">Reset</button>
             </div>
             <div class="part2">
                 <div class="form-input">
                     <b>Photo</b>
-                    <input type="file" name="image">
+                    <input type="file" name="image">        
                 </div>
-                <button type="submit" id="sm" class="btn">Create Account</button>
             </div>
+        </div>
+        <div class="flex items-center justify-between my-4">
+            <button type="submit" class="btn">Cansel</button>
+            <button type="reset" class="btn btn--warning">Update</button>
         </div>
     </form>
 </main>
