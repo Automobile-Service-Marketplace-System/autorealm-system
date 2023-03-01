@@ -32,7 +32,7 @@ cutomerUpdateButtons.forEach(function (btn) {
     };
 
     const updateCustomerDetailsForm = htmlToElement(
-      `<form action="" method="post" enctype="multipart/form-data" id="update-customer-details">
+      `<form action="/customers" method="post" enctype="multipart/form-data" id="update-customer-details">
                         <div class="modal-header">
                             <h3>
                             Update customer info 
