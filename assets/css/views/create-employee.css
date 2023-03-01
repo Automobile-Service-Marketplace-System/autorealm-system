@@ -1,6 +1,5 @@
 
-
-    .role-input{
+   .role-input{
         display: flex;
         justify-content: space-between;
         margin-bottom: .25rem;  
@@ -73,4 +72,9 @@
     #sm{
         margin-top: 3rem;
         width: 250px;
+    }
+
+    #image-preview-update{
+        width: 600px;
+        height: 480px;
     }

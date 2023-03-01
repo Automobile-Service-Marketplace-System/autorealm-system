@@ -47,11 +47,10 @@ $hasImageError = $hasErrors && isset($errors['image']);
             </div>
         </div>
 
-        <div class="part">
-            <div class="part1">
+        <div class="page-format">
+            <div class="body-part">
                 <div class="form-input">
                     <?php
-                    // var_dump($employee);
                     FormItem::render(
                         id: "f_name",
                         label: "First Name",
@@ -92,7 +91,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
         
-                <div class="line">
+                <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -164,16 +163,28 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
             </div>
-            <div class="part2">
+            
                 <div class="form-input">
                     <b>Photo</b>
-                    <input type="file" name="image">        
+                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)" value='image'>
+                    <img id="image-preview-update">
+                    <script>
+                        function loadImage(event) {
+                            var file = event.target.files[0];
+                            var reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function() {
+                                var imagePreview = document.getElementById('image-preview-edit');
+                                imagePreview.src = reader.result;
+                            };
+                        }
+                    </script>      
                 </div>
-            </div>
+
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="submit" class="btn">Cansel</button>
-            <button type="reset" class="btn btn--warning">Update</button>
+            <button type="submit" id='rst' class="btn">Cansel</button>
+            <button type="reset" id='sm' class="btn btn--warning">Update</button>
         </div>
     </form>
 </main>
