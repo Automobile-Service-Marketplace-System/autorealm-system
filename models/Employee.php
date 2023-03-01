@@ -120,7 +120,6 @@ class Employee
     {
         $errors = [];
 
-
         if (trim($this->body['f_name']) === '') {
             $errors['f_name'] = 'First name must not be empty.';
         } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
@@ -133,18 +132,15 @@ class Employee
             $errors['l_name'] = 'Last name must contain only letters.';
         }
 
-
         if (trim($this->body['fi']) === '') {
             $errors['fi'] = 'Full name with initials must not be empty.';
         }
-
 
         if (empty($this->body['dob'])) {
             $errors['dob'] = 'Date of birth must not be empty.';
         } elseif (!Util::isRealDate($this->body['dob'])) {
             $errors['dob'] = 'Date of birth is not a valid date.';
         }
-
 
         if ($this->body['nic'] === '') {
             $errors['nic'] = 'NIC number must not be empty.';
@@ -153,13 +149,9 @@ class Employee
         } else {
             $query = "SELECT * FROM employee WHERE nic = :nic";
             $statement = $this->pdo->prepare($query);
-            //prepare the query for the database
             $statement->bindValue(":nic", $this->body["nic"]);
-            //contact_no replace with the contact_no of this->body
             $statement->execute();
-            // click go
             if ($statement->rowCount() > 0) {
-                //Return the number of rows
                 $errors['nic'] = 'NIC number already in use.';
             }
         }
@@ -167,7 +159,6 @@ class Employee
         if ($this->body['address'] === '') {
             $errors['address'] = 'Address must not be empty.';
         }
-
 
         if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'email must be a valid email address.';
@@ -177,21 +168,14 @@ class Employee
             $statement->bindValue(':email', $this->body['email']);
             $statement->execute();
             $employee = $statement->fetchObject();
-            //returns the current statement as an object to employee.
             if ($employee) {
                 $errors['email'] = 'email already in use.';
             }
         }
 
-
-        // if (!(($this->body["security-officer"]) == "on" || ($this->body["office-staff"]) == "on" || ($this->body["foreman"]) == "on" || ($this->body["technician"]) == "on" ||($this->body["stock-manager"]) == "on" )) {
-        //     $errors['tc'] = 'You must select job type.';
-        // }
-
         if ($this->body['job_role'] !== 'security_officer' && $this->body['job_role'] !== 'office_staff_member' && $this->body['job_role'] !== 'foreman' && $this->body['job_role'] !== 'technician' && $this->body['job_role'] !== 'stock_manager') {
             $errors['job_role'] = 'You must select job type.';
         }
-
 
         if ($this->body['contact_no'] === '') {
             $errors['contact_no'] = 'Contact number must not be empty.';
@@ -200,17 +184,12 @@ class Employee
         } else {
             $query = "SELECT * FROM employee WHERE contact_no = :contact_no";
             $statement = $this->pdo->prepare($query);
-            //prepare the query for the database
             $statement->bindValue(":contact_no", $this->body["contact_no"]);
-            //contact_no replace with the contact_no of this->body
             $statement->execute();
-            // click go
             if ($statement->rowCount() > 0) {
-                //Return the number of rows
                 $errors['contact_no'] = 'Contact number already in use.';
             }
         }
-
 
         if (strlen($this->body['password']) < 6) {
             $errors['password'] = 'password length must be at least 6 characters';
