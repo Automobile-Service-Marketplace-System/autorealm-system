@@ -87,4 +87,30 @@ class Service
             }
     }
 
+    public function updateServices(): bool|array|string
+    {
+        $errors = $this->validateRegisterBody();
+            if (empty($errors)) {
+                $query = "UPDATE service SET 
+                        price = :price, 
+                        service_name = :service_name, 
+                        description = :description 
+                    WHERE servicecode = servicecode";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":price", $this->body["price"]);
+                $statement->bindValue(":service_name", $this->body["service_name"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (PDOException $e) {
+                    return $e->getMessage();
+                }
+ 
+            } else {
+                return $errors;
+            }
+    }
+
 }
