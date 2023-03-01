@@ -71,8 +71,10 @@
 @import "views/all-jobs.css";
 @import "views/assigned-job.css";
 @import "views/update-service.css";
+@import "views/update-products.css";
 
-body {
+
+body{
   font-family: "Nunito", sans-serif;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
