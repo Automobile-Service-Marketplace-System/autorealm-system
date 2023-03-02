@@ -331,7 +331,7 @@ class Employee
         return $errors;
     }
 
-    public function update(): bool|array
+    public function update(int $employee_id): bool|array
     {
         $errors = $this->validateUpdateFormBody();
 
@@ -342,14 +342,17 @@ class Employee
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
-                $query = "INSERT INTO employee 
-                    (
-                        NIC, f_name, l_name, dob, address, email, job_role, contact_no, is_active, date_of_appointed, image
-                    ) 
-                    VALUES 
-                    (
-                        :nic, :f_name, :l_name, :dob, :address, :email, :job_role, :contact_no, 1, CURDATE(), :image
-                    )";
+                $query = "UPDATE employee SET 
+                    NIC = :price, 
+                    f_name = :service_name, 
+                    l_name = :description,
+                    dob = :nic,
+                    address = :f_name,
+                    email = :email,
+                    job_role = :dob,
+                    contact_no = :contact_no,
+                    image = :image
+                HERE employee_id = $employee_id";
 
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":nic", $this->body["nic"]);
