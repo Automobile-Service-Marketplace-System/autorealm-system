@@ -20,7 +20,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit" method="post" enctype="multipart/form-data">
+    <form action="/employees/edit" method="post">
         <p>Update the account of <?php echo $employee->f_name ?></p><br>
         <b>Choose the account type</b> 
         <div class="role-input">
@@ -166,15 +166,15 @@ $hasImageError = $hasErrors && isset($errors['image']);
             
                 <div class="form-input">
                     <b>Photo</b>
-                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)" value='image'>
+                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
                     <img id="image-preview-update">
                     <script>
                         function loadImage(event) {
                             var file = event.target.files[0];
                             var reader = new FileReader();
-                            reader.readAsDataURL(file);
+                            reader.readAsDataURL(file); 
                             reader.onload = function() {
-                                var imagePreview = document.getElementById('image-preview-edit');
+                                var imagePreview = document.getElementById('image-preview-update');
                                 imagePreview.src = reader.result;
                             };
                         }
@@ -184,7 +184,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
         </div>
         <div class="flex items-center justify-between my-4">
             <button type="submit" id='rst' class="btn">Cansel</button>
-            <button type="reset" id='sm' class="btn btn--warning">Update</button>
+            <button type="reset" id='sm' class="btn btn--warning" href=>Update</button>
         </div>
     </form>
 </main>
