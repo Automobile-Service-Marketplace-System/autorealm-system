@@ -95,11 +95,12 @@ class Service
                         price = :price, 
                         service_name = :service_name, 
                         description = :description 
-                    WHERE servicecode = servicecode";
+                    WHERE servicecode = :servicecode";
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":price", $this->body["price"]);
                 $statement->bindValue(":service_name", $this->body["service_name"]);
                 $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindvalue(":servicecode", $this->body["servicecode"]);
                 
                 try {
                     $statement->execute();

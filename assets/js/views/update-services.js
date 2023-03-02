@@ -41,7 +41,8 @@ updateServiceButton.forEach(function (btn){
                         <textarea name='description' id='description' placeholder=''>${serviceDescription}</textarea>
                 </div>       
             </div>
-            <div class="update-service-actions">
+            <input type="number" value="${serviceId}" name="servicecode" style="display: none" readonly>   
+            <div class="update-service-actions flex justify-between items-center mt-4">
                 <button class="btn btn--danger" type="reset">
                     Reset
                 </button>
@@ -58,9 +59,9 @@ updateServiceButton.forEach(function (btn){
         updateServiceForm?.querySelector("#update-service-modal-btn")?.addEventListener("click", (e) => {
             const template =  `<div style="width: 350px">
                                 <h3>Are you sure you want to update this service?</h3>
-                                <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
-                                    <button class="btn btn--danger modal-close-btn">Cancel</button>                        
-                                    <button class="btn modal-close-btn" id="update-service-confirm-btn">Confirm</button>                        
+                                <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
+                                    <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                                    <button class="btn btn--thin modal-close-btn" id="update-service-confirm-btn">Confirm</button>                        
                                 </div>
                                 </div>`
             const element = htmlToElement(template);
