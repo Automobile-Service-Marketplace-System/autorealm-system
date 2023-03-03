@@ -129,30 +129,32 @@ class CustomersController
     public function updateCustomer(Request $req, Response $res): string
     {
         $body = $req->body();
-        $customer = new Customer($body);
-        $result = $customer->updateCustomer();
+        $service = new Customer($body);
+        $result = $service->updateCustomer();
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
 
         if (is_array($result)) {
-
-            return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
-                pageParams:[
-                    "customer" => $customer,
-                    'errors' => $result,
-                    'body' => $body
-                ],
-                layoutParams:[
-                    'title' => 'Customers',
-                    'pageMainHeading' => 'Customers',
-                    'officeStaffId' => $req->session->get("user_id")
-                ]);
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
         }
 
         if ($result) {
-            return $res->redirect("/customers");
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Customer updated successfully"
+            ]);
         }
 
-        return $res->render(view:"500", layout:"plain", pageParams:[
-            "error" => "Something went wrong. Please try again later.",
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
         ]);
     }
 
