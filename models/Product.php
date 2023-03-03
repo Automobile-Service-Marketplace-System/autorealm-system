@@ -204,7 +204,8 @@ class Product
     public function updateProduct(): bool|array|string
     {
         //check for the errors
-        $errors = $this->validateAddProducts();
+//        $errors = $this->validateAddProducts();
+        $errors = [];
         if(empty($errors)){
 //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
@@ -231,6 +232,8 @@ class Product
                 $statement->bindValue(":model_id", $this->body["model_id"]);
                 $statement->bindValue(":description", $this->body["description"]);
                 $statement->bindValue(":price", $this->body["selling_price"] * 100);
+                $statement->bindValue(":item_code", $this->body["item_code"]);
+
                 //$statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
                 try {
                     $statement->execute();

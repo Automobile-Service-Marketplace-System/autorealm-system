@@ -95,7 +95,7 @@ productUpdateButtons.forEach(function (btn) {
         //form modal
         const updateProductForm = htmlToElement(
             `
-                    <form class="stock-manager-update-product-form" id="stock-manager-update-product-form">
+                    <form class="stock-manager-update-product-form" id="stock-manager-update-product-form" method="post">
                           <div class="top-part-form">  
                             <h1 class="">Update Product Details</h1>
                             <button class="modal-close-btn">
@@ -110,39 +110,41 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
-                                <select name="category" id="category" >
+                                <select name="category_id" id="category_id" >
                                     ${categoryOptions}
                                 </select>  
                                 
                             </div>  
                             <div class="form-item">
                                  <label for='product-type'>Product Type<sup>*</sup></label>
-                                 <select name="product-type" id="product-type">
+                                 <select name="product_type" id="product_type">
                                      <option value="spare part">Spare Part</option>
                                      <option value="accessory">Accessory</option> 
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='brand'>Brand<sup>*</sup></label>
-                                <select name="brand" id="brand">
+                                <select name="brand_id" id="brand">
                                     ${brandOptions}
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='model'>Model<sup>*</sup></label>
-                                <select name="model" id="model">
+                                <select name="model_id" id="model">
                                     ${modelOptions}
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='price'>Selling Price<sup>*</sup></label>
-                                <input type='number' name='price' id='price' placeholder='' required  value='${productInfo.price}'   >
+                                <input type='number' name='selling_price' id='price' placeholder='' required  value='${productInfo.price}'   >
                             </div>
                             
                             <div class="form-item update-product-description">
                                 <label for='description'>Description<sup>*</sup></label>
                                 <textarea name="description" id="description" cols="30" rows="10" placeholder="Enter product description" required>${productInfo.description}</textarea>
                             </div>
+                            
+                            <input style="display: none" type="number" value="${productInfo.productId}" name="item_code">
                             
  
                           </div>  
@@ -184,17 +186,22 @@ productUpdateButtons.forEach(function (btn) {
 
             UpdateConfModal.querySelector("#update-product-confirm-btn").addEventListener('click', () => {
                 const submitBtn = updateProductForm?.querySelector("#update-product-final-btn");
+                console.log(submitBtn)
                 submitBtn?.click();
+                console.log("Final Button oky")
             })
         })
 
         updateProductForm?.addEventListener('submit', async (e) =>{
             e.preventDefault();
+            console.log("Inside submit event listiner")
             const formData = new FormData(e.target);
             try{
+                console.log("Inside try block")
                 const result = await fetch("/stock-manager-dashboard/products/update", {
                     body: formData,
                     method: 'POST'
+
                 })
                 if(result.status === 400) {
                     const resultBody = await result.json()
@@ -213,6 +220,12 @@ productUpdateButtons.forEach(function (btn) {
                         success: 'Product updated successfully'
                     }).toString()
                     location.reload()
+                }
+
+                else if(result.status === 500){
+
+                    const data = await result.text()
+                    console.log(data);
                 }
             }
             catch (e) {
