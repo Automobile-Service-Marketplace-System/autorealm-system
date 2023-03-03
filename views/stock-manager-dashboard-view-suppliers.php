@@ -23,7 +23,7 @@ foreach ($suppliers as $supplier) {
         "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
         "Email" => $supplier["Email"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='' class='btn btn--rounded btn--warning'>
+                            <a href='' class='btn btn--rounded btn--warning update-supplier-button'>
                                 <i class='fa-solid fa-pencil'></i>
                             </a>
                             <button class='btn btn--rounded btn--danger'>
