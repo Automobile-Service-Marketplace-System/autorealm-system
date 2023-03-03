@@ -3,6 +3,10 @@ import {htmlToElement} from "../utils";
 const productUpdateButtons = document.querySelectorAll(".update-product-btn")
 //console.log(productUpdateButtons)
 import {Modal} from '../components/Modal'
+import Notifier from "../components/Notifier";
+
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
 
 productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
@@ -88,10 +92,10 @@ productUpdateButtons.forEach(function (btn) {
         //
         // form.appendChild(submiBtn)
 
-
+        //form modal
         const updateProductForm = htmlToElement(
             `
-                    <form class="stock-manager-update-product-form" id="stock-manager-update-product-form">
+                    <form class="stock-manager-update-product-form" id="stock-manager-update-product-form" method="post">
                           <div class="top-part-form">  
                             <h1 class="">Update Product Details</h1>
                             <button class="modal-close-btn">
@@ -106,33 +110,33 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
-                                <select name="category" id="category" >
+                                <select name="category_id" id="category_id" >
                                     ${categoryOptions}
                                 </select>  
                                 
                             </div>  
                             <div class="form-item">
                                  <label for='product-type'>Product Type<sup>*</sup></label>
-                                 <select name="product-type" id="product-type">
+                                 <select name="product_type" id="product_type">
                                      <option value="spare part">Spare Part</option>
                                      <option value="accessory">Accessory</option> 
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='brand'>Brand<sup>*</sup></label>
-                                <select name="brand" id="brand">
+                                <select name="brand_id" id="brand">
                                     ${brandOptions}
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='model'>Model<sup>*</sup></label>
-                                <select name="model" id="model">
+                                <select name="model_id" id="model">
                                     ${modelOptions}
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for='price'>Selling Price<sup>*</sup></label>
-                                <input type='number' name='price' id='price' placeholder='' required  value='${productInfo.price}'   >
+                                <input type='number' name='selling_price' id='price' placeholder='' required  value='${productInfo.price}'   >
                             </div>
                             
                             <div class="form-item update-product-description">
@@ -140,10 +144,9 @@ productUpdateButtons.forEach(function (btn) {
                                 <textarea name="description" id="description" cols="30" rows="10" placeholder="Enter product description" required>${productInfo.description}</textarea>
                             </div>
                             
-                            <div class="form-item ">
-                                <label for='image'>Image<sup>*</sup></label>
-                                <input type='file' name='image' id='image' placeholder='' required  value='${productInfo.image}'   >
-                            </div>
+                            <input style="display: none" type="number" value="${productInfo.productId}" name="item_code">
+                            
+ 
                           </div>  
                           
                           <div class="update-product-actions">
@@ -164,6 +167,8 @@ productUpdateButtons.forEach(function (btn) {
             closable: true,
         })
 
+
+        //Confirmation modal
         updateProductForm?.querySelector("#update-product-modal-btn")?.addEventListener("click",(e)=>{
             const UpdateConfModal = htmlToElement(`<div>
                                        <h3>Are you sure you want to update this details</h3>
@@ -178,6 +183,59 @@ productUpdateButtons.forEach(function (btn) {
                 content: UpdateConfModal,
                 key: "Update Product Confirmation",
             })
+
+            UpdateConfModal.querySelector("#update-product-confirm-btn").addEventListener('click', () => {
+                const submitBtn = updateProductForm?.querySelector("#update-product-final-btn");
+                console.log(submitBtn)
+                submitBtn?.click();
+                console.log("Final Button oky")
+            })
+        })
+
+        updateProductForm?.addEventListener('submit', async (e) =>{
+            e.preventDefault();
+            console.log("Inside submit event listiner")
+            const formData = new FormData(e.target);
+            try{
+                console.log("Inside try block")
+                const result = await fetch("/stock-manager-dashboard/products/update", {
+                    body: formData,
+                    method: 'POST'
+
+                })
+                if(result.status === 400) {
+                    const resultBody = await result.json()
+                    for (const inputName in resultBody.errors) {
+                        const inputWrapper = updateProductForm.querySelector(`#${inputName}`).parentElement
+                        inputWrapper.classList.add('form-item--error')
+                        const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                        inputWrapper.appendChild(errorElement)
+                    }
+                }
+                else if (result.status === 201) {
+
+                    // add success message to url search params
+                    window.location.search = new URLSearchParams({
+                        ...params,
+                        success: 'Product updated successfully'
+                    }).toString()
+                    location.reload()
+                }
+
+                else if(result.status === 500){
+
+                    const data = await result.text()
+                    console.log(data);
+                }
+            }
+            catch (e) {
+                Notifier.show({
+                    closable: true,
+                    header: 'Error',
+                    type: 'danger',
+                    text: e.message
+                })
+            }
         })
 
 
@@ -187,3 +245,11 @@ productUpdateButtons.forEach(function (btn) {
     })
 })
 
+//took the images form out
+// < div
+// className = "form-item " >
+//     < label
+// htmlFor = 'image' > Image < sup > *
+// </sup></label>
+// <input type='file' name='image' id='image' placeholder='' required value='${productInfo.image}'>
+// </div>
