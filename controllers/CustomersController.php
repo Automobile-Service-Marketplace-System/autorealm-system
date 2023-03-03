@@ -126,4 +126,34 @@ class CustomersController
         ]);
     }
 
+    public function updateCustomer(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $customer = new Customer($body);
+        $result = $customer->updateCustomer();
+
+        if (is_array($result)) {
+
+            return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
+                pageParams:[
+                    "customer" => $customer,
+                    'errors' => $result,
+                    'body' => $body
+                ],
+                layoutParams:[
+                    'title' => 'Customers',
+                    'pageMainHeading' => 'Customers',
+                    'officeStaffId' => $req->session->get("user_id")
+                ]);
+        }
+
+        if ($result) {
+            return $res->redirect("/customers");
+        }
+
+        return $res->render(view:"500", layout:"plain", pageParams:[
+            "error" => "Something went wrong. Please try again later.",
+        ]);
+    }
+
 }

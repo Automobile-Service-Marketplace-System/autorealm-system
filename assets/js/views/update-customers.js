@@ -28,22 +28,22 @@ cutomerUpdateButtons.forEach(function (btn) {
       customerLastName,
       customerContactNo,
       customerAddress,
-      customerEmail
+      customerEmail,
     };
 
-    const updateCustomerDetailsForm = htmlToElement(
-      `<form action="/customers" method="post" enctype="multipart/form-data" id="update-customer-details">
+    const updateCustomerDetailsForm = htmlToElement();
+    `<form action="/customers/update" method="post" enctype="multipart/form-data" id="update-customer-details">
                         <div class="modal-header">
                             <h3>
-                            Update customer info 
+                            Update customer info
                             </h3>
                         <button class="modal-close-btn">
                             <i class="fas fa-times"></i>
                         </button>
                         </div>
-        
+
                         <div class="grid gap-4">
-                        
+
                         <div class='form-item'>
                                 <label for='f_name'>First Name<sup>*</sup></label>
                                 <input type='text' name='f_name' id='f_name' placeholder='' required  value='${customerInfo.customerFirstName}'>
@@ -56,21 +56,22 @@ cutomerUpdateButtons.forEach(function (btn) {
 
                         <div class='form-item'>
                                 <label for='address'>Contact No<sup>*</sup></label>
-                                <input type='text' name='address' id='contact_no' placeholder='' required  value='${customerInfo.customerContactNo}'>      
+                                <input type='text' name='address' id='contact_no' placeholder='' required  value='${customerInfo.customerContactNo}'>
                         </div>
 
                         <div class='form-item'>
                                 <label for='address'>Address<sup>*</sup></label>
-                                <input type='text' name='address' id='address' placeholder='' required  value='${customerInfo.customerAddress}'>      
+                                <input type='text' name='address' id='address' placeholder='' required  value='${customerInfo.customerAddress}'>
                         </div>
 
                         <div class='form-item'>
                                 <label for='address'>Email<sup>*</sup></label>
-                                <input type='text' name='address' id='email' placeholder='' required  value='${customerInfo.customerEmail}'>      
+                                <input type='text' name='address' id='email' placeholder='' required  value='${customerInfo.customerEmail}'>
                         </div>
-                        
+
                         </div>
-        
+                        <input style="display:none;" name="customer_id" value="${customerId}" readonly>
+
                         <div class="flex-centered-y justify-between mt-4">
                             <button class="btn btn--thin btn--danger" type="reset">
                                 Reset
@@ -81,8 +82,7 @@ cutomerUpdateButtons.forEach(function (btn) {
                             <button style="display: none" type="submit" id="update-customer-final-btn">
                             </button>
                         </div>
-                    </form>`
-    );
+                    </form>`;
 
     Modal.show({
       key: "update-customer",
@@ -90,21 +90,29 @@ cutomerUpdateButtons.forEach(function (btn) {
       closable: false,
     });
 
-    updateCustomerDetailsForm?.querySelector("#update-customer-modal-btn")?.addEventListener("click", (e) => {
-        const UpdateConfModal = htmlToElement(`<div>
-                                 <h3>Are you sure you want to update this details</h3>
-                                 <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
-                                      <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
-                                      <button class="btn btn--thin modal-close-btn" id="update-customer-confirm-btn">Confirm</button>                        
-                                 </div>
-                              </div>`)
+    updateCustomerDetailsForm
+      ?.querySelector("#update-customer-modal-btn")
+      ?.addEventListener("click", (e) => {
+        const updateConfModal = htmlToElement();
+        `<div>
+               <h3>Are you sure you want to update this details</h3>
+               <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                    <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>
+                    <button class="btn btn--thin modal-close-btn" id="update-customer-confirm-btn">Confirm</button>
+               </div>
+            </div>`;
 
         Modal.show({
           closable: true,
           content: UpdateConfModal,
           key: "Update Customer Confirmation",
         });
-      });
 
+        updateConfModal
+          ?.querySelector("#update-customer-confirm-btn")
+          ?.addEventListener("click", (e) => {
+            updateCustomerDetailsForm.submit();
+          });
+      });
   });
 });

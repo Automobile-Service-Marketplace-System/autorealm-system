@@ -66,7 +66,7 @@ class Customer
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
 
-//                //cryptographically secure 6-digits OTP code
+                //                //cryptographically secure 6-digits OTP code
                 try {
                     $email_otp = (string) random_int(100000, 999999);
                     $statement->bindValue(":email_verification_code", $email_otp);
@@ -83,19 +83,19 @@ class Customer
 
                 try {
                     $statement->execute();
-//                    try {
-//                        EmailClient::sendEmail(
-//                            receiverEmail: $this->body["email"],
-//                            receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
-//                            subject: "Email Verification",
-//                            params: [
-//                                "CODE" => $email_verification_code
-//                            ]
-//                        );
-//                    } catch (ApiException $e) {
-//                        error_log($e->getMessage());
-//                        return false;
-//                    }
+                    //                    try {
+                    //                        EmailClient::sendEmail(
+                    //                            receiverEmail: $this->body["email"],
+                    //                            receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
+                    //                            subject: "Email Verification",
+                    //                            params: [
+                    //                                "CODE" => $email_verification_code
+                    //                            ]
+                    //                        );
+                    //                    } catch (ApiException $e) {
+                    //                        error_log($e->getMessage());
+                    //                        return false;
+                    //                    }
                     return true;
                 } catch (PDOException $e) {
 
@@ -104,7 +104,6 @@ class Customer
             } else {
                 return $errors;
             }
-
         } else {
             return $errors;
         }
@@ -227,7 +226,6 @@ class Customer
             } else {
                 return $errors;
             }
-
         } else {
             return $errors;
         }
@@ -438,7 +436,6 @@ class Customer
                 address as Address,
                 email as Email
             FROM customer")->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
     private function validateRegisterBody(): array
@@ -457,5 +454,31 @@ class Customer
         return $errors;
     }
 
+    public function updateCustomer()
+    {
+        // $errors = $this->validateRegisterBody();
 
+        if (true) {
+            $query = "UPDATE customer SET
+                        f_name=:f_name, l_name=:l_name, contact_no=:contact_no, address=:address, email=:email 
+            WHERE customer_id= :customer_id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":f_name", $this->body["f_name"]);
+            $statement->bindValue(":l_name", $this->body["l_name"]);
+            $statement->bindValue(":contact_no", $this->body["contact_no"]);
+            $statement->bindValue(":address", $this->body["address"]);
+            $statement->bindValue(":email", $this->body["email"]);
+            $statement->bindValue(":customer_id", $this->body["customer_id"]);
+
+            try {
+                $statement->execute();
+                return true;
+            } catch (\PDOException $e) {
+                return $e->getMessage();
+            }
+        } else {
+            // return $errors;
+        }
+    }
 }
