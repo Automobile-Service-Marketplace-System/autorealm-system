@@ -84,7 +84,7 @@ class EmployeeController
    
         $body = $req->body();
         $employee = new Employee($body);
-        $result = $employee->update(${employeeID});
+        $result = $employee->update();
 
         if (is_array($result)) {
             return $res->render(view: "admin-dashboard-edit-employee", layout: "admin-dashboard", pageParams: [

@@ -331,7 +331,7 @@ class Employee
         return $errors;
     }
 
-    public function update(int $employee_id): bool|array
+    public function update(): bool|array
     {
         $errors = $this->validateUpdateFormBody();
 
@@ -352,12 +352,11 @@ class Employee
                     job_role = :dob,
                     contact_no = :contact_no,
                     image = :image
-                HERE employee_id = $employee_id";
+                WHERE employee_id = :employee_id";
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":nic", $this->body["nic"]);
                 $statement->bindValue(":f_name", $this->body["f_name"]);
-                $statement->bindValue(":l_name", $this->body["l_name"]);
-                // full name with initials
+                $statement->bindValue(":l_name", $this->body["l_name"]);               
                 $statement->bindValue(":dob", $this->body["dob"]);
                 $statement->bindValue(":address", $this->body["address"]);
                 $statement->bindValue(":email", $this->body["email"]);
