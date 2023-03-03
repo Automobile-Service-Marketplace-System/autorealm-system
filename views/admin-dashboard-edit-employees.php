@@ -17,10 +17,15 @@ $hasContactNoError = $hasErrors && isset($errors['contact_no']);
 $hasEmailError = $hasErrors && isset($errors['email']);
 $hasImageError = $hasErrors && isset($errors['image']);
 
+
+
+$image = $employee->image ? $employee->image : "";
+
+
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit" method="post">
+    <form action="/employees/edit" method="post" enctype="multipart/form-data">
         <p>Update the account of <?php echo $employee->f_name ?></p><br>
         <b>Choose the account type</b> 
         <div class="role-input">
@@ -167,7 +172,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                 <div class="form-input">
                     <b>Photo</b>
                     <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
-                    <img id="image-preview-update">
+                    <img id="image-preview-update" src="<?= $image ?>" style="object-fit: cover">
                     <script>
                         function loadImage(event) {
                             var file = event.target.files[0];
@@ -183,8 +188,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="submit" id='rst' class="btn">Cansel</button>
-            <button type="reset" id='sm' class="btn btn--warning" href=>Update</button>
+            <button type="reset" id='rst' class="btn">Cancel</button>
+            <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
         </div>
     </form>
 </main>

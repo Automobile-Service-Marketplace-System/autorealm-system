@@ -353,7 +353,6 @@ class Employee
                     contact_no = :contact_no,
                     image = :image
                 HERE employee_id = $employee_id";
-
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":nic", $this->body["nic"]);
                 $statement->bindValue(":f_name", $this->body["f_name"]);
@@ -364,49 +363,50 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue($employee_id, $this->body["employee_id"]);
                 $statement->bindValue(":image", $imageUrl ?? "");
-                try {
-                    $statement->execute();
-                    $lastInsertedId = $this->pdo->lastInsertId();
-                    switch ($this->body['job_role']) {
-                        case "foreman":
-                            $query = "INSERT INTO  foreman (employee_id, is_available) VALUES (:employee_id, 1)";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "security_officer":
-                            $query = "INSERT INTO securityofficer (employee_id, shift) VALUES (:employee_id,'day')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "technician":
-                            $query = "INSERT INTO technician (employee_id, is_available, speciality) VALUES (:employee_id, 1, 'none')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "stock_manager":
-                            $query = "INSERT INTO stockmanager (employee_id) VALUES (:employee_id)";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "office_staff_member":
-                            $query = "INSERT INTO officestaff (employee_id, type) VALUES (:employee_id, 'clerk')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute(); 
-                            break;
-                        default:
-                            break;
+                // try {
+                //     $statement->execute();
+                //     $lastInsertedId = $this->pdo->lastInsertId();
+                //     switch ($this->body['job_role']) {
+                //         case "foreman":
+                //             $query = "UPDATE foreman set employee_id=$employee_id, is_available=1";
+                //             $statement = $this->pdo->prepare($query);
+                //             $statement->bindValue(":employee_id", $lastInsertedId);
+                //             $statement->execute();
+                //             break;
+                //         case "security_officer":
+                //             $query = "UPDATE securityofficer set employee_id=$employee_id, shift='day'";
+                //             $statement = $this->pdo->prepare($query);
+                //             $statement->bindValue(":employee_id", $lastInsertedId);
+                //             $statement->execute();
+                //             break;
+                //         case "technician":
+                //             $query = "UPDATE technician set employee_id=$employee_id, is_available=1, speciality='none'";                            
+                //             $statement = $this->pdo->prepare($query);
+                //             $statement->bindValue(":employee_id", $lastInsertedId);
+                //             $statement->execute();
+                //             break;
+                //         case "stock_manager":
+                //             $query = "UPDATE stockmanager set employee_id=$employee_id";
+                //             $statement = $this->pdo->prepare($query);
+                //             $statement->bindValue(":employee_id", $lastInsertedId);
+                //             $statement->execute();
+                //             break;
+                //         case "office_staff_member":
+                //             $query = "UPDATE officestaff set employee_id=$employee_id, type='clerk'";
+                //             $statement = $this->pdo->prepare($query);
+                //             $statement->bindValue(":employee_id", $lastInsertedId);
+                //             $statement->execute(); 
+                //             break;
+                //         default:
+                //             break;
 
-                    }
-                    return true;
-                } catch (\PDOException $e) {
-                    return false;
-                }
+                //     }
+                //     return true;
+                // } catch (\PDOException $e) {
+                //     return false;
+                // }
             } else {
                 return $errors;
             }
