@@ -199,6 +199,51 @@ class Product
         }
 
     }
+
+
+    public function updateProduct(): bool|array|string
+    {
+        //check for the errors
+        $errors = $this->validateAddProducts();
+        if(empty($errors)){
+//            try {
+//                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
+//                $imagesAsJSON = json_encode($imageUrls);
+//            } catch (Exception $e) {
+//                $errors["image"] = $e->getMessage();
+//            }
+            if(empty($errors)){
+                $query = "UPDATE product SET 
+                    name = :name, 
+                    category_id = :category_id, 
+                    product_type = :product_type, 
+                    brand_id = :brand_id, 
+                    model_id = :model_id, 
+                    description = :description, 
+                    price = :price 
+                   
+                    WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":name", $this->body["name"]);
+                $statement->bindValue(":category_id", $this->body["category_id"]);
+                $statement->bindValue(":product_type", $this->body["product_type"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindValue(":price", $this->body["selling_price"] * 100);
+                //$statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            }else{
+                return $errors;
+            }
+        }
+    }
+
 }
 
 

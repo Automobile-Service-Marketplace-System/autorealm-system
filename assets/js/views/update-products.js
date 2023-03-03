@@ -3,6 +3,10 @@ import {htmlToElement} from "../utils";
 const productUpdateButtons = document.querySelectorAll(".update-product-btn")
 //console.log(productUpdateButtons)
 import {Modal} from '../components/Modal'
+import Notifier from "../components/Notifier";
+
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
 
 productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
@@ -140,10 +144,7 @@ productUpdateButtons.forEach(function (btn) {
                                 <textarea name="description" id="description" cols="30" rows="10" placeholder="Enter product description" required>${productInfo.description}</textarea>
                             </div>
                             
-                            <div class="form-item ">
-                                <label for='image'>Image<sup>*</sup></label>
-                                <input type='file' name='image' id='image' placeholder='' required  value='${productInfo.image}'   >
-                            </div>
+ 
                           </div>  
                           
                           <div class="update-product-actions">
@@ -180,6 +181,48 @@ productUpdateButtons.forEach(function (btn) {
                 content: UpdateConfModal,
                 key: "Update Product Confirmation",
             })
+
+            UpdateConfModal.querySelector("#update-product-confirm-btn").addEventListener('click', () => {
+                const submitBtn = updateProductForm?.querySelector("#update-product-final-btn");
+                submitBtn?.click();
+            })
+        })
+
+        updateProductForm?.addEventListener('submit', async (e) =>{
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try{
+                const result = await fetch("/stock-manager-dashboard/products/update", {
+                    body: formData,
+                    method: 'POST'
+                })
+                if(result.status === 400) {
+                    const resultBody = await result.json()
+                    for (const inputName in resultBody.errors) {
+                        const inputWrapper = updateProductForm.querySelector(`#${inputName}`).parentElement
+                        inputWrapper.classList.add('form-item--error')
+                        const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                        inputWrapper.appendChild(errorElement)
+                    }
+                }
+                else if (result.status === 201) {
+
+                    // add success message to url search params
+                    window.location.search = new URLSearchParams({
+                        ...params,
+                        success: 'Product updated successfully'
+                    }).toString()
+                    location.reload()
+                }
+            }
+            catch (e) {
+                Notifier.show({
+                    closable: true,
+                    header: 'Error',
+                    type: 'danger',
+                    text: e.message
+                })
+            }
         })
 
 
@@ -189,3 +232,11 @@ productUpdateButtons.forEach(function (btn) {
     })
 })
 
+//took the images form out
+// < div
+// className = "form-item " >
+//     < label
+// htmlFor = 'image' > Image < sup > *
+// </sup></label>
+// <input type='file' name='image' id='image' placeholder='' required value='${productInfo.image}'>
+// </div>
