@@ -9,3 +9,13 @@ employeeCards.forEach(card => {
         location.href = url;
      })
 })
+
+function loadImage(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      var imagePreview = document.getElementById('image-preview');
+      imagePreview.src = reader.result;
+    };
+}
