@@ -25,7 +25,7 @@ updateCustomerButton.forEach(function (btn){
       const customerAddressElement = customerRow.querySelector("td:nth-child(4)");
       const customerAddress = customerAddressElement.textContent;
   
-        const updatecustomerForm = htmlToElement(`<form id="update-customer-details" method="POST">
+        const updatecustomerForm = htmlToElement(`<form id="update-customer-details">
         <div class="modal-header">
             <h3>
             Update customer info
