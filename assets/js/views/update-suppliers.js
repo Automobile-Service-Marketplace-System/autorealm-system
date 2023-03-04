@@ -4,6 +4,8 @@ import Notifier from "../components/Notifier";
 
 const supplierUpdateButtons = document.querySelectorAll(".update-supplier-button")
 //console.log(supplierUpdateButtons)
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
 
 supplierUpdateButtons.forEach(function (btn){
 
@@ -34,7 +36,7 @@ supplierUpdateButtons.forEach(function (btn){
 
         const updateSupplierForm = htmlToElement(
             `
-            <form class="stock-manager-update-supplier-form" id="stock-manager-update-supplier-form">
+            <form class="stock-manager-update-supplier-form" id="stock-manager-update-supplier-form" method="post">
                      <div class="top-part-form">  
                             <h1 class="">Update Supplier Details</h1>
                             <button class="modal-close-btn">
@@ -107,11 +109,57 @@ supplierUpdateButtons.forEach(function (btn){
             })
 
             UpdateSupConfModal.querySelector("#update-supplier-confirm-btn").addEventListener('click', () => {
-                const submitBtn = UpdateSupConfModal?.querySelector("#update-supplier-final-btn");
+                const submitBtn = updateSupplierForm?.querySelector("#update-supplier-final-btn");
                 //console.log(submitBtn)
                 submitBtn?.click();
-                console.log("Final Button oky")
+                //console.log("Final Button oky")
             })
+        })
+
+        updateSupplierForm?.addEventListener('submit', async (e) =>{
+            e.preventDefault();
+            //console.log("Inside submit event listener")
+            const formData = new FormData(e.target);
+            try{
+                console.log("Inside try block")
+                const result = await fetch("/stock-manager-dashboard/supplier/update", {
+                    body: formData,
+                    method: 'POST'
+
+                })
+                if(result.status === 400) {
+                    const resultBody = await result.json()
+                    for (const inputName in resultBody.errors) {
+                        const inputWrapper = updateSupplierForm.querySelector(`#${inputName}`).parentElement
+                        inputWrapper.classList.add('form-item--error')
+                        const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                        inputWrapper.appendChild(errorElement)
+                    }
+                }
+                else if (result.status === 201) {
+
+                    // add success message to url search params
+                    window.location.search = new URLSearchParams({
+                        ...params,
+                        success: 'Supplier updated successfully'
+                    }).toString()
+                    location.reload()
+                }
+
+                else if(result.status === 500){
+
+                    const data = await result.text()
+                    console.log(data);
+                }
+            }
+            catch (e) {
+                Notifier.show({
+                    closable: true,
+                    header: 'Error',
+                    type: 'danger',
+                    text: e.message
+                })
+            }
         })
 
 

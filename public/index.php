@@ -131,7 +131,7 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
     $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
-    $app->router->post(path: "/stock-manager-dashboard/suppliers/update", callback: [SuppliersController::class, 'updateSuppliers']);
+    $app->router->post(path: "/stock-manager-dashboard/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
 
 
 
