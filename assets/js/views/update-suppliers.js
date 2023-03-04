@@ -71,6 +71,15 @@ supplierUpdateButtons.forEach(function (btn){
                         </div>
                             <input style="display: none" type="number" value="${supplierInfo.supplierId}" name="supplierId">
                      </div> 
+                     
+                     <div class="update-supplier-actions">
+                
+                            <button class="btn btn--danger" type="reset">Reset</button>
+                            <button class="btn update-supplier-modal-btn" type="button" id="update-supplier-modal-btn">Update</button>
+                            
+                            <button style="display: none" type="submit" id="update-supplier-final-btn"></button>
+            
+                     </div>
             </form>
             `
         )
