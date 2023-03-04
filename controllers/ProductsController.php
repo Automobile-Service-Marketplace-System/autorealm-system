@@ -19,11 +19,18 @@ class ProductsController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $productModel = new Product();
+            $brandModel = new Brand();
+            $categoryModel = new Category();
+            $modelModel = new Model();
             $products = $productModel->getProducts();
 
             if($req->session->get("user_role") === "stock_manager"){
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
-                    "products" => $products], layoutParams: [
+                    "products" => $products,
+                    "brands" => $brandModel->getBrands(),
+                    "categories" => $categoryModel->getCategories(),
+                    "models" => $modelModel->getModels(),
+                ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
                     'employeeId' => $req->session->get("user_id"),
@@ -32,7 +39,12 @@ class ProductsController
 
             if($req->session->get("user_role") === "admin"){
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
-                    "products" => $products], layoutParams: [
+                    "products" => $products,
+                    "brands" => $brandModel->getBrands(),
+
+                    "categories" => $categoryModel->getCategories(),
+                    "models" => $modelModel->getModels(),
+                ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
                     'employeeId' => $req->session->get("user_id"),
@@ -188,6 +200,40 @@ class ProductsController
             ]);
         }
 
+    }
+
+
+    //to update the product
+    public function updateProducts(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $product = new Product($body);
+        $result = $product->updateProduct();
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => $result
+            ]);
+        }
+
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Product updated successfully"
+            ]);
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
 }

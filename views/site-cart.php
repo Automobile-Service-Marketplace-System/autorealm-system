@@ -73,6 +73,9 @@
 
 
 </div>
+<div class="flex items-center justify-end mt-4">
+    <a href="/cart/checkout" class="btn btn--danger">Checkout</a>
+</div>
 
 
 <!---->

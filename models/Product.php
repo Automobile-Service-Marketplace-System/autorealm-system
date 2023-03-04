@@ -33,9 +33,14 @@ class Product
                         p.item_code as ID, 
                         p.name as Name, 
                         c.name as Category,
+                        c.category_id as CategoryID,
                         m.model_name as Model,
+                        m.model_id as ModelID,
                         b.brand_name as Brand,
+                        b.brand_id as BrandID,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.image as Image,
+                        p.description as Description,
                         p.quantity as Quantity
 
                     FROM product p 
@@ -194,6 +199,54 @@ class Product
         }
 
     }
+
+
+    public function updateProduct(): bool|array|string
+    {
+        //check for the errors
+//        $errors = $this->validateAddProducts();
+        $errors = [];
+        if(empty($errors)){
+//            try {
+//                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
+//                $imagesAsJSON = json_encode($imageUrls);
+//            } catch (Exception $e) {
+//                $errors["image"] = $e->getMessage();
+//            }
+            if(empty($errors)){
+                $query = "UPDATE product SET 
+                    name = :name, 
+                    category_id = :category_id, 
+                    product_type = :product_type, 
+                    brand_id = :brand_id, 
+                    model_id = :model_id, 
+                    description = :description, 
+                    price = :price 
+                   
+                    WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":name", $this->body["name"]);
+                $statement->bindValue(":category_id", $this->body["category_id"]);
+                $statement->bindValue(":product_type", $this->body["product_type"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindValue(":price", $this->body["selling_price"] * 100);
+                $statement->bindValue(":item_code", $this->body["item_code"]);
+
+                //$statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            }else{
+                return $errors;
+            }
+        }
+    }
+
 }
 
 

@@ -72,8 +72,12 @@ class Router
 
         if (is_array($callback)) {
             $callback[0] = new $callback[0]();
-        }
+            return $callback($this->request, $this->response);
 
+        } else if (is_callable($callback)) {
+            return $callback($this->request, $this->response);
+        }
         return $callback($this->request, $this->response);
+            
     }
 }

@@ -1,4 +1,4 @@
-/* #cancel-button{
+ #cancel-button{
     margin-top: 1cm;
     background-color: #e53030;
     color: #fff;
@@ -19,12 +19,9 @@
     color: #fff;
     margin-left: 1.5cm;
     float: left;
-} */
+} 
 
-
-.images{
-    max-width: 60%;
-    height: auto;
+.admitting-images{
     display: flex;
     width: 100px;
     gap: 0.5cm;
@@ -60,4 +57,14 @@
     justify-content: center;
     margin-top: 2rem;
     margin-bottom: 0.75cm;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+
+.admitting-images img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
 }

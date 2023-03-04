@@ -28,9 +28,27 @@
         <div class="job-info-card__info">
             <div class="job-info-card__info-date">
                 <div>
-                    <h3>Made on</h3>
+                    <h3>Made On</h3>
                     <p>
                         2023/1/3
+                    </p>
+                </div>
+                <div>
+                    <h3>Inspected By</h3>
+                    <p>
+                        J. Cole
+                    </p>
+                </div>
+                <div>
+                    <h3>Duration</h3>
+                    <p>
+                        2hr 37 minutes
+                    </p>
+                </div>
+                <div>
+                    <h3>Customer</h3>
+                    <p>
+                        P.K Sumanadasa
                     </p>
                 </div>
             </div>
@@ -42,12 +60,56 @@
                 Aston Martin DB11
             </div>
             <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
+                <a href="/jobs/view?id=6&form_created=true">
+                    View
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="job-info-card">
+        <div class="job-info-card__header">
+            <p>Reg No: QL 9904</p>
+            <p class="job-date">Started Date: 2022/12/09</p>
+        </div>
+        <div class="job-info-card__info">
+            <div class="job-info-card__info-date">
+                <div>
+                    <h3>Made On</h3>
+                    <p>
+                        2023/1/3
+                    </p>
+                </div>
+                <div>
+                    <h3>Inspected By</h3>
+                    <p>
+                        J. Cole
+                    </p>
+                </div>
+                <div>
+                    <h3>Duration</h3>
+                    <p>
+                        2hr 37 minutes
+                    </p>
+                </div>
+                <div>
+                    <h3>Customer</h3>
+                    <p>
+                        P.K Sumanadasa
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="job-info-card__footer">
+            <div><strong>
+                    For:
+                </strong>
+                Aston Martin DB11
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="/jobs/view?id=6&form_created=true">
+                    View
+                </a>
             </div>
         </div>
     </div>
@@ -64,35 +126,22 @@
                         2023/1/3
                     </p>
                 </div>
-            </div>
-        </div>
-        <div class="job-info-card__footer">
-            <div><strong>
-                    For:
-                </strong>
-                Aston Martin DB11
-            </div>
-            <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="job-info-card">
-        <div class="job-info-card__header">
-            <p>Reg No: QL 9904</p>
-            <p class="job-date">Started Date: 2022/12/09</p>
-        </div>
-        <div class="job-info-card__info">
-            <div class="job-info-card__info-date">
                 <div>
-                    <h3>Made On</h3>
+                    <h3>Inspected By</h3>
                     <p>
-                        2023/1/3
+                        J. Cole
+                    </p>
+                </div>
+                <div>
+                    <h3>Duration</h3>
+                    <p>
+                        2hr 37 minutes
+                    </p>
+                </div>
+                <div>
+                    <h3>Customer</h3>
+                    <p>
+                        P.K Sumanadasa
                     </p>
                 </div>
             </div>
@@ -104,12 +153,9 @@
                 Aston Martin DB11
             </div>
             <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
+                <a href="/jobs/view?id=6&form_created=true">
+                    View
+                </a>
             </div>
         </div>
     </div>

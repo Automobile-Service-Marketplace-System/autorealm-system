@@ -1,4 +1,4 @@
-    .role-input{
+  .role-input{
         display: flex;
         justify-content: space-between;
         margin-bottom: .25rem;  
@@ -37,11 +37,6 @@
         border-color: black;
     }
 
-    .line{
-        display: flex;
-        gap: .7cm;
-    }
-
     .form-input-small{
         display: flex;
         flex-direction: column; 
@@ -49,42 +44,35 @@
         margin-top: .5rem; 
     }
 
-    .btn1{
-        margin-top: 1cm;
-        background-color: #E53030;
-        color: #FFFFFF;
-        border-color: #E53030;
-        width: 139px;
-        height:50px;
-        border-radius:8px;
-        margin-bottom: 1cm;
-        margin-left: 1cm;
+    .Two-small-input-in-one-line{
+        display: flex;
+        gap: .7cm;
     }
 
-    .btn2{
-        margin-top: 1cm;
-        width: 250px;
-        height: 50px;
-        border-radius: 0%;
-        background: #6100FF;
-        border-color: #6100FF;
-        border-radius: 8px;
-        color: #FFFFFF;
-        float: right;
-        margin-left: 13cm;
-        float: right;
-        margin-bottom: 1cm;
-    }
-
-    .part{
+    .page-format{
         display: flex;
         justify-content: space-between;
     }
 
-    .part1{
+    .body-part{
         margin-right: 2rem;
     }
+    
+    #image-preview{
+        width: 600px;
+        height: 560px;
+    }
 
+    #rst{
+        margin-top: 3rem;
+        width: 250px;;
+    }
+
+    #sm{
+        margin-top: 3rem;
+        width: 250px;
+    }
+    
     .pic{
         width: auto;
         height:500px;
@@ -94,4 +82,8 @@
         display: flex;
         /* flex-direction: row; */
         gap:2cm;
+
+    #image-preview-update{
+        width: 600px;
+        height: 480px;
     }

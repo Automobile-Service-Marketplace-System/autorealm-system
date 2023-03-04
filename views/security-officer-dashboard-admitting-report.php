@@ -1,13 +1,14 @@
  <?php
 
 /**
- *  @var array $errors
+ * @var array $errors
  */
 
 use app\components\FormItem;
 use app\components\FormTextareaItem;
 
 ?>
+
 
 <div class="form-input">
     <?php
@@ -155,6 +156,12 @@ use app\components\FormTextareaItem;
             name: "additional_note",
         );
     ?>
+=======
+    FormItem::render(
+        id: "LF",
+        label: "LF",
+        name: "LF"
+    ); ?>
 </div>
 
 <div class="form-input">
@@ -180,11 +187,7 @@ use app\components\FormTextareaItem;
 </div>  
 
 
-<div class="create-admitting-report-btn">
-    <div class="create-button">
-        <button type="submit" class="btn" id="create-btn">Create</button>
-    </div>
-    <div>
-        <button type="submit" class="btn btn--danger"  id="cansel-btn">Cancel</button>
-    </div>
+<div class="flex items-center justify-between mt-4 mb-8">
+    <button type="submit" id="create-button" class="btn">Create</button>
+    <button type="submit" id="cancel-button" class="btn btn--danger">Cancel</button>
 </div>

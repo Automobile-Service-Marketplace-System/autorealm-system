@@ -29,7 +29,7 @@
         </a>
     </li>
     <li>
-        <a href="/job-reports?vehicle=QL 9904">
+        <a href="/all-jobs?vehicle=QL 9904">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View previous jobs for this vehicle
         </a>

@@ -145,13 +145,22 @@ class JobsController
 
     public function getListOfJobsPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "foreman" || $req->session->get("user_role") === "admin")) {
+        $userRole = $req->session->get("user_role");
+        if (($userRole === "foreman" || $userRole === "admin" || $userRole === "technician") && $req->session->get("is_authenticated")) {
 
             if ($req->session->get("user_role") === "foreman") {
                 return $res->render(view: "foreman-dashboard-all-jobs", layout: "foreman-dashboard", layoutParams: [
                     'title' => 'All Jobs',
                     'pageMainHeading' => 'All Jobs',
                     'foremanId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            if ($req->session->get("user_role") === "technician") {
+                return $res->render(view: "foreman-dashboard-all-jobs", layout: "technician-dashboard", layoutParams: [
+                    'title' => 'All Jobs',
+                    'pageMainHeading' => 'All Jobs',
+                    'technicianId' => $req->session->get("user_id"),
                 ]);
             }
 
@@ -163,6 +172,18 @@ class JobsController
                 ]);
             }
 
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function getAssignedJobOverviewPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
+            return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+                'title' => 'Current Job',
+                'pageMainHeading' => "You are working on, ",
+                'technicianId' => $req->session->get("user_id"),
+            ]);
         }
         return $res->redirect(path: "/login");
     }

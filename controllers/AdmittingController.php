@@ -9,7 +9,7 @@ class AdmittingController{
     public function getCreateAdmittingReportPage(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
             return $res->render(view: "security-officer-dashboard-admitting-report", layout:"security-officer-dashboard",layoutParams:[
-                "title"=>"getAdmittingReports",
+                "title"=>"Create admitting report",
                 "pageMainHeading"=>"Create Admitting Report",
                 "securityOfficerId"=>$req->session->get("user_id"),
             ]);
@@ -20,8 +20,20 @@ class AdmittingController{
     public function getAdmittingReportsDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
             return $res->render(view: "security-officer-dashboard-view-admitting-reports", layout:"security-officer-dashboard",layoutParams:[
-                "title"=>"viewAdmittingReports",
+                "title"=>"Admitting Reports",
                 "pageMainHeading"=>"Admitting Reports",
+                "securityOfficerId"=>$req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path:"/login");
+    }
+
+
+    public function viewAdmittingReportDetails(Request $req, Response $res):string{
+        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
+            return $res->render(view: "security-officer-dashboard-view-report", layout:"security-officer-dashboard",layoutParams:[
+                "title"=>"Admitting Report #23",
+                "pageMainHeading"=>"Admitting Report #23",
                 "securityOfficerId"=>$req->session->get("user_id"),
             ]);
         }
