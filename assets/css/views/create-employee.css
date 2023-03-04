@@ -1,5 +1,4 @@
-
-   .role-input{
+  .role-input{
         display: flex;
         justify-content: space-between;
         margin-bottom: .25rem;  
@@ -73,6 +72,16 @@
         margin-top: 3rem;
         width: 250px;
     }
+    
+    .pic{
+        width: auto;
+        height:500px;
+    }
+
+    .create-reset-buttons{
+        display: flex;
+        /* flex-direction: row; */
+        gap:2cm;
 
     #image-preview-update{
         width: 600px;
