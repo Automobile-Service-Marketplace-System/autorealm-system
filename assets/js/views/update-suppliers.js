@@ -69,7 +69,7 @@ supplierUpdateButtons.forEach(function (btn){
                             <label for='sales_manager'>Sales Manager Name.<sup>*</sup></label>
                             <input type='text' name='sales_manager' id='sales_manager' placeholder='' required  value='${supplierInfo.salesManager}'   >
                         </div>
-                            <input style="display: none" type="number" value="${supplierInfo.supplierId}" name="supplierId">
+                            <input style="display: none" type="number" value="${supplierInfo.supplierId}" name="supplier_id">
                      </div> 
                      
                      <div class="update-supplier-actions">
@@ -89,6 +89,31 @@ supplierUpdateButtons.forEach(function (btn){
             content: updateSupplierForm ,
             closable: true,
         })
+
+        //Confirmation modal
+        updateSupplierForm?.querySelector("#update-supplier-modal-btn")?.addEventListener("click",(e)=>{
+            const UpdateSupConfModal = htmlToElement(`<div>
+                                       <h3>Are you sure you want to update this details</h3>
+                                       <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                                            <button class="btn btn--thin modal-close-btn" id="update-supplier-confirm-btn">Confirm</button>                        
+                                       </div>
+                                    </div>`)
+
+            Modal.show({
+                closable: true,
+                content: UpdateSupConfModal,
+                key: "Update Supplier Confirmation",
+            })
+
+            UpdateSupConfModal.querySelector("#update-supplier-confirm-btn").addEventListener('click', () => {
+                const submitBtn = UpdateSupConfModal?.querySelector("#update-supplier-final-btn");
+                //console.log(submitBtn)
+                submitBtn?.click();
+                console.log("Final Button oky")
+            })
+        })
+
 
     })
 })

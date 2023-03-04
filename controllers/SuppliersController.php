@@ -38,8 +38,18 @@ class SuppliersController
                 'employeeId' => $req->session->get('user_id')
             ]);
             }
+
+
         }
 
         return $res->redirect(path: "/login");
+    }
+
+    //update supplier details
+    public function updateSuppliers(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $supplier = new Supplier($body);
+        $result = $supplier->updateSupplier();
     }
 }
