@@ -37,7 +37,7 @@ productUpdateButtons.forEach(function (btn) {
             price
         }
 
-        // console.log(productInfo)
+        console.log(productInfo)
 
 
         const  form = document.createElement("form")
@@ -151,8 +151,8 @@ productUpdateButtons.forEach(function (btn) {
                           
                           <div class="update-product-actions">
                 
-                            <button class="btn btn--danger" type="reset">Reset</button><!--                <button class="btn" id="open-another">Open another modal</button>-->
-                            <button class="btn update-product-modal-btn" type="button" id="update-product-modal-btn">Submit</button>
+                            <button class="btn btn--danger" type="reset">Reset</button>
+                            <button class="btn update-product-modal-btn" type="button" id="update-product-modal-btn">Update</button>
                             
                             <button style="display: none" type="submit" id="update-product-final-btn"></button>
             
