@@ -37,7 +37,7 @@ productUpdateButtons.forEach(function (btn) {
             price
         }
 
-        // console.log(productInfo)
+        console.log(productInfo)
 
 
         const  form = document.createElement("form")

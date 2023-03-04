@@ -33,7 +33,8 @@ class Supplier
                 s.name as Name, 
                 s.address as Address, 
                 s.sales_manager as 'Sales Manager', 
-                s.email as Email,
+                s.email as Email,       
+                s.company_reg_no as 'Registration No', 
                 s4.`Last Purchase Date` as 'Last Purchase Date',
                 s4.amount as 'Last Supply Amount'
                 
