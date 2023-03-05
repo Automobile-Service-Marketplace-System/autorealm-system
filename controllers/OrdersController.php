@@ -41,9 +41,10 @@ class OrdersController
             $query = $req->query();
             $page = $query["page"] ?? 1;
             $limit = $query["limit"] ?? 4;
+            $status = $query["status"] ?? "Not Prepared";
 
             $orderModel = new Order();
-            $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int) $page, limit: (int) $limit);
+            $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int) $page, limit: (int) $limit, status: $status);
 
             return $res->render(
                 view: "customer-dashboard-orders",
@@ -52,7 +53,8 @@ class OrdersController
                     'orders' => $result['orders'] ?? [],
                     'total' => $result['total'] ?? 0,
                     'page' => $page,
-                    'limit' => $limit
+                    'limit' => $limit,
+                    'status' => $status,
                 ],
                 layoutParams: [
                     'title' => 'My Orders',

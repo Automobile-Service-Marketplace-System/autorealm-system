@@ -7,7 +7,7 @@ class CustomerOrderCard
     public static function render(array $order): void
     {
         $orderId = $order['Order ID'];
-        $status = $order['Status'] === "Paid" ? "Due" : $order['Status'];
+        $status = $order['Status'] === "Not Prepared" ? "Due" : $order['Status'];
         $orderDate = $order['Order Date'];
         $items = $order['Items'];
 
