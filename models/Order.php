@@ -42,15 +42,14 @@ class Order
     }
 
 
-    public function getOrdersForCustomer(int $customerId, int $page, int $limit): array|string
+    public function getOrdersForCustomer(int $customerId, int $page, int $limit, string $status): array|string
     {
         $limitClause = $limit ? "LIMIT $limit" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $limit : "";
-        DevOnly::prettyEcho($limitClause);
-        DevOnly::prettyEcho($pageClause);
+        $whereClause = $status !== "All" ? "AND status = '$status'" : "";
 
 
-        $stmt = $this->pdo->prepare("SELECT * FROM `order` WHERE customer_id = :customer_id ORDER BY created_at DESC $limitClause $pageClause");
+        $stmt = $this->pdo->prepare("SELECT * FROM `order` WHERE customer_id = :customer_id $whereClause ORDER BY created_at DESC $limitClause $pageClause");
         $stmt->bindValue(":customer_id", $customerId);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -133,7 +132,7 @@ class Order
                     VALUE 
                      (
                         :customer_id,
-                        'Paid'
+                        'Not Prepared'
                      )"
             );
             $stmt->bindValue(":customer_id", $customerId);

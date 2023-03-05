@@ -4,6 +4,7 @@
  * @var int $total
  * @var int $page
  * @var int $limit
+ * @var string $status
  */
 
 use app\components\CustomerOrderCard;
@@ -13,20 +14,26 @@ use app\components\CustomerOrderCard;
 
 <div class="product-filters justify-between">
     <div class="flex gap-4 items-center">
-        <div class="product-search">
-            <input type="text" placeholder="Search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-        <select name="type" id="product-type" class="product-filter--select">
-            <option value="Tyres">Due Orders</option>
-            <option value="Tyres">Shipped Orders</option>
-            <option value="Tyres">Completed Orders</option>
-            <option value="Tyres">All Orders</option>
+        <select name="type" id="customer-order-status" class="product-filter--select">
+            <?php
+            $options = [
+                "Not Prepared" => "Due Orders",
+                "Prepared" => "Shipped Orders",
+                "Completed" => "Completed Orders",
+                "All" => "All Orders"
+            ];
+
+            foreach ($options as $value => $label) {
+                $selected = $value === $status ? "selected" : "";
+                echo "<option value='$value' $selected>$label</option>";
+            }
+            ?>
+<!--            <option value="Not Prepared">Due Orders</option>-->
+<!--            <option value="Prepared">Shipped Orders</option>-->
+<!--            <option value="Completed">Completed Orders</option>-->
+<!--            <option value="All">All Orders</option>-->
         </select>
     </div>
-    <select name="type" id="product-type" class="product-filter--select">
-        <option value="Tyres">Sort By</option>
-    </select>
 </div>
 
 <div class="orders-container">
