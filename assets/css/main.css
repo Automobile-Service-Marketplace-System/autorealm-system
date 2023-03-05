@@ -70,7 +70,10 @@
 @import "views/cart-checkout.css";
 @import "views/all-jobs.css";
 @import "views/assigned-job.css";
+@import "views/update-service.css";
 @import "views/update-products.css";
+@import "views/update-supplier.css";
+
 
 body{
   font-family: "Nunito", sans-serif;
