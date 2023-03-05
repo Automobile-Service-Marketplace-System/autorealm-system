@@ -8,6 +8,13 @@
     margin-bottom: 2rem;
     /*background-color: #e53030;*/
 }
+#stock-manager-update-product-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+#stock-manager-update-product-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}
 
 #stock-manager-update-product-form h1 {
     position: absolute;
@@ -38,8 +45,6 @@
 
 }
 .update-product-description textarea {
-    width: 100%;
-    height: 50%;
     resize: none;
 }
 
@@ -48,4 +53,12 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+}
+
+#stock-manager-update-product-form .update-product-actions {
+    /*margin-top: 30px;*/
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    /*background-color: yellow;*/
 }

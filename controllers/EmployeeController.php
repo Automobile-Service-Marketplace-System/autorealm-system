@@ -82,8 +82,12 @@ class EmployeeController
 
     public function editEmployee(Request $req, Response $res):string{
         $body = $req->body();
-        $employee = new Employee($body);
-        $result = $employee->update();
+        $query=$req->query();
+        $employeeModel=new Employee($body);
+        $result=$employeeModel->update((int)$query["employee_id"]);
+        // $body = $req->body();
+        // $employee = new Employee($body);
+        // $result = $employee->update();
 
         if (is_array($result)) {
             return $res->render(view: "admin-dashboard-edit-employee", layout: "admin-dashboard", pageParams: [

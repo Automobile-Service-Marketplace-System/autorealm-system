@@ -3,7 +3,11 @@
 namespace app\models;
 
 use app\core\Database;
+use app\core\Request;
+use app\core\Response;
 use PDO;
+use PDOException;
+use Exception;
 
 class Supplier
 {
@@ -33,7 +37,8 @@ class Supplier
                 s.name as Name, 
                 s.address as Address, 
                 s.sales_manager as 'Sales Manager', 
-                s.email as Email,
+                s.email as Email,       
+                s.company_reg_no as 'Registration No', 
                 s4.`Last Purchase Date` as 'Last Purchase Date',
                 s4.amount as 'Last Supply Amount'
                 
@@ -148,6 +153,41 @@ class Supplier
         }
 
         return $errors;
+    }
+
+    public function updateSupplier(): bool|array|string
+    {
+        //check for the errors
+        //$errors = $this->validateAddSupplierForm();
+        $errors = [];
+
+        if(empty($errors)){
+            $query = "UPDATE supplier SET
+                name = :name,
+                email = :email,
+                company_reg_no = :company_reg_no,
+                address = :address,
+                sales_manager = :sales_manager
+                
+                WHERE supplier_id = :supplier_id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name", $this->body["name"]);
+            $statement->bindValue(":email", $this->body["email"]);
+            $statement->bindValue(":company_reg_no", $this->body["company_reg_no"]);
+            $statement->bindValue(":address", $this->body["address"]);
+            $statement->bindValue(":sales_manager", $this->body["sales_manager"]);
+            $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+
+            try {
+                $statement->execute();
+                return true;
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+        }else{
+            return $errors;
+        }
     }
 
 }
