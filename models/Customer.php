@@ -35,6 +35,14 @@ class Customer
         return $stmt->fetchObject();
     }
 
+    public function getCustomerByPaymentId(string $paymentId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM customer WHERE payment_id = :payment_id");
+        $stmt->execute([
+            ":payment_id" => $paymentId
+        ]);
+        return $stmt->fetchObject();
+    }
+
     public function tempRegister(): bool|array|string
     {
         $errors = $this->validateTempRegisterBody();
@@ -66,7 +74,7 @@ class Customer
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
 
-//                //cryptographically secure 6-digits OTP code
+                //                //cryptographically secure 6-digits OTP code
                 try {
                     $email_otp = (string) random_int(100000, 999999);
                     $statement->bindValue(":email_verification_code", $email_otp);
@@ -83,7 +91,7 @@ class Customer
 
                 try {
                     $statement->execute();
-//                    try {
+                    //                    try {
 //                        EmailClient::sendEmail(
 //                            receiverEmail: $this->body["email"],
 //                            receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
@@ -237,7 +245,7 @@ class Customer
     {
         $errors = [];
 
-        if (trim($this->body['f_name']) === '') {  //remove whitespaces by trim(string)
+        if (trim($this->body['f_name']) === '') { //remove whitespaces by trim(string)
             $errors['f_name'] = 'First name must not be empty.';
         } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
             $errors['f_name'] = 'First name must contain only letters.';
@@ -297,7 +305,7 @@ class Customer
     {
         $errors = [];
 
-        if (trim($this->body['f_name']) === '') {  //remove whitespaces by trim(string)
+        if (trim($this->body['f_name']) === '') { //remove whitespaces by trim(string)
             $errors['f_name'] = 'First name must not be empty.';
         } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
             $errors['f_name'] = 'First name must contain only letters.';
@@ -441,6 +449,21 @@ class Customer
 
     }
 
+    public function setPaymentId(int $customerId, string $paymentId): string | array
+    {
+        try {
+            $query = "UPDATE customer SET payment_id = :payment_id WHERE customer_id = :customer_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':payment_id', $paymentId);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+        return ['message' => 'Payment ID set successfully'];
+        } catch (Exception $e) {
+            return $e->getMessage();  
+        }
+
+    }
+
     private function validateRegisterBody(): array
     {
         $errors = [];
@@ -456,6 +479,7 @@ class Customer
         }
         return $errors;
     }
+
 
 
 }
