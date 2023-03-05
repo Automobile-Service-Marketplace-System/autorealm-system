@@ -49,12 +49,20 @@ class Request
         }
         return $query;
     }
-
     public function body(): array
     {
         $body = [];
         foreach ($_POST as $key => $value) {
             $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+
+        // also should check for json body
+        if (empty($body)) {
+            try {
+                $body = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                $body = [];
+            }
         }
         return $body;
     }

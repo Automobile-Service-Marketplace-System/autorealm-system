@@ -196,4 +196,67 @@ class ShoppingCart
         }
     }
 
+    public function calculateCartTotalCost(int $customerId): float|int|string
+    {
+        // check if the cart exists
+        try {
+            $query = "SELECT cart_id FROM cart WHERE customer_id = :customer_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['customer_id' => $customerId]);
+            $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($cart)) {
+                return "Cart not found";
+            }
+            // get the amount of items in the cart
+            $query = "SELECT * FROM cart_has_product WHERE cart_id = :cart_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['cart_id' => $cart[0]['cart_id']]);
+            $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($cartItems)) {
+                return "Cart not found";
+            }
+            $totalCost = 0;
+            foreach ($cartItems as $cartItem) {
+                $query = "SELECT * FROM product WHERE item_code = :item_code";
+                $stmt = $this->pdo->prepare($query);
+                $stmt->bindParam(':item_code', $cartItem['item_code'], PDO::PARAM_INT);
+                $stmt->execute();
+                $product = $stmt->fetchObject();
+                if (!is_object($product)) {
+                    return "Product not found";
+                }
+                if ($product->quantity < $cartItem['quantity']) {
+                    return "Not enough items in stock for item: " . $product->name;
+                }
+                $totalCost += $product->price * $cartItem['quantity'];
+            }
+            return $totalCost;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function clearCart(int $customer_id): array|string
+    {
+        // check if the cart exists
+        try {
+            $query = "SELECT cart_id FROM cart WHERE customer_id = :customer_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['customer_id' => $customer_id]);
+            $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($cart)) {
+                return "Cart not found";
+            }
+            // delete all items from the cart
+            $query = "DELETE FROM cart_has_product WHERE cart_id = :cart_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['cart_id' => $cart[0]['cart_id']]);
+            return [
+                "message" => "Cart cleared"
+            ];
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

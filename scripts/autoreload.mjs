@@ -6,7 +6,7 @@ import { readFile } from "fs/promises";
 const server = createNodeServer();
 const io = new SocketIOServer(server, {
   cors: {
-    origin: ["https://autorealm.lk", "https://dashboard.autorealm.lk"],
+    // origin: ["https://autorealm.lk", "https://dashboard.autorealm.lk"],
     methods: ["GET", "POST"],
   },
 });

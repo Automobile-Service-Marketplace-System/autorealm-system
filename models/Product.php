@@ -57,7 +57,7 @@ class Product
 
     public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
     {
-        $whereClause = $count ? "LIMIT $count" : "";
+        $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
         $products = $this->pdo->query(
             "SELECT 
@@ -76,7 +76,7 @@ class Product
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
             
-                    WHERE  p.quantity > 0 ORDER BY p.item_code $whereClause $pageClause"
+                    WHERE  p.quantity > 0 ORDER BY p.item_code $limitClause $pageClause"
 
         )->fetchAll(PDO::FETCH_ASSOC);
 

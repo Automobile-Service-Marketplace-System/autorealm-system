@@ -17,7 +17,7 @@ class OverviewController{
         return $res->redirect(path:"/login");
     }
 
-    public function getofficeStaffOverviewPage(Request $req, Response $res):string{
+    public function getOfficeStaffOverviewPage(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="office_staff_member"){
             return $res->render(view:"office-staff-dashboard-overview", layout:"office-staff-dashboard",layoutParams:[
                 "title"=>"Overview",
