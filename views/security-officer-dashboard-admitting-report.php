@@ -19,98 +19,280 @@ use app\components\FormTextareaItem;
         );
     ?>
 
-    <div class="images">
+    <!-- <div class="images">
         <br><img src="/images/placeholders/vehicle1.png">
         <img src="/images/placeholders/vehicle2.png">
-        <div id="reader">
+        <div id="more-image">
             <i class="fa-solid fa-camera"></i>
             <input type="file" accept="image/*" capture="camera" id="image-input" style="display: none">
         </div>
+    </div> -->
+
+    <br><p><b>Light</b></p>
+    <div class="form-item">
+        <label for="LF">LF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type1" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type1" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type1" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LF" id="LF" name="LF">
     </div>
+    <div class="form-item">
+        <label for="RF">RF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type2" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type2" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type2" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RF" id="RF" name="RF">
+    </div>
+    <div class="form-item">
+        <label for="LR">LR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type3" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type3" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type3" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LR" id="LR" name="LR">
+    </div>
+    <div class="form-item">
+        <label for="RR">RR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type4" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type4" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type4" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RR" id="RR" name="RR">
+    </div>
+ 
 
-    <p><b><br>Light</b></p>
-    <?php 
-        FormItem::render(
-            id: "LF",
-            label: "LF",
-            name: "LF"
-        );
-
-        FormItem::render(
-            id: "RF",
-            label: "RF",
-            name: "RF"
-        );
-        
-        FormItem::render(
-            id: "LF",
-            label: "LF",
-            name: "LF"
-        );
-    ?>
 
     <p><b><br>Seat</b></p>
-    <?php
-        FormItem::render(
-            id: "RF",
-            label: "RF",
-            name: "RF"
-        );
+    <div class="form-item">
+        <label for="LF">LF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type5" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type5" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type5" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LF" id="LF" name="LF">
+    </div>
+    <div class="form-item">
+        <label for="RF">RF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type6" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type6" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type6" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RF" id="RF" name="RF">
+    </div>
+    <div class="form-item">
+        <label for="REAR">REAR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type7" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type7" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type7" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="REAR" id="REAR" name="REAR">
+    </div>
 
-        FormItem::render(
-            id: "REAR",
-            label: "REAR",
-            name: "REAR"
-        );
-    ?>
+
 
     <p><b><br>Carpet</b></p>
-    <?php
-        FormItem::render(
-            id: "LF",
-            label: "LF",
-            name: "LF"
-        );
+    <div class="form-item">
+        <label for="LF">LF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type8" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type8" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type8" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LF" id="LF" name="LF">
+    </div>
+    <div class="form-item">
+        <label for="RF">RF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type9" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type9" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type9" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RF" id="RF" name="RF">
+    </div>
+    <div class="form-item">
+        <label for="REAR">REAR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type10" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type10" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type10" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="REAR" id="REAR" name="REAR">
+    </div>
 
-        FormItem::render(
-            id: "RF",
-            label: "RF",
-            name: "RF"
-        );
 
-        FormItem::render(
-            id: "REAR",
-            label: "REAR",
-            name: "REAR"
-        );
-    ?>
 
     <p><b><br>Rim</b></p>
-    <?php
-        FormItem::render(
-            id: "LF",
-            label: "LF",
-            name: "LF"
-        );
-
-        FormItem::render(
-            id: "RF",
-            label: "RF",
-            name: "RF",
-        );
-
-        FormItem::render(
-            id: "LR",
-            label: "LR",
-            name: "LR",
-        );
-
-        FormItem::render(
-            id: "LR",
-            label: "LR",
-            name: "LR",
-        );
-    ?>
+    <div class="form-item">
+        <label for="LF">LF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type11" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type11" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type11" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LF" id="LF" name="LF">
+    </div>
+    <div class="form-item">
+        <label for="RF">RF</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type12" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type12" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type12" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RF" id="RF" name="RF">
+    </div>
+    <div class="form-item">
+        <label for="LR">LR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type13" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type13" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type13" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="LR" id="LR" name="LR">
+    </div>
+    <div class="form-item">
+        <label for="RR">RR</label>
+        <div class="form-radio">
+            <div class="radio-type1">
+                <input type="radio" id="good" name="type14" value="good">
+                <label for="good">Good</label>
+            </div>
+            <div class="radio-type2">
+                <input type="radio" id="scratched" name="type14" value="scratched">
+                <label for="scratched">Scratched</label>
+            </div>
+            <div class="radio-type3">
+                <input type="radio" id="dameged" name="type14" value="dameged">
+                <label for="dameged">Dameged</label>
+            </div>
+        </div>    
+        <input type="RR" id="RR" name="RR">
+    </div>
 </div>
 
 
@@ -156,12 +338,6 @@ use app\components\FormTextareaItem;
             name: "additional_note",
         );
     ?>
-=======
-    FormItem::render(
-        id: "LF",
-        label: "LF",
-        name: "LF"
-    ); ?>
 </div>
 
 <div class="form-input">

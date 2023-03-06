@@ -82,7 +82,8 @@
         display: flex;
         /* flex-direction: row; */
         gap:2cm;
-
+    }
+    
     #image-preview-update{
         width: 600px;
         height: 480px;
