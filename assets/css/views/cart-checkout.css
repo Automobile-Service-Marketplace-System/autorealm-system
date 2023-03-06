@@ -1,11 +1,12 @@
 .cart-grid {
     display: flex;
+    align-items: flex-start;
     gap: 2rem;
     /*margin: 3rem;*/
 
 }
 
-.cart-elevated-card{
+.cart-elevated-card {
     background-color: white;
     padding: 1rem;
     border-radius: 0.5rem;
@@ -42,14 +43,78 @@
     margin-right: 0.5rem;
 }
 
-.card-checkout-card-title{
+.card-checkout-card-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: all 3s ease-in-out;
 }
 
-.checkout-order-summery{
+.card-checkout-card-title--active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+#submit {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: all 3s ease-in-out;
+}
+
+#submit.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.checkout-order-summery {
     padding: 2rem;
+}
+
+
+#payment-message {
+    color: var(--color-danger);
+    margin-top: 0.5rem;
+}
+
+#payment-spinner {
+    animation: spin 1s linear infinite;
+}
+
+
+#button-text.hidden {
+    display: none;
+}
+
+#payment-spinner.hidden {
+    display: none;
+}
+
+.order-success {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.5);
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    text-align: center;
+}
+
+
+.order-success a {
+    font-size: 1.2rem;
+    color: var(--color-info);
 }
