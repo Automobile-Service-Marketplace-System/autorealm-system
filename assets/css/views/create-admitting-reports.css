@@ -68,3 +68,57 @@
     height: 200px;
     object-fit: cover;
 }
+
+#more-image{
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#more-image svg {
+    font-size: 4rem;
+    color: rgba(var(--black), 0.3);
+}
+
+.form-radio{
+    display: flex;
+    gap: 2rem;
+}
+
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color:white;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid blue;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: blue;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid blue;
+}
