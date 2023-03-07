@@ -3,11 +3,8 @@
 use app\components\Table;
 use app\models\Brand;
 
-$columns = [];
+$columns = ["VIN", "Reg no", "Engine no", "Manufactured Year", "Engine Capacity", "Vehicle Type", "Fuel Type", "Transmission Type", "Model Name", "Brand Name", "Customer ID"];
 
-foreach ($vehicles[0] as $key => $value) {
-    $columns[] = $key;
-}
 $columns[] = "Actions";
 
 $items = [];
@@ -25,7 +22,7 @@ foreach ($vehicles as $vehicle) {
         "Transmission Type" => $vehicle["Transmission Type"],
         "Model Name" => $vehicle["Model Name"],
         "Brand Name" => $vehicle["Brand Name"],
-        "ID" => $vehicle["Customer ID"],
+        "Customer ID" => $vehicle["Customer ID"],
 
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                             <button class='btn btn--rounded btn--warning update-vehicle-btn' data-vin='{$vehicle["VIN"]}' data-modelId='{$vehicle["Model ID"]}' data-brandId='{$vehicle["Brand ID"]}' data-customerId='{$vehicle["Customer ID"]}' >
