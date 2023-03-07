@@ -1,6 +1,7 @@
 <?php
 
 use app\components\Table;
+use app\models\Brand;
 
 $columns = [];
 
@@ -27,7 +28,7 @@ foreach ($vehicles as $vehicle) {
         "ID" => $vehicle["Customer ID"],
 
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning update-vehicle-btn' data-vin='{$vehicle["VIN"]}'>
+                            <button class='btn btn--rounded btn--warning update-vehicle-btn' data-vin='{$vehicle["VIN"]}' data-modelId='{$vehicle["Model ID"]}' data-brandId='{$vehicle["Brand ID"]}' data-customerId='{$vehicle["Customer ID"]}' >
                                 <i class='fa-solid fa-pencil'></i>
                             </button>
                         </div>"
@@ -35,3 +36,26 @@ foreach ($vehicles as $vehicle) {
 }
 
 Table::render(items: $items, columns: $columns, keyColumns: ["VIN", "Actions"]);
+?>
+
+<script>
+    <?php
+    try {
+        $modelsString = json_encode($models, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        $modelsString = "[]";
+    }
+
+    try {
+        $brandsString = json_encode($brands, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        $brandsString = "[]";
+    }
+    ?>
+
+    const models = <?= $modelsString ?>;
+    const brands = <?= $brandsString ?>;
+
+    localStorage.setItem("models", JSON.stringify(models));
+    localStorage.setItem("brands", JSON.stringify(brands));
+</script>
