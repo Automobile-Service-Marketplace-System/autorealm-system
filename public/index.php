@@ -110,6 +110,7 @@ if ($isInternal) {
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
+    $app->router->post(path: "/employees/view", callback: [EmployeeController::class, 'editEmployee']);
     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     $app->router->get(path: "/admin-dashboard/profile", callback: [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get(path: "/services", callback: [ServicesController::class, 'getServicesPage']); // load the service page
@@ -130,7 +131,7 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
     $app->router->get(path: "/stock-manager-dashboard/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
-
+    $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);

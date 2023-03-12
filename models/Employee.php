@@ -17,7 +17,6 @@ class Employee
     {
         $this->pdo = Database::getInstance()->pdo;
         $this->body = $registerBody;
-    //   var_dump($this->body);
     }
 
     public function getEmployeeById(int $employee_id): bool|object
@@ -334,7 +333,6 @@ class Employee
     public function update(): bool|array
     {
         $errors = $this->validateUpdateFormBody();
-
         if (empty($errors)) {
             try {
                 $imageUrl = FSUploader::upload(innerDir: "employee/profile-photos");
@@ -343,13 +341,13 @@ class Employee
             }
             if (empty($errors)) {
                 $query = "UPDATE employee SET 
-                    NIC = :price, 
-                    f_name = :service_name, 
-                    l_name = :description,
-                    dob = :nic,
-                    address = :f_name,
+                    nic = :nic, 
+                    f_name = :f_name, 
+                    l_name = :l_name,
+                    dob = :dob,
+                    address = :address,
                     email = :email,
-                    job_role = :dob,
+                    job_role = :job_role,
                     contact_no = :contact_no,
                     image = :image
                 WHERE employee_id = :employee_id";
@@ -362,7 +360,7 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
-                $statement->bindValue($employee_id, $this->body["employee_id"]);
+                $statement->bindValue(":employee_id", $this->body["employee_id"]);
                 $statement->bindValue(":image", $imageUrl ?? "");
                 // try {
                 //     $statement->execute();
