@@ -176,3 +176,5 @@ if ($isInternal) {
 }
 // run the application
 $app->run();
+
+?>
