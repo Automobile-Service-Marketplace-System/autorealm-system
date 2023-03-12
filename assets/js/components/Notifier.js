@@ -203,8 +203,18 @@ class NotifierElement {
             Notifier.activeNotifiers[Notifier.activeNotifiers.indexOf(currEL) + 1];
         if (!nextEl) return;
         if (currEL) {
-            const top = currEL.element.getBoundingClientRect().top;
-            nextEl.element.style.setProperty("--desktop-top", `${top}px`);
+            // const top = currEL.element.getBoundingClientRect().top;
+            const height = currEL.element.getBoundingClientRect().height;
+            // get current --desktop-top of nextEl
+            const nextElTop = nextEl.element.style.getPropertyValue(
+                "--desktop-top"
+            ).replace("px", "");
+
+            const newNextElTop = nextElTop - height - 16;
+            console.log(nextElTop)
+
+            nextEl.element.style.setProperty("--desktop-top", `${newNextElTop}px`);
+            console.log(`currEl = ${currEL.id}, currEl.top = ${top}, nextEl = ${nextEl.id}, nextEl.top = ${nextEl.element.style.getPropertyValue("--desktop-top")}`)
             this.goUp(nextEl.id);
         }
     }

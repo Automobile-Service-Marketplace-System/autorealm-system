@@ -7,24 +7,17 @@
  */
 
 
-?>
-
-<h2 class="cart-heading">Your cart</h2>
-
-<div class="cart">
-
-    <?php
-    // get keys of the array
-    //    $keys = array_keys($cartItems[0]);
-    //    $newKeys = [];
-    //    foreach ($keys as $key) {
-    //        $newKeys[] = ucwords(str_replace("_", " ", $key));
-    //    }
-    //    echo "<tr>";
-    //    foreach ($newKeys as $key) {
-    //        echo "<th>" . $key . "</th>";
-    //    }
-    //    echo  "</tr>"
+if (empty($cartItems)) {
+    echo "<div class='cart-error'>
+                    <i class='fas fa-exclamation-triangle'></i> 
+                    <p>
+                    Your cart is empty. <br> <a href='/products'>Add some products</a>
+                    </p>
+               </div>";
+} else {
+    echo "
+    <h2 class='cart-heading'>Your cart</h2>
+    <div class='cart'>";
 
     foreach ($cartItems as $cartItem) {
         try {
@@ -69,33 +62,11 @@
                 </div>
             </div>";
     }
-    ?>
+    echo "</div>";
+    echo "<div class='flex items-center justify-end mt-4'>
+            <a href='/cart/checkout' class='btn btn--danger'>Checkout</a>
+         </div>
+    ";
+}
 
-
-</div>
-<div class="flex items-center justify-end mt-4">
-    <a href="/cart/checkout" class="btn btn--danger">Checkout</a>
-</div>
-
-
-<!---->
-<!--<p class="product-count">-->
-<!--    Showing --><?php //echo $limit; ?><!-- of --><?php //echo $total; ?><!-- products-->
-<!--</p>-->
-
-<!--<div class="products-gallery">-->
-<!--    --><?php
-//    foreach ($products as $product) {
-//        ProductCard::render(product: $product, is_authenticated: $is_authenticated);
-//    }
-//    ?>
-<!--</div>-->
-
-<!--<div class="pagination-container">-->
-<!--    --><?php
-//    foreach (range(1, ceil($total / $limit)) as $i) {
-//        $isActive = $i === (float)$page ? "pagination-item--active" : "";
-//        echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
-//    }
-//    ?>
-<!--</div>-->
+?>

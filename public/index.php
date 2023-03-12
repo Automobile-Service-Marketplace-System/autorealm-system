@@ -19,6 +19,7 @@ use app\controllers\InvoicesController;
 use app\controllers\OrdersController;
 use app\controllers\AdmittingController;
 use app\controllers\ReviewController;
+use app\controllers\PaymentsController;
 
 use Dotenv\Dotenv;
 
@@ -35,16 +36,13 @@ $hSegments = explode(".", $h);
 
 $isInternal = false;
 
-if (count($hSegments) === 4) {
-    $isInternal = true;
-} else if (count($hSegments) === 3 && $hSegments[0] === "dashboard") {
+
+// if first hSegment is dashboard, then it is internal
+if ($hSegments[0] === "dashboard") {
     $isInternal = true;
 }
-//
-//echo "<pre>";
-//var_dump($isInternal);
-//echo "</pre>";
-//exit();
+
+
 // Instantiate the application object
 $app = new Application(dirname(__DIR__));
 
@@ -69,6 +67,17 @@ if (!$isInternal) {
     $app->router->post(path: "/cart/add", callback: [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post(path: "/cart/update", callback: [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post(path: "/cart/delete", callback: [ShoppingCartController::class, 'deleteCartItem']);
+
+
+    //  checkout routes
+    $app->router->get(path: "/cart/checkout", callback: [PaymentsController::class, 'getCheckoutPage']);
+    $app->router->post(path: "/cart/checkout", callback: [PaymentsController::class, 'checkoutProductAndChargeCustomer']);
+    $app->router->get(path: "/cart/checkout/success", callback: [PaymentsController::class, 'getCheckoutSuccessPage']);
+
+
+    // get payment verifications
+    $app->router->post(path: "/payments/verify", callback: [PaymentsController::class, 'verifyPayments']);
+
     $app->router->get(path: "/dashboard/overview", callback: [OverviewController::class, 'getCustomerOverviewPage']);
     $app->router->get(path: "/dashboard/profile", callback: [DashboardController::class, 'getCustomerDashboardProfile']);
     $app->router->get(path: "/dashboard/vehicles", callback: [VehiclesController::class, 'getCustomerVehiclePage']);
@@ -77,7 +86,7 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
     $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
 
-    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
+//    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
 if ($isInternal) {
@@ -111,7 +120,7 @@ if ($isInternal) {
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
     $app->router->post(path: "/employees/view", callback: [EmployeeController::class, 'editEmployee']);
-    $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
+     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     $app->router->get(path: "/admin-dashboard/profile", callback: [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get(path: "/services", callback: [ServicesController::class, 'getServicesPage']); // load the service page
     // $app->router->get(path: "/services/add-services", callback: [ServicesController::class, 'getAddServicesPage']);
@@ -131,7 +140,9 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
     $app->router->get(path: "/stock-manager-dashboard/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
-    $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
+    $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);    $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
+    $app->router->post(path: "/stock-manager-dashboard/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
+
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);
@@ -149,7 +160,7 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/appointments/for-vin", [AppointmentsController::class, 'getCreateAppointmentPage']);
     $app->router->get("/appointments", [AppointmentsController::class, 'getOfficeAppointmentsPage']);
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
-    $app->router->get("/overview", [OverviewController::class, 'getofficeStaffOverviewPage']);
+    $app->router->get("/overview", [OverviewController::class, 'getOfficeStaffOverviewPage']);
     $app->router->get("/invoices/create", [InvoicesController::class, 'getCreateInvoicePage']);
 
 

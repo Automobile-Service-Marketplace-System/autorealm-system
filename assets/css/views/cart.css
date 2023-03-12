@@ -107,3 +107,35 @@
 #cart-link:hover {
     transform: translateY(-2px);
 }
+
+.cart-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.cart-error p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.cart-error svg {
+    font-size: 4rem;
+    color: var(--color-warning);
+}
+
+.cart-error a {
+    font-size: 1.2rem;
+    text-decoration: underline;
+    color: var(--color-info);
+}

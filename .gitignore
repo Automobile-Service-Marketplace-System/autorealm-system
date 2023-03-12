@@ -4,6 +4,7 @@
 .vscode
 .metals
 node_modules
+logs
 /public/js/index.js
 /public/js/index.js.map
 /public/css/style.css

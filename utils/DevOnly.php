@@ -26,4 +26,13 @@ class DevOnly
         }
 
     }
+
+    public static function prettyEcho(mixed $data): void {
+        $mode = $_ENV['MODE'];
+        if ($mode === "development") {
+            echo "<pre>";
+            var_dump($data);
+            echo "</pre>";
+        }
+    }
 }
