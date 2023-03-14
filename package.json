@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^1.47.0",
+    "@stripe/stripe-js": "^1.49.0",
     "html5-qrcode": "^2.3.7",
     "qr-scanner": "^1.4.2"
   },
