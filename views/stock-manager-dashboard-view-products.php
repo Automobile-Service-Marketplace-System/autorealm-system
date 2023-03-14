@@ -59,8 +59,7 @@ foreach ($products as $product) {
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
-
-<script>
+ <script>
     <?php
     try {
         $categoriesString = json_encode($categories, JSON_THROW_ON_ERROR);
