@@ -58,6 +58,7 @@ if (!$isInternal) {
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post(path: "/register", callback: [AuthenticationController::class, 'registerCustomer']);
+    $app->router->get(path: "/register/verify", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
     $app->router->get(path: "/verify-email", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
     $app->router->get(path: "/contact-verification", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getCustomerLoginForm']);

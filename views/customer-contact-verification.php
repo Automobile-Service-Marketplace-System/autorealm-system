@@ -1,6 +1,3 @@
-<!--<h1 class="verification__heading">To complete registration, please verify your Email and the contact number</h1>-->
-
-
 <div class="verification__block">
     <div class="verification__block-indicators">
         <p class="step-indicator">

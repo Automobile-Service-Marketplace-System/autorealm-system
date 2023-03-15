@@ -35,7 +35,8 @@ class Customer
         return $stmt->fetchObject();
     }
 
-    public function getCustomerByPaymentId(string $paymentId) {
+    public function getCustomerByPaymentId(string $paymentId)
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM customer WHERE payment_id = :payment_id");
         $stmt->execute([
             ":payment_id" => $paymentId
@@ -43,9 +44,9 @@ class Customer
         return $stmt->fetchObject();
     }
 
-    public function tempRegister(): bool|array|string
+    public function register(): bool|array|string
     {
-        $errors = $this->validateTempRegisterBody();
+        $errors = $this->validateRegisterBody();
 
         if (empty($errors)) {
             try {
@@ -54,82 +55,10 @@ class Customer
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
-                //for customer table
-                $query = "INSERT INTO temp_customer 
-                    (
-                        f_name, l_name, contact_no, address, email, password, image, email_verification_code, mobile_verification_code
-                    ) 
-                    VALUES 
-                    (
-                        :f_name, :l_name, :contact_no, :address, :email, :password, :image, :email_verification_code, :mobile_verification_code
-                    )";
-
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":f_name", $this->body["f_name"]);
-                $statement->bindValue(":l_name", $this->body["l_name"]);
-                $statement->bindValue(":contact_no", $this->body["contact_no"]);
-                $statement->bindValue(":address", $this->body["address"]);
-                $statement->bindValue(":email", $this->body["email"]);
-                $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
-                $statement->bindValue(":password", $hash);
-                $statement->bindValue(":image", $imageUrl ?? "");
-
-                //                //cryptographically secure 6-digits OTP code
-                try {
-                    $email_otp = (string) random_int(100000, 999999);
-                    $statement->bindValue(":email_verification_code", $email_otp);
-                } catch (Exception $e) {
-                    return $e->getMessage();
-                }
+                $this->pdo->beginTransaction();
 
                 try {
-                    $mobile_otp = (string) random_int(100000, 999999);
-                    $statement->bindValue(":mobile_verification_code", $mobile_otp);
-                } catch (Exception $e) {
-                    return $e->getMessage();
-                }
-
-                try {
-                    $statement->execute();
-                    //                    try {
-//                        EmailClient::sendEmail(
-//                            receiverEmail: $this->body["email"],
-//                            receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
-//                            subject: "Email Verification",
-//                            params: [
-//                                "CODE" => $email_verification_code
-//                            ]
-//                        );
-//                    } catch (ApiException $e) {
-//                        error_log($e->getMessage());
-//                        return false;
-//                    }
-                    return true;
-                } catch (PDOException $e) {
-
-                    return $e->getMessage();
-                }
-            } else {
-                return $errors;
-            }
-
-        } else {
-            return $errors;
-        }
-    }
-
-    public function register(): bool|array|string
-    {
-        $errors = $this->validateRegisterBody();
-        if (empty($errors)) {
-            $sql = "SELECT * FROM temp_customer WHERE email_verification_code = :code";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([
-                ":code" => $this->body["code"]
-            ]);
-            $tempCustomer = $stmt->fetchObject();
-            if ($tempCustomer) {
-                $query = "INSERT INTO customer 
+                    $customerCreateQuery = "INSERT INTO customer 
                     (
                         f_name, l_name, contact_no, address, email, password, image
                     ) 
@@ -138,28 +67,45 @@ class Customer
                         :f_name, :l_name, :contact_no, :address, :email, :password, :image
                     )";
 
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":f_name", $tempCustomer->f_name);
-                $statement->bindValue(":l_name", $tempCustomer->l_name);
-                $statement->bindValue(":contact_no", $tempCustomer->contact_no);
-                $statement->bindValue(":address", $tempCustomer->address);
-                $statement->bindValue(":email", $tempCustomer->email);
-                $statement->bindValue(":password", $tempCustomer->password);
-                $statement->bindValue(":image", $tempCustomer->image);
+                    $statement = $this->pdo->prepare($customerCreateQuery);
+                    $statement->bindValue(":f_name", $this->body["f_name"]);
+                    $statement->bindValue(":l_name", $this->body["l_name"]);
+                    $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                    $statement->bindValue(":address", $this->body["address"]);
+                    $statement->bindValue(":email", $this->body["email"]);
+                    $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
+                    $statement->bindValue(":password", $hash);
+                    $statement->bindValue(":image", $imageUrl ?? "");
 
-                try {
                     $statement->execute();
-                    $sql = "DELETE FROM temp_customer WHERE email_verification_code = :code";
-                    $stmt = $this->pdo->prepare($sql);
-                    $stmt->execute([
-                        ":code" => $this->body["code"]
-                    ]);
+
+                    $customerId = $this->pdo->lastInsertId();
+
+                    $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id, mobile_otp, email_otp) VALUE (:customer_id, :mobile_otp, :email_otp)";
+                    $emailOtp = (string)random_int(100000, 999999);
+                    $mobileOtp = (string)random_int(100000, 999999);
+                    $statement = $this->pdo->prepare($customerVerificationCodesQuery);
+                    $statement->bindValue(":customer_id", $customerId);
+                    $statement->bindValue(":mobile_otp", $mobileOtp);
+                    $statement->bindValue(":email_otp", $emailOtp);
+
+                    $statement->execute();
+                    EmailClient::sendEmail(
+                        receiverEmail: $this->body["email"],
+                        receiverName: $this->body["f_name"] . " " . $this->body["l_name"],
+                        subject: "Email Verification",
+                        params: [
+                            "CODE" => $emailOtp
+                        ]
+                    );
+
+                    $this->pdo->commit();
                     return true;
-                } catch (PDOException $e) {
-                    return false;
+                } catch (Exception $e) {
+                    $this->pdo->rollBack();
+                    return $e->getMessage();
                 }
             } else {
-                $errors["verification_code"] = "Invalid verification code";
                 return $errors;
             }
         } else {
@@ -241,7 +187,62 @@ class Customer
         }
     }
 
-    private function validateTempRegisterBody(): array
+    public function login(): array|object
+    {
+        $errors = [];
+        $customer = null;
+
+        if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Email must be a valid email address';
+        } else {
+            $query = "SELECT * FROM customer WHERE email = :email";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':email', $this->body['email']);
+            $statement->execute();
+            $customer = $statement->fetchObject();
+            if (!$customer) {
+                $errors['email'] = 'Email does not exist';
+            } else if (!password_verify($this->body['password'], $customer->password)) {
+                $errors['password'] = 'Password is incorrect';
+            }
+        }
+        if (empty($errors)) {
+            return $customer;
+        }
+        return $errors;
+    }
+
+    public function getCustomers(): array
+    {
+
+        return $this->pdo->query("
+            SELECT 
+                customer_id as ID,
+                CONCAT(f_name, ' ', l_name) as 'Full Name',
+                contact_no as 'Contact No',
+                address as Address,
+                email as Email
+            FROM customer")->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    public function setPaymentId(int $customerId, string $paymentId): string|array
+    {
+        try {
+            $query = "UPDATE customer SET payment_id = :payment_id WHERE customer_id = :customer_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':payment_id', $paymentId);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+            return ['message' => 'Payment ID set successfully'];
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+//    validation methods
+    private function validateRegisterBody(): array
     {
         $errors = [];
 
@@ -409,77 +410,5 @@ class Customer
 
         return $errors;
     }
-
-    public function login(): array|object
-    {
-        $errors = [];
-        $customer = null;
-
-        if (!filter_var($this->body['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = 'Email must be a valid email address';
-        } else {
-            $query = "SELECT * FROM customer WHERE email = :email";
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':email', $this->body['email']);
-            $statement->execute();
-            $customer = $statement->fetchObject();
-            if (!$customer) {
-                $errors['email'] = 'Email does not exist';
-            } else if (!password_verify($this->body['password'], $customer->password)) {
-                $errors['password'] = 'Password is incorrect';
-            }
-        }
-        if (empty($errors)) {
-            return $customer;
-        }
-        return $errors;
-    }
-
-    public function getCustomers(): array
-    {
-
-        return $this->pdo->query("
-            SELECT 
-                customer_id as ID,
-                CONCAT(f_name, ' ', l_name) as 'Full Name',
-                contact_no as 'Contact No',
-                address as Address,
-                email as Email
-            FROM customer")->fetchAll(PDO::FETCH_ASSOC);
-
-    }
-
-    public function setPaymentId(int $customerId, string $paymentId): string | array
-    {
-        try {
-            $query = "UPDATE customer SET payment_id = :payment_id WHERE customer_id = :customer_id";
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':payment_id', $paymentId);
-            $statement->bindValue(':customer_id', $customerId);
-            $statement->execute();
-        return ['message' => 'Payment ID set successfully'];
-        } catch (Exception $e) {
-            return $e->getMessage();  
-        }
-
-    }
-
-    private function validateRegisterBody(): array
-    {
-        $errors = [];
-
-        $verificationCode = $this->body['code'];
-        $sql = "SELECT * FROM temp_customer WHERE email_verification_code = :code";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':code', $verificationCode);
-        $statement->execute();
-        $tempCustomer = $statement->fetchObject();
-        if (!$tempCustomer) {
-            $errors['verification_code'] = 'Invalid verification code';
-        }
-        return $errors;
-    }
-
-
 
 }
