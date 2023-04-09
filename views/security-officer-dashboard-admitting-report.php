@@ -33,12 +33,12 @@ use app\components\FormTextareaItem;
         <label for="LF">LF</label>
         <div class="form-radio">
             <div class="radio-type1">
-                <input type="radio" id="good" name="type1" value="good">
-                <label for="good">Good</label>
+                <input type="radio" id="light_good" name="type1" value="light_good">
+                <label for="light_good">Good</label>
             </div>
             <div class="radio-type2">
-                <input type="radio" id="scratched" name="type1" value="scratched">
-                <label for="scratched">Scratched</label>
+                <input type="radio" id="light_scratched" name="type1" value="light_scratched">
+                <label for="light_scratched">Scratched</label>
             </div>
             <div class="radio-type3">
                 <input type="radio" id="dameged" name="type1" value="dameged">

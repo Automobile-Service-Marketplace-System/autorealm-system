@@ -7,6 +7,7 @@ use app\utils\FSUploader;
 use app\utils\Util;
 use PDO;
 
+
 class Admitting
 {    
     private PDO $pdo;
@@ -24,5 +25,7 @@ class Admitting
 
     public function addAdmittingReport(Request $req, Response $res):string{
         // $errors = $this->validateAdmittingReport();
+        
     }
 }
+?>
