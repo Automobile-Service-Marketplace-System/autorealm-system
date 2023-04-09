@@ -58,9 +58,9 @@ if (!$isInternal) {
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post(path: "/register", callback: [AuthenticationController::class, 'registerCustomer']);
-    $app->router->get(path: "/register/verify", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
-    $app->router->get(path: "/verify-email", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
-    $app->router->get(path: "/contact-verification", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->get(path: "/register/verify", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->post(path: "/register/verify", callback: [AuthenticationController::class, 'verifyCustomerContactDetails']);
+    $app->router->post(path: "/register/verify/retry", callback: [AuthenticationController::class, 'sendVerificationCodesAgain']);
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginCustomer']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutCustomer']);
@@ -143,8 +143,6 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
     $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
     $app->router->post(path: "/stock-manager-dashboard/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
-
-
 
 
 //office staff routes

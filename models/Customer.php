@@ -6,6 +6,7 @@ use app\core\Database;
 use app\core\Session;
 use app\utils\EmailClient;
 use app\utils\FSUploader;
+use app\utils\SmsClient;
 use Exception;
 use PDO;
 use PDOException;
@@ -26,7 +27,7 @@ class Customer
     }
 
 
-    public function getCustomerById(int $customer_id): bool|object
+    public function getCustomerById(int $customer_id): bool|object|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM customer WHERE customer_id = :customer_id");
         $stmt->execute([
@@ -55,8 +56,6 @@ class Customer
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
-                $this->pdo->beginTransaction();
-
                 try {
                     $customerCreateQuery = "INSERT INTO customer 
                     (
@@ -99,18 +98,69 @@ class Customer
                         ]
                     );
 
-                    $this->pdo->commit();
-                    return true;
+                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
+                    return ["customerId" => $customerId];
                 } catch (Exception $e) {
-                    $this->pdo->rollBack();
                     return $e->getMessage();
                 }
             } else {
-                return $errors;
+                return ["errors" => $errors];
             }
         } else {
-            return $errors;
+            return ["errors" => $errors];
         }
+    }
+
+    public function retryVerifying(int $customerId, string $mode): array|bool
+    {
+        // check if customer id is valid
+        // make sure mode is either email or mobile
+        if ($mode !== "email" && $mode !== "mobile") {
+            return [
+                "message" => "Invalid mode"
+            ];
+        }
+
+        try {
+            $customer = $this->getCustomerById($customerId);
+            if ($customer) {
+                $query = "UPDATE customer_verification_codes SET {$mode}_otp = :otp WHERE customer_id = :customer_id";
+                $statement = $this->pdo->prepare($query);
+                $otp = (string)random_int(100000, 999999);
+                $statement->bindValue(":otp", $otp);
+                $statement->bindValue(":customer_id", $customerId);
+                $statement->execute();
+
+                if ($mode === "email") {
+                    EmailClient::sendEmail(
+                        receiverEmail: $customer->email,
+                        receiverName: $customer->f_name . " " . $customer->l_name,
+                        subject: "Email Verification",
+                        params: [
+                            "CODE" => $otp
+                        ]
+                    );
+                } else {
+                    SmsClient::sendSmsToCustomer(customer: [
+                        "contact_no" => $customer->contact_no,
+                        "f_name" => $customer->f_name,
+                        "l_name" => $customer->l_name,
+                        "email" => $customer->email,
+                        "address" => $customer->address,
+                    ], message: "Your verification code is {$otp}");
+                }
+
+                return true;
+            }
+        } catch (Exception $e) {
+            return [
+                "message" => $e->getMessage()
+            ];
+        }
+
+        return [
+            "message" => "Customer not found"
+        ];
     }
 
     public function registerWithVehicle(): bool|array|string
@@ -239,6 +289,57 @@ class Customer
             return $e->getMessage();
         }
 
+    }
+
+
+    public function verifyContactDetails(int $customerId, string $mode, string $otp): bool|array
+    {
+        if ($mode !== "email" && $mode !== "mobile") {
+            return "Invalid mode";
+        }
+        try {
+            $query = "SELECT email FROM customer WHERE customer_id = :customer_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+            $customer = $statement->fetchObject();
+            if (!$customer) {
+                return ["message" => "Customer not found"];
+            }
+
+            $query = "SELECT * FROM customer_verification_codes WHERE customer_id = :customer_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+            $verificationCodes = $statement->fetchObject();
+            if (!$verificationCodes) {
+                return ["message" => "Verification code not found"];
+            }
+
+            if ($mode === "email") {
+                if ($verificationCodes->email_otp !== $otp) {
+                    return ["message" => "Invalid OTP"];
+                }
+                $query = "UPDATE customer SET is_email_verified = 1 WHERE customer_id = :customer_id";
+                $disableOTPQuery = "UPDATE customer_verification_codes SET email_otp = NULL WHERE customer_id = :customer_id";
+            } else {
+                if ($verificationCodes->mobile_otp !== $otp) {
+                    return ["message" => "Invalid OTP"];
+                }
+                $query = "UPDATE customer SET is_phone_verified = 1 WHERE customer_id = :customer_id";
+                $disableOTPQuery = "UPDATE customer_verification_codes SET mobile_otp = NULL WHERE customer_id = :customer_id";
+            }
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+
+            $statement = $this->pdo->prepare($disableOTPQuery);
+            $statement->bindValue(':customer_id', $customerId);
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            return ["message" => $e->getMessage()];
+        }
     }
 
 //    validation methods

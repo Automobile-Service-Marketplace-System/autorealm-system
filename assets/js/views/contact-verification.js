@@ -22,13 +22,32 @@ const verificationStepIndicators = document.querySelectorAll(".step-indicator")
  * @type {HTMLDivElement}
  */
 const verificationProgress = document.querySelector(".verification__progress")
+/**
+ * @type {NodeListOf<HTMLParagraphElement>}
+ */
+const verificationErrorElements = document.querySelectorAll(".verification-error-element")
+
+/**
+ *
+ * @type {HTMLButtonElement}
+ */
+const retryEmailButton = document.querySelector("#retry-email")
+/**
+ * @type {HTMLButtonElement}
+ */
+const retryMobileButton = document.querySelector("#retry-mobile")
+
 // #endregion
 
-emailOtpInputs[0]?.addEventListener('paste', handlePaste)
-mobileOtpInputs[0]?.addEventListener('paste', handlePaste)
+emailOtpInputs[0]?.addEventListener('paste', (e) => {
+    handlePaste(e, 'email')
+})
+mobileOtpInputs[0]?.addEventListener('paste', (e) => {
+    handlePaste(e, 'mobile')
+})
 emailOtpInputs.forEach((emailOtpInput, index) => {
     emailOtpInput.addEventListener('beforeinput', e => {
-        handleBeforeNormalInput(e, index)
+        handleBeforeNormalInput(e, index, 'email')
     })
     emailOtpInput.addEventListener('input', async (e) => {
         await handleNormalInput(e, index, 'email')
@@ -39,11 +58,20 @@ emailOtpInputs.forEach((emailOtpInput, index) => {
 mobileOtpInputs.forEach((mobileOtpInput, index) => {
 
     mobileOtpInput.addEventListener('beforeinput', e => {
-        handleBeforeNormalInput(e, index)
+        handleBeforeNormalInput(e, index, 'mobile')
     })
     mobileOtpInput.addEventListener('input', async (e) => {
         await handleNormalInput(e, index, 'mobile')
     })
+})
+
+
+retryEmailButton?.addEventListener('click', async () => {
+    await retrySendingOTP('email')
+})
+
+retryMobileButton?.addEventListener('click', async () => {
+    await retrySendingOTP('mobile')
 })
 
 /**
@@ -117,9 +145,27 @@ async function handleNormalInput(e, index, mode) {
  *
  * @param {InputEvent} e
  * @param {number} index
+ * @param {"email" | "mobile"} mode
  */
-function handleBeforeNormalInput(e, index) {
+async function handleBeforeNormalInput(e, index, mode) {
     if (e.data === null) return
+    if (e.target.value !== "") {
+        if (index < emailOtpInputs.length - 1) {
+            emailOtpInputs[index + 1].focus()
+            emailOtpInputs[index + 1].value = e.data
+
+            // if last input, also handle complete OTP input
+            if (mode === 'email' && (index + 1) === emailOtpInputs.length - 1) {
+                disableInputs('email')
+                await handleCompleteOTPInput(e, 'email')
+            } else if (mode === 'mobile' && (index + 1) === mobileOtpInputs.length - 1) {
+                disableInputs('mobile')
+                await handleCompleteOTPInput(e, 'mobile')
+            }
+        }
+        e.preventDefault()
+        return
+    }
     const digit = Number(e.data + e.target.value)
     // if valid digit between 0 and 9
     if (!Number.isNaN(digit) && digit >= 0 && digit <= 9) {
@@ -134,44 +180,32 @@ function handleBeforeNormalInput(e, index) {
  * @param {"email" | "mobile"} mode
  */
 async function handleCompleteOTPInput(e, mode) {
-    if (mode === "email") {
-        try {
-            verificationProgress?.classList.add("verification__progress--in-progress")
-            await verifyEmail()
-            Notifier.show({
-                header: "Success",
-                type: "success",
-                closable: true,
-                duration: 5000,
-                text: "Your email has been verified successfully"
-            })
-            completeStep(0)
-        } catch (e) {
-            enableInputs('email');
-            alert(e)
-        } finally {
-            verificationProgress?.classList.remove("verification__progress--in-progress")
+    const isModeEmail = mode === "email"
+    try {
+        verificationProgress?.classList.add("verification__progress--in-progress")
+        const result = await verifyOTP(mode)
+        if (result !== true) {
+            throw new Error(result)
         }
-    } else if (mode === "mobile") {
-        try {
-            verificationProgress?.classList.add("verification__progress--in-progress")
-            await verifyMobile()
-            Notifier.show({
-                header: "Success",
-                type: "success",
-                closable: true,
-                duration: 5000,
-                text: "Your mobile has been verified successfully"
-            })
-            completeStep(1)
-        } catch (e) {
-            enableInputs('mobile');
-            alert(e)
-        } finally {
-            verificationProgress?.classList.remove("verification__progress--in-progress")
-        }
+        Notifier.show({
+            header: "Success",
+            type: "success",
+            closable: true,
+            duration: 5000,
+            text: `Your ${isModeEmail ? "email address" : "mobile number"} has been verified successfully`
+        })
+        completeStep(isModeEmail ? 0 : 1)
+    } catch (e) {
+        /**
+         * @type {string}
+         */
+        const errorMessage = e.message
+        verificationErrorElements[isModeEmail ? 0 : 1].innerText = errorMessage
+        enableInputs(isModeEmail ? 'email' : 'mobile');
+        // alert(e)
+    } finally {
+        verificationProgress?.classList.remove("verification__progress--in-progress")
     }
-
 }
 
 /**
@@ -226,24 +260,88 @@ function completeStep(index) {
         if (index === 0) {
             verificationSteps[1].classList.remove("verification__step--disabled")
             verificationSteps[1].classList.add("verification__step--active")
+        } else {
+            window.location.href = "/dashboard"
         }
     }, 300)
 }
 
-function verifyEmail() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-                resolve("something")
+/**
+ *
+ * @param {"email" | "mobile"} mode
+ * @returns {Promise<string|boolean>}
+ */
+async function verifyOTP(mode) {
+    const isModeEmail = mode === "email"
+    try {
+        const result = await fetch(`/register/verify?mode=${mode}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
             },
-            3000)
-    })
+            body: JSON.stringify({
+                otp: isModeEmail ?
+                    `${emailOtpInputs[0].value}${emailOtpInputs[1].value}${emailOtpInputs[2].value}${emailOtpInputs[3].value}${emailOtpInputs[4].value}${emailOtpInputs[5].value}` :
+                    `${mobileOtpInputs[0].value}${mobileOtpInputs[1].value}${mobileOtpInputs[2].value}${mobileOtpInputs[3].value}${mobileOtpInputs[4].value}${mobileOtpInputs[5].value}`
+            }),
+        })
+        if (result.status === 200) {
+            return true
+        } else if (result.status === 500) {
+            /**
+             * @type {{
+             *    message: string
+             *    }}
+             */
+            const data = await result.json()
+            throw new Error(data.message)
+        }
+    } catch (e) {
+        return e.message
+    }
 }
 
-function verifyMobile() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-                resolve("something")
-            },
-            3000)
-    })
+
+/**
+ * @param {"email"|"mobile"} mode
+ * @returns {Promise<boolean | string>}
+ */
+async function retrySendingOTP(mode) {
+    const isEmailMode = mode === "email"
+    isEmailMode ? retryEmailButton.innerText = "Sending..." : retryMobileButton.innerText = "Sending..."
+    isEmailMode ? retryEmailButton.disabled = true : retryMobileButton.disabled = true
+    isEmailMode ? retryEmailButton.classList.add("btn--loading") : retryMobileButton.classList.add("btn--loading")
+    try {
+        const result = await fetch(`/register/verify/retry?mode=${mode}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        if (result.status === 200) {
+            Notifier.show({
+                header: "Success",
+                type: "success",
+                closable: true,
+                duration: 5000,
+                text: `OTP sent to your ${isEmailMode ? "email address" : "mobile number"}`
+            })
+            return true;
+        } else if (result.status === 500) {
+            /**
+             * @type {{
+             *    message: string
+             *    }}
+             */
+            const data = await result.text()
+            console.log(data)
+            throw new Error(data.message)
+        }
+    } catch (e) {
+        return e.message
+    } finally {
+        isEmailMode ? retryEmailButton.innerText = "Didn't receive or invalid OTP? Try again" : retryMobileButton.innerText = "Didn't receive or invalid OTP? Try again"
+        isEmailMode ? retryEmailButton.disabled = false : retryMobileButton.disabled = false
+        isEmailMode ? retryEmailButton.classList.remove("btn--loading") : retryMobileButton.classList.remove("btn--loading")
+    }
 }

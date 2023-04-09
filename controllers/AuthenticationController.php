@@ -13,6 +13,7 @@ use app\models\Admin;
 use app\models\Employee;
 use app\models\OfficeStaff;
 use app\models\SecurityOfficer;
+use JsonException;
 
 class AuthenticationController
 {
@@ -34,52 +35,87 @@ class AuthenticationController
         $customer = new Customer($body);
         $result = $customer->register();
 
-        if (is_array($result)) {
+        if (is_array($result) && isset($result["errors"])) {
             return $res->render(view: "customer-signup", pageParams: [
                 'errors' => $result,
                 'body' => $body
             ]);
         }
 
-        if ($result === true) {
+        if (is_array($result) && isset($result["customerId"])) {
+            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
+            $req->session->set("user_id", $result["customerId"]);
+            $req->session->set("user_role", "customer");
             return $res->redirect(path: "/register/verify");
         }
 
         return $result;
     }
 
-    public function getEmailVerificationStatusPage(Request $req, Response $res): string
+    public function getCustomerContactVerificationPage(Request $req, Response $res): string
     {
-        $query = $req->query();
-        $customer = new Customer($query);
-        $result = $customer->register();
-        if (is_array($result)) {
-            return $res->render(view: "customer-email-verification", pageParams: [
-                "errors" => $result,
-            ], layoutParams: [
-                "title" => "Email Verification",
-                'errors' => $result,
-                "customer" => null
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            return $res->render(view: 'customer-contact-verification', layoutParams: [
+                'title' => 'Verify your email & phone number',
+                'customerId' => $req->session->get("user_id"),
             ]);
         }
-        if ($result) {
-            return $res->render(view: "customer-email-verification", layoutParams: [
-                "title" => "Email Verification",
-                'success' => 1,
-                "customer" => null
-            ]);
+        return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function sendVerificationCodesAgain(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $query = $req->query();
+            $customerId = $req->session->get("user_id");
+            $customerModel = new Customer();
+            $result = $customerModel->retryVerifying(customerId: $customerId, mode: $query['mode']);
+            if (is_array($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: $result);
+            }
+            if ($result === true) {
+                $res->setStatusCode(code: 200);
+                return $res->json(data: [
+                    'success' => 'Verification codes sent successfully'
+                ]);
+            }
         }
-        return $res->render(view: "500", layout: "error", pageParams: [
-            "error" => "Something went wrong. Please try again later."
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            'message' => 'Unauthorized'
         ]);
     }
 
 
-    public function getCustomerContactVerificationPage(Request $req, Response $res): string
+    /**
+     * @throws JsonException
+     */
+    public function verifyCustomerContactDetails(Request $req, Response $res): string
     {
-        return $res->render(view: 'customer-contact-verification', layoutParams: [
-            'title' => 'Verify your email & phone number',
-            'customer' => null
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $body = $req->body();
+            $query = $req->query();
+            $customerId = $req->session->get("user_id");
+            $customerModel = new Customer();
+            $result = $customerModel->verifyContactDetails(customerId: $customerId, mode: $query['mode'], otp: $body['otp']);
+            if (is_array($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: $result);
+            }
+            if ($result === true) {
+                $res->setStatusCode(code: 200);
+                return $res->json(data: [
+                    'success' => $query["mode"] === 'email' ? 'Email verified successfully' : 'Phone number verified successfully'
+                ]);
+            }
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            'message' => 'Unauthorized'
         ]);
     }
 
