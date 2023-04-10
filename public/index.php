@@ -19,6 +19,7 @@ use app\controllers\InvoicesController;
 use app\controllers\OrdersController;
 use app\controllers\AdmittingController;
 use app\controllers\ReviewController;
+use app\controllers\PaymentsController;
 
 use Dotenv\Dotenv;
 
@@ -35,16 +36,13 @@ $hSegments = explode(".", $h);
 
 $isInternal = false;
 
-if (count($hSegments) === 4) {
-    $isInternal = true;
-} else if (count($hSegments) === 3 && $hSegments[0] === "dashboard") {
+
+// if first hSegment is dashboard, then it is internal
+if ($hSegments[0] === "dashboard") {
     $isInternal = true;
 }
-//
-//echo "<pre>";
-//var_dump($isInternal);
-//echo "</pre>";
-//exit();
+
+
 // Instantiate the application object
 $app = new Application(dirname(__DIR__));
 
@@ -60,8 +58,9 @@ if (!$isInternal) {
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post(path: "/register", callback: [AuthenticationController::class, 'registerCustomer']);
-    $app->router->get(path: "/verify-email", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
-    $app->router->get(path: "/contact-verification", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->get(path: "/register/verify", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->post(path: "/register/verify", callback: [AuthenticationController::class, 'verifyCustomerContactDetails']);
+    $app->router->post(path: "/register/verify/retry", callback: [AuthenticationController::class, 'sendVerificationCodesAgain']);
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginCustomer']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutCustomer']);
@@ -69,6 +68,17 @@ if (!$isInternal) {
     $app->router->post(path: "/cart/add", callback: [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post(path: "/cart/update", callback: [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post(path: "/cart/delete", callback: [ShoppingCartController::class, 'deleteCartItem']);
+
+
+    //  checkout routes
+    $app->router->get(path: "/cart/checkout", callback: [PaymentsController::class, 'getCheckoutPage']);
+    $app->router->post(path: "/cart/checkout", callback: [PaymentsController::class, 'checkoutProductAndChargeCustomer']);
+    $app->router->get(path: "/cart/checkout/success", callback: [PaymentsController::class, 'getCheckoutSuccessPage']);
+
+
+    // get payment verifications
+    $app->router->post(path: "/payments/verify", callback: [PaymentsController::class, 'verifyPayments']);
+
     $app->router->get(path: "/dashboard/overview", callback: [OverviewController::class, 'getCustomerOverviewPage']);
     $app->router->get(path: "/dashboard/profile", callback: [DashboardController::class, 'getCustomerDashboardProfile']);
     $app->router->get(path: "/dashboard/vehicles", callback: [VehiclesController::class, 'getCustomerVehiclePage']);
@@ -77,7 +87,7 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
     $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
 
-    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
+//    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
 if ($isInternal) {
@@ -126,6 +136,7 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/products", callback: [ProductsController::class, 'getProductsPage']);
     $app->router->get(path: "/stock-manager-dashboard/products/add-products", callback: [ProductsController::class, 'getAddProductsPage']);
     $app->router->post(path: "/stock-manager-dashboard/products/add-products", callback: [ProductsController::class, 'AddProducts']);
+    $app->router->post(path: "/stock-manager-dashboard/products/delete", callback: [ProductsController::class, 'deleteProduct']);
     $app->router->get(path: "/stock-manager-dashboard/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/stock-manager-dashboard/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
@@ -133,8 +144,6 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/reviews", callback: [ReviewController::class, 'getReviewsPage']);
     $app->router->post(path: "/stock-manager-dashboard/products/update", callback: [ProductsController::class, 'updateProducts']);
     $app->router->post(path: "/stock-manager-dashboard/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
-
-
 
 
 //office staff routes
@@ -153,7 +162,7 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/appointments/for-vin", [AppointmentsController::class, 'getCreateAppointmentPage']);
     $app->router->get("/appointments", [AppointmentsController::class, 'getOfficeAppointmentsPage']);
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
-    $app->router->get("/overview", [OverviewController::class, 'getofficeStaffOverviewPage']);
+    $app->router->get("/overview", [OverviewController::class, 'getOfficeStaffOverviewPage']);
     $app->router->get("/invoices/create", [InvoicesController::class, 'getCreateInvoicePage']);
 
 

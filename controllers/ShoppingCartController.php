@@ -54,6 +54,7 @@ class ShoppingCartController
             $body = $req->body();
             $cartModel = new ShoppingCart();
             $result = $cartModel->addToCart($req->session->get('user_id'), $body['item_code']);
+
             if (is_string($result)) {
                 $res->setStatusCode(500);
                 return $res->json(['message' => $result]);

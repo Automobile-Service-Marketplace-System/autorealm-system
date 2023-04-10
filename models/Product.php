@@ -57,7 +57,7 @@ class Product
 
     public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
     {
-        $whereClause = $count ? "LIMIT $count" : "";
+        $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
         $products = $this->pdo->query(
             "SELECT 
@@ -76,7 +76,7 @@ class Product
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
             
-                    WHERE  p.quantity > 0 ORDER BY p.item_code $whereClause $pageClause"
+                    WHERE  p.quantity > 0 ORDER BY p.item_code $limitClause $pageClause"
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
@@ -206,14 +206,14 @@ class Product
         //check for the errors
 //        $errors = $this->validateAddProducts();
         $errors = [];
-        if(empty($errors)){
+        if (empty($errors)) {
 //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
 //                $imagesAsJSON = json_encode($imageUrls);
 //            } catch (Exception $e) {
 //                $errors["image"] = $e->getMessage();
 //            }
-            if(empty($errors)){
+            if (empty($errors)) {
                 $query = "UPDATE product SET 
                     name = :name, 
                     category_id = :category_id, 
@@ -241,9 +241,22 @@ class Product
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }
-            }else{
+            } else {
                 return $errors;
             }
+        }
+    }
+
+    public function deleteProductById(int $id): bool | string
+    {
+        try {
+            $query = "UPDATE product SET is_discontinued = TRUE WHERE item_code = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return "Error deleting product";
         }
     }
 

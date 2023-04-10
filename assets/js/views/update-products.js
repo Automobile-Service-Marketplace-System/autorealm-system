@@ -12,12 +12,12 @@ productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
     btn.addEventListener("click", function () {
         //assigning dataset values to variables
-        const productId = Number(btn.dataset.productid)
-        const categoryId = Number(btn.dataset.categoryid)
-        const modelId = Number(btn.dataset.modelid)
-        const brandId = Number(btn.dataset.brandid)
-        const image = btn.dataset.image
-        const description = btn.dataset.description
+        const productId = Number(btn.parentElement.dataset.productid)
+        const categoryId = Number(btn.parentElement.dataset.categoryid)
+        const modelId = Number(btn.parentElement.dataset.modelid)
+        const brandId = Number(btn.parentElement.dataset.brandid)
+        const image = btn.parentElement.dataset.image
+        const description = btn.parentElement.dataset.description
 
         const productRow = btn.parentElement.parentElement.parentElement
 
@@ -98,7 +98,7 @@ productUpdateButtons.forEach(function (btn) {
                     <form class="stock-manager-update-product-form" id="stock-manager-update-product-form" method="post">
                           <div class="top-part-form">  
                             <h1 class="">Update Product Details</h1>
-                            <button class="modal-close-btn">
+                            <button class="modal-close-btn" type="button">
                                 <i class="fas fa-times"></i>
                             </button>
                            </div>

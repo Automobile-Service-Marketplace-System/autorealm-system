@@ -14,39 +14,60 @@ class OrdersController
             $orderModel = new Order();
             $orders = $orderModel->getOrders();
 
-            if($req->session->get("user_role") === "stock_manager"){
+            if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "stock-manager-dashboard",
-                pageParams: ["orders" => $orders],
-                layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
+                    pageParams: ["orders" => $orders],
+                    layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
             }
 
-            if($req->session->get("user_role") === "admin"){
+            if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "admin-dashboard",
-                pageParams: ["orders" => $orders],
-                layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
+                    pageParams: ["orders" => $orders],
+                    layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
             }
 
-    }
+        }
 
         return $res->redirect(path: "/login");
     }
 
 
-    public function getCustomerDashboardOrdersPage(Request $req, Response $res)
+    public function getCustomerDashboardOrdersPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $customerId = $req->session->get("user_id");
 
-            return $res->render(view: "customer-dashboard-orders", layout: "customer-dashboard",
-                layoutParams: ['title' => 'My Orders', 'pageMainHeading' => 'My Orders', 'customerId' => $customerId]);
+
+            $query = $req->query();
+            $page = $query["page"] ?? 1;
+            $limit = $query["limit"] ?? 4;
+            $status = $query["status"] ?? "Not Prepared";
+
+            $orderModel = new Order();
+            $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int) $page, limit: (int) $limit, status: $status);
+
+            return $res->render(
+                view: "customer-dashboard-orders",
+                layout: "customer-dashboard",
+                pageParams: [
+                    'orders' => $result['orders'] ?? [],
+                    'total' => $result['total'] ?? 0,
+                    'page' => $page,
+                    'limit' => $limit,
+                    'status' => $status,
+                ],
+                layoutParams: [
+                    'title' => 'My Orders',
+                    'pageMainHeading' => 'My Orders',
+                    'customerId' => $customerId
+                ]);
         }
         return $res->redirect(path: "/login");
     }
 
-    public function getOrderDetailsPage(Request $req, Response $res)
+    public function getOrderDetailsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
-
 
 
             return $res->render(view: "stock-manager-dashboard-view-orders-details", layout: "stock-manager-dashboard",
@@ -56,4 +77,5 @@ class OrdersController
 
         return $res->redirect(path: "/login");
     }
+
 }

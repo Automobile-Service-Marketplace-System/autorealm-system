@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $vehicles
+ */
+?>
+
 <div class="product-filters justify-between">
     <div class="product-search">
         <input type="text" placeholder="Search">
@@ -9,6 +15,12 @@
 </div>
 
 <div class="vehicles-container">
+    <?php
+    foreach ($vehicles as $vehicle) {
+        $vehicleName = $vehicle['brand_name'] . " " . $vehicle['model_name'];
+        $regNo = $vehicle['reg_no'];
+    }
+    ?>
     <div class="vehicle-card">
         <img src="/images/placeholders/car-placeholder.svg" alt="vehicle-image" class="vehicle-card__image">
         <div class="vehicle-card__info">
