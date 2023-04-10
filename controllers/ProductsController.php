@@ -24,7 +24,7 @@ class ProductsController
             $modelModel = new Model();
             $products = $productModel->getProducts();
 
-            if($req->session->get("user_role") === "stock_manager"){
+            if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
                     "products" => $products,
                     "brands" => $brandModel->getBrands(),
@@ -37,7 +37,7 @@ class ProductsController
                 ]);
             }
 
-            if($req->session->get("user_role") === "admin"){
+            if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
                     "products" => $products,
                     "brands" => $brandModel->getBrands(),
@@ -171,20 +171,21 @@ class ProductsController
 
     }
 
-    public function addSuppliers(Request $req, Response $res): string{
+    public function addSuppliers(Request $req, Response $res): string
+    {
         $query = $req->query();
         $body = $req->body();
         $supplier = new Supplier($body);
         $result = $supplier->addSuppliers();
 
-        if(is_array($result)) {
+        if (is_array($result)) {
             $res->setStatusCode(code: 400);
             return $res->json([
                 "errors" => $result
             ]);
         }
 
-        if(is_string($result)) {
+        if (is_string($result)) {
             $res->setStatusCode(code: 500);
             return $res->json([
                 "errors" => [
@@ -234,6 +235,37 @@ class ProductsController
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function deleteProduct(Request $req, Response $res)
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $body = $req->body();
+            $productId = $body['product_id'];
+            $productModel = new Product();
+            $result = $productModel->deleteProductById(id: $productId);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Product deleted successfully"
+                ]);
+
+            }
+
+        } else {
+            return $res->redirect(path: "/login");
+        }
     }
 
 }

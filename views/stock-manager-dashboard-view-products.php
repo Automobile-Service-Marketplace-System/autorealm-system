@@ -24,22 +24,20 @@ foreach ($products as $product) {
         "Brand" => $product["Brand"],
         "Price" => $product["Price (LKR)"],
         "Quantity" => $quantityElement,
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--info'>
-                                <i class='fa-solid fa-cart-shopping'></i>
-                            </button>
-                            <button class='btn btn--rounded btn--warning update-product-btn' 
-                                
+        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'
                                 data-productId='{$product["ID"]}'              
                                 data-categoryId='{$product["CategoryID"]}' 
                                 data-brandId='{$product["BrandID"]}' 
                                 data-modelId='{$product["ModelID"]}' 
                                 data-image='{$product["Image"]}' 
                                 data-description='{$product["Description"]}'>
-                                
+                            <button class='btn btn--rounded btn--info'>
+                                <i class='fa-solid fa-cart-shopping'></i>
+                            </button>
+                            <button class='btn btn--rounded btn--warning update-product-btn'>
                                         <i class='fa-solid fa-pencil'></i>
                             </button>
-                            <button class='btn btn--rounded btn--danger'>
+                            <button class='btn btn--rounded btn--danger delete-product-btn'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
                       </div>"
