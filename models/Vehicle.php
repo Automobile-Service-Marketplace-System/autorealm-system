@@ -59,6 +59,7 @@ class Vehicle
             FROM vehicle v 
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
+                INNER JOIN ty
                 INNER JOIN customer c ON c.customer_id = v.customer_id
             WHERE
                 v.customer_id = $customer_id"

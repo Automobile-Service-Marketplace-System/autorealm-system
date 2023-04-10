@@ -206,14 +206,14 @@ class Product
         //check for the errors
 //        $errors = $this->validateAddProducts();
         $errors = [];
-        if(empty($errors)){
+        if (empty($errors)) {
 //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
 //                $imagesAsJSON = json_encode($imageUrls);
 //            } catch (Exception $e) {
 //                $errors["image"] = $e->getMessage();
 //            }
-            if(empty($errors)){
+            if (empty($errors)) {
                 $query = "UPDATE product SET 
                     name = :name, 
                     category_id = :category_id, 
@@ -241,9 +241,22 @@ class Product
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }
-            }else{
+            } else {
                 return $errors;
             }
+        }
+    }
+
+    public function deleteProductById(int $id): bool | string
+    {
+        try {
+            $query = "UPDATE product SET is_discontinued = TRUE WHERE item_code = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return "Error deleting product";
         }
     }
 

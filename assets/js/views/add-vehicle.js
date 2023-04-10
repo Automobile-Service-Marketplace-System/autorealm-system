@@ -50,7 +50,7 @@ const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id
       </div><div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
-                <option value='1' selected>Bike</option><option value='2' >Car</option><option value='3' >Jeep</option><option value='4' >Van</option><option value='5' >Lorry</option><option value='6' >Bus</option><option value='7' >Other</option>
+                <option value='Bike' selected>Bike</option><option value='Car' >Car</option><option value='Jeep' >Jeep</option><option value='Van' >Van</option><option value='Lorry' >Lorry</option><option value='Bus' >Bus</option><option value='Other'>Other</option>
             </select>
             
       </div><div class='form-item '>
