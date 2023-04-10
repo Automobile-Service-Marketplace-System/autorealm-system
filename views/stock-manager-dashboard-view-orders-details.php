@@ -39,18 +39,18 @@
             </div>
 
             <div class="order-product-row">
-                <span class="order-product-row--column1">
-                    Mobil Super™ 2000 X1 10W-40
-                </span>
-                <span class="order-product-row--column2">
-                    X1
-                </span>
-                <span class="order-product-row--column3">
-                    Rs. 17,558
-                </span>
-                <span class="order-product-row--column4">
-                    Rs. 17,558
-                </span>
+                    <span class="order-product-row--column1">
+                        Mobil Super™ 2000 X1 10W-40
+                    </span>
+                    <span class="order-product-row--column2">
+                        X1
+                    </span>
+                    <span class="order-product-row--column3">
+                        Rs. 17,558
+                    </span>
+                    <span class="order-product-row--column4">
+                        Rs. 17,558
+                    </span>
 
 
             </div>
