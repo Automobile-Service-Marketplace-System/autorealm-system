@@ -77,14 +77,16 @@ class OrdersController
             //var_dump($query);
             $orderModel = new Order();
             $orderDetails = $orderModel->getOrderById($query["id"]);
-
-            print_r($orderDetails);
-
-
+            //print_r($orderDetails);
 
             return $res->render(view: "stock-manager-dashboard-view-orders-details", layout: "stock-manager-dashboard",
-                pageParams: [],
-                layoutParams: ['title' => 'Order Details', 'pageMainHeading' => 'Order Details', 'employeeId' => $req->session->get("user_id")]);
+                pageParams: [
+                    "orderDetails" => $orderDetails
+                ],
+                layoutParams: [
+                        'title' => "Order Details #{$query["id"]}",
+                        'pageMainHeading' => "Order Details #{$query["id"]}",
+                        'employeeId' => $req->session->get("user_id")]);
         }
 
         return $res->redirect(path: "/login");

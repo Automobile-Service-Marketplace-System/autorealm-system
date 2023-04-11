@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var object $orderDetails
+ */
+
+
+ var_dump($orderDetails);
+ ?>
+
 <main class= "order-details-grid">
     <section class="order-details-card">
         <h2 class="item-summery-title">
@@ -38,46 +47,15 @@
 
             </div>
 
-            <div class="order-product-row">
-                    <span class="order-product-row--column1">
-                        Mobil Super™ 2000 X1 10W-40
-                    </span>
-                    <span class="order-product-row--column2">
-                        X1
-                    </span>
-                    <span class="order-product-row--column3">
-                        Rs. 17,558
-                    </span>
-                    <span class="order-product-row--column4">
-                        Rs. 17,558
-                    </span>
-
-
-            </div>
-
-            <div class="order-product-row">
-                <span class="order-product-row--column1">
-                    Mobil Super™ 2000 X1 10W-40
-                </span>
-                <span class="order-product-row--column2">
-                    X1
-                </span>
-                <span class="order-product-row--column3">
-                    Rs. 17,558
-                </span>
-                <span class="order-product-row--column4">
-                    Rs. 17,558
-                </span>
-
-
-            </div>
 
         </div>
 
     </section>
 
     <section class="cus-order-cards">
+
         <div class="order-details-card order-customer-details-card">
+
             <h2 class="item-summery-title order-details-title-under">
                 Customer Details
             </h2>
@@ -87,7 +65,7 @@
                         Name
                     </span>
                     <span class="order-customer-details-row--column2">
-                        Mr. Avishka Sathyanjana
+                        <?=$orderDetails['cusDetails']['customer_name']?>
                     </span>
                 </div>
 
@@ -96,7 +74,7 @@
                         Email
                     </span>
                     <span class="order-customer-details-row--column2">
-                        avishka.sathyanjana@gmail.com
+                        <?=$orderDetails['cusDetails']['email']?>
                     </span>
                 </div>
 
@@ -105,7 +83,7 @@
                         Address
                     </span>
                     <span class="order-customer-details-row--column2">
-                        48/55, Epitamulla road, Pita Kotte
+                        <?=$orderDetails['cusDetails']['address']?>
                     </span>
                 </div>
                 <div class="order-customer-details-row">
@@ -113,12 +91,15 @@
                         Mobile Number
                     </span>
                     <span class="order-customer-details-row--column2">
-                        0717753749
+                        <?=$orderDetails['cusDetails']['contact_no']?>
                     </span>
                 </div>
 
             </div>
         </div>
+<?php
+    list($orderDate, $orderTime) = explode(' ', $orderDetails['created_at']);
+?>
         <div class="order-details-card order-summery-card">
             <h2 class="item-summery-title order-details-title-under">
                 Order Summery
@@ -129,7 +110,7 @@
                         Order Date
                     </span>
                     <span class="order-customer-details-row--column2">
-                        2022/10/25
+                        <?=$orderDate ?>
                     </span>
                 </div>
 
@@ -138,7 +119,7 @@
                         Order Time
                     </span>
                     <span class="order-customer-details-row--column2">
-                        8.34 PM
+                        <?=$orderTime ?>
                     </span>
                 </div>
 
