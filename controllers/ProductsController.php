@@ -10,6 +10,7 @@ use app\models\Brand;
 use app\models\Category;
 use app\models\Supplier;
 use app\models\Vehicle;
+use JsonException;
 
 class ProductsController
 {
@@ -162,7 +163,7 @@ class ProductsController
         }
 
         if ($result) {
-            return $res->redirect(path: "/stock-manager-dashboard/products");
+            return $res->redirect(path: "/products");
         }
 
         return $res->render("500", "error", [
@@ -238,13 +239,19 @@ class ProductsController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function deleteProduct(Request $req, Response $res)
+    public function deleteProduct(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $body = $req->body();
+            if (empty($body['product_id'])) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
             $productId = $body['product_id'];
             $productModel = new Product();
             $result = $productModel->deleteProductById(id: $productId);
@@ -263,9 +270,7 @@ class ProductsController
 
             }
 
-        } else {
-            return $res->redirect(path: "/login");
         }
+        return $res->redirect(path: "/login");
     }
-
 }

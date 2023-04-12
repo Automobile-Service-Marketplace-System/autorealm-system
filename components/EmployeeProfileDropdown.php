@@ -45,7 +45,7 @@ class EmployeeProfileDropdown
             case "stock_manager":
                 $employeeModel = new StockManager();
                 $employee = $employeeModel->getStockManagerById($employeeId);
-                $profileLink = "/stock-manager-dashboard/profile";
+                $profileLink = "/profile";
                 break;
         }
 
