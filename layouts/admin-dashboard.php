@@ -39,25 +39,25 @@ DocumentHead::createHead(
                     Employees
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/products">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Products
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/suppliers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Suppliers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews

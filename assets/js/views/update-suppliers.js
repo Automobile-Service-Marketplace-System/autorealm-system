@@ -122,7 +122,7 @@ supplierUpdateButtons.forEach(function (btn){
             const formData = new FormData(e.target);
             try{
                 console.log("Inside try block")
-                const result = await fetch("/stock-manager-dashboard/supplier/update", {
+                const result = await fetch("/supplier/update", {
                     body: formData,
                     method: 'POST'
 
