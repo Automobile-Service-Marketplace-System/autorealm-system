@@ -132,15 +132,16 @@ if ($isInternal) {
 // stock manager routes
     $app->router->get(path: "/stock-manager-login", callback: [AuthenticationController::class, 'getStockManagerLoginPage']);
     $app->router->post(path: "/stock-manager-login", callback: [AuthenticationController::class, 'loginStockManager']);
+
     $app->router->get(path: "/profile", callback: [DashboardController::class, 'getStockManagerDashboardProfile']);
     $app->router->get(path: "/products", callback: [ProductsController::class, 'getProductsPage']);
-    $app->router->get(path: "/products/add-products", callback: [ProductsController::class, 'getAddProductsPage']);
-    $app->router->post(path: "/products/add-products", callback: [ProductsController::class, 'AddProducts']);
+    $app->router->get(path: "/products/add", callback: [ProductsController::class, 'getAddProductsPage']);
+    $app->router->post(path: "/products/add", callback: [ProductsController::class, 'AddProducts']);
     $app->router->post(path: "/products/delete", callback: [ProductsController::class, 'deleteProduct']);
     $app->router->get(path: "/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/orders", callback: [OrdersController::class, 'getOrdersPage']);
-    $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderDetailsPage']);
+    $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderById']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsPage']);
     $app->router->post(path: "/products/update", callback: [ProductsController::class, 'updateProducts']);
     $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);

@@ -23,12 +23,12 @@ class Request
      */
     public function path(): string
     {
-        $path = $_SERVER['REQUEST_URI'] ?? "/";
-        $position = strpos($path, "?");
+        $path = $_SERVER['REQUEST_URI'] ?? "/"; //to take the path before ? in URL
+        $position = strpos($path, "?"); //position of the ?
         if ($position === false) {
             return $path;
         }
-        return substr($path, 0, $position);
+        return substr($path, 0, $position); //extract the portion before ?
     }
 
     /**

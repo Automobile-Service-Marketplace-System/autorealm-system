@@ -19,11 +19,9 @@ foreach ($orders as $order){
         "Payment Amount" => number_format($paymentAmount,2, '.', ','),
         "Status" => $order["Status"],
         " " => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='/orders/view' class='btn btn--rounded'>
+                            <a href='/orders/view?id={$order["ID"]}' class='btn btn--rounded'>
                                 <i class='fa-solid fa-arrow-up-right-from-square'></i>
                             </a>
-                            
-   
                       </div>"
     ];
 }

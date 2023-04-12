@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Order;
+use app\models\Customer;
 
 class OrdersController
 {
@@ -13,6 +14,9 @@ class OrdersController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
             $orderModel = new Order();
             $orders = $orderModel->getOrders();
+//            echo "<pre>";
+//            print_r($orders);
+//            echo "</pre>";
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "stock-manager-dashboard",
@@ -65,17 +69,28 @@ class OrdersController
         return $res->redirect(path: "/login");
     }
 
-    public function getOrderDetailsPage(Request $req, Response $res): string
+    public function getOrderById(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "stock_manager") {
 
+            $query = $req->query(); //to take the query parameters from the url
+            //var_dump($query);
+            $orderModel = new Order();
+            $orderDetails = $orderModel->getOrderById($query["id"]);
+            //print_r($orderDetails);
 
             return $res->render(view: "stock-manager-dashboard-view-orders-details", layout: "stock-manager-dashboard",
-                pageParams: [],
-                layoutParams: ['title' => 'Order Details', 'pageMainHeading' => 'Order Details', 'employeeId' => $req->session->get("user_id")]);
+                pageParams: [
+                    "orderDetails" => $orderDetails
+                ],
+                layoutParams: [
+                        'title' => "Order Details #{$query["id"]}",
+                        'pageMainHeading' => "Order Details #{$query["id"]}",
+                        'employeeId' => $req->session->get("user_id")]);
         }
 
         return $res->redirect(path: "/login");
     }
+
 
 }

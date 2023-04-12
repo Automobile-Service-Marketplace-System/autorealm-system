@@ -67,7 +67,7 @@ class Application
                     echo $this->response->render(view: "_error", layout: "security-officer-dashboard", pageParams: $errorParams);
                     exit;
                     default:
-                        echo ""
+                        echo "Error Occurred";
             }
         }
     }
