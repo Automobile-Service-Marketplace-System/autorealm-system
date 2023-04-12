@@ -269,7 +269,9 @@
                 </div>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
+
                              <input type="checkbox" name="is_delivery" id="is_delivery">
+
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape del-st-col" for="is_delivery">
                         Delivery

@@ -50,7 +50,7 @@ class Application
                 "message" => $errorMessage,
             ];
 
-            $this->response->setStatusCode($errorCode);
+            $this->response->setStatusCode(is_string($errorCode) ? 500 : $errorCode);
 
             // get the user role
             $userRole = $this->request->session->get("user_role");
@@ -102,7 +102,7 @@ class Application
         }
     }
 
-    private function getHumanFriendlyErrorCode(int $code): int
+    private function getHumanFriendlyErrorCode(int | string $code): int | string
     {
 
         $isDev = $_ENV["MODE"] === "development";
@@ -110,6 +110,9 @@ class Application
         if ($isDev) {
             return $code;
         } else {
+            if(is_string($code)){
+                return 500;
+            }
             return $code >= 400 && $code < 600 ? $code : 500;
         }
     }
