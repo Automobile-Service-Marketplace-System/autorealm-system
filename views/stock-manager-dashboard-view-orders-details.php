@@ -281,7 +281,7 @@
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
 
                              <input type="checkbox" name="isCurConfirmed">
-                            <
+
                     </span>
                     <span class="order-status-details-row--column2 status-btn-shape cur-st-col">
                         Confirmed by Courier
