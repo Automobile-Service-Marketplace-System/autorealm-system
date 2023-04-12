@@ -225,7 +225,6 @@
                         Courier Name
                     </span>
                     <span class="order-deliver-details-row--column3">
-<!--                        --><? //=$orderDetails['empDetails']['employee_name']?>
                         N/A
                     </span>
                 </div>
@@ -237,7 +236,6 @@
                         Courier Mobile Number
                     </span>
                     <span class="order-deliver-details-row--column3">
-<!--                        --><? //=$orderDetails['empDetails']['employee_name']?>
                         N/A
                     </span>
                 </div>
