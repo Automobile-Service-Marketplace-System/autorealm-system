@@ -4,7 +4,7 @@
  */
 
 
- var_dump($orderDetails);
+ //var_dump($orderDetails);
  ?>
 
 <main class= "order-details-grid">
@@ -26,28 +26,27 @@
                 <span class="order-product-row--column4 ">
                     Total
                 </span>
-
-
             </div>
-
-            <div class="order-product-row">
-                <span class="order-product-row--column1">
-                    Mobil Super™ 2000 X1 10W-40
-                </span>
-                <span class="order-product-row--column2">
-                    X1
-                </span>
-                <span class="order-product-row--column3">
-                    Rs. 17,558
-                </span>
-                <span class="order-product-row--column4">
-                    Rs. 17,558
-                </span>
-
-
-            </div>
-
-
+<!--add items details from orderDetails under above categories-->
+            <?php
+            foreach ($orderDetails['Items'] as $item) {?>
+                <div class="order-product-row">
+                    <span class="order-product-row--column1">
+                        <?=$item['Product Name']?>
+                    </span>
+                    <span class="order-product-row--column2">
+                        x<?=$item['Quantity']?>
+                    </span>
+                    <span class="order-product-row--column3">
+                        Rs. <?=$item['Price']?>
+                    </span>
+                    <span class="order-product-row--column4">
+                        Rs. <?=$item['Product Total']?>
+                    </span>
+                </div>
+                <?php
+            }
+                ?>
         </div>
 
     </section>
@@ -122,13 +121,22 @@
                         <?=$orderTime ?>
                     </span>
                 </div>
+<?php
+//to get total quantity and total amount
+    $totQuantity = 0;
+    $totAmount = 0.0;
+    foreach($orderDetails['Items'] as $Item){
+        $totQuantity = $Item['Quantity'] + $totQuantity;
+        $totAmount = $Item['Product Total'] + $totAmount;
+    }
 
+?>
                 <div class="order-customer-details-row">
                     <span class="order-customer-details-row--column1">
                         Total Products
                     </span>
                     <span class="order-customer-details-row--column2">
-                        8
+                        <?=$totQuantity ?>
                     </span>
                 </div>
                 <div class="order-customer-details-row item-summery-title">
@@ -136,7 +144,7 @@
                         Total Amount
                     </span>
                     <span class="order-customer-details-row--column2">
-                        Rs. 22 958
+                        <?=$totAmount?>
                     </span>
                 </div>
 
@@ -150,38 +158,82 @@
                 Deliver Details
             </h2>
             <div class="order-customer-details-section item-summery-products-section">
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Name
+                <div class="order-deliver-details-row ">
+                    <span class="order-deliver-details-row--column1">
+                        <div class='form-item--radio'>
+                            <input type='radio' name='Prepared' value='Passed' id='Prepared'>
+                            <label for='Prepared'>Prepared</label>
+                        </div>
                     </span>
-                    <span class="order-customer-details-row--column2">
-                        Mr. Avishka Sathyanjana
+                    <span class="order-deliver-details-row--column2">
+                        Prepared Date and Time
                     </span>
-                    <span class="order-customer-details-row--column3">
-                        N/A
-                    </span>
-                </div>
-
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Email
-                    </span>
-                    <span class="order-customer-details-row--column2">
-                        avishka.sathyanjana@gmail.com
-                    </span>
-                    <span class="order-customer-details-row--column3">
-                        N/A
+                    <span class="order-deliver-details-row--column3">
+                        <?php
+                        if($orderDetails['status'] == 'Not Prepared'){
+                            echo "N/A";
+                        }else{
+                            echo $orderDetails['prepared_date_time'];
+                        }
+                        ?>
                     </span>
                 </div>
 
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Address
+                <div class="order-deliver-details-row">
+                    <span class="order-deliver-details-row--column1">
+                        <div class='form-item--radio'>
+                            <input type='radio' name='Delivery' value='Delivery' id='Delivery'>
+                            <label for='Delivery'>Hand over to<br>Delivery</label>
+                        </div>
                     </span>
-                    <span class="order-customer-details-row--column2">
-                        48/55, Epitamulla road, Pita Kotte
+                    <span class="order-deliver-details-row--column2">
+                        Dispatched Date and Time
                     </span>
-                    <span class="order-customer-details-row--column3">
+                    <span class="order-deliver-details-row--column3">
+                        <?php
+                        if($orderDetails['status'] == 'Not Prepared' || $orderDetails['status'] == 'Prepared'){
+                            echo "N/A";
+                            }
+                        else{
+                            echo $orderDetails['dispatched_date_time'];
+                        }
+                        ?>
+                    </span>
+                </div>
+
+                <div class="order-deliver-details-row">
+                    <span class="order-deliver-details-row--column1">
+
+                    </span>
+                    <span class="order-deliver-details-row--column2">
+                        Handle by
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+                        <?=$orderDetails['empDetails']['employee_name']?>
+                    </span>
+                </div>
+
+                <div class="order-deliver-details-row">
+                    <span class="order-deliver-details-row--column1">
+
+                    </span>
+                    <span class="order-deliver-details-row--column2">
+                        Courier Name
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+<!--                        --><?//=$orderDetails['empDetails']['employee_name']?>
+                        N/A
+                    </span>
+                </div>
+                <div class="order-deliver-details-row">
+                    <span class="order-deliver-details-row--column1">
+
+                    </span>
+                    <span class="order-deliver-details-row--column2">
+                        Courier Mobile Number
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+<!--                        --><?//=$orderDetails['empDetails']['employee_name']?>
                         N/A
                     </span>
                 </div>
@@ -194,29 +246,55 @@
                 Status
             </h2>
             <div class="order-customer-details-section item-summery-products-section">
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Order Date
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 ">
+                        <label class="form-item--checkbox--status">
+                             <input type="checkbox" name="isNotprepared" >
+                        </label>
                     </span>
-                    <span class="order-customer-details-row--column2">
+                    <span class="order-status-details-row--column2 status-btn-shape ntprep-st-col">
                         Not Prepared
                     </span>
                 </div>
 
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Order Time
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 form-item--checkbox">
+                        <label>
+                             <input type="checkbox" name="isNotprepared">
+                        </label>
                     </span>
-                    <span class="order-customer-details-row--column2">
+                    <span class="order-status-details-row--column2 status-btn-shape prep-st-col">
                         Prepared
                     </span>
                 </div>
-                <div class="order-customer-details-row">
-                    <span class="order-customer-details-row--column1">
-                        Order Time
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 form-item--checkbox">
+                        <label>
+                             <input type="checkbox" name="isDelivery">
+                        </label>
                     </span>
-                    <span class="order-customer-details-row--column2">
+                    <span class="order-status-details-row--column2 status-btn-shape del-st-col">
                         Delivery
+                    </span>
+                </div>
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 form-item--checkbox">
+                        <label>
+                             <input type="checkbox" name="isCurConfirmed">
+                        </label>
+                    </span>
+                    <span class="order-status-details-row--column2 status-btn-shape cur-st-col">
+                        Confirmed by Courier
+                    </span>
+                </div>
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 form-item--checkbox">
+                        <label>
+                             <input type="checkbox" name="isCusConfirm">
+                        </label>
+                    </span>
+                    <span class="order-status-details-row--column2 status-btn-shape cus-st-col">
+                        Confirmed by Customer
                     </span>
                 </div>
 
