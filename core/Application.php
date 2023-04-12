@@ -7,6 +7,7 @@
 namespace app\core;
 
 use Exception;
+use JsonException;
 
 class Application
 {
@@ -30,7 +31,18 @@ class Application
             $result = $this->router->resolve();
             echo $result;
         } catch (Exception $e) {
-            $errorCode = $e->getCode();
+            if ($this->response->isJson) {
+                try {
+                    echo $this->response->json([
+                        "message" => $e->getMessage(),
+                        "code" => $e->getCode()
+                    ]);
+                } catch (JsonException $e) {
+                    echo "Internal Server Error";
+                }
+
+            }
+            $errorCode = $this->getHumanFriendlyErrorCode($e->getCode());
             $errorMessage = $e->getMessage();
 
             $errorParams = [
@@ -49,26 +61,56 @@ class Application
                     echo $this->response->render(view: "_error", pageParams: $errorParams);
                     exit;
                 case "admin":
-                    echo $this->response->render(view: "_error", layout: "admin-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "admin-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
                 case "foreman":
-                    echo $this->response->render(view: "_error", layout: "foreman-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "foreman-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
                 case "stock_manager":
-                    echo $this->response->render(view: "_error", layout: "stock-manager-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "stock-manager-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
                 case "office_staff_member":
-                    echo $this->response->render(view: "_error", layout: "office-staff-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "office-staff-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
                 case "technician":
-                    echo $this->response->render(view: "_error", layout: "technician-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "technician-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
                 case "security_officer":
-                    echo $this->response->render(view: "_error", layout: "security-officer-dashboard", pageParams: $errorParams);
+                    echo $this->response->render(view: "_error", layout: "security-officer-dashboard", pageParams: $errorParams, layoutParams: [
+                        'employeeId' => $this->request->session->get('user_id'),
+                        "pageMainHeading" => "Error"
+                    ]);
                     exit;
-                    default:
-                        echo "Error Occurred";
+                default:
+                    echo "Error Occurred";
             }
+        }
+    }
+
+    private function getHumanFriendlyErrorCode(int $code): int
+    {
+
+        $isDev = $_ENV["MODE"] === "development";
+        //if $code is common http error code, return $code, otherwise return 500
+        if ($isDev) {
+            return $code;
+        } else {
+            return $code >= 400 && $code < 600 ? $code : 500;
         }
     }
 

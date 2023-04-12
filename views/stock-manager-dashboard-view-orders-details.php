@@ -4,10 +4,10 @@
  */
 
 
- //var_dump($orderDetails);
- ?>
+//var_dump($orderDetails);
+?>
 
-<main class= "order-details-grid">
+<main class="order-details-grid">
     <section class="order-details-card">
         <h2 class="item-summery-title">
             Item Summery
@@ -27,26 +27,26 @@
                     Total
                 </span>
             </div>
-<!--add items details from orderDetails under above categories-->
+            <!--add items details from orderDetails under above categories-->
             <?php
-            foreach ($orderDetails['Items'] as $item) {?>
+            foreach ($orderDetails['Items'] as $item) { ?>
                 <div class="order-product-row">
                     <span class="order-product-row--column1">
-                        <?=$item['Product Name']?>
+                        <?= $item['Product Name'] ?>
                     </span>
                     <span class="order-product-row--column2">
-                        x<?=$item['Quantity']?>
+                        x<?= $item['Quantity'] ?>
                     </span>
                     <span class="order-product-row--column3">
-                        Rs. <?=$item['Price']?>
+                        Rs. <?= $item['Price'] ?>
                     </span>
                     <span class="order-product-row--column4">
-                        Rs. <?=$item['Product Total']?>
+                        Rs. <?= $item['Product Total'] ?>
                     </span>
                 </div>
                 <?php
             }
-                ?>
+            ?>
         </div>
 
     </section>
@@ -64,7 +64,7 @@
                         Name
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderDetails['cusDetails']['customer_name']?>
+                        <?= $orderDetails['cusDetails']['customer_name'] ?>
                     </span>
                 </div>
 
@@ -73,7 +73,7 @@
                         Email
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderDetails['cusDetails']['email']?>
+                        <?= $orderDetails['cusDetails']['email'] ?>
                     </span>
                 </div>
 
@@ -82,7 +82,7 @@
                         Address
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderDetails['cusDetails']['address']?>
+                        <?= $orderDetails['cusDetails']['address'] ?>
                     </span>
                 </div>
                 <div class="order-customer-details-row">
@@ -90,15 +90,15 @@
                         Mobile Number
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderDetails['cusDetails']['contact_no']?>
+                        <?= $orderDetails['cusDetails']['contact_no'] ?>
                     </span>
                 </div>
 
             </div>
         </div>
-<?php
-    list($orderDate, $orderTime) = explode(' ', $orderDetails['created_at']);
-?>
+        <?php
+        list($orderDate, $orderTime) = explode(' ', $orderDetails['created_at']);
+        ?>
         <div class="order-details-card order-summery-card">
             <h2 class="item-summery-title order-details-title-under">
                 Order Summery
@@ -109,7 +109,7 @@
                         Order Date
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderDate ?>
+                        <?= $orderDate ?>
                     </span>
                 </div>
 
@@ -118,25 +118,27 @@
                         Order Time
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$orderTime ?>
+                        <?= $orderTime ?>
                     </span>
                 </div>
-<?php
-//to get total quantity and total amount
-    $totQuantity = 0;
-    $totAmount = 0.0;
-    foreach($orderDetails['Items'] as $Item){
-        $totQuantity = $Item['Quantity'] + $totQuantity;
-        $totAmount = $Item['Product Total'] + $totAmount;
-    }
+                <?php
+                //to get total quantity and total amount
+                $totQuantity = 0;
+                $totAmount = 0.0;
+                foreach ($orderDetails['Items'] as $Item) {
+                    $totQuantity = $Item['Quantity'] + $totQuantity;
+                    $totAmount = $Item['Product Total'] + $totAmount;
+                }
 
-?>
+                $totAmount = number_format($totAmount, 2);
+
+                ?>
                 <div class="order-customer-details-row">
                     <span class="order-customer-details-row--column1">
                         Total Products
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$totQuantity ?>
+                        <?= $totQuantity ?>
                     </span>
                 </div>
                 <div class="order-customer-details-row item-summery-title">
@@ -144,7 +146,7 @@
                         Total Amount
                     </span>
                     <span class="order-customer-details-row--column2">
-                        <?=$totAmount?>
+                        Rs. <?= $totAmount ?>
                     </span>
                 </div>
 
@@ -170,9 +172,9 @@
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if($orderDetails['status'] == 'Not Prepared'){
+                        if ($orderDetails['status'] == 'Not Prepared') {
                             echo "N/A";
-                        }else{
+                        } else {
                             echo $orderDetails['prepared_date_time'];
                         }
                         ?>
@@ -191,10 +193,9 @@
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if($orderDetails['status'] == 'Not Prepared' || $orderDetails['status'] == 'Prepared'){
+                        if ($orderDetails['status'] == 'Not Prepared' || $orderDetails['status'] == 'Prepared') {
                             echo "N/A";
-                            }
-                        else{
+                        } else {
                             echo $orderDetails['dispatched_date_time'];
                         }
                         ?>
@@ -209,7 +210,10 @@
                         Handle by
                     </span>
                     <span class="order-deliver-details-row--column3">
-                        <?=$orderDetails['empDetails']['employee_name']?>
+                        <?php
+                        $handledByEmpName = $orderDetails['empDetails']['employee_name'] ?? 'N/A';
+                        echo $handledByEmpName;
+                        ?>
                     </span>
                 </div>
 
@@ -221,7 +225,7 @@
                         Courier Name
                     </span>
                     <span class="order-deliver-details-row--column3">
-<!--                        --><?//=$orderDetails['empDetails']['employee_name']?>
+<!--                        --><? //=$orderDetails['empDetails']['employee_name']?>
                         N/A
                     </span>
                 </div>
@@ -233,7 +237,7 @@
                         Courier Mobile Number
                     </span>
                     <span class="order-deliver-details-row--column3">
-<!--                        --><?//=$orderDetails['empDetails']['employee_name']?>
+<!--                        --><? //=$orderDetails['empDetails']['employee_name']?>
                         N/A
                     </span>
                 </div>
@@ -247,55 +251,47 @@
             </h2>
             <div class="order-customer-details-section item-summery-products-section">
                 <div class="order-status-details-row">
-                    <span class="order-status-details-row--column1 ">
-                        <label class="form-item--checkbox--status">
-                             <input type="checkbox" name="isNotprepared" >
-                        </label>
+                    <span class="order-status-details-row--column1 form-item form-item--checkbox">
+                             <input type="checkbox" name="is_not_prepared" id="is_not_prepared" checked readonly>
                     </span>
-                    <span class="order-status-details-row--column2 status-btn-shape ntprep-st-col">
+                    <label class="order-status-details-row--column2 status-btn-shape ntprep-st-col" for="is_not_prepared">
                         Not Prepared
-                    </span>
+                    </label>
                 </div>
 
                 <div class="order-status-details-row">
-                    <span class="order-status-details-row--column1 form-item--checkbox">
-                        <label>
-                             <input type="checkbox" name="isNotprepared">
-                        </label>
+                    <span class="order-status-details-row--column1 form-item form-item--checkbox">
+                             <input type="checkbox" name="is_prepared" id="is_prepared">
                     </span>
-                    <span class="order-status-details-row--column2 status-btn-shape prep-st-col">
+                    <label class="order-status-details-row--column2 status-btn-shape prep-st-col" for="is_prepared">
                         Prepared
-                    </span>
-                </div>
-                <div class="order-status-details-row">
-                    <span class="order-status-details-row--column1 form-item--checkbox">
-                        <label>
-                             <input type="checkbox" name="isDelivery">
-                        </label>
-                    </span>
-                    <span class="order-status-details-row--column2 status-btn-shape del-st-col">
-                        Delivery
-                    </span>
+                    </label>
                 </div>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
 
-                             <input type="checkbox" name="isCurConfirmed">
+                             <input type="checkbox" name="is_delivery" id="is_delivery">
 
                     </span>
-                    <span class="order-status-details-row--column2 status-btn-shape cur-st-col">
-                        Confirmed by Courier
-                    </span>
+                    <label class="order-status-details-row--column2 status-btn-shape del-st-col" for="is_delivery">
+                        Delivery
+                    </label>
                 </div>
                 <div class="order-status-details-row">
-                    <span class="order-status-details-row--column1 form-item--checkbox">
-                        <label>
-                             <input type="checkbox" name="isCusConfirm">
-                        </label>
+                    <span class="order-status-details-row--column1 form-item form-item--checkbox">
+                             <input type="checkbox" name="is_cur_confirmed" id="is_cur_confirmed">
                     </span>
-                    <span class="order-status-details-row--column2 status-btn-shape cus-st-col">
+                    <label class="order-status-details-row--column2 status-btn-shape cur-st-col" for="is_cur_confirmed">
+                        Confirmed by Courier
+                    </label>
+                </div>
+                <div class="order-status-details-row">
+                    <span class="order-status-details-row--column1 form-item form-item--checkbox">
+                             <input type="checkbox" name="is_cus_confirmed" id="is_cus_confirmed">
+                    </span>
+                    <label class="order-status-details-row--column2 status-btn-shape cus-st-col" for="is_cus_confirmed">
                         Confirmed by Customer
-                    </span>
+                    </label>
                 </div>
 
             </div>
