@@ -58,8 +58,9 @@ if (!$isInternal) {
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
     $app->router->post(path: "/register", callback: [AuthenticationController::class, 'registerCustomer']);
-    $app->router->get(path: "/verify-email", callback: [AuthenticationController::class, 'getEmailVerificationStatusPage']);
-    $app->router->get(path: "/contact-verification", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->get(path: "/register/verify", callback: [AuthenticationController::class, 'getCustomerContactVerificationPage']);
+    $app->router->post(path: "/register/verify", callback: [AuthenticationController::class, 'verifyCustomerContactDetails']);
+    $app->router->post(path: "/register/verify/retry", callback: [AuthenticationController::class, 'sendVerificationCodesAgain']);
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getCustomerLoginForm']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginCustomer']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutCustomer']);
@@ -135,6 +136,7 @@ if ($isInternal) {
     $app->router->get(path: "/stock-manager-dashboard/products", callback: [ProductsController::class, 'getProductsPage']);
     $app->router->get(path: "/stock-manager-dashboard/products/add-products", callback: [ProductsController::class, 'getAddProductsPage']);
     $app->router->post(path: "/stock-manager-dashboard/products/add-products", callback: [ProductsController::class, 'AddProducts']);
+    $app->router->post(path: "/stock-manager-dashboard/products/delete", callback: [ProductsController::class, 'deleteProduct']);
     $app->router->get(path: "/stock-manager-dashboard/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/stock-manager-dashboard/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
     $app->router->get(path: "/stock-manager-dashboard/orders", callback: [OrdersController::class, 'getOrdersPage']);
