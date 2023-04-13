@@ -26,7 +26,7 @@ class DashboardController
                     'customer' => $customer,
                 ], layoutParams: [
                     'title' => 'My Profile',
-                    'customer' => $customer,
+                    'customerId' => $req->session->get('user_id'),
                     'pageMainHeading' => 'My Profile'
                 ]);
             }
@@ -54,11 +54,11 @@ class DashboardController
                 ]);
             }
 
-            return $res->redirect(path: "/office-staff-login");
+            return $res->redirect(path: "/login");
 
         }
 
-        return $res->redirect(path: "/office-staff-login");
+        return $res->redirect(path: "/login");
     }
 
     public function getStockManagerDashboardProfile(Request $req, Response $res): string
@@ -78,26 +78,42 @@ class DashboardController
                     'employeeId' => $req->session->get("user_id")
                 ]);
             }
-            var_dump($_SESSION);
             return "";
-//            return $res->redirect(path: "/stock-manager-login");
-
         }
-
-//        return $res->redirect(path: "/stock-manager-login");
-        echo "<pre>";
-        var_dump($_SESSION);
-        echo "</pre>";
         return "";
-
-
     }
 
     public function getOfficeStaffDashboardOverview(Request $req, Response $res): string
     {
-        return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", layoutParams: [
+                'title' => 'Overview',
+                'pageMainHeading' => 'Overview',
+                'officeStaffId' => $req->session->get('user_id')
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function getTechnicianDashboardOverview(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
+            return $res->render(view: "office-staff-dashboard-overview", layout: "technician-dashboard", layoutParams: [
+                'title' => 'Overview',
+                'pageMainHeading' => 'Overview',
+                'technicianId' => $req->session->get('user_id')
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+
+    public function getForemanDashboardOverview(Request $req, Response $res): string
+    {
+        return $res->render(view: "office-staff-dashboard-overview", layout: "foreman-dashboard", layoutParams: [
             'title' => 'Overview',
-            'pageMainHeading' => 'Overview'
+            'pageMainHeading' => 'Overview',
+            'foremanId' => $req->session->get('user_id')
         ]);
     }
 
@@ -116,9 +132,9 @@ class DashboardController
                     'pageMainHeading' => 'Profile'
                 ]);
             }
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 
@@ -132,15 +148,15 @@ class DashboardController
                     'technician' => $technician
                 ], layoutParams: [
                     'title' => 'Profile',
-                    'technician' => $technician,
+                    'technicianId' => $req->session->get("user_id"),
                     'pageMainHeading' => 'Profile'
                 ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function getAdminDashboardProfile(Request $req, Response $res): string
@@ -152,19 +168,19 @@ class DashboardController
                 return $res->render(view: "admin-dashboard-profile", layout: "admin-dashboard", pageParams: [
                     'admin' => $admin
                 ], layoutParams: [
-                        'title' => 'Profile',
-                        'admin' => $admin,
-                        'pageMainHeading' => 'Profile',
-                        'employeeId'=> $req->session->get("user_id")
-                    ]);
+                    'title' => 'Profile',
+                    'admin' => $admin,
+                    'pageMainHeading' => 'Profile',
+                    'employeeId' => $req->session->get("user_id")
+                ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
-    
+
     public function getSecurityOfficerDashboardProfile(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
@@ -174,17 +190,17 @@ class DashboardController
                 return $res->render(view: "security-officer-dashboard-profile", layout: "security-officer-dashboard", pageParams: [
                     'securityOfficer' => $securityOfficer
                 ], layoutParams: [
-                        'title' => 'Profile',
-                        'security-officer' => $securityOfficer,
-                        'pageMainHeading' => 'Profile',
-                        'securityOfficerId' => $req->session->get("user_id"),
-                    ]);
+                    'title' => 'Profile',
+                    'security-officer' => $securityOfficer,
+                    'pageMainHeading' => 'Profile',
+                    'securityOfficerId' => $req->session->get("user_id"),
+                ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 }

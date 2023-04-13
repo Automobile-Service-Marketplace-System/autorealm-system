@@ -1,8 +1,57 @@
-<div class="admin-add-button-set">
-    <div class="add-button">
-        <a class="btn" href="/admin-dashboard/employees/add">
-            <i class="fa-solid fa-plus"></i>
-            Add Employee</a>
-    </div>
+<?php
+/**
+ * @var array $employees
+ */
 
+?>
+
+<div class="flex items-center justify-end mb-4">
+    <a class="btn" href="/employees/add">
+        <i class="fa-solid fa-plus"></i>
+        Add Employee
+    </a>
+</div>
+
+<div class="employee-container">
+    <?php
+    foreach ($employees as $employee) {
+
+        $isActive = $employee["isActive"] === 1 ? "<p class='employee-card__status'><i class='indicator indicator--success'></i> Available</p>" : "<p class='employee-card__status'><i class='indicator'> </i> Busy</p>";
+        $employeeRole = "";
+        switch ($employee['JobType']) {
+            case "stock_manager":
+                $employeeRole = "Stock Manager";
+                break;
+            case "office_staff_member":
+                $employeeRole = "Office Staff";
+                break;
+            case "technician":
+                $employeeRole = "Technician";
+                break;
+            case "foreman":
+                $employeeRole = "Foreman";
+                break;
+            case "security_officer":
+                $employeeRole = "Security Officer";
+                break;
+            case "admin":
+                $employeeRole = "Admin";
+                break;
+        }
+
+        echo "<div class='employee-card' data-employeeid='{$employee['ID']}'>
+                <div class='employee-card__header'>
+                       $isActive
+                       <i class='fa-solid fa-ellipsis'></i>
+                </div>
+                <div class='employee-card__info'>
+                    <img src='{$employee['Image']}'>
+                    <p class='employee-card__name'> {$employee['First Name'][0]}. {$employee['Last Name']}</p>
+                    <p class='employee-card__role'>$employeeRole</p>
+                    <a class='employee-card__contact' href='tel:{$employee['Contact No']}'>{$employee['Contact No']}</a>
+                    <a class='employee-card__contact' href='mailto:{$employee['Email']}'>{$employee['Email']}</a>
+                </div> 
+              </div>";
+    }
+    ?>
 </div>

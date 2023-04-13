@@ -7,7 +7,7 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer")
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
+const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
 
 <div class="add-vehicle-form_title" style="margin-top: -1rem">
     <h1 class="office-staff-add-customer-form__vehicle__title">
@@ -50,7 +50,7 @@ const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehi
       </div><div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
-                <option value='1' selected>Bike</option><option value='2' >Car</option><option value='3' >Jeep</option><option value='4' >Van</option><option value='5' >Lorry</option><option value='6' >Bus</option><option value='7' >Other</option>
+                <option value='Bike' selected>Bike</option><option value='Car' >Car</option><option value='Jeep' >Jeep</option><option value='Van' >Van</option><option value='Lorry' >Lorry</option><option value='Bus' >Bus</option><option value='Other'>Other</option>
             </select>
             
       </div><div class='form-item '>
@@ -117,7 +117,7 @@ addVehicleForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}`, {
+        const result = await fetch(`/vehicles/add/by-customer?id=${params.id}`, {
             body: formData,
             method: 'POST'
         })

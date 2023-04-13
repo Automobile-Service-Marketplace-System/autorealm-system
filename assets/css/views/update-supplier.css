@@ -1,0 +1,58 @@
+#stock-manager-update-supplier-form {
+    position: relative;
+    padding-top: 1rem;
+
+}
+#stock-manager-update-supplier-form .top-part-form {
+
+    margin-bottom: 2.5rem;
+    /*background-color: #e53030;*/
+}
+#stock-manager-update-supplier-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+#stock-manager-update-supplier-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}
+
+#stock-manager-update-supplier-form h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+#stock-manager-update-supplier-form  .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+#stock-manager-update-supplier-form .update-supplier-input-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+}
+
+
+
+#stock-manager-update-supplier-form .add-supplier-actions {
+    /*margin-top: 30px;*/
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+#stock-manager-update-supplier-form .update-supplier-actions {
+    /*margin-top: 30px;*/
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    /*background-color: yellow;*/
+}

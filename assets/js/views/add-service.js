@@ -42,9 +42,9 @@ addServiceForm?.querySelector("#add-service-modal-btn")?.addEventListener("click
 
     const template =  `<div style="width: 350px">
                         <h3>Are you sure you want to add this vehicle?</h3>
-                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
-                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
-                            <button class="btn modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1.5rem">
+                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
     const element = htmlToElement(template);
@@ -65,7 +65,7 @@ addServiceForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch("/admin-dashboard/services/add", {
+        const result = await fetch("/services/add", {
             body: formData,
             method: 'POST'
         })

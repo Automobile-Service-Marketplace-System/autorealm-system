@@ -19,11 +19,14 @@ foreach($customers as $customer) {
         "Address" => $customer["Address"],
         "Email" => $customer["Email"],
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                                        <a href='/office-staff-dashboard/vehicles/by-customer?id={$customer['ID']}' class='btn btn--rounded btn--info'>
+                                        <a href='/vehicles/by-customer?id={$customer['ID']}' class='btn btn--rounded btn--info'>
                                             <i class='fa-solid fa-car-side'></i>
                                          </a>
                                          <button class='btn btn--rounded btn--warning'>
                                             <i class='fa-solid fa-pencil'></i>
+                                         </button>
+                                         <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn'>
+                                            <i class='fa-regular fa-calendar-check'></i>
                                          </button>
                         </div>"
     ];

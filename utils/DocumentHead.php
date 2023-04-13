@@ -10,23 +10,22 @@ class DocumentHead
      * @param string $title
      * @return void
      */
-    public static function createHead(array $css = [], array $js = [], string $title = "AutoRealm", array $cdnJS = []): void
+    public static function createHead(array $css=[], array $js=[], string $title="AutoRealm", array $cdnJS=[]): void
     {
 
-        $isDev = $_ENV["MODE"] === "development";
+        $isDev=$_ENV["MODE"] === "development";
 
-        $cssIncludes = "";
+        $cssIncludes="";
 //        if ($isDev) {
-//            $cssIncludes = "<style id='dev'>@import \"/css/style.css\";</style>";
+//            $cssIncludes="<style id='dev'>@import \"/css/style.css\";</style>";
 //        } else {
-            foreach ($css as $cssFile) {
-                $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
-            }
+        foreach ($css as $cssFile) {
+            $cssIncludes .= "<link rel='stylesheet' href='$cssFile'>";
+        }
 //        }
 
 
-
-        $jsIncludes = "";
+        $jsIncludes="";
         foreach ($js as $jsFile) {
             $jsIncludes .= "<script src='$jsFile'></script>";
         }
@@ -36,9 +35,7 @@ class DocumentHead
         }
 
 
-
-
-        $injectedSocket = $isDev ? "<script src='/__DEV__/ar.js' type='module'></script>" : "";
+        $injectedSocket=$isDev ? "<script src='/__DEV__/ar.js' type='module'></script>" : "";
 
         echo "
             <head>
@@ -52,9 +49,9 @@ class DocumentHead
                 <link rel='preconnect' href='https://fonts.googleapis.com'>
                 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
                 <link href='https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,200&display=swap' rel='stylesheet'>
-                $cssIncludes
-                <title>$title</title>
-            </head>
-            ";
+                    $cssIncludes
+                <title> $title</title >
+            </head >
+    ";
     }
 }
