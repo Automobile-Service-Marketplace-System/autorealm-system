@@ -246,5 +246,15 @@ class Order
     }
 
 
+    public function markAsPrepared(int $orderId) {
+        $stmt = $this->pdo->prepare("UPDATE `order` SET status = 'Prepared' WHERE order_no = :order_no");
+        $stmt->bindValue(":order_no", $orderId);
+        $stmt->execute();
+        return [
+            'message' => 'Order marked as prepared successfully.'
+        ];
+    }
+
+
 
 }

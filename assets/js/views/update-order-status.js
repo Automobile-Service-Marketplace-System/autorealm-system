@@ -122,7 +122,7 @@ async function markOrderAsDelivery(e){
 async function markOrderAsCurConfirmed(e){
     setSpinner(isCurConfirmedInput, true)
     await sleep(500)
-    setSpinner(isCurConfirmedInput, false)
+    setSpinner(isCurConfirmedInput, false);
 }
 
 
@@ -132,7 +132,7 @@ async function markOrderAsCurConfirmed(e){
  */
 function setSpinner(element, status) {
     const parent = element.parentElement
-    if(status) {
+    if (status) {
         element.style.display = "none"
         parent.append(rotatingIcon)
     } else {
@@ -142,8 +142,4 @@ function setSpinner(element, status) {
         ).remove()
     }
 }
-
-
-
-
 
