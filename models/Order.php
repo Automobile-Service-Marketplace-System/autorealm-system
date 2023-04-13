@@ -229,7 +229,7 @@ class Order
         return $orderDetails;
     }
 
-    public function updateOrderStatus(int $orderNo, string $prepDateTime, string $status): array|string
+    public function updateOrderStatus(int $orderNo, string $prepDateTime, string $status): bool|string
     {
         try {
             $stmt = $this->pdo->prepare("UPDATE `order` SET prepared_date_time = :prepDateTime, status = :status WHERE order_no = :order_no");
@@ -237,7 +237,7 @@ class Order
             $stmt->bindValue(":prepDateTime", $prepDateTime);
             $stmt->bindValue(":order_no", $orderNo);
             $stmt->execute();
-            return $stmt->rowCount() > 0;
+            return $stmt->rowCount()>0;
         }
         catch (PDOException $e) {
             return "Order status update failed : " . $e->getMessage();

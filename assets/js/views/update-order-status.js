@@ -19,13 +19,16 @@ const isCurConfirmedInput = document.querySelector("#is_cur_confirmed");
 let prepTime
 let deliverTime
 let curConfTime
+let status
 
 isPreparedInput?.addEventListener("change",async() => {
     prepTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
     console.log(`isPreparedInput? status: ${isPreparedInput.checked}`);
     console.log(`for order ${isPreparedInput.dataset.orderno}`)
+    status = "Prepared"
     if(!isPreparedInput.checked){
-        prepTime = '0000-00-00 00:00:00'
+        prepTime = '0000-00-00 00:00:00'    ;
+        status = "Not Prepared";
     }
 
 
@@ -36,7 +39,7 @@ isPreparedInput?.addEventListener("change",async() => {
             body: JSON.stringify({
                 prepared_date_time: prepTime,
                 order_no: isPreparedInput.dataset.orderno,
-                status: "Prepared"
+                status: status
             }),
             headers: {
                 'Content-Type': 'application/json'
