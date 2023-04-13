@@ -9,8 +9,7 @@ import Notifier from "../components/Notifier";
 const deleteServiceButtons = document.querySelectorAll(".delete-service-btn")
 
 deleteServiceButtons.forEach(deleteServiceButton => {
-    console.log('Tharushi');
-    deleteServiceButton?.addEventListener("click", () => {
+    deleteServiceButton.addEventListener("click", () => {
 
         const serviceRow = deleteServiceButton.parentElement.parentElement.parentElement
         const serviceNameElement = serviceRow.querySelector('td:nth-child(2)')
@@ -28,21 +27,16 @@ deleteServiceButtons.forEach(deleteServiceButton => {
 
         const confirmBtn = modalContent.querySelector("button:last-child");
         confirmBtn.addEventListener("click", async () => {
-            console.log(`confirm for service ${deleteServiceButton.parentElement.dataset.serviceid}`)
             try {
                 const result = await fetch("/services/delete", {
                     method: "POST",
                     body: JSON.stringify({
-                        servicecode: deleteServiceButton.parentElement.dataset.serviceid
+                        service_code: deleteServiceButton.parentElement.dataset.serviceid
                     }),
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
-
-                console.log(await result.text())
-
-                // const
 
                 switch (result.status) {
                     case 204:
@@ -51,6 +45,9 @@ deleteServiceButtons.forEach(deleteServiceButton => {
                             type: "success",
                             header: "Success",
                         })
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1000)
                         break;
 
                     case 500:
@@ -61,15 +58,13 @@ deleteServiceButtons.forEach(deleteServiceButton => {
                         })
                         break;
                     default:
-
                         break
-
                 }
             } catch (e) {
                 console.log(e)
                 Notifier.show({
                     text: "Something went wrong",
-                    type: "error",
+                    type: "danger",
                     header: "Error",
                 })
             }
