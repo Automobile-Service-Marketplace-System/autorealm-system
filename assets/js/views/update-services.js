@@ -10,7 +10,7 @@ const params = Object.fromEntries(urlSearchParams.entries());
 updateServiceButton.forEach(function (btn){
     btn.addEventListener("click",function(){
 
-        const serviceId= btn.dataset.serviceid
+        const serviceId= btn.parentElement.dataset.serviceid
         const serviceRow=(btn.parentElement.parentElement.parentElement)
 
         const serviceENameElement=serviceRow.querySelector('td:nth-child(2)')
