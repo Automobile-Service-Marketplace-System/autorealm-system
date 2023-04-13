@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Order;
 use app\models\Customer;
+use JsonException;
 
 class OrdersController
 {
@@ -87,6 +88,44 @@ class OrdersController
                         'title' => "Order Details #{$query["id"]}",
                         'pageMainHeading' => "Order Details #{$query["id"]}",
                         'employeeId' => $req->session->get("user_id")]);
+        }
+
+        return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function updateOrderStatus(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $body = $req->body();
+            if(empty($body["order_no"])){
+                $res->setStatusCode(code:400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+            $orderNo = $body["order_no"];
+            $prepDateTime = $body["prepared_date_time"];
+            $status = $body["status"];
+            $orderModel = new Order();
+            $result = $orderModel->updateOrderStatus($orderNo, $prepDateTime, $status);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Status Updated successfully"
+                ]);
+
+            }
         }
 
         return $res->redirect(path: "/login");
