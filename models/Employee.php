@@ -266,9 +266,9 @@ class Employee
             $errors['l_name'] = 'Last name must contain only letters.';
         }
 
-        if (trim($this->body['fi']) === '') {
-            $errors['fi'] = 'Full name with initials must not be empty.';
-        }
+        // if (trim($this->body['fi']) === '') {
+        //     $errors['fi'] = 'Full name with initials must not be empty.';
+        // }
 
         if (empty($this->body['dob'])) {
             $errors['dob'] = 'Date of birth must not be empty.';
@@ -408,7 +408,8 @@ class Employee
                 return $errors;
             }
 
-        } else {
+        } 
+        else {
             return $errors;
         }
     }

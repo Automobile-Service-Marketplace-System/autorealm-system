@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  @var object $employee
  */
@@ -84,14 +83,14 @@ $image = $employee->image ? $employee->image : "";
 
                 <div class="form-input">
                     <?php
-                    FormItem::render(
-                        id: "fi",
-                        label: "Full Name with initials",
-                        name: "fi",
-                        hasError: $hasFIError,
-                        error: $hasFIError ? $errors['fi'] : "",
-                        value: $employee->fi ?? ($body['fi'] ?? null) ,
-                    );
+                    // FormItem::render(
+                    //     id: "fi",
+                    //     label: "Full Name with initials",
+                    //     name: "fi",
+                    //     hasError: $hasFIError,
+                    //     error: $hasFIError ? $errors['fi'] : "",
+                    //     value: $employee->fi ?? ($body['fi'] ?? null) ,
+                    // );
 
                     ?>
                 </div>
