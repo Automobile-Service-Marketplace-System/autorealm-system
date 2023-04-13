@@ -45,10 +45,14 @@ class Supplier
         foreach ($suppliers as $supplier) {
             $id = $supplier["ID"];
             $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
-            $supplier["Last Purchase Date"] = $lastPurchaseReport["date_time"];
-            $supplier["Last Supply Amount"] = $lastPurchaseReport["amount"];
+            if($lastPurchaseReport) {
+                $supplier["Last Purchase Date"] = $lastPurchaseReport["date_time"];
+                $supplier["Last Supply Amount"] = $lastPurchaseReport["amount"];
+            }
             $supplierList[] = $supplier;
+
         }
+
         return $supplierList;
     }
 //"SELECT

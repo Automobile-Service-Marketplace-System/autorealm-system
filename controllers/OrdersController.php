@@ -116,7 +116,8 @@ class OrdersController
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json([
-                    "message" => "Internal Server Error"
+                    "message" => "Internal Server Error here",
+                    "error" => $result
                 ]);
             }
             if ($result) {
