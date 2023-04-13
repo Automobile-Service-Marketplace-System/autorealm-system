@@ -37,7 +37,6 @@ async function markOrderAsPrepared(e) {
 }
 
 
-
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -49,7 +48,7 @@ function sleep(ms) {
  */
 function setSpinner(element, status) {
     const parent = element.parentElement
-    if(status) {
+    if (status) {
         element.style.display = "none"
         parent.append(rotatingIcon)
     } else {
@@ -59,3 +58,4 @@ function setSpinner(element, status) {
         ).remove()
     }
 }
+
