@@ -4,7 +4,7 @@
  */
 
 
-//var_dump($orderDetails);
+var_dump($orderDetails);
 ?>
 
 <main class="order-details-grid">
@@ -161,12 +161,12 @@
             </h2>
             <div class="order-customer-details-section item-summery-products-section">
                 <div class="order-deliver-details-row ">
-                    <span class="order-deliver-details-row--column1">
-                        <div class='form-item--radio'>
-                            <input type='radio' name='Prepared' value='Passed' id='Prepared'>
-                            <label for='Prepared'>Prepared</label>
-                        </div>
-                    </span>
+<!--                    <span class="order-deliver-details-row--column1">-->
+<!--                        <div class='form-item--radio'>-->
+<!--                            <input type='radio' name='Prepared' value='Passed' id='Prepared'>-->
+<!--                            <label for='Prepared'>Prepared</label>-->
+<!--                        </div>-->
+<!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Prepared Date and Time
                     </span>
@@ -182,12 +182,12 @@
                 </div>
 
                 <div class="order-deliver-details-row">
-                    <span class="order-deliver-details-row--column1">
-                        <div class='form-item--radio'>
-                            <input type='radio' name='Delivery' value='Delivery' id='Delivery'>
-                            <label for='Delivery'>Hand over to<br>Delivery</label>
-                        </div>
-                    </span>
+<!--                    <span class="order-deliver-details-row--column1">-->
+<!--                        <div class='form-item--radio'>-->
+<!--                            <input type='radio' name='Delivery' value='Delivery' id='Delivery'>-->
+<!--                            <label for='Delivery'>Hand over to<br>Delivery</label>-->
+<!--                        </div>-->
+<!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Dispatched Date and Time
                     </span>
@@ -203,9 +203,9 @@
                 </div>
 
                 <div class="order-deliver-details-row">
-                    <span class="order-deliver-details-row--column1">
-
-                    </span>
+<!--                    <span class="order-deliver-details-row--column1">-->
+<!---->
+<!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Handle by
                     </span>
@@ -218,9 +218,9 @@
                 </div>
 
                 <div class="order-deliver-details-row">
-                    <span class="order-deliver-details-row--column1">
-
-                    </span>
+<!--                    <span class="order-deliver-details-row--column1">-->
+<!---->
+<!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Courier Name
                     </span>
@@ -230,9 +230,9 @@
                     </span>
                 </div>
                 <div class="order-deliver-details-row">
-                    <span class="order-deliver-details-row--column1">
-
-                    </span>
+<!--                    <span class="order-deliver-details-row--column1">-->
+<!---->
+<!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Courier Mobile Number
                     </span>
@@ -252,42 +252,70 @@
             <div class="order-customer-details-section item-summery-products-section">
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_not_prepared" id="is_not_prepared" checked readonly>
+                             <input type="checkbox" name="is_not_prepared" id="is_not_prepared" checked disabled>
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape ntprep-st-col" for="is_not_prepared">
                         Not Prepared
                     </label>
                 </div>
-
+<?php
+    if($orderDetails['prepared_date_time'] != null && $orderDetails['prepared_date_time'] != "0000-00-00 00:00:00"){
+        $isPreparedCheck = 'checked';
+    }else{
+        $isPreparedCheck = '';
+    }
+?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_prepared" id="is_prepared">
+                             <input type="checkbox" name="is_prepared" id="is_prepared" <?php echo $isPreparedCheck?>>
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape prep-st-col" for="is_prepared">
                         Prepared
                     </label>
                 </div>
+
+<?php
+if($orderDetails['shipped_date_time'] != null && $orderDetails['shipped_date_time'] != "0000-00-00 00:00:00"){
+    $isShippedCheck = 'checked';
+}else{
+    $isShippedCheck = '';
+}
+?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
 
-                             <input type="checkbox" name="is_delivery" id="is_delivery">
+                             <input type="checkbox" name="is_delivery" id="is_delivery" <?php echo $isShippedCheck?>>
 
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape del-st-col" for="is_delivery">
                         Delivery
                     </label>
                 </div>
+<?php
+if($orderDetails['courior_confirmed_date_time'] != null && $orderDetails['courior_confirmed_date_time'] != "0000-00-00 00:00:00"){
+    $isCourCheck = 'checked';
+}else{
+    $isCourCheck = '';
+}
+?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_cur_confirmed" id="is_cur_confirmed">
+                             <input type="checkbox" name="is_cur_confirmed" id="is_cur_confirmed" <?php echo $isCourCheck ?>>
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape cur-st-col" for="is_cur_confirmed">
                         Confirmed by Courier
                     </label>
                 </div>
+<?php
+if($orderDetails['customer_confirmed_date_time'] != null && $orderDetails['customer_confirmed_date_time'] != "0000-00-00 00:00:00"){
+    $isCusCheck = 'checked';
+}else{
+    $isCusCheck = '';
+}
+?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_cus_confirmed" id="is_cus_confirmed">
+                             <input type="checkbox" name="is_cus_confirmed" id="is_cus_confirmed" <?php echo $isCusCheck ?> disabled>
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape cus-st-col" for="is_cus_confirmed">
                         Confirmed by Customer

@@ -14,9 +14,11 @@ const isInDeliveryInput = document.querySelector("#is_delivery");
 const isCurConfirmedInput = document.querySelector("#is_cur_confirmed");
 
 
-const rotatingIcon = htmlToElement(`<i class="fa-solid fa-spinner rotating-icon"></i>`)
 
-isPreparedInput?.addEventListener("click", markOrderAsPrepared)
+
+isPreparedInput?.addEventListener("change", function () {
+    console.log(`isPreparedInput? status: ${isPreparedInput.checked}`)
+})
 
 isInDeliveryInput?.addEventListener("change", function () {
     console.log(`isInDeliveryInput status: ${isInDeliveryInput.checked}`)
@@ -26,6 +28,12 @@ isCurConfirmedInput?.addEventListener("change", function () {
     console.log(`isCurConfirmedInput status: ${isCurConfirmedInput.checked}`)
 })
 
+const rotatingIcon = htmlToElement(`<i class="fa-solid fa-spinner rotating-icon"></i>`)
+isPreparedInput?.addEventListener("click", markOrderAsPrepared)
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 /**
  * @param {InputEvent} e
@@ -35,14 +43,6 @@ async function markOrderAsPrepared(e) {
     await sleep(500)
     setSpinner(isPreparedInput, false)
 }
-
-
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
 /**
  * @param {HTMLInputElement} element
  * @param {boolean} status
@@ -59,3 +59,8 @@ function setSpinner(element, status) {
         ).remove()
     }
 }
+
+
+
+
+
