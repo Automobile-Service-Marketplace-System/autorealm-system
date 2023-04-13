@@ -120,6 +120,7 @@ if ($isInternal) {
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
+    
     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     // $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     $app->router->get(path: "/admin-dashboard/profile", callback: [DashboardController::class, 'getAdminDashboardProfile']);
@@ -127,6 +128,7 @@ if ($isInternal) {
     // $app->router->get(path: "/services/add-services", callback: [ServicesController::class, 'getAddServicesPage']);
     $app->router->post(path: "/services/add", callback: [ServicesController::class, 'AddServices']); //add the service to the database
     $app->router->post(path: "/services/update", callback: [ServicesController::class, 'UpdateServices']);
+    $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
     $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 
 // stock manager routes

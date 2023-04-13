@@ -114,4 +114,17 @@ class Service
             }
     }
 
+    public function deleteServiceById(int $id): bool|string
+    {
+        try {
+            $query = "UPDATE service SET is_discontinued = TRUE WHERE servicecode = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return "Error deleting service";
+        }
+    }
+
 }
