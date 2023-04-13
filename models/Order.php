@@ -229,24 +229,73 @@ class Order
         return $orderDetails;
     }
 
-    public function updateOrderStatus(int $orderNo, string $prepDateTime, string $status): bool|string
+    public function updateOrderStatus(int $orderNo, string $mode, string $status): bool|string|array
     {
+        $errors = $this->validateUpdateOrderStatusBody([
+            'mode' => $mode,
+            'status' => $status
+        ]);
+        if (!empty($errors)) {
+            return $errors;
+        }
+        $dateTime = $status ? date("Y-m-d H:i:s") : "NULL";
+        $columnName = "";
+        switch ($mode) {
+            case  "Prepared":
+                $columnName = "prepared_date_time";
+                break;
+            case "Delivery":
+                $columnName = "delivery_date_time";
+                break;
+            case "CourierConfirmed":
+                $columnName = "courier_confirmed_date_time";
+                break;
+        }
         try {
-            $stmt = $this->pdo->prepare("UPDATE `order` SET prepared_date_time = :prepDateTime, status = :status WHERE order_no = :order_no");
-            $stmt->bindValue(":status", $status);
-            $stmt->bindValue(":prepDateTime", $prepDateTime);
+            if (!$dateTime) {
+                $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
+            } else {
+                $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
+            }
             $stmt->bindValue(":order_no", $orderNo);
             $stmt->execute();
-            return $stmt->rowCount()>0;
-        }
-        catch (PDOException $e) {
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
             return "Order status update failed : " . $e->getMessage();
         }
 
+
+        private
+        function getPreviousStatus(string $status): string
+        {
+            return match ($status) {
+                "Delivery" => "Prepared",
+                "CourierConfirmed" => "Delivery",
+                default => "Paid",
+            };
+        }
+    }
+
+    private function validateUpdateOrderStatusBody(array $body): array
+    {
+        $errors = [];
+        if (!isset($body['mode'])) {
+            $errors[] = "Mode is required.";
+        }
+
+        if ($body['mode'] !== "Prepared" && $body['mode'] !== "Delivery" && $body['mode'] !== "CourierConfirmed") {
+            $errors[] = "Invalid mode.";
+        }
+
+        if (!isset($body['status'])) {
+            $errors[] = "Status is required.";
+        }
+        return $errors;
     }
 
 
-    public function markAsPrepared(int $orderId) {
+    public function markAsPrepared(int $orderId)
+    {
         $stmt = $this->pdo->prepare("UPDATE `order` SET status = 'Prepared' WHERE order_no = :order_no");
         $stmt->bindValue(":order_no", $orderId);
         $stmt->execute();
@@ -254,7 +303,6 @@ class Order
             'message' => 'Order marked as prepared successfully.'
         ];
     }
-
 
 
 }

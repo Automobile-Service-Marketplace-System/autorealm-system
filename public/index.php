@@ -146,7 +146,7 @@ if ($isInternal) {
     $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
     $app->router->get(path: "/orders", callback: [OrdersController::class, 'getOrdersPage']);
     $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderById']);
-    $app->router->post(path: "/orders/view", callback: [OrdersController::class, 'updateOrderStatus']);
+    $app->router->post(path: "/orders/set-status", callback: [OrdersController::class, 'updateOrderStatus']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsPage']);
 
 
