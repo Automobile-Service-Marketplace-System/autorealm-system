@@ -49,7 +49,7 @@ class OrdersController
             $status = $query["status"] ?? "Not Prepared";
 
             $orderModel = new Order();
-            $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int) $page, limit: (int) $limit, status: $status);
+            $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int)$page, limit: (int)$limit, status: $status);
 
             return $res->render(
                 view: "customer-dashboard-orders",
@@ -85,9 +85,9 @@ class OrdersController
                     "orderDetails" => $orderDetails
                 ],
                 layoutParams: [
-                        'title' => "Order Details #{$query["id"]}",
-                        'pageMainHeading' => "Order Details #{$query["id"]}",
-                        'employeeId' => $req->session->get("user_id")]);
+                    'title' => "Order Details #{$query["id"]}",
+                    'pageMainHeading' => "Order Details #{$query["id"]}",
+                    'employeeId' => $req->session->get("user_id")]);
         }
 
         return $res->redirect(path: "/login");
@@ -101,17 +101,26 @@ class OrdersController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $body = $req->body();
-            if(empty($body["order_no"])){
-                $res->setStatusCode(code:400);
+            $order_no = $body["order_no"] ?? null;
+            if (!$body["order_no"]) {
+                $res->setStatusCode(code: 400);
                 return $res->json([
                     "message" => "Bad Request"
                 ]);
             }
             $orderNo = $body["order_no"];
-            $prepDateTime = $body["prepared_date_time"];
+            $mode = $body["mode"];
             $status = $body["status"];
             $orderModel = new Order();
-            $result = $orderModel->updateOrderStatus($orderNo, $prepDateTime, $status);
+            $result = $orderModel->updateOrderStatus(orderNo: $orderNo, mode: $mode, status: $status);
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request",
+                    "errors" => $result
+                ]);
+            }
 
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
