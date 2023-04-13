@@ -330,7 +330,7 @@ class Employee
         return $errors;
     }
 
-    public function update(int $employee_id): bool|array
+    public function update(): bool|array
     {
         $errors = $this->validateUpdateFormBody();
         if (empty($errors)) {
