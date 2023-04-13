@@ -267,7 +267,7 @@ var_dump($orderDetails);
 ?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_prepared" id="is_prepared" <?php echo $isPreparedCheck?>>
+                             <input type="checkbox" name="is_prepared" id="is_prepared" <?php echo $isPreparedCheck?> data-orderno="<?=$orderDetails['order_no']?>">
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape prep-st-col" for="is_prepared">
                         Prepared

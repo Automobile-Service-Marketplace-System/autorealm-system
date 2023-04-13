@@ -66,6 +66,11 @@
     align-items: center;
 }
 
+.order-customer-details-row--column2{
+    text-align: right;
+}
+
+
 .order-deliver-details-row{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -122,6 +127,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     gap: 0.5rem;
     line-height: normal;
 }
