@@ -140,13 +140,16 @@ if ($isInternal) {
     $app->router->get(path: "/products/add", callback: [ProductsController::class, 'getAddProductsPage']);
     $app->router->post(path: "/products/add", callback: [ProductsController::class, 'AddProducts']);
     $app->router->post(path: "/products/delete", callback: [ProductsController::class, 'deleteProduct']);
+    $app->router->post(path: "/products/update", callback: [ProductsController::class, 'updateProducts']);
     $app->router->get(path: "/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
     $app->router->post(path: "/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
+    $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
     $app->router->get(path: "/orders", callback: [OrdersController::class, 'getOrdersPage']);
     $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderById']);
+    $app->router->post(path: "/orders/view", callback: [OrdersController::class, 'updateOrderStatus']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsPage']);
-    $app->router->post(path: "/products/update", callback: [ProductsController::class, 'updateProducts']);
-    $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
+
+
 
 
 //office staff routes

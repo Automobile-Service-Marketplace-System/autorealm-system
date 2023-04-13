@@ -1,6 +1,7 @@
 <?php
 /**
- *  @var object $employee
+ * @var object $employee
+ * @var array $errors
  */
 
 use app\components\FormItem;
@@ -24,9 +25,9 @@ $image = $employee->image ? $employee->image : "";
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit" method="post" enctype="multipart/form-data">
+    <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
         <p>Update the account of <?php echo $employee->f_name ?></p><br>
-        <b>Choose the account type</b> 
+        <b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
                 <input type="radio" id="security-officer" name="job_role" value="security_officer">
@@ -61,7 +62,7 @@ $image = $employee->image ? $employee->image : "";
                         name: "f_name",
                         hasError: $hasFNameError,
                         error: $hasFNameError ? $errors['f_name'] : "",
-                        value: $employee->f_name ?? ($body['f_name'] ?? null) ,
+                        value: $employee->f_name ?? ($body['f_name'] ?? null),
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
                     ?>
@@ -74,27 +75,13 @@ $image = $employee->image ? $employee->image : "";
                         name: "l_name",
                         hasError: $hasLNameError,
                         error: $hasLNameError ? $errors['l_name'] : "",
-                        value: $employee->l_name ?? ($body['l_name'] ?? null) ,
+                        value: $employee->l_name ?? ($body['l_name'] ?? null),
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
 
                     ?>
                 </div>
 
-                <div class="form-input">
-                    <?php
-                    // FormItem::render(
-                    //     id: "fi",
-                    //     label: "Full Name with initials",
-                    //     name: "fi",
-                    //     hasError: $hasFIError,
-                    //     error: $hasFIError ? $errors['fi'] : "",
-                    //     value: $employee->fi ?? ($body['fi'] ?? null) ,
-                    // );
-
-                    ?>
-                </div>
-        
                 <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
@@ -105,13 +92,13 @@ $image = $employee->image ? $employee->image : "";
                             type: "date",
                             hasError: $hasDOBError,
                             error: $hasDOBError ? $errors['dob'] : "",
-                            value: $employee->dob ?? ($body['dob'] ?? null) ,
+                            value: $employee->dob ?? ($body['dob'] ?? null),
                         );
 
                         ?>
                     </div>
 
-        
+
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -120,7 +107,7 @@ $image = $employee->image ? $employee->image : "";
                             name: "nic",
                             hasError: $hasNICError,
                             error: $hasNICError ? $errors['nic'] : "",
-                            value: $employee->NIC ?? ($body['NIC'] ?? null) ,
+                            value: $employee->NIC ?? ($body['NIC'] ?? null),
                             additionalAttributes: "pattern='^(\d{9}[xXvV]|\d{12})$'"
                         );
                         ?>
@@ -135,7 +122,7 @@ $image = $employee->image ? $employee->image : "";
                         name: "address",
                         hasError: $hasAddressError,
                         error: $hasAddressError ? $errors['address'] : "",
-                        value: $employee->address ?? ($body['address'] ?? null) ,
+                        value: $employee->address ?? ($body['address'] ?? null),
                     );
                     ?>
                 </div>
@@ -148,7 +135,7 @@ $image = $employee->image ? $employee->image : "";
                         name: "contact_no",
                         hasError: $hasContactNoError,
                         error: $hasContactNoError ? $errors['contact_no'] : "",
-                        value: $employee->contact_no ?? ($body['contact_no'] ?? null) ,
+                        value: $employee->contact_no ?? ($body['contact_no'] ?? null),
                     );
                     ?>
                 </div>
@@ -162,12 +149,11 @@ $image = $employee->image ? $employee->image : "";
                         type: "email",
                         hasError: $hasEmailError,
                         error: $hasEmailError ? $errors['email'] : "",
-                        value: $employee->email ?? ($body['email'] ?? null) ,
+                        value: $employee->email ?? ($body['email'] ?? null),
                     );
                     ?>
                 </div>
             </div>
-            
                 <div class="form-input">
                     <b>Photo</b>
                     <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
@@ -184,7 +170,6 @@ $image = $employee->image ? $employee->image : "";
                         }
                     </script>      
                 </div>
-
         </div>
         <div class="flex items-center justify-between my-4">
             <button type="reset" id='rst' class="btn">Cancel</button>
