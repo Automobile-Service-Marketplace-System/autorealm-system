@@ -1,7 +1,6 @@
 import {Modal} from "../components/Modal"
 import {htmlToElement} from "../utils";
 import Notifier from "../components/Notifier";
-import {easingEffects} from "chart.js/helpers";
 
 /**
  *
@@ -17,30 +16,6 @@ deleteProductButtons.forEach(deleteProductButton => {
         const productNameElement = productRow.querySelector('td:nth-child(2)')
         const productName = productNameElement.textContent
 
-        // const modelContent = document.createElement("div")
-        // const para = document.createElement("p")
-        // para.innerHTML = `Are you sure you want to delete "${productName}"?`
-        // modelContent.appendChild(para)
-        //
-        // const actions = document.createElement("div")
-        // actions.classList.add("button-area")
-        // const cancelBtn = document.createElement("button")
-        // actions.appendChild(cancelBtn)
-        // cancelBtn.innerHTML = "Cancel"
-        // cancelBtn.classList.add("btn", "btn--danger", "btn--thin", "modal-close-btn")
-        //
-        //
-        // const confirmBtn = document.createElement("button")
-        // actions.appendChild(confirmBtn)
-        // confirmBtn.innerHTML = "Confirm"
-        // confirmBtn.classList.add("btn", "btn--thin")
-        // confirmBtn.addEventListener("click", () => {
-        //     addProductForm.submit()
-        // })
-        //
-        // modelContent.appendChild(actions)
-        //
-
         const modalContent = htmlToElement(`
             <div>
                 <p>Are you sure you want to delete "${productName}"?</p>
@@ -53,13 +28,19 @@ deleteProductButtons.forEach(deleteProductButton => {
 
         const confirmBtn = modalContent.querySelector("button:last-child");
         confirmBtn.addEventListener("click", async () => {
+            console.log(`confirm for product ${deleteProductButton.parentElement.dataset.productid}`)
             try {
-                const result = await fetch("/stock-manager-dashbaord/products/delete", {
+                const result = await fetch("/products/delete", {
                     method: "POST",
                     body: JSON.stringify({
                         product_id: deleteProductButton.parentElement.dataset.productid
-                    })
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
+
+                console.log(await result.text())
 
                 // const
 
@@ -93,7 +74,6 @@ deleteProductButtons.forEach(deleteProductButton => {
                 })
             }
         })
-
 
         Modal.show({
             key: "delete-product",

@@ -33,7 +33,7 @@ $hasUnitPriceError = $hasErrors && isset($errors['unit_price']);
 ?>
 
 <div class="stock-manager-add-product-form">
-    <form action="/stock-manager-dashboard/products/add-products" method="post" class="stock-manager-add-products-form"
+    <form action="/products/add" method="post" class="stock-manager-add-products-form"
           enctype="multipart/form-data">
         <h2 class="product-form-subheading">Product Details</h2>
         <div class="stock-manager-add-products-form__product">

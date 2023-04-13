@@ -238,7 +238,7 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "stock_manager");
-            return $res->redirect(path: "/stock-manager-dashboard/products");
+            return $res->redirect(path: "/products");
         }
 
         return $res->render(view: "500", layout: "error", pageParams: [
@@ -272,7 +272,7 @@ class AuthenticationController
             } elseif ($job_role === "foreman") {
                 $path = "/jobs";
             } elseif ($job_role === "stock_manager") {
-                $path = "/stock-manager-dashboard/products";
+                $path = "/products";
             } elseif ($job_role === "office_staff_member") {
                 $path = "/customers";
             } elseif ($job_role === "technician") {
@@ -320,7 +320,7 @@ class AuthenticationController
                 } elseif ($result->job_role === "foreman") {
                     $path = "/jobs";
                 } elseif ($result->job_role === "stock_manager") {
-                    $path = "/stock-manager-dashboard/products";
+                    $path = "/products";
                 } elseif ($result->job_role === "office_staff_member") {
                     $path = "/customers";
                 } elseif ($result->job_role === "technician") {

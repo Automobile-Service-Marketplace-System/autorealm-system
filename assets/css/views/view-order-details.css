@@ -63,7 +63,87 @@
 .order-customer-details-row{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.order-deliver-details-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-deliver-details-row--column3{
+    text-align: right;
+}
+
+.order-status-details-row{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-status-details-row--column2{
+    grid-column: 2/5;
 
 }
 
 
+.form-item.form-item--checkbox--status {
+    /* controlling the position of the children */
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+
+.form-item.form-item--checkbox--status > input {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.form-item.form-item--checkbox--status > input:focus {
+    outline: none;
+    border: 1px solid transparent;
+}
+
+.status-btn-shape {
+    /* colors */
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: bolder;
+    /* shape */
+    border-radius: 0.5rem;
+    /* size */
+    padding: 0.25rem 1rem;
+    /* placement of children elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: normal;
+}
+
+
+.ntprep-st-col{
+    background-color: rgba(229, 48, 48, 0.2) !important;
+    color: var(--color-danger);
+}
+.prep-st-col{
+    background-color: rgba(250, 187, 65, 0.2) !important;
+    color: var(--color-warning);
+}
+.del-st-col{
+    background-color: rgba(0, 197, 138, 0.2) !important;
+    color: var(--color-success);
+}
+.cur-st-col{
+    background-color: rgba(97, 0, 255, 0.2) !important;
+    color: var(--color-primary);
+}
+.cus-st-col{
+    background-color: rgba(0, 83, 243, 0.25) !important;
+    color: var(--color-info);
+}

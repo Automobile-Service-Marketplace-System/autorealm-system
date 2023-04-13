@@ -39,7 +39,7 @@ supplierUpdateButtons.forEach(function (btn){
             <form class="stock-manager-update-supplier-form" id="stock-manager-update-supplier-form" method="post">
                      <div class="top-part-form">  
                             <h1 class="">Update Supplier Details</h1>
-                            <button class="modal-close-btn">
+                            <button class="modal-close-btn" type="button">
                                 <i class="fas fa-times"></i>
                             </button>
                      </div>
@@ -122,7 +122,7 @@ supplierUpdateButtons.forEach(function (btn){
             const formData = new FormData(e.target);
             try{
                 console.log("Inside try block")
-                const result = await fetch("/stock-manager-dashboard/supplier/update", {
+                const result = await fetch("/supplier/update", {
                     body: formData,
                     method: 'POST'
 

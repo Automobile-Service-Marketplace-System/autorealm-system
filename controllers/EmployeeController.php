@@ -103,7 +103,7 @@ class EmployeeController
         if ($result) {
             return $res->redirect("/employees");
         }
-
+ 
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
