@@ -120,13 +120,15 @@ if ($isInternal) {
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
-    $app->router->post(path: "/employees/view", callback: [EmployeeController::class, 'editEmployee']);
+    
     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
+    // $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     $app->router->get(path: "/admin-dashboard/profile", callback: [DashboardController::class, 'getAdminDashboardProfile']);
     $app->router->get(path: "/services", callback: [ServicesController::class, 'getServicesPage']); // load the service page
     // $app->router->get(path: "/services/add-services", callback: [ServicesController::class, 'getAddServicesPage']);
     $app->router->post(path: "/services/add", callback: [ServicesController::class, 'AddServices']); //add the service to the database
     $app->router->post(path: "/services/update", callback: [ServicesController::class, 'UpdateServices']);
+    $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
     $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 
 // stock manager routes
@@ -177,8 +179,11 @@ if ($isInternal) {
     $app->router->get(path: "/security-officer-dashboard/check-appointment", callback: [AppointmentsController::class, 'getCheckAppointmentPage']);
     $app->router->get(path: "/security-officer-dashboard/view-appointment", callback: [AppointmentsController::class, 'getSecurityAppointments']);
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'getCreateAdmittingReportPage']);
+    $app->router->post(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'addAdmittingReportPage']);
     $app->router->get(path: "/security-officer-dashboard/view-admitting-reports", callback: [AdmittingController::class, 'getAdmittingReportsDetails']);
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/view", callback: [AdmittingController::class, 'viewAdmittingReportDetails']);
 }
 // run the application
 $app->run();
+
+?>

@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Employee;
 
+
 class EmployeeController
 {
     public function getCreateEmployeePage(Request $req, Response $res): string
@@ -68,8 +69,11 @@ class EmployeeController
     public function getEditEmployeePage(Request $req, Response $res):string{
         $body = $req->body();
         $query=$req->query();
+        var_dump($query);
         $employeeModel=new Employee();
         $employee=$employeeModel->getEmployeeById((int)$query["employee_id"]);
+        // var_dump((int)$query["employee_id"]);
+        // $GLOBALS['emp_id']=(int)$query["employee_id"];
         return $res->render(view: "admin-dashboard-edit-employees", layout: "admin-dashboard", pageParams: [
             'employee' => $employee,
             'body' => $body

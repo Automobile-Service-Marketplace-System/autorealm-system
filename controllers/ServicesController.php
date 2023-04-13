@@ -141,4 +141,37 @@ class ServicesController
             ]);
         }
     }
+
+    public function deleteService(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
+
+            $body = $req->body();
+            if (empty($body['servicecode'])) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+            $servicetId = $body['servicecode'];
+            $serviceModel = new Service();
+            $result = $serviceModel->deleteServiceById(id: $serviceId);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Service deleted successfully"
+                ]);
+
+            }
+
+        }
+        return $res->redirect(path: "/login");
+    }
 }

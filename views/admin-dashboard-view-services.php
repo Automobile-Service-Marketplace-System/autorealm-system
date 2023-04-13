@@ -17,17 +17,17 @@ foreach ($services as $service) {
         "Name" => $service["Name"],
         "Description" => $service["Description"],
         "Price" => $service["Price"],
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
+        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem data-serviceid='{$service['ID']}'>
                         
-                            <button class='btn btn--rounded btn--warning update-service-btn' data-serviceId='{$service["ID"]}'>
+                            <button class='btn btn--rounded btn--warning update-service-btn'>
                                 <i class='fa-solid fa-pencil'></i>
                             </button>
-                            <button class='btn btn--rounded btn--danger'>
+                            <button class='btn btn--rounded btn--danger delete-service-btn'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
                       </div>"
 
-
+ 
     ];
 }
 ?>

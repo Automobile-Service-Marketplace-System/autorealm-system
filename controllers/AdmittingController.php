@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\core\Admitting;
 
 class AdmittingController{
     public function getCreateAdmittingReportPage(Request $req, Response $res):string{
@@ -38,5 +39,13 @@ class AdmittingController{
             ]);
         }
         return $res->redirect(path:"/login");
+    }
+
+    public function addAdmittingReportPage(Request $req, Response $res):string{
+        $body=$req->body(); 
+        $admittingReport=new Admitting($body);
+        $result=$admittingReport->addAdmittingReport();
+
+
     }
 }

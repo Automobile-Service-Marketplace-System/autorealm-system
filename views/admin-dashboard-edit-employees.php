@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var object $employee
  * @var array $errors
@@ -18,10 +17,15 @@ $hasContactNoError = $hasErrors && isset($errors['contact_no']);
 $hasEmailError = $hasErrors && isset($errors['email']);
 $hasImageError = $hasErrors && isset($errors['image']);
 
+
+
+$image = $employee->image ? $employee->image : "";
+
+
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post">
+    <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
         <p>Update the account of <?php echo $employee->f_name ?></p><br>
         <b>Choose the account type</b>
         <div class="role-input">
@@ -73,20 +77,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         error: $hasLNameError ? $errors['l_name'] : "",
                         value: $employee->l_name ?? ($body['l_name'] ?? null),
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
-                    );
-
-                    ?>
-                </div>
-
-                <div class="form-input">
-                    <?php
-                    FormItem::render(
-                        id: "fi",
-                        label: "Full Name with initials",
-                        name: "fi",
-                        hasError: $hasFIError,
-                        error: $hasFIError ? $errors['fi'] : "",
-                        value: $employee->fi ?? ($body['fi'] ?? null),
                     );
 
                     ?>
@@ -164,28 +154,26 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
             </div>
-
-            <div class="form-input">
-                <b>Photo</b>
-                <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
-                <img id="image-preview-update">
-                <script>
-                    function loadImage(event) {
-                        const file = event.target.files[0];
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = function () {
-                            const imagePreview = document.getElementById('image-preview-update');
-                            imagePreview.src = reader.result;
-                        };
-                    }
-                </script>
-            </div>
-
+                <div class="form-input">
+                    <b>Photo</b>
+                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                    <img id="image-preview-update" src="<?= $image ?>" style="object-fit: cover">
+                    <script>
+                        function loadImage(event) {
+                            var file = event.target.files[0];
+                            var reader = new FileReader();
+                            reader.readAsDataURL(file); 
+                            reader.onload = function() {
+                                var imagePreview = document.getElementById('image-preview-update');
+                                imagePreview.src = reader.result;
+                            };
+                        }
+                    </script>      
+                </div>
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="submit" id='rst' class="btn">Cansel</button>
-            <button type="reset" id='sm' class="btn btn--warning" href=>Update</button>
+            <button type="reset" id='rst' class="btn">Cancel</button>
+            <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
         </div>
     </form>
 </main>
