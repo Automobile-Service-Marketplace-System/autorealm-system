@@ -29,15 +29,24 @@
             <textarea name="" id="" cols="90" rows="3"></textarea>
 
             <p>Assign a Foreman</p>
-            <?php
-            foreach ($foremanAvailability as $foremans) {
-                echo "<div class='foreman-card'>
-                        $foremans[Name]
-                        Availability = ($foremans[Availability])
-                        <img src='$foremans[Image]' alt='$foremans[Name]' width='100' height='100'
+            <div class="select-foreman-cards">
+                <?php
+                foreach ($foremanAvailability as $foreman) {
+                    $availabilityClass = $foreman['Availability'] === 1 ? "indicator indicator--success" : "indicator"; 
+                    $availabilityPhrase = $foreman['Availability'] === 1 ? "Available" : "Busy"; 
+                    echo "<div class='foreman-card foreman-card--active'>
+                    <div class='foreman-card__header'>
+                    <p>
+                    $availabilityPhrase
+                    </p>
+                    <div class='$availabilityClass'></div>
+                    </div>
+                        <img class ='foreman-card-img' src='{$foreman['Image']}' alt='{$foreman['Name']}' width='100' height='100'>
+                        <p>{$foreman['Name']}</p>
                     </div>";
-            }
-            ?>
+                }
+                ?>
+            </div>
         </div>
 
         <div class="office-staff-btn">

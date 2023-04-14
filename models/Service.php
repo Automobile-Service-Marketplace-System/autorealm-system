@@ -30,9 +30,7 @@ class Service
                         service_name as Name,
                         description as Description, 
                         price as Price
-                        
-                    FROM service"
-
+                    FROM service WHERE is_discontinued = FALSE"
         )->fetchAll(PDO::FETCH_ASSOC);
 
     }
@@ -85,6 +83,47 @@ class Service
             } else {
                 return $errors;
             }
+    }
+
+    public function updateServices(): bool|array|string
+    {
+        $errors = $this->validateRegisterBody();
+            if (empty($errors)) {
+                $query = "UPDATE service SET 
+                        price = :price, 
+                        service_name = :service_name, 
+                        description = :description 
+                    WHERE servicecode = :servicecode";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":price", $this->body["price"]);
+                $statement->bindValue(":service_name", $this->body["service_name"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindvalue(":servicecode", $this->body["servicecode"]);
+                
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (PDOException $e) {
+                    return $e->getMessage();
+                }
+ 
+            } else {
+                return $errors;
+            }
+    }
+
+    public function deleteServiceById(int $code): bool|string
+    {
+        var_dump($code);
+        try {
+            $query = "UPDATE service SET is_discontinued = TRUE WHERE servicecode = :code";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":code", $code);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 
 }

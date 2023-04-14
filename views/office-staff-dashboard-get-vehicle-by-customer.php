@@ -20,6 +20,9 @@
 </div>
 <div class='vehicle-card-container'>
     <?php
+    if(empty($vehicles)) {
+        echo "<p class='no-data'>No vehicles for this customer</p>";
+    } else {
     foreach ($vehicles as $vehicle) {
         $manufacturedYear = explode('-', $vehicle['manufactured_year'])[0];
         echo "
@@ -51,6 +54,7 @@
                 </div>
             </div>
         ";
+        }
     }
     ?>
 </div>

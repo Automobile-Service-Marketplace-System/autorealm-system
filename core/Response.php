@@ -11,6 +11,8 @@ use JsonException;
 class Response
 {
 
+    public bool $isJson = false;
+
     /**
      * Use this method to set the response status code
      * @param int $code 
@@ -55,12 +57,15 @@ class Response
      * @param array $layoutParams
      * @return string
      */
+
     public function render(string $view, string $layout = "main", array $pageParams = [], array $layoutParams = []): string
     {
         $layoutContent = $this->getLayout($layout, $layoutParams);
         $viewContent = $this->getView($view, $pageParams);
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
+
+    
 
     /**
      * Use this method to send data as a JSON value
@@ -70,6 +75,7 @@ class Response
      */
     public function json(mixed $data): string
     {
+        $this->isJson = true;
         $this->setHeader(key: "Content-Type", value: "application/json");
         $this->setHeader(key: "charset", value: "utf-8");
         return json_encode($data, JSON_THROW_ON_ERROR);

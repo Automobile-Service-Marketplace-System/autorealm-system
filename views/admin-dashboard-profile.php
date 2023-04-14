@@ -1,13 +1,13 @@
- <?php
+<?php
 /**
  * @var object $admin
  */
 
 ?>
-    
-<div class="customer-profile">
+
+<div class="employee-profile">
     <img src="<?php echo $admin->image ?>" alt="<?php echo $admin->f_name . ' ' . $admin->l_name . '\'s'; ?>">
-    <div class="customer-profile__info">
+    <div class="employee-profile__info">
         <p>
             <strong>
                 First name
@@ -52,11 +52,11 @@
 
         </p>
     </div>
-    <div class="admin-profile__actions">
-        <button class="btn btn--danger" id="edit-admin-password">
+    <div class="employee-profile__actions">
+        <button class="btn btn--danger" id="edit-customer-password">
             <i class="fa-solid fa-lock"></i>
             Edit password</button>
-        <button class="btn btn--warning" id="edit-admin-profile">
+        <button class="btn btn--warning" id="edit-customer-profile">
             <i class="fa-solid fa-pencil"></i>
 
             Edit profile</button>

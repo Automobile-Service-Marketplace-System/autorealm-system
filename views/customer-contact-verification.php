@@ -1,6 +1,3 @@
-<!--<h1 class="verification__heading">To complete registration, please verify your Email and the contact number</h1>-->
-
-
 <div class="verification__block">
     <div class="verification__block-indicators">
         <p class="step-indicator">
@@ -22,6 +19,12 @@
                 <input type="number" name="" id="email-otp-5" min="0" max="9" maxlength="1">
                 <input type="number" name="" id="email-otp-6" min="0" max="9" maxlength="1">
             </div>
+            <p class="verification-error-element"></p>
+            <div class="verification__retry">
+                <button class="btn--text btn--info" id="retry-email" style="margin-inline: auto">
+                    Didn't receive or invalid OTP? Try again
+                </button>
+            </div>
         </div>
         <div class="verification__step verification__step--disabled" id="verification__step-2">
             <h2>A verification OTP was sent to the provided mobile number</h2>
@@ -33,6 +36,12 @@
                 <input type="number" name="" id="mobile-otp-4" min="0" max="9" maxlength="1">
                 <input type="number" name="" id="mobile-otp-5" min="0" max="9" maxlength="1">
                 <input type="number" name="" id="mobile-otp-6" min="0" max="9" maxlength="1">
+            </div>
+            <p class="verification-error-element"></p>
+            <div class="verification__retry">
+                <button class="btn--text btn--info" id="retry-mobile" style="margin-inline: auto">
+                    Didn't receive or invalid OTP? Try again
+                </button>
             </div>
         </div>
     </div>

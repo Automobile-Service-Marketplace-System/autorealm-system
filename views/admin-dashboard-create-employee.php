@@ -24,7 +24,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
 <main class="create-employee">
     <form action="/employees/add" method="post" enctype="multipart/form-data">
         <p>Add a new staff account, these accounts will allow your employees to<br> access their respective dashboards</p>
-        <b>Choose the account type</b>
+        <br><b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
                 <input type="radio" id="security-officer" name="job_role" value="security_officer">
@@ -49,8 +49,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
             </div>
         </div>
 
-        <div class="part">
-            <div class="part1">
+        <div class="page-format">
+            <div class="body-part">
                 <div class="form-input">
                     <?php
                     FormItem::render(
@@ -62,7 +62,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         value: $body['f_name'] ?? null,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
-
                     ?>
                 </div>
                 <div class="form-input">
@@ -76,7 +75,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         value: $body['l_name'] ?? null,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
-
                     ?>
                 </div>
 
@@ -94,7 +92,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
         
-                <div class="line">
+                <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -109,7 +107,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
                         ?>
                     </div>
-
         
                     <div class="form-input-small">
                         <?php
@@ -166,7 +163,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
 
-                <div class="line">
+                <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -194,17 +191,41 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         );
                         ?>
                     </div>
-
                 </div>
-                <button type="reset" id="rst" class="btn1">Reset</button>
+            
             </div>
             <div class="part2">
                 <div class="form-input">
                     <b>Photo</b>
                     <input type="file" name="image">
                 </div>
-                <button type="submit" id="sm" class="btn">Create Account</button>
             </div>
+        </div>
+        <div class="create-reset-buttons">
+            <button type="reset" id="rst" class="btn1">Reset</button>
+            <button type="submit" id="sm" class="btn2">Create Account</button>
+            </div>
+
+            <div class="form-input">
+                <b>Photo</b>
+                <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                <img id="image-preview">
+                <script>
+                    function loadImage(event) {
+                        var file = event.target.files[0];
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function() {
+                            var imagePreview = document.getElementById('image-preview');
+                            imagePreview.src = reader.result;
+                            };
+                        }
+                </script>
+            </div>
+        </div>
+        <div class="flex items-center justify-between my-4 ">
+            <button type="reset" id="rst" class="btn btn--danger">Reset</button>
+            <button type="submit" id="sm" class="btn">Create Account</button>
         </div>
     </form>
 </main>

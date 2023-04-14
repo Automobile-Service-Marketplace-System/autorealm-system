@@ -25,4 +25,24 @@ class InvoicesController
 
         return $res->redirect(path: "/login");
     }
+
+    public function getCreateInvoicePage(Request $req, Response $res) : string {
+
+        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $invoiceModel = new Invoice();
+            $invoices = $invoiceModel->getInvoices();
+
+            return $res->render(view: "office-staff-dashboard-generate-invoice-page", layout: "office-staff-dashboard",
+                pageParams: [''], 
+                layoutParams: [
+                    'title' => 'Generate Invoices',
+                    'pageMainHeading' => 'Generate Invoices',
+                    'officeStaffId' => $req->session->get('user_id')
+            ]);
+        }
+
+        return $res->redirect(path: "/login");
+    }
+
+
 }

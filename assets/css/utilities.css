@@ -15,6 +15,14 @@
     text-align: center;
 }
 
+
+.no-data {
+    text-align: center;
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.3);
+    margin-top: 10rem;
+}
+
 @media screen and (min-width: 576px) {
     .container {
         max-width: 540px;
@@ -410,4 +418,31 @@
 
 .ml-8 {
     margin-left: 2rem;
+}
+
+
+.rotating-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+}
+
+
+.rotating-icon--primary {
+    color: var(--color-primary);
+}
+
+.rotating-icon--success {
+    color: var(--color-success);
+}
+
+.rotating-icon--warning {
+    color: var(--color-warning);
+}
+
+.rotating-icon--danger {
+    color: var(--color-danger);
+}
+
+.rotating-icon--info {
+    color: var(--color-info);
 }

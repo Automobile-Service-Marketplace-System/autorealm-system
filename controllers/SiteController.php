@@ -96,4 +96,33 @@ class SiteController
             'customerId' => null,
         ]);
     }
+
+    public function getServicesPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get("user_id");
+            if ($customerId) {
+                return $res->render(view: "site-services", pageParams: [
+                    "is_authenticated" => $req->session->get("is_authenticated"),
+                ], layoutParams: [
+                    'customerId' => $customerId,
+                    'title' => 'Our Services',
+                ]);
+            }
+
+            return $res->render(view: "site-services", pageParams: [
+                "is_authenticated" => false,
+            ], layoutParams: [
+                'title' => 'Our Services',
+                'customerId' => null,
+            ]);
+        }
+
+        return $res->render(view: "site-services", pageParams: [
+            "is_authenticated" => false,
+        ], layoutParams: [
+            'title' => 'Our Services',
+            'customerId' => null,
+        ]);
+    }
 }

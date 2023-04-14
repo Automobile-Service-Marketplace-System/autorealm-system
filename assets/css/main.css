@@ -60,13 +60,22 @@
 @import "views/admin-dashboard-employees.css";
 @import "views/overview.css";
 @import "views/admin-overview.css";
+@import "views/create-admitting-reports.css";
 @import "views/office-staff-dashboard-overview.css";
-@import "views/view-appointment";
+@import "views/view-appointment.css";
 @import "views/view-reviews.css";
 @import "views/view-order-details.css";
+@import "views/view-admitting-reports.css";
+@import "views/office-staff-dashboard-generate-invoice-page.css";
+@import "views/cart-checkout.css";
+@import "views/all-jobs.css";
+@import "views/assigned-job.css";
+@import "views/update-service.css";
+@import "views/update-products.css";
+@import "views/update-supplier.css";
 
 
-body {
+body{
   font-family: "Nunito", sans-serif;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
