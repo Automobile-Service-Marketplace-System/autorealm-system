@@ -31,7 +31,7 @@ class Reviews
                         r.text as Review, 
                         r.rating as Rating, 
                         p.name as Product, 
-                        CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+                        CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name'
                        
 
                     FROM review r 

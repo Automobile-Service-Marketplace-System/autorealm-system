@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array $reviews
+ */
+
+use app\utils\DevOnly;
+
+DevOnly::prettyEcho($reviews);
+?>
+
 <main class="reviews-grid">
     <section class="review-titles reviews-row">
         <div class="review-productName">
