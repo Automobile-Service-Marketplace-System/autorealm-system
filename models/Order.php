@@ -245,7 +245,7 @@ class Order
                 $columnName = "prepared_date_time";
                 break;
             case "Delivery":
-                $columnName = "delivery_date_time";
+                $columnName = "shipped_date_time";
                 break;
             case "CourierConfirmed":
                 $columnName = "courier_confirmed_date_time";

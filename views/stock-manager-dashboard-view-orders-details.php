@@ -172,7 +172,7 @@
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if ($orderDetails['status'] == 'Not Prepared') {
+                        if ($orderDetails['status'] == 'Paid') {
                             echo "N/A";
                         } else {
                             echo $orderDetails['prepared_date_time'];
@@ -193,7 +193,7 @@
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if ($orderDetails['status'] == 'Not Prepared' || $orderDetails['status'] == 'Prepared') {
+                        if ($orderDetails['status'] == 'Paid' || $orderDetails['status'] == 'Prepared') {
                             echo "N/A";
                         } else {
                             echo $orderDetails['shipped_date_time'];
