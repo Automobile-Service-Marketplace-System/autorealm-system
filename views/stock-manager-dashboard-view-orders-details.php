@@ -4,7 +4,7 @@
  */
 
 
-var_dump($orderDetails);
+//var_dump($orderDetails);
 ?>
 
 <main class="order-details-grid">
@@ -196,7 +196,7 @@ var_dump($orderDetails);
                         if ($orderDetails['status'] == 'Not Prepared' || $orderDetails['status'] == 'Prepared') {
                             echo "N/A";
                         } else {
-                            echo $orderDetails['dispatched_date_time'];
+                            echo $orderDetails['shipped_date_time'];
                         }
                         ?>
                     </span>
@@ -283,7 +283,7 @@ var_dump($orderDetails);
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
 
-                             <input type="checkbox" name="is_delivery" id="is_delivery" <?php echo $isShippedCheck ?>>
+                             <input type="checkbox" name="is_delivery" id="is_delivery" <?php echo $isShippedCheck ?> data-orderno="<?= $orderDetails['order_no'] ?>" >
 
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape del-st-col" for="is_delivery">
@@ -299,8 +299,7 @@ var_dump($orderDetails);
                 ?>
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
-                             <input type="checkbox" name="is_cur_confirmed"
-                                    id="is_cur_confirmed" <?php echo $isCourCheck ?>>
+                             <input type="checkbox" name="is_cur_confirmed" id="is_cur_confirmed" <?php echo $isCourCheck ?> data-orderno="<?= $orderDetails['order_no'] ?>">
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape cur-st-col" for="is_cur_confirmed">
                         Confirmed by Courier
