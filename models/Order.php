@@ -245,28 +245,25 @@ class Order
                 $columnName = "prepared_date_time";
                 break;
             case "Delivery":
-                $columnName = "delivery_date_time";
+                $columnName = "shipped_date_time";
                 break;
             case "CourierConfirmed":
                 $columnName = "courier_confirmed_date_time";
                 break;
         }
+        $mode = $status ? $mode : $this->getPreviousStatus($mode);
         try {
-            if (!$dateTime) {
-                $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
-            } else {
-                $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
-            }
+            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
             $stmt->bindValue(":order_no", $orderNo);
             $stmt->execute();
             return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
             return "Order status update failed : " . $e->getMessage();
         }
+    }
 
 
-        private
-        function getPreviousStatus(string $status): string
+    private function getPreviousStatus(string $status): string
         {
             return match ($status) {
                 "Delivery" => "Prepared",
@@ -274,7 +271,7 @@ class Order
                 default => "Paid",
             };
         }
-    }
+
 
     private function validateUpdateOrderStatusBody(array $body): array
     {
@@ -291,17 +288,6 @@ class Order
             $errors[] = "Status is required.";
         }
         return $errors;
-    }
-
-
-    public function markAsPrepared(int $orderId)
-    {
-        $stmt = $this->pdo->prepare("UPDATE `order` SET status = 'Prepared' WHERE order_no = :order_no");
-        $stmt->bindValue(":order_no", $orderId);
-        $stmt->execute();
-        return [
-            'message' => 'Order marked as prepared successfully.'
-        ];
     }
 
 
