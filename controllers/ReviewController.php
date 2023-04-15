@@ -6,18 +6,20 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Product;
 use app\models\Reviews;
+use app\utils\DevOnly;
 
 class ReviewController
 {
     public function getReviewsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
-//            $reviewModel = new Reviews();
-//            $reviews = $reviewModel->getReviews();
-
+            $reviewModel = new Reviews();
+            $reviews = $reviewModel->getReviews();
+           // DevOnly::prettyEcho($reviews);
             if($req->session->get("user_role") === "stock_manager"){
                 return $res->render(view: "stock-manager-dashboard-view-reviews", layout: "stock-manager-dashboard",
-                pageParams: [],
+                pageParams:
+                    ["reviews" => $reviews],
                 layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
             }
 
