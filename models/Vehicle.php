@@ -183,14 +183,15 @@ class Vehicle
         if (strlen($this->body['engine_no']) == 0) {
             $errors['engine_no'] = 'Engine No must not be empty.';
         } else {
-            $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no AND vin != :old_vin";
+            $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no AND engine_no != :old_engine_no";
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
             $statement->bindValue(":engine_no", $this->body["engine_no"]);
-            $statement->bindValue(":old_vin", $this->body["old_vin"]);
+            $statement->bindValue(":old_engine_no", $this->body["old_engine_no"]);
 
             $statement->execute();
-
+            $vehicle = $statement->fetch();
+            
             if ($vehicle) {
                 $errors['engine_no'] = 'Engine No already in use.';
             }
@@ -199,13 +200,14 @@ class Vehicle
         if (strlen($this->body['reg_no']) == 0) {
             $errors['reg_no'] = 'Registration No must not be empty.';
         } else {
-            $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no AND vin != :old_vin";
+            $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no AND reg_no != :old_reg_no";
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
             $statement->bindValue(":reg_no", $this->body["reg_no"]);
-            $statement->bindValue(":old_vin", $this->body["old_vin"]);
+            $statement->bindValue(":old_reg_no", $this->body["old_reg_no"]);            
 
             $statement->execute();
+            $vehicle = $statement->fetch();
 
             if ($vehicle) {
                 $errors['reg_no'] = 'Registration No already in use.';

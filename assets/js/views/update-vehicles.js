@@ -101,11 +101,13 @@ updateCustomerButton.forEach(function (btn) {
                 <label for='reg_no'>Registration No<sup>*</sup></label>
                 <input type='text' name='reg_no' id='reg_no' placeholder='' required  value='${RegNo}'>
         </div>
+        <input style="display: none" name='old_reg_no' id='old_reg_no' value='${RegNo}'>
 
         <div class='form-item'>
                 <label for='engine_no'>Engine No<sup>*</sup></label>
                 <input type='text' name='engine_no' id='engine_no' placeholder='' required  value='${EngineNo}'>      
         </div>
+        <input style="display: none" name='old_engine_no' id='old_engine_no' value='${EngineNo}'>
 
         <div class='form-item'>
                 <label for='manufactured_year'>Manufactured Year<sup>*</sup></label>
@@ -222,6 +224,12 @@ updateCustomerButton.forEach(function (btn) {
 
     updateVehicleForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if(updateVehicleForm.classList.contains("update-vehicle-form--error")){
+        updateVehicleForm.querySelectorAll(".form-item").forEach((inputWrapper)=>{
+          inputWrapper.classList.remove("form-item--error")
+          inputWrapper.querySelector("small")?.remove()
+        })
+      }
       const formData = new FormData(e.target);
       try {
         const result = await fetch("/vehicles/update", {
@@ -229,6 +237,7 @@ updateCustomerButton.forEach(function (btn) {
           method: "POST",
         });
         if (result.status === 400) {
+          updateVehicleForm?.classList.add("update-vehicle-form--error");
           const resultBody = await result.json();
           for (const inputName in resultBody.errors) {
             const inputWrapper = updateVehicleForm.querySelector(

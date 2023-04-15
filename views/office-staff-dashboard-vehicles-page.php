@@ -25,7 +25,7 @@ foreach ($vehicles as $vehicle) {
         "Customer ID" => $vehicle["Customer ID"],
 
         "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--warning update-vehicle-btn' data-vin='{$vehicle["VIN"]}' data-modelId='{$vehicle["Model ID"]}' data-brandId='{$vehicle["Brand ID"]}' data-customerId='{$vehicle["Customer ID"]}' >
+                            <button class='btn btn--rounded btn--warning update-vehicle-btn' data-vin='{$vehicle["VIN"]}' data-reg_no='{$vehicle["Registration No"]}' data-engine_no='{$vehicle["Engine No"]}' data-modelId='{$vehicle["Model ID"]}' data-brandId='{$vehicle["Brand ID"]}' data-customerId='{$vehicle["Customer ID"]}' >
                                 <i class='fa-solid fa-pencil'></i>
                             </button>
                         </div>"
