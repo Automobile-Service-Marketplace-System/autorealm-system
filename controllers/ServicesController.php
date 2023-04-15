@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Model;
 use app\models\Service;
+use JsonException;
 
 class ServicesController
 {
@@ -140,5 +141,45 @@ class ServicesController
                 "customerId" => $customerId
             ]);
         }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function deleteService(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
+
+            $body = $req->body();
+            $service_code = $body['service_code'] ?? null;
+            if (!$service_code) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+            $serviceModel = new Service();
+            $result = $serviceModel->deleteServiceById(code: $service_code);
+            var_dump($result);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error",
+                    "error" => $result
+                ]);
+            } else if (!$result) {
+                $res->setStatusCode(code: 404);
+                return $res->json([
+                    "message" => "Service not found"
+                ]);
+            } else {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Service deleted successfully"
+                ]);
+            }
+        }
+        return $res->redirect(path: "/login");
     }
 }

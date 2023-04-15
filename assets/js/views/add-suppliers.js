@@ -108,7 +108,7 @@ addSupplierForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/stock-manager-dashboard/suppliers/add`, {
+        const result = await fetch(`/suppliers/add`, {
             body: formData,
             method: 'POST'
         })

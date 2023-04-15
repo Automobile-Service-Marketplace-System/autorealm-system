@@ -5,6 +5,7 @@ employeeCards.forEach(card => {
     card.addEventListener('click', () => {
         console.log(card.dataset)
         const employeeID = card.dataset.employeeid;
+        `<input type="number" value="${employeeID}" name="employee_id" style="display: none" readonly> `
         const url = `/employees/view?employee_id=${employeeID}`;
         location.href = url;
      })

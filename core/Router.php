@@ -33,8 +33,8 @@ class Router
 
     public function resolve(): string
     {
-        $path = $this->request->path();
-        $method = $this->request->method();
+        $path = $this->request->path();  //current path
+        $method = $this->request->method(); //current method
         $callback = $this->routes[$method][$path] ?? false;
 
 

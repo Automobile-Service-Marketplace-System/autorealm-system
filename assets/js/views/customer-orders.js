@@ -1,4 +1,10 @@
 /**
+ * @type {HTMLSelectElement | null}
+ */
+const orderStatusDropdown = document.querySelector("#customer-order-status");
+
+
+/**
  *
  * @type {NodeListOf<HTMLParagraphElement>}
  */
@@ -16,3 +22,13 @@ itemListToggles.forEach((itemListToggle) => {
         }
     })
 })
+
+if(orderStatusDropdown) {
+    orderStatusDropdown.addEventListener("change", (e) => {
+        let selectedValue = orderStatusDropdown.value;
+        const url = new URL(document.URL);
+        const urlSearchParams = url.searchParams
+        urlSearchParams.set('status', selectedValue);
+        location.href = url.toString();
+    })
+}
