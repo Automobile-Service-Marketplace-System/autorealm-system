@@ -170,6 +170,7 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
     $app->router->get("/overview", [OverviewController::class, 'getOfficeStaffOverviewPage']);
     $app->router->get("/invoices/create", [InvoicesController::class, 'getCreateInvoicePage']);
+    $app->router->post("/vehicles/update", [VehiclesController::class, 'updateVehicle']);
 
 
 //security officer roots
