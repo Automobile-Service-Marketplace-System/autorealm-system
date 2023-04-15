@@ -12,12 +12,12 @@ supplierUpdateButtons.forEach(function (btn){
     btn.addEventListener("click", function(){
         //console.log(btn.dataset)
 
-        const supplierId = btn.dataset.supplierid
-        const supplierName = btn.dataset.suppliername
-        const address = btn.dataset.address
-        const salesManager = btn.dataset.salesmanager
-        const email = btn.dataset.email
-        const regNo = btn.dataset.registrationno
+        const supplierId = btn.parentElement.dataset.supplierid
+        const supplierName = btn.parentElement.dataset.suppliername
+        const address = btn.parentElement.dataset.address
+        const salesManager = btn.parentElement.dataset.salesmanager
+        const email = btn.parentElement.dataset.email
+        const regNo = btn.parentElement.dataset.registrationno
 
         const supplierRow = btn.parentElement.parentElement.parentElement
 
