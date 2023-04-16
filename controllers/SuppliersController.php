@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Supplier;
+use JsonException;
 
 class SuppliersController
 {
@@ -78,5 +79,42 @@ class SuppliersController
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function deleteSuppliers(Request $req, Response $res):string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $body= $req->body();
+            if(empty($body['supplier_id'])){
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message"=> "Bad Request"
+                ]);
+            }
+            $supplier_id=$body['supplier_id'];
+            $supplierModel=new Supplier();
+            $result=$supplierModel->deleteSupplierById(id: $supplier_id);
+
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Product deleted successfully"
+                ]);
+
+            }
+        }
+
+        return $res->redirect(path: "/login");
     }
 }

@@ -20,12 +20,13 @@ deleteSupplierButtons.forEach(deleteSupplierButton =>{
 
         const confBtn = modalContent.querySelector("button:last-child")
         confBtn.addEventListener("click", async() =>{
-            console.log(`confirm for product ${deleteSupplierButton.parentElement.dataset.productid}`)
+            console.log(`confirm for product ${deleteSupplierButton.parentElement.dataset.supplierid}`)
             try{
+                console.log("inside try")
                  const result = await fetch("/suppliers/delete",{
                      method: "POST",
                      body: JSON.stringify({
-                         supplier_id: deleteSupplierButton.parentElement.dataset.supplierId
+                         supplier_id: deleteSupplierButton.parentElement.dataset.supplierid
                      }),
                      headers:{
                          'Content-Type': 'application/json'
@@ -52,6 +53,7 @@ deleteSupplierButtons.forEach(deleteSupplierButton =>{
                         })
                         break;
                     default:
+                        console.log("inside default")
                         break;
                 }
             }
