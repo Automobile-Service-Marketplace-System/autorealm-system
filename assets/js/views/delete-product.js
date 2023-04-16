@@ -51,6 +51,10 @@ deleteProductButtons.forEach(deleteProductButton => {
                             type: "success",
                             header: "Success",
                         })
+                        setTimeout(() => {
+                            location.reload()
+                        }, 800)
+
                         break;
 
                     case 500:
