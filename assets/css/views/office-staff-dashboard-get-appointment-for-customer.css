@@ -1,0 +1,133 @@
+.create-appointment {
+
+}
+
+/*.create-appointment__header {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+/*.create-appointment h2 {*/
+/*    font-weight: bold;*/
+/*    font-size: 1.2rem;*/
+/*}*/
+
+.create-appointment-form {
+    width: 50vw;
+}
+
+
+.create-appointment-form__top {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.create-appointment-form__top .form-item:first-child {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.create-appointment-form__top .form-item:nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+.create-appointment-form__top .form-item:nth-child(3) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+.create-appointment-form__top .form-item:nth-child(4) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.create-appointment-form__bottom {
+    display: flex;
+    gap: 1rem;
+}
+
+
+
+.date-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+
+.date-label svg {
+    color: var(--color-primary);
+}
+
+.date-selector__date {
+    margin-top: 1rem;
+    width: 50%;
+}
+
+.date-selector__date-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    background-color: var(--color-primary);
+    border-radius: 0.5rem;
+}
+
+
+.date-selector__date-header div {
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.date-selector__date-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.date-selector__date-body div {
+    padding: 0.25rem;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+
+.timeslot-selector {
+    margin-top: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+
+.timeslot-selector div {
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    outline: rgba(0, 0, 0, 0.1) solid 2px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+
+.create-appointment__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.create-appointment__last  {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

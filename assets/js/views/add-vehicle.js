@@ -7,10 +7,18 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer")
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
-<button class="modal-close-btn">
-    <i class="fas fa-times"></i>
-</button>
+const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
+
+<div class="add-vehicle-form_title" style="margin-top: -1rem">
+    <h1 class="office-staff-add-customer-form__vehicle__title">
+        Add New Vehicle
+    </h1>
+
+    <button class="modal-close-btn">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
 <div class="office-staff-add-customer-form__vehicle">
 
     <div class='form-item '>
@@ -42,7 +50,7 @@ const addVehicleForm = htmlToElement(`<form action="/office-staff-dashboard/vehi
       </div><div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
-                <option value='1' selected>Motorcycle</option><option value='2' >Motor Tricycle</option><option value='3' >Motor Vehicle</option><option value='4' >Motor Lorry</option><option value='5' >Motor Coach</option><option value='6' >Special Purpose Vehicle</option>
+                <option value='Bike' selected>Bike</option><option value='Car' >Car</option><option value='Jeep' >Jeep</option><option value='Van' >Van</option><option value='Lorry' >Lorry</option><option value='Bus' >Bus</option><option value='Other'>Other</option>
             </select>
             
       </div><div class='form-item '>
@@ -86,9 +94,9 @@ addVehicleForm?.querySelector("#add-vehicle-modal-btn")?.addEventListener("click
 
     const template =  `<div>
                         <h3>Are you sure you want to add this vehicle?</h3>
-                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem">
-                            <button class="btn btn--danger modal-close-btn">Cancel</button>                        
-                            <button class="btn modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
     const element = htmlToElement(template);
@@ -109,7 +117,7 @@ addVehicleForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/office-staff-dashboard/vehicles/add/by-customer?id=${params.id}`, {
+        const result = await fetch(`/vehicles/add/by-customer?id=${params.id}`, {
             body: formData,
             method: 'POST'
         })
@@ -161,15 +169,3 @@ addVehicleButton?.addEventListener("click", () => {
 })
 
 
-window.addEventListener('load', () => {
-    const success = params['success']
-    if (success) {
-        Notifier.show({
-            closable: true,
-            header: 'Success',
-            text: "Vehicle added successfully",
-            type: 'success',
-            duration: 5000
-        })
-    }
-})

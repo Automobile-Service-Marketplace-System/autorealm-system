@@ -6,26 +6,42 @@ use app\core\Request;
 use app\core\Response;
 use app\models\JobCard;
 use app\models\InspectionCondition;
+use app\models\Appointment;
+use app\models\Foreman;
 
 class JobsController
 {
 
     public function getJobsPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "foreman" || $req->session->get("user_role") === "admin")) {
 
             $jobCardModel = new JobCard();
             // get all job cards
             $jobCards = $jobCardModel->getAllJobsByForemanID(foremanId: $req->session->get("user_id"));
-            return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", pageParams: [
-                'jobs' => $jobCards,
-            ], layoutParams: [
-                'title' => 'Assigned Jobs',
-                'pageMainHeading' => 'Assigned Jobs',
-                'foremanId' => $req->session->get("user_id"),
-            ]);
+
+            if ($req->session->get("user_role") === "foreman") {
+                return $res->render(view: "foreman-dashboard-jobs", layout: "foreman-dashboard", pageParams: [
+                    'jobs' => $jobCards,
+                ], layoutParams: [
+                    'title' => 'Assigned Jobs',
+                    'pageMainHeading' => 'Assigned Jobs',
+                    'foremanId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            if ($req->session->get("user_role") === "admin") {
+                return $res->render(view: "foreman-dashboard-jobs", layout: "admin-dashboard", pageParams: [
+                    'jobs' => $jobCards,
+                ], layoutParams: [
+                    'title' => 'Assigned Jobs',
+                    'pageMainHeading' => 'Assigned Jobs',
+                    'employeeId' => $req->session->get("user_id"),
+                ]);
+            }
+
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
     public function viewJobPage(Request $req, Response $res): string
@@ -54,7 +70,7 @@ class JobsController
                     "Head Lights",
                 ]
             ];
-            if(!$formCreated) {
+            if (!$formCreated) {
                 $suggestions = [];
             }
             return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", pageParams: [
@@ -67,7 +83,7 @@ class JobsController
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
 
@@ -89,14 +105,86 @@ class JobsController
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
     }
 
-    public function createInspectionReport(Request $req, Response $res) : string {
+    public function createInspectionReport(Request $req, Response $res): string
+    {
         echo "<pre>";
         var_dump($_POST);
         echo "</pre>";
         echo "hello";
         return "";
+    }
+
+    public function getCreateJobCardPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $query = $req->query();
+            $appointmentModel = new Appointment();
+            $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
+
+            $foremanModel = new Foreman();
+            $foremanInfo = $foremanModel->getForemanAvailability();
+
+            return $res->render(view: "office-staff-dashboard-jobcard-page", layout: "office-staff-dashboard",
+                pageParams: [
+                    "appointmentInfo" => $appointmentInfo,
+                    "foremanAvailability" => $foremanInfo
+                ],
+                layoutParams: [
+                    "title" => "Job Card",
+                    "pageMainHeading" => "Create a JobCard",
+                    'officeStaffId' => $req->session->get('user_id')
+                ]);
+        }
+
+        return $res->redirect(path: "/employee-login");
+
+    }
+
+    public function getListOfJobsPage(Request $req, Response $res): string
+    {
+        $userRole = $req->session->get("user_role");
+        if (($userRole === "foreman" || $userRole === "admin" || $userRole === "technician") && $req->session->get("is_authenticated")) {
+
+            if ($req->session->get("user_role") === "foreman") {
+                return $res->render(view: "foreman-dashboard-all-jobs", layout: "foreman-dashboard", layoutParams: [
+                    'title' => 'All Jobs',
+                    'pageMainHeading' => 'All Jobs',
+                    'foremanId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            if ($req->session->get("user_role") === "technician") {
+                return $res->render(view: "foreman-dashboard-all-jobs", layout: "technician-dashboard", layoutParams: [
+                    'title' => 'All Jobs',
+                    'pageMainHeading' => 'All Jobs',
+                    'technicianId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            if ($req->session->get("user_role") === "admin") {
+                return $res->render(view: "foreman-dashboard-all-jobs", layout: "admin-dashboard", layoutParams: [
+                    'title' => 'All Jobs',
+                    'pageMainHeading' => 'All Jobs',
+                    'employeeId' => $req->session->get("user_id"),
+                ]);
+            }
+
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function getAssignedJobOverviewPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
+            return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+                'title' => 'Current Job',
+                'pageMainHeading' => "You are working on, ",
+                'technicianId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/login");
     }
 }

@@ -3,29 +3,29 @@
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git@github.com-personal:Automobile-Service-Marketplace-System/autorealm-system.git"
+    "url": "git@github.com:Automobile-Service-Marketplace-System/autorealm-system.git"
   },
   "author": "Nethsara Sandeepa Elvitigala <nethsarasandeepaelvitigala@gmail.com>",
   "license": "proprietary",
   "devDependencies": {
-    "chart.js": "^4.0.1",
+    "chart.js": "^4.2.1",
     "chokidar": "^3.5.3",
-    "concurrently": "^7.5.0",
+    "concurrently": "^8.0.1",
     "dotenv": "^16.0.3",
     "rollup-plugin-brotli": "^3.1.0",
-    "socket.io": "^4.5.3",
-    "vite": "^3.2.3",
+    "socket.io": "^4.6.1",
+    "vite": "^4.2.1",
     "vite-plugin-compress": "^2.1.1"
   },
   "scripts": {
-    "dev:server": "php -S localhost:3000 -t public",
     "dev:client": "vite build --watch=true",
     "dev:reloader": "node ./scripts/autoreload.mjs",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:reloader\"",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:reloader\"",
     "build": "vite build"
   },
   "dependencies": {
-    "html5-qrcode": "^2.3.4",
+    "@stripe/stripe-js": "^1.52.1",
+    "html5-qrcode": "^2.3.7",
     "qr-scanner": "^1.4.2"
   },
   "description": "PHP full stack application for the AutoRealm system",

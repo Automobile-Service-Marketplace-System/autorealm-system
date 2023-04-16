@@ -2,7 +2,7 @@
 /**
  * @var string $title
  * @var string $pageMainHeading
- * @var object $technician
+ * @var int $technicianId
  */
 
 use app\components\EmployeeProfileDropdown;
@@ -33,28 +33,16 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/technician-dashboard/products">
-                <i class="fa-solid fa-box"></i>
+            <a href="/assigned-job">
+                <i class="fa-solid fa-clock"></i>
                 <span>
-                    Jobs
+                    Assigned
                 </span>
             </a>
-            <a href="/technician-dashboard/orders">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/all-jobs">
+                <i class="fa-solid fa-file"></i>
                 <span>
-                    Orders
-                </span>
-            </a>
-            <a href="/technician-dashboard/suppliers">
-                <i class="fa-solid fa-users"></i>
-                <span>
-                    Suppliers
-                </span>
-            </a>
-            <a href="/technician-dashboard/reviews">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>
-                    Reviews
+                    All Jobs
                 </span>
             </a>
 
@@ -67,7 +55,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employee: $technician, role: "Technician", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $technicianId, employeeType: "technician", id: 1);
             ?>
         </header>
 

@@ -26,7 +26,7 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 </span> -->
 
 <div class="office-staff-add-customer">
-    <form action="/office-staff-dashboard/vehicles/add/by-customer" method="post" class="office-staff-add-customer-form"
+    <form action="/vehicles/add/by-customer" method="post" class="office-staff-add-customer-form"
         enctype="multipart/form-data">
 
         <div class="office-staff-add-customer-form__vehicle">
@@ -103,12 +103,13 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
                 // error: $hasFNameError ? $errors['vehicle_type'] : "",
                 value: "1",
                 options: [
-                    "1" => "Motorcycle",
-                    "2" => "Motor Tricycle",
-                    "3" => "Motor Vehicle",
-                    "4" => "Motor Lorry",
-                    "5" => "Motor Coach",
-                    "6" => "Special Purpose Vehicle"
+                    "1" => "Bike",
+                    "2" => "Car",
+                    "3" => "Jeep",
+                    "4" => "Van",
+                    "5" => "Lorry",
+                    "6" => "Bus",
+                    "7" => "Other"
                 ]
             );
 

@@ -1,0 +1,141 @@
+.cart-heading {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cart {
+    background-color: white;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
+}
+
+
+.cart-item {
+    border-bottom: 1px solid rgba(var(--text-secondary), 0.3);
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-right: 1rem;
+}
+
+
+.cart-item__info {
+    min-width: 40%;
+}
+
+
+.cart-item__info h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+.cart-item__info div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.cart-item__info div p {
+    font-size: 0.9rem;
+    color: rgba(var(--color-text-secondary), 0.4);
+}
+
+
+.cart-item__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 30%;
+}
+
+.cart-action {
+    width: 36px;
+    height: 36px;
+    line-height: normal;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.cart-action:hover {
+    transform: translateY(-2px);
+}
+
+
+.cart-item__total {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.cart-item__total svg {
+    color: var(--color-danger);
+}
+
+.success {
+    color: var(--color-success);
+}
+
+
+.danger {
+    color: var(--color-danger);
+}
+
+
+#cart-link {
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+
+#cart-link:hover {
+    transform: translateY(-2px);
+}
+
+.cart-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.cart-error p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.cart-error svg {
+    font-size: 4rem;
+    color: var(--color-warning);
+}
+
+.cart-error a {
+    font-size: 1.2rem;
+    text-decoration: underline;
+    color: var(--color-info);
+}

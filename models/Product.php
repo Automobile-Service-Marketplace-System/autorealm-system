@@ -33,9 +33,14 @@ class Product
                         p.item_code as ID, 
                         p.name as Name, 
                         c.name as Category,
+                        c.category_id as CategoryID,
                         m.model_name as Model,
+                        m.model_id as ModelID,
                         b.brand_name as Brand,
+                        b.brand_id as BrandID,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.image as Image,
+                        p.description as Description,
                         p.quantity as Quantity
 
                     FROM product p 
@@ -43,16 +48,14 @@ class Product
                         INNER JOIN model m on p.model_id = m.model_id 
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
-            
+                    WHERE p.is_discontinued = FALSE
                     ORDER BY p.item_code"
-
         )->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
     public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
     {
-        $whereClause = $count ? "LIMIT $count" : "";
+        $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
         $products = $this->pdo->query(
             "SELECT 
@@ -62,7 +65,8 @@ class Product
                         m.model_name as Model,
                         b.brand_name as Brand,
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
-                        p.quantity as Quantity
+                        p.quantity as Quantity,
+                        p.image as Image
 
                     FROM product p 
                         
@@ -70,7 +74,7 @@ class Product
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
             
-                    WHERE  p.quantity > 0 ORDER BY p.item_code $whereClause $pageClause"
+                    WHERE  p.quantity > 0 ORDER BY p.item_code $limitClause $pageClause"
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
@@ -193,6 +197,67 @@ class Product
         }
 
     }
+
+
+    public function updateProduct(): bool|array|string
+    {
+        //check for the errors
+//        $errors = $this->validateAddProducts();
+        $errors = [];
+        if (empty($errors)) {
+//            try {
+//                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
+//                $imagesAsJSON = json_encode($imageUrls);
+//            } catch (Exception $e) {
+//                $errors["image"] = $e->getMessage();
+//            }
+            if (empty($errors)) {
+                $query = "UPDATE product SET 
+                    name = :name, 
+                    category_id = :category_id, 
+                    product_type = :product_type, 
+                    brand_id = :brand_id, 
+                    model_id = :model_id, 
+                    description = :description, 
+                    price = :price 
+                   
+                    WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":name", $this->body["name"]);
+                $statement->bindValue(":category_id", $this->body["category_id"]);
+                $statement->bindValue(":product_type", $this->body["product_type"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":description", $this->body["description"]);
+                $statement->bindValue(":price", $this->body["selling_price"] * 100);
+                $statement->bindValue(":item_code", $this->body["item_code"]);
+
+                //$statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                try {
+                    $statement->execute();
+                    return true;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            } else {
+                return $errors;
+            }
+        }
+    }
+
+    public function deleteProductById(int $id): bool|string
+    {
+        try {
+            $query = "UPDATE product SET is_discontinued = TRUE WHERE item_code = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return "Error deleting product";
+        }
+    }
+
 }
 
 

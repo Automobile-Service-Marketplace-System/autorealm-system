@@ -16,55 +16,64 @@ class SiteController
         $productModel = new Product();
         $result = $productModel->getProductsForHomePage(count: 12, page: null);
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
-            $customerModel = new Customer();
-            $customer = $customerModel->getCustomerById($req->session->get("user_id"));
+            $customerId = $req->session->get("user_id");
 
-            if ($customer) {
+            if ($customerId) {
                 return $res->render(view: "site-home", layout: "landing", pageParams: [
                     'products' => $result['products'],
                     "is_authenticated" => $req->session->get("is_authenticated"),
                 ], layoutParams: [
-                    'customer' => $customer,
+                    'customerId' => $customerId,
                 ]);
             }
 
             return $res->render(view: "site-home", layout: "landing", pageParams: [
                 'products' => $result['products'],
                 "is_authenticated" => false,
+            ], layoutParams: [
+                'customerId' => null,
             ]);
+        }
+
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
+            return $res->redirect(path: "/login");
         }
 
         return $res->render(view: "site-home", layout: "landing", pageParams: [
             'products' => $result['products'],
             "is_authenticated" => false,
+        ], layoutParams: [
+            'customerId' => null,
         ]);
     }
 
     public function getProductsPage(Request $req, Response $res): string
     {
         $query = $req->query();
-        $limit = isset($query['limit']) ? (int)$query['limit'] : 12;
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
         $page = isset($query['page']) ? (int)$query['page'] : 1;
         $productModel = new Product();
         $result = $productModel->getProductsForHomePage(count: $limit, page: $page);
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
-            $customerModel = new Customer();
-            $customer = $customerModel->getCustomerById($req->session->get("user_id"));
-
-            if ($customer) {
-                return $res->render(view: "site-products", layout: "main", pageParams: [
+            $customerId = $req->session->get("user_id");
+            if ($customerId) {
+                return $res->render(view: "site-products", pageParams: [
                     'products' => $result['products'],
                     'total' => $result['total'],
                     'limit' => $limit,
                     'page' => $page,
                     "is_authenticated" => $req->session->get("is_authenticated"),
                 ], layoutParams: [
-                    'customer' => $customer,
+                    'customerId' => $customerId,
                     'title' => 'Products',
                 ]);
             }
 
-            return $res->render(view: "site-products", layout: "main", pageParams: [
+            if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
+                return $res->redirect(path: "/login");
+            }
+
+            return $res->render(view: "site-products", pageParams: [
                 'products' => $result['products'],
                 'total' => $result['total'],
                 'limit' => $limit,
@@ -72,10 +81,11 @@ class SiteController
                 "is_authenticated" => false,
             ], layoutParams: [
                 'title' => 'Products',
+                'customerId' => null,
             ]);
         }
 
-        return $res->render(view: "site-products", layout: "main", pageParams: [
+        return $res->render(view: "site-products", pageParams: [
             'products' => $result['products'],
             'total' => $result['total'],
             'limit' => $limit,
@@ -83,6 +93,36 @@ class SiteController
             "is_authenticated" => false,
         ], layoutParams: [
             'title' => 'Products',
+            'customerId' => null,
+        ]);
+    }
+
+    public function getServicesPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get("user_id");
+            if ($customerId) {
+                return $res->render(view: "site-services", pageParams: [
+                    "is_authenticated" => $req->session->get("is_authenticated"),
+                ], layoutParams: [
+                    'customerId' => $customerId,
+                    'title' => 'Our Services',
+                ]);
+            }
+
+            return $res->render(view: "site-services", pageParams: [
+                "is_authenticated" => false,
+            ], layoutParams: [
+                'title' => 'Our Services',
+                'customerId' => null,
+            ]);
+        }
+
+        return $res->render(view: "site-services", pageParams: [
+            "is_authenticated" => false,
+        ], layoutParams: [
+            'title' => 'Our Services',
+            'customerId' => null,
         ]);
     }
 }

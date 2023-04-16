@@ -25,4 +25,16 @@ class Foreman
         return $stmt->fetchObject();
     }
 
+    public function getForemanAvailability():array{
+        return $this->pdo->query(
+            "SELECT
+                concat(f_name, ' ', l_name) as Name,
+                is_available as Availability,
+                image as Image            
+            FROM foreman f
+            inner join employee e on e.employee_id =f.employee_id"
+            
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

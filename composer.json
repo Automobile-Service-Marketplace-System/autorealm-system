@@ -1,40 +1,53 @@
 {
-    "name": "autorealm/website",
-    "description": "A PHP fullstack web application for AutoRealm vehicle service center",
-    "type": "project",
-    "authors": [
-        {
-            "name": "Nethsara Sandeepa Elvitigala",
-            "email": "nethsarasandeepaelvitigala@gmail.com",
-            "homepage": "https://github.com/Nethrenial",
-            "role": "member"
-        },
-        {
-            "name": "Avishka Sathyanjana",
-            "email": "baavishka@gmail.com",
-            "homepage": "https://github.com/avishka-sathyanjana",
-            "role": "member"
-        },
-        {
-            "name": "Tharushi Chethana Gunathilaka",
-            "email": "ththarushi3@gmal.com",
-            "homepage": "https://github.com/Tharu0",
-            "role": "member"
-        },
-        {
-            "name": "Supun Dilshan",
-            "email": "dilshansenevi99@gmail.com",
-            "homepage": "https://github.com/DilshanSenewirathne",
-            "role": "member"
-        }
-    ],
-    "require": {
-        "vlucas/phpdotenv": "^5.5",
-        "ext-pdo": "*"
+  "name": "autorealm/website",
+  "description": "A PHP fullstack web application for AutoRealm vehicle service center",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Nethsara Sandeepa Elvitigala",
+      "email": "nethsarasandeepaelvitigala@gmail.com",
+      "homepage": "https://github.com/Nethrenial",
+      "role": "member"
     },
-    "autoload": {
-        "psr-4": {
-            "app\\": "./"
-        }
+    {
+      "name": "Avishka Sathyanjana",
+      "email": "baavishka@gmail.com",
+      "homepage": "https://github.com/avishka-sathyanjana",
+      "role": "member"
+    },
+    {
+      "name": "Tharushi Chethana Gunathilaka",
+      "email": "ththarushi3@gmal.com",
+      "homepage": "https://github.com/Tharu0",
+      "role": "member"
+    },
+    {
+      "name": "Supun Dilshan",
+      "email": "dilshansenevi99@gmail.com",
+      "homepage": "https://github.com/DilshanSenewirathne",
+      "role": "member"
     }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.5",
+    "ext-pdo": "*",
+    "sendinblue/api-v3-sdk": "8.x.x",
+    "guzzlehttp/guzzle": "^7.5",
+    "stripe/stripe-php": "^10.7",
+    "notifylk/notify-php": "*@dev"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/notifylk/notify-php.git"
+    }
+  ]
 }
