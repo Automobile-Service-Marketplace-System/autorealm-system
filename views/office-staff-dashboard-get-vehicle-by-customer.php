@@ -3,10 +3,19 @@
 /**
  * @var array $vehicles
  * @var object $customer
+ * @var string | null $error
  */
 
 // var_dump($vehicles);
+
+if(isset($error)) {
+    echo "<p class='error'>$error</p>";
+    return;
+}
+
+
 ?>
+
 
 
 <div class="add-vehicle-for-customer">

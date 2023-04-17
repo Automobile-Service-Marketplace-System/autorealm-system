@@ -46,7 +46,7 @@ class OrdersController
             $query = $req->query();
             $page = $query["page"] ?? 1;
             $limit = $query["limit"] ?? 4;
-            $status = $query["status"] ?? "Not Prepared";
+            $status = $query["status"] ?? "Prepared";
 
             $orderModel = new Order();
             $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int)$page, limit: (int)$limit, status: $status);

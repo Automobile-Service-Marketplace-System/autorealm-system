@@ -1,5 +1,4 @@
 .maintenance-inspection-form {
-    margin-top: 1rem;
 }
 
 .maintenance-inspection-form__section {
@@ -15,10 +14,36 @@
 
 .maintenance-inspection-form__section-items {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 2rem;
 }
 
+#save-inspection-report-draft {
+    position: fixed;
+    bottom: 4rem;
+    left: 5.5rem;
+    background-color: var(--color-warning);
+    color: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.05);
+    font-size: 1.5rem;
+}
+
+@media screen and (min-width: 600px) {
+    .maintenance-inspection-form__section-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .maintenance-inspection-form__section-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
 .maintenance-inspection-form__section-item p {
     margin-bottom: 0.5rem;

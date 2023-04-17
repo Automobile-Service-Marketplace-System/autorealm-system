@@ -64,7 +64,8 @@ class Router
         }
 
         if ($callback === false) {
-            return "Not found";
+            $this->response->setStatusCode(code: 404);
+            return "Not Found";
         }
         if (is_string($callback)) {
             return $this->response->render($callback);

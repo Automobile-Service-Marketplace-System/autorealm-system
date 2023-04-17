@@ -203,7 +203,7 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
-            return $res->redirect(path: "/office-staff-dashboard/profile");
+            return $res->redirect(path: "/profile");
         }
         {
             return $res->render(view: "500", layout: "error", pageParams: [
