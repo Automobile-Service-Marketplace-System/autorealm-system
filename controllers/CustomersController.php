@@ -133,4 +133,36 @@ class CustomersController
         ]);
     }
 
+    public function updateCustomer(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $service = new Customer($body);
+        $result = $service->updateCustomer();
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Customer updated successfully"
+            ]);
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+    }
+
 }

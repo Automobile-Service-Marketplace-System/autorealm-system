@@ -22,7 +22,7 @@ foreach($customers as $customer) {
                                         <a href='/vehicles/by-customer?id={$customer['ID']}' class='btn btn--rounded btn--info'>
                                             <i class='fa-solid fa-car-side'></i>
                                          </a>
-                                         <button class='btn btn--rounded btn--warning'>
+                                         <button class='btn btn--rounded btn--warning update-customer-btn' data-customerID='{$customer['ID']}'>
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
                                          <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn data-name='{$customer["Full Name"]}' data-id='{$customer["ID"]}'>
@@ -46,16 +46,3 @@ foreach($customers as $customer) {
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
-<script>
-    <?php
-    try {
-        $servicesString = json_encode($services, JSON_THROW_ON_ERROR);
-    } catch (JsonException $e) {
-        $servicesString = "[]";
-    }
-
-    ?>
-    const services = <?= $servicesString ?>;
-   
-    localStorage.setItem("services", JSON.stringify(services));
-</script>
