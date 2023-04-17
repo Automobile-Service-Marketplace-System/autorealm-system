@@ -42,12 +42,14 @@ class Product
                         p.image as Image,
                         p.description as Description,
                         p.quantity as Quantity
+                        
 
                     FROM product p 
                         
                         INNER JOIN model m on p.model_id = m.model_id 
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
+                     
                     WHERE p.is_discontinued = FALSE
                     ORDER BY p.item_code"
         )->fetchAll(PDO::FETCH_ASSOC);
@@ -257,15 +259,15 @@ class Product
             return "Error deleting product";
         }
     }
-
-    public function restockProduct():bool|array|string
-    {
-        $errors = [];
-
-        if(empty($errors)){
-
-        }
-    }
+//
+//    public function restockProduct():bool|array|string
+//    {
+//        $errors = [];
+//
+//        if(empty($errors)){
+//
+//        }
+//    }
 
 }
 
