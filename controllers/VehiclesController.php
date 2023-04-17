@@ -20,7 +20,7 @@ class VehiclesController
             $modelModel = new Model();
             $brandModel = new Brand();
 
-            if($req->session->get("user_role") === "office_staff_member"){
+            if ($req->session->get("user_role") === "office_staff_member") {
                 return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
                     pageParams: [
                         "vehicles" => $vehicles,
@@ -30,17 +30,17 @@ class VehiclesController
                         'title' => 'Vehicles',
                         'pageMainHeading' => 'Vehicles',
                         'officeStaffId' => $req->session->get('user_id')
-                ]);
+                    ]);
             }
 
-            if($req->session->get("user_role") === "admin"){
+            if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "admin-dashboard",
                     pageParams: ["vehicles" => $vehicles],
                     layoutParams: [
                         'title' => 'Vehicles',
                         'pageMainHeading' => 'Vehicles',
                         'employeeId' => $req->session->get('user_id')
-                ]);
+                    ]);
             }
 
         }
@@ -54,7 +54,16 @@ class VehiclesController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID((int)$query["id"]);
+            $vehicles = $vehicleModel->getVehiclesByID(customer_id: (int)$query["id"]);
+            if (is_string($vehicles)) {
+                return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
+                    pageParams: ["error" => $vehicles],
+                    layoutParams: [
+                        'title' => 'Vehicles',
+                        'pageMainHeading' => 'Vehicles',
+                        'officeStaffId' => $req->session->get('user_id')
+                    ]);
+            }
             $customerModel = new Customer();
             $customer = $customerModel->getCustomerByID((int)$query["id"]);
 
@@ -70,18 +79,32 @@ class VehiclesController
         return $res->redirect(path: "/login");
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function getVehiclesByCustomerAsJSON(Request $req, Response $res): string
     {
 
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID((int)$query["id"]);
+            $vehicles = $vehicleModel->getVehicleNamesByID(customer_id: (int)$query["id"]);
+            if (is_string($vehicles)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: ["error" => $vehicles]);
+            }
 
-            $req->$ve
+            if (empty($vehicles)) {
+                $res->setStatusCode(code: 404);
+                return $res->json(data: ["error" => "No vehicles found"]);
+            }
+
+            $res->setStatusCode(code: 200);
+            return $res->json(data: $vehicles);
         }
 
-        return $res->redirect(path: "/login");
+        $res->setStatusCode(code: 401);
+        return $res->json(data: ["error" => "Unauthorized"]);
     }
 
     public function getCustomerVehiclePage(Request $req, Response $res): string
@@ -89,7 +112,7 @@ class VehiclesController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $customerId = $req->session->get('user_id');
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID($customerId);
+            $vehicles = $vehicleModel->getVehiclesByID($customerId);
 
             return $res->render(view: "customer-dashboard-vehicles", layout: "customer-dashboard",
                 pageParams: ["vehicles" => $vehicles],
@@ -109,7 +132,7 @@ class VehiclesController
 
             $query = $req->query();
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicleByID((int)$query["id"]);
+            $vehicles = $vehicleModel->getVehiclesByID((int)$query["id"]);
 
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();

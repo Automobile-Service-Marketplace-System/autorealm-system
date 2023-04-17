@@ -40,7 +40,7 @@ class EmployeeProfileDropdown
             case "office_staff":
                 $employeeModel = new OfficeStaff();
                 $employee = $employeeModel->getOfficeStaffById($employeeId);
-                $profileLink = "/office-staff-dashboard/profile";
+                $profileLink = "/profile";
                 break;
             case "stock_manager":
                 $employeeModel = new StockManager();

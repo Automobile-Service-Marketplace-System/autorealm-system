@@ -30,7 +30,7 @@ class AppointmentsController
 //            $appointments = $appointmentModel->getAppointments();
 
             return $res->render(view: "security-officer-dashboard-view-appointment", layout: "security-officer-dashboard", pageParams: [
-               ], layoutParams: [
+            ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'securityOfficerId' => $req->session->get("user_id"),
@@ -88,8 +88,8 @@ class AppointmentsController
     public function getOfficeAppointmentsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            $appointmenteModel = new Appointment();
-            $appointments = $appointmenteModel->getAllAppointments();
+            $appointmentModel = new Appointment();
+            $appointments = $appointmentModel->getAllAppointments();
 
             return $res->render(view: "office-staff-dashboard-appointments-page", layout: "office-staff-dashboard",
                 pageParams: [
@@ -104,6 +104,38 @@ class AppointmentsController
 
         return $res->redirect(path: "/login");
 
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function getTimeSlots(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "customer")) {
+            $appointmentModel = new Appointment();
+            $date = $req->query()["date"] ?? null;
+            $isValidDate = preg_match("/^\\d{4}-\\d{2}-\\d{2}$/", $date);
+            if (!$date || !$isValidDate) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "message" => "Bad request"
+                ]);
+            }
+            $result = $appointmentModel->getTimeslotsByDate(date: $date);
+            if(is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "message" => $result
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json($result);
+        }
+
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            "message" => "Unauthorized"
+        ]);
     }
 
 }
