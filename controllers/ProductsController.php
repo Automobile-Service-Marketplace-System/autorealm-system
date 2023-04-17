@@ -202,6 +202,10 @@ class ProductsController
             ]);
         }
 
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+
     }
 
 
@@ -273,4 +277,6 @@ class ProductsController
         }
         return $res->redirect(path: "/login");
     }
+
+
 }

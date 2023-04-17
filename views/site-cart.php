@@ -6,18 +6,23 @@
  * @var  int $total
  */
 
+$isCartEmpty = empty($cartItems);
+$cartEmptyClass = $isCartEmpty ? 'cart-error' : '';
 
-if (empty($cartItems)) {
-    echo "<div class='cart-error'>
+echo "<div class='$cartEmptyClass cart-error--none' style='display: none'>
                     <i class='fas fa-exclamation-triangle'></i> 
                     <p>
                     Your cart is empty. <br> <a href='/products'>Add some products</a>
                     </p>
                </div>";
-} else {
+if (!$isCartEmpty) {
     echo "
-    <h2 class='cart-heading'>Your cart</h2>
-    <div class='cart'>";
+        <h2 class='cart-heading'>Your cart</h2>
+        <div class='cart'>
+    ";
+
+
+    $specialNoteAboutStock = "";
 
     foreach ($cartItems as $cartItem) {
         try {
@@ -27,7 +32,7 @@ if (empty($cartItems)) {
         }
         $price = "Rs. " . ($cartItem['price'] / 100) . ".00";
         $priceAmount = $cartItem['price'] / 100;
-        $stockNotice = $cartItem['availableAmount'] > 0 ? "<span class='success'>In stock</span>" : "<span class='danger'>Out of stock</span>";
+        $stockNotice = $cartItem['availableAmount'] > 0 ? ($cartItem['availableAmount'] < $cartItem['amount'] ? "<span class='warning'>In stock (Only {$cartItem['availableAmount']} available)<sup style='color: var(--color-warning);'>2</sup></span>" : "<span class='success'>In stock</span>") : "<span class='danger'>Out of stock<sup style='color: var(--color-danger);'>1</sup></span>";
 
         $totalPrice = "Rs. " . (($cartItem['price'] * $cartItem['amount']) / 100) . ".00";
         echo "<div class='cart-item' id='cart-item-{$cartItem['item_code']}' data-name='{$cartItem['name']}'>
@@ -62,11 +67,14 @@ if (empty($cartItems)) {
                 </div>
             </div>";
     }
-    echo "</div>";
-    echo "<div class='flex items-center justify-end mt-4'>
+    echo "</div>
+          <div class='flex items-center justify-between mt-4' id='cart-actions-row'>
+          <div>
+          <p>1. When you check out, you won't be able to order this item</p>
+          <p>2. When you checkout, you'll only be able to check out available amount of stock</p>
+          <p></p>
+</div>
             <a href='/cart/checkout' class='btn btn--danger'>Checkout</a>
          </div>
-    ";
+";
 }
-
-?>

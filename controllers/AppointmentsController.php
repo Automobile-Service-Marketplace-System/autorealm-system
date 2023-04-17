@@ -80,7 +80,7 @@ class AppointmentsController
                     ]);
             }
 
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
 
         }
     }
@@ -102,7 +102,7 @@ class AppointmentsController
                 ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 

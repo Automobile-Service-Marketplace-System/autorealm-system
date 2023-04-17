@@ -65,6 +65,7 @@ if (!$isInternal) {
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginCustomer']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutCustomer']);
     $app->router->get(path: "/cart", callback: [ShoppingCartController::class, 'getCartPage']);
+    $app->router->get(path: "/cart/item-quantity", callback: [ShoppingCartController::class, 'getProductItemQuantity']);
     $app->router->post(path: "/cart/add", callback: [ShoppingCartController::class, 'addToCustomerShoppingCart']);
     $app->router->post(path: "/cart/update", callback: [ShoppingCartController::class, 'updateCartItem']);
     $app->router->post(path: "/cart/delete", callback: [ShoppingCartController::class, 'deleteCartItem']);
@@ -107,6 +108,8 @@ if ($isInternal) {
     $app->router->get(path: "/all-jobs", callback: [JobsController::class, 'getListOfJobsPage']);
     $app->router->get(path: "/inspection-reports/create", callback: [JobsController::class, 'getCreateInspectionReportPage']);
     $app->router->post(path: "/inspection-reports/create", callback: [JobsController::class, 'createInspectionReport']);
+    $app->router->post(path: "/inspection-reports/create-draft", callback: [JobsController::class, 'createInspectionReportDraft']);
+
 // technician routes
 
     $app->router->get(path: "/technician-dashboard/overview", callback: [DashboardController::class, 'getTechnicianDashboardOverview']);
