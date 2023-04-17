@@ -151,4 +151,30 @@ class SuppliersController
 
         return $res->redirect(path: "/login");
     }
+
+    public function getSuppliersAsJSON(Request $req, Response $res): string
+    {
+        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $supplierModel = new Supplier();
+            $suppliersList = $supplierModel->getSuppliersOptList();
+
+            if (is_string($suppliersList)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: ["error" => $suppliersList]);
+            }
+
+            else if (empty($suppliersList)) {
+                $res->setStatusCode(code: 404);
+                return $res->json(data: ["error" => "No vehicles found"]);
+            }
+
+            $res->setStatusCode(code: 200);
+            return $res->json(data: $suppliersList);
+        }
+
+        $res->setStatusCode(code: 401);
+        return $res->json(data: ["error" => "Unauthorized"]);
+
+    }
 }

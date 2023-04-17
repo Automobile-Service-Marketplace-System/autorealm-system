@@ -259,15 +259,16 @@ class Product
             return "Error deleting product";
         }
     }
-//
-//    public function restockProduct():bool|array|string
-//    {
-//        $errors = [];
-//
-//        if(empty($errors)){
-//
-//        }
-//    }
+
+
+    public function restockProduct():bool|array|string
+    {
+        $errors = [];
+
+        if(empty($errors)){
+
+        }
+    }
 
 }
 
