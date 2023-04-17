@@ -26,7 +26,7 @@ if (empty($appointments)) {
             "Date and Time" => $appointment["Date & Time"],
             "Time ID" => $appointment["Time ID"],
             "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='/office-staff-dashboard/create-jobCard?id={$appointment['Appointment ID']}' class='btn btn--rounded btn--info'>
+                            <a href='/create-job-card?id={$appointment['Appointment ID']}' class='btn btn--rounded btn--info'>
                             <i class='fa-solid fa-wrench'></i>                            </a>
                             <button class='btn btn--rounded btn--danger'>
                                 <i class='fa-solid fa-pencil'></i>
