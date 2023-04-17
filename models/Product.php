@@ -42,12 +42,14 @@ class Product
                         p.image as Image,
                         p.description as Description,
                         p.quantity as Quantity
+                        
 
                     FROM product p 
                         
                         INNER JOIN model m on p.model_id = m.model_id 
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
+                     
                     WHERE p.is_discontinued = FALSE
                     ORDER BY p.item_code"
         )->fetchAll(PDO::FETCH_ASSOC);
@@ -258,13 +260,43 @@ class Product
         }
     }
 
+
     public function restockProduct():bool|array|string
     {
         $errors = [];
-
+        $dateTimeStamp = date("Y-m-d H:i:s");
         if(empty($errors)){
+            $query = "INSERT INTO stockpurchasereport
+                       (
+                            item_code, date_time, supplier_id, unit_price ,amount
+                        )
+                        VALUES 
+                        (
+                            :product_id, :sup_date, :supplier_id, :unit_price, :stock_quantity
+                        )";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":product_id", $this->body["product_id"]);
+            $statement->bindValue(":sup_date", $this->body["sup_date"]);
+            $statement->bindValue(":supplier_id", $this->body["supplier_id"]);
+            $statement->bindValue(":unit_price", $this->body["unit_price"] * 100);
+            $statement->bindValue(":stock_quantity", $this->body["stock_quantity"]);
+
+            try {
+                $statement->execute();
+
+                $query = "UPDATE product SET quantity = quantity + :stock_quantity WHERE item_code = :product_id";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":stock_quantity", $this->body["stock_quantity"]);
+                $statement->bindValue(":product_id", $this->body["product_id"]);
+                $statement->execute();
+                return true;
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
 
         }
+        return $errors;
     }
 
 }
