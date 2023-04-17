@@ -159,6 +159,7 @@ class SuppliersController
             $supplierModel = new Supplier();
             $suppliersList = $supplierModel->getSuppliersOptList();
 
+
             if (is_string($suppliersList)) {
                 $res->setStatusCode(code: 500);
                 return $res->json(data: ["error" => $suppliersList]);
