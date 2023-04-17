@@ -174,9 +174,10 @@ if ($isInternal) {
     $app->router->get("/office-staff-dashboard/create-jobCard", [JobsController::class, 'getCreateJobCardPage']);
     $app->router->get("/overview", [OverviewController::class, 'getOfficeStaffOverviewPage']);
     $app->router->get("/invoices/create", [InvoicesController::class, 'getCreateInvoicePage']);
+    $app->router->post("/customers/update", [CustomersController::class, 'updateCustomer']);
     $app->router->post("/vehicles/update", [VehiclesController::class, 'updateVehicle']);
 
-
+    
 //security officer roots
     $app->router->get(path: "/security-officer-login", callback: [AuthenticationController::class, 'getSecurityOfficerLoginPage']);
     $app->router->post(path: "/security-officer-login", callback: [AuthenticationController::class, 'loginSecurityOfficer']);
