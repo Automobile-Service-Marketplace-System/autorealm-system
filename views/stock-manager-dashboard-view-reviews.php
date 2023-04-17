@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array $reviews
+ */
+
+use app\utils\DevOnly;
+
+//DevOnly::prettyEcho($reviews);
+?>
+
 <main class="reviews-grid">
     <section class="review-titles reviews-row">
         <div class="review-productName">
@@ -12,53 +22,34 @@
         <div class="review-text">
             <h2>Review</h2>
         </div>
+        <div class="created-date-text">
+            <h2>Date Posted</h2>
+        </div>
 
     </section>
-    <section class="reviews-row review-card">
-        <div class="review-productName">
-            <p>Caltex Havoline Formula SAE 15W- 40</p>
-        </div>
-        <div class="review-cusName">
-            <p>Avishka Sathyanjana</p>
-        </div>
-        <div class="review-rating">
-            <p>4.5</p>
-        </div>
-        <div class="review-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum </p>
-        </div>
-    </section>
+
+    <?php
+    foreach ($reviews as $review) {
+
+        $review['Date Posted'] = date("d-m-Y", strtotime($review['Date Posted']));
+        ?>
 
     <section class="reviews-row review-card">
         <div class="review-productName">
-            <p>Caltex Havoline Formula SAE 15W- 40</p>
+            <p><?= $review['Product']?></p>
         </div>
         <div class="review-cusName">
-            <p>Avishka Sathyanjana</p>
+            <p><?= $review['Customer Name']?></p>
         </div>
         <div class="review-rating">
-            <p>4.5</p>
+            <p><?= $review['Rating']?></p>
         </div>
         <div class="review-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum </p>
+            <p><?= $review['Review']?></p>
         </div>
-    </section>
-
-    <section class="reviews-row review-card">
-        <div class="review-productName">
-            <p>Caltex Havoline Formula SAE 15W- 40</p>
-        </div>
-        <div class="review-cusName">
-            <p>Avishka Sathyanjana</p>
-        </div>
-        <div class="review-rating">
-            <p>4.5</p>
-        </div>
-        <div class="review-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum </p>
-        </div>
-    </section>
-
+        <div class="created-date-text">
+            <p><?= $review['Date Posted']?></p>    </section>
+    <?php } ?>
 
 </main>
 
