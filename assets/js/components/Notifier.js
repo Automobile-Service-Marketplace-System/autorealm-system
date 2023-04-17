@@ -249,7 +249,7 @@ export default class Notifier {
 
     /**
      * Show a notification to user
-     * @param {{header: string, text: string, type: string}} options
+     * @param {{ header?: string, text: string, duration?: number, closable?: boolean, type?: 'success' | 'danger' | 'warning' | 'info' | 'dark' | 'light' }} options
      */
     static show(options) {
         const notifier = Notifier.#createNotifier(options);

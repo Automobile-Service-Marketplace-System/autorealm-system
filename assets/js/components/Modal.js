@@ -122,7 +122,7 @@ export class Modal {
     static activeModals = []
 
     /**
-     * @param {{ content: string | HTMLElement, closable?: boolean, key: string   }} options
+     * @param {{ content: string | Element |HTMLElement, closable?: boolean, key: string   }} options
      */
     static show({closable, content, key}) {
         const modal = new ModalElement({closable: closable || closable === undefined, content, key});

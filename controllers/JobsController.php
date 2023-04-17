@@ -8,6 +8,7 @@ use app\models\JobCard;
 use app\models\InspectionCondition;
 use app\models\Appointment;
 use app\models\Foreman;
+use app\utils\DevOnly;
 
 class JobsController
 {
@@ -30,15 +31,15 @@ class JobsController
                 ]);
             }
 
-            if ($req->session->get("user_role") === "admin") {
-                return $res->render(view: "foreman-dashboard-jobs", layout: "admin-dashboard", pageParams: [
-                    'jobs' => $jobCards,
-                ], layoutParams: [
-                    'title' => 'Assigned Jobs',
-                    'pageMainHeading' => 'Assigned Jobs',
-                    'employeeId' => $req->session->get("user_id"),
-                ]);
-            }
+//            if ($req->session->get("user_role") === "admin") {
+//                return $res->render(view: "foreman-dashboard-jobs", layout: "admin-dashboard", pageParams: [
+//                    'jobs' => $jobCards,
+//                ], layoutParams: [
+//                    'title' => 'Assigned Jobs',
+//                    'pageMainHeading' => 'Assigned Jobs',
+//                    'employeeId' => $req->session->get("user_id"),
+//                ]);
+//            }
 
         }
         return $res->redirect(path: "/login");
@@ -91,14 +92,19 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            if (!$jobId) {
+                return $res->redirect(path: "/jobs");
+            }
             $conditionModel = new InspectionCondition();
             $conditions = $conditionModel->getConditions();
             $jobCardModel = new JobCard();
-            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["job_id"]);
+            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
 
             return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", pageParams: [
                 "conditions" => $conditions,
                 "vehicleDetails" => $result,
+                "jobId" => $jobId
             ], layoutParams: [
                 'title' => "Maintenance Inspection report for job #{$query['job_id']}",
                 'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
@@ -110,11 +116,35 @@ class JobsController
 
     public function createInspectionReport(Request $req, Response $res): string
     {
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
-        echo "hello";
-        return "";
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            var_dump($jobId);
+            if (!$jobId) {
+                return $res->redirect(path: "/jobs");
+            }
+            DevOnly::printToBrowserConsole($req->body());
+            return "";
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function createInspectionReportDraft(Request $req, Response $res) : string {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            var_dump($jobId);
+            if (!$jobId) {
+                return $res->redirect(path: "/jobs");
+            }
+//            DevOnly::printToBrowserConsole($req->body());
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Draft saved successfully",
+                "body" => $req->body()
+            ]);
+        }
+        return $res->redirect(path: "/login");
     }
 
     public function getCreateJobCardPage(Request $req, Response $res): string
@@ -139,7 +169,7 @@ class JobsController
                 ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 

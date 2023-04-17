@@ -1,5 +1,8 @@
 <?php
-// var_dump($appointmentInfo) 
+/**
+ * @var array $appointmentInfo
+ * @var array $foremanAvailability
+ */
 ?>
 
 <div class="appointment-info">
@@ -8,7 +11,7 @@
             Customer Name:
         </strong>
         <span>
-            <?php echo ($appointmentInfo[0]['Customer Name']) ?>
+            <?php echo($appointmentInfo[0]['Customer Name']) ?>
         </span>
     </p>
 
@@ -17,13 +20,14 @@
             Vehicle Reg No.:
         </strong>
         <span>
-            <?php echo ($appointmentInfo[0]['vehicle_reg_no']) ?>
+            <?php echo($appointmentInfo[0]['vehicle_reg_no']) ?>
         </span>
     </p>
 </div>
 
 <div class="office-staff-dashboard-create-jobCard-other-info">
-    <form action="office-staff-dashboard/create-jobCard" method="post" class="office-staff-dashboard/create-jobCard-form" enctype="multipart/form-data">
+    <form action="office-staff-dashboard/create-job-card" method="post"
+          class="office-staff-dashboard-create-job-card-form" enctype="multipart/form-data">
         <div class="assign-a-foreman">
             <p>Customer Observation:</p>
             <textarea name="" id="" cols="90" rows="3"></textarea>
@@ -32,8 +36,8 @@
             <div class="select-foreman-cards">
                 <?php
                 foreach ($foremanAvailability as $foreman) {
-                    $availabilityClass = $foreman['Availability'] === 1 ? "indicator indicator--success" : "indicator"; 
-                    $availabilityPhrase = $foreman['Availability'] === 1 ? "Available" : "Busy"; 
+                    $availabilityClass = $foreman['Availability'] === 1 ? "indicator indicator--success" : "indicator";
+                    $availabilityPhrase = $foreman['Availability'] === 1 ? "Available" : "Busy";
                     echo "<div class='foreman-card foreman-card--active'>
                     <div class='foreman-card__header'>
                     <p>

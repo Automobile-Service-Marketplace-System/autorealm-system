@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
+use PDOException;
 
 class Appointment
 {
@@ -71,7 +72,8 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAppointments():array{
+    public function getAppointments(): array
+    {
         return $this->pdo->query(
             "SELECT
                 concat(f_name, ' ', l_name) as Name,
@@ -81,8 +83,34 @@ class Appointment
                 appointment.to_time as ToTime            
             FROM appointment 
             inner join customer on customer.customer_id=appointment.customer_id"
-            
+
         )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTimeslotsByDate(string $date): string|array
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                query: "SELECT
+                            time_id,
+                            from_time,
+                            to_time
+                        FROM
+                            timeslot
+                        WHERE 
+                            date = :date 
+                        AND 
+                            remaining_count > 0");
+            $statement->execute(['date' => $date]);
+            $timeslots = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$timeslots) {
+                return "No timeslots available for this date";
+            }
+            return $timeslots;
+
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 
 }

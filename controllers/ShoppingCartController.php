@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
-use app\models\Customer;
 use app\models\ShoppingCart;
 use JsonException;
 
@@ -53,27 +52,26 @@ class ShoppingCartController
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
             $body = $req->body();
             $cartModel = new ShoppingCart();
-            $result = $cartModel->addToCart($req->session->get('user_id'), $body['item_code']);
+            $result = $cartModel->addToCart($req->session->get('user_id'), $body['item_code'], $body['amount']);
 
             if (is_string($result)) {
                 $res->setStatusCode(500);
                 return $res->json(['message' => $result]);
             }
 
-            if (is_array($result)) {
+            if (is_int($result)) {
                 $res->setStatusCode(200);
-                return $res->json(['message' => 'Item already in cart!']);
+                return $res->json(['message' => 'Cart updated successfully', 'amount' => $result]);
             }
-
-            $res->setStatusCode(201);
-            return $res->json(['message' => 'Item added to cart']);
-
         }
         $res->setStatusCode(401);
         return $res->json(['message' => 'You must login!']);
     }
 
 
+    /**
+     * @throws JsonException
+     */
     public function updateCartItem(Request $req, Response $res): string
     {
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
@@ -99,6 +97,9 @@ class ShoppingCartController
         return $res->json(['message' => 'You must login!']);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function deleteCartItem(Request $req, Response $res): string
     {
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
@@ -124,6 +125,9 @@ class ShoppingCartController
         return $res->json(['message' => 'You must login!']);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function getCartCheckoutPage(Request $req, Response $res): string
     {
         if ($req->session->get('is_authenticated') && $req->session->get('user_role') === "customer") {
@@ -132,17 +136,13 @@ class ShoppingCartController
                 $cartModel = new ShoppingCart();
                 $result = $cartModel->getCartItemsByCustomerId(customerId: $customerId);
                 if (is_string($result)) {
-                    return $res->render(view: "site-cart-checkout-page", pageParams: [
-
-                    ], layoutParams: [
+                    return $res->render(view: "site-cart-checkout-page", layoutParams: [
                         'customerId' => $customerId,
                         'title' => 'Checkout',
                     ]);
                 }
 
-                return $res->render(view: "site-cart-checkout-page", pageParams: [
-
-                ], layoutParams: [
+                return $res->render(view: "site-cart-checkout-page", layoutParams: [
                     'customerId' => $customerId,
                     'title' => 'Checkout',
                 ]);
@@ -152,5 +152,36 @@ class ShoppingCartController
         }
         $res->setStatusCode(401);
         return $res->json(['message' => 'You must login!']);
+    }
+
+
+    /**
+     * @throws JsonException
+     */
+    public function getProductItemQuantity(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $query = $req->query();
+            $itemCode = $query['item_code'] ?? null;
+
+            $customerId = $req->session->get("user_id");
+            if (!$itemCode) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+
+            $cartModel = new ShoppingCart();
+            $amount = $cartModel->getItemQuantity(itemCode: $itemCode, customerId: $customerId);
+            $res->setStatusCode(code: 200);
+            return $res->json([
+                "amount" => max($amount, 0)
+            ]);
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json([
+            "message" => "You must login!"
+        ]);
     }
 }
