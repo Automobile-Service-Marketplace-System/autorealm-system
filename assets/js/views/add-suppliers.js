@@ -108,7 +108,7 @@ addSupplierForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/stock-manager-dashboard/suppliers/add`, {
+        const result = await fetch(`/suppliers/add`, {
             body: formData,
             method: 'POST'
         })
@@ -125,11 +125,19 @@ addSupplierForm?.addEventListener('submit', async (e) => {
         else if (result.status === 201) {
 
             // add success message to url search params
-            window.location.search = new URLSearchParams({
-                ...params,
-                success: 'Supplier added successfully'
-            }).toString()
-            location.reload()
+            // window.location.search = new URLSearchParams({
+            //     ...params,
+            //     success: 'Supplier added successfully'
+            // }).toString()
+            Modal.close("add-supplier")
+            Notifier.show({
+                text: "Supplier added successfully",
+                type: "success",
+                header: "Success",
+            })
+            setTimeout(() => {
+                location.reload()
+            }, 1000)
         }
     } catch (e) {
         Notifier.show({

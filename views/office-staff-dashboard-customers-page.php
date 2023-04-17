@@ -25,7 +25,7 @@ foreach($customers as $customer) {
                                          <button class='btn btn--rounded btn--warning update-customer-btn' data-customerID='{$customer['ID']}'>
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
-                                         <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn'>
+                                         <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn data-name='{$customer["Full Name"]}' data-id='{$customer["ID"]}'>
                                             <i class='fa-regular fa-calendar-check'></i>
                                          </button>
                         </div>"
@@ -46,4 +46,3 @@ foreach($customers as $customer) {
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
-<script src="index.js"></script>

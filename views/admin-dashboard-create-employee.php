@@ -192,6 +192,18 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         ?>
                     </div>
                 </div>
+            
+            </div>
+            <div class="part2">
+                <div class="form-input">
+                    <b>Photo</b>
+                    <input type="file" name="image">
+                </div>
+            </div>
+        </div>
+        <div class="create-reset-buttons">
+            <button type="reset" id="rst" class="btn1">Reset</button>
+            <button type="submit" id="sm" class="btn2">Create Account</button>
             </div>
 
             <div class="form-input">

@@ -12,7 +12,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 3.5rem;
     margin-inline: auto;
     gap: 1rem;
     padding: 2rem;
@@ -62,7 +62,6 @@
 }
 
 
-
 .verification__step > * {
     text-align: center;
 }
@@ -72,6 +71,7 @@
     font-size: 1.3rem;
     white-space: nowrap;
 }
+
 
 .verification__step--disabled {
     display: none;
@@ -153,3 +153,18 @@
 }
 
 
+.verification-error-element {
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--color-danger);
+}
+
+
+.verification__retry {
+    margin-top: 4rem;
+}
+
+.verification__retry button {
+    margin: 0 auto;
+    cursor: pointer;
+}

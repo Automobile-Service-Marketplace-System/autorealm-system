@@ -30,9 +30,7 @@ class Service
                         service_name as Name,
                         description as Description, 
                         price as Price
-                        
-                    FROM service"
-
+                    FROM service WHERE is_discontinued = FALSE"
         )->fetchAll(PDO::FETCH_ASSOC);
 
     }
@@ -112,6 +110,20 @@ class Service
             } else {
                 return $errors;
             }
+    }
+
+    public function deleteServiceById(int $code): bool|string
+    {
+        var_dump($code);
+        try {
+            $query = "UPDATE service SET is_discontinued = TRUE WHERE servicecode = :code";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":code", $code);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 
 }

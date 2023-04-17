@@ -5,7 +5,9 @@ namespace app\models;
 use app\core\Database;
 use app\utils\FSUploader;
 use app\utils\Util;
+use Exception;
 use PDO;
+use PDOException;
 
 class Employee
 {
@@ -17,7 +19,6 @@ class Employee
     {
         $this->pdo = Database::getInstance()->pdo;
         $this->body = $registerBody;
-    //   var_dump($this->body);
     }
 
     public function getEmployeeById(int $employee_id): bool|object
@@ -25,7 +26,7 @@ class Employee
         $stmt = $this->pdo->prepare("SELECT * FROM employee WHERE employee_id = :employee_id");
         $stmt->execute([
             ":employee_id" => $employee_id,
-            
+
         ]);
         return $stmt->fetchObject();
     }
@@ -37,7 +38,7 @@ class Employee
         if (empty($errors)) {
             try {
                 $imageUrl = FSUploader::upload(innerDir: "employee/profile-photos");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
@@ -60,7 +61,7 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
-                
+
                 $hash = password_hash($this->body["password"], PASSWORD_DEFAULT);
                 $statement->bindValue(":password", $hash);
                 $statement->bindValue(":image", $imageUrl ?? "");
@@ -96,14 +97,14 @@ class Employee
                             $query = "INSERT INTO officestaff (employee_id, type) VALUES (:employee_id, 'clerk')";
                             $statement = $this->pdo->prepare($query);
                             $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute(); 
+                            $statement->execute();
                             break;
                         default:
                             break;
 
                     }
                     return true;
-                } catch (\PDOException $e) {
+                } catch (PDOException $e) {
                     return false;
                 }
             } else {
@@ -267,9 +268,9 @@ class Employee
             $errors['l_name'] = 'Last name must contain only letters.';
         }
 
-        if (trim($this->body['fi']) === '') {
-            $errors['fi'] = 'Full name with initials must not be empty.';
-        }
+        // if (trim($this->body['fi']) === '') {
+        //     $errors['fi'] = 'Full name with initials must not be empty.';
+        // }
 
         if (empty($this->body['dob'])) {
             $errors['dob'] = 'Date of birth must not be empty.';
@@ -280,7 +281,7 @@ class Employee
         if ($this->body['nic'] === '') {
             $errors['nic'] = 'NIC number must not be empty.';
         } else if (!preg_match('/^(\d{9}[xXvV]|\d{12})$/', $this->body['nic'])) {
-            $errors['nic'] = 'NIC No must be in either be in 996632261V or 200022203401 forma.';
+            $errors['nic'] = 'NIC No must be in either be in 996632261V or 200022203401 format.';
         } else {
             $query = "SELECT * FROM employee WHERE nic = :nic";
             $statement = $this->pdo->prepare($query);
@@ -334,84 +335,42 @@ class Employee
     public function update(int $employee_id): bool|array
     {
         $errors = $this->validateUpdateFormBody();
-
         if (empty($errors)) {
             try {
                 $imageUrl = FSUploader::upload(innerDir: "employee/profile-photos");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
-                $query = "UPDATE employee SET 
-                    NIC = :price, 
-                    f_name = :service_name, 
-                    l_name = :description,
-                    dob = :nic,
-                    address = :f_name,
+                $query = "UPDATE employee SET
+                    NIC = :nic,
+                    f_name = :f_name, 
+                    l_name = :l_name,
+                    dob = :dob,
+                    address = :address,
                     email = :email,
-                    job_role = :dob,
+                    job_role = :job_role,
                     contact_no = :contact_no,
                     image = :image
-                HERE employee_id = $employee_id";
-
+                WHERE employee_id = :employee_id";
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":nic", $this->body["nic"]);
                 $statement->bindValue(":f_name", $this->body["f_name"]);
-                $statement->bindValue(":l_name", $this->body["l_name"]);
-                // full name with initials
+                $statement->bindValue(":l_name", $this->body["l_name"]);               
                 $statement->bindValue(":dob", $this->body["dob"]);
                 $statement->bindValue(":address", $this->body["address"]);
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue(":employee_id", $this->body["employee_id"]);
                 $statement->bindValue(":image", $imageUrl ?? "");
-                try {
-                    $statement->execute();
-                    $lastInsertedId = $this->pdo->lastInsertId();
-                    switch ($this->body['job_role']) {
-                        case "foreman":
-                            $query = "INSERT INTO  foreman (employee_id, is_available) VALUES (:employee_id, 1)";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "security_officer":
-                            $query = "INSERT INTO securityofficer (employee_id, shift) VALUES (:employee_id,'day')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "technician":
-                            $query = "INSERT INTO technician (employee_id, is_available, speciality) VALUES (:employee_id, 1, 'none')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "stock_manager":
-                            $query = "INSERT INTO stockmanager (employee_id) VALUES (:employee_id)";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute();
-                            break;
-                        case "office_staff_member":
-                            $query = "INSERT INTO officestaff (employee_id, type) VALUES (:employee_id, 'clerk')";
-                            $statement = $this->pdo->prepare($query);
-                            $statement->bindValue(":employee_id", $lastInsertedId);
-                            $statement->execute(); 
-                            break;
-                        default:
-                            break;
 
-                    }
-                    return true;
-                } catch (\PDOException $e) {
-                    return false;
-                }
             } else {
                 return $errors;
             }
 
-        } else {
+        } 
+        else {
             return $errors;
         }
     }

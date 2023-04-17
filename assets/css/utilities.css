@@ -419,3 +419,30 @@
 .ml-8 {
     margin-left: 2rem;
 }
+
+
+.rotating-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+}
+
+
+.rotating-icon--primary {
+    color: var(--color-primary);
+}
+
+.rotating-icon--success {
+    color: var(--color-success);
+}
+
+.rotating-icon--warning {
+    color: var(--color-warning);
+}
+
+.rotating-icon--danger {
+    color: var(--color-danger);
+}
+
+.rotating-icon--info {
+    color: var(--color-info);
+}

@@ -22,11 +22,17 @@ foreach ($suppliers as $supplier) {
         "Last Purchase Date" => $supplier["Last Purchase Date"] ?? "N/A",
         "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
         "Email" => $supplier["Email"],
-        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='' class='btn btn--rounded btn--warning'>
+        "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'
+                                data-supplierId='{$supplier["ID"]}'
+                                data-supplierName='{$supplier["Name"]}'
+                                data-address='{$supplier["Address"]}'
+                                data-salesManager='{$supplier["Sales Manager"]}'
+                                data-email='{$supplier["Email"]}'
+                                data-registrationNo='{$supplier["Registration No"]}'>
+                            <button class='btn btn--rounded btn--warning update-supplier-button'>   
                                 <i class='fa-solid fa-pencil'></i>
-                            </a>
-                            <button class='btn btn--rounded btn--danger'>
+                            </button>
+                            <button class='btn btn--rounded btn--danger delete-supplier-btn'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
                       </div>"

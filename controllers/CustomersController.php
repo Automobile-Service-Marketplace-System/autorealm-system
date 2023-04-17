@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Brand;
 use app\models\Customer;
 use app\models\Model;
+use app\models\Service;
 
 class CustomersController
 {
@@ -18,14 +19,20 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
+            $serviceModel = new Service();
+            $services = $serviceModel->getServices();
+
             if($req->session->get("user_role") === "office_staff_member"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
-                    pageParams:["customers" => $customers],
+                    pageParams:[
+                        'customers' => $customers,
+                        'services' => $services
+                    ],
                     layoutParams:[
                         'title' => 'Customers',
                         'pageMainHeading' => 'Customers',
                         'officeStaffId' => $req->session->get('user_id'),
-                ]);
+                    ]);
             }
 
             if($req->session->get("user_role") === "admin"){

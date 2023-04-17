@@ -143,6 +143,82 @@
 
 /* button variations based on shape */
 
+.btn--text {
+    background-color: transparent !important;
+    color: var(--color-primary);
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+.btn--text.btn--primary {
+    color: var(--color-primary);
+}
+
+.btn--text.btn--success {
+    color: var(--color-success);
+}
+
+.btn--text.btn--info {
+    color: var(--color-info);
+}
+
+.btn--text.btn--warning {
+    color: var(--color-warning);
+}
+
+.btn--text.btn--danger {
+    color: var(--color-danger);
+}
+
+.btn--text.btn--light {
+    color: var(--color-light);
+}
+
+.btn--text.btn--dark {
+    color: var(--color-dark);
+}
+
+.btn--text.btn--white {
+    color: var(--color-white);
+}
+
+.btn--text.btn--black {
+    color: var(--color-black);
+}
+
+.btn--text.btn--dark-blue {
+    color: var(--color-dark-blue);
+}
+
+.btn--text.btn--light-blue {
+    color: var(--color-light-blue);
+}
+
+.btn--text:hover {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn--text:active {
+    transform: translateY(0);
+}
+
+.btn--text:disabled {
+    color: var(--color-disabled);
+    cursor: not-allowed;
+}
+
+.btn--text:disabled:hover {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn--text:disabled:active {
+    transform: translateY(0);
+}
+
+
 .btn--round {
     aspect-ratio: 1;
     border-radius: 50%;

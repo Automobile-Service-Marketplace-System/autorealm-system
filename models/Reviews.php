@@ -32,6 +32,9 @@ class Reviews
                         r.rating as Rating, 
                         p.name as Product, 
                         CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+                        r.created_at as 'Date Posted'
+                        
+
                        
 
                     FROM review r 
@@ -40,7 +43,7 @@ class Reviews
                         INNER JOIN customer c on r.customer_id = c.customer_id
 
 
-                    ORDER BY r.item_code"
+                    ORDER BY r.created_at DESC"
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
