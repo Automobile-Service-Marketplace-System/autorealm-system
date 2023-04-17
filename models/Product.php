@@ -258,6 +258,15 @@ class Product
         }
     }
 
+    public function restockProduct():bool|array|string
+    {
+        $errors = [];
+
+        if(empty($errors)){
+
+        }
+    }
+
 }
 
 

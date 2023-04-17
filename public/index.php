@@ -141,8 +141,9 @@ if ($isInternal) {
     $app->router->post(path: "/products/add", callback: [ProductsController::class, 'AddProducts']);
     $app->router->post(path: "/products/delete", callback: [ProductsController::class, 'deleteProduct']);
     $app->router->post(path: "/products/update", callback: [ProductsController::class, 'updateProducts']);
+    $app->router->post(path: "/products/restock", callback: [ProductsController::class, 'restockProducts']);
     $app->router->get(path: "/suppliers", callback: [SuppliersController::class, 'getSuppliersPage']);
-    $app->router->post(path: "/suppliers/add", callback: [ProductsController::class, 'addSuppliers']);
+    $app->router->post(path: "/suppliers/add", callback: [SuppliersController::class, 'addSuppliers']);
     $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
     $app->router->post(path:"/suppliers/delete", callback: [SuppliersController::class, 'deleteSuppliers']);
     $app->router->get(path: "/orders", callback: [OrdersController::class, 'getOrdersPage']);
