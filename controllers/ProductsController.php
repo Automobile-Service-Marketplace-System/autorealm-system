@@ -278,5 +278,15 @@ class ProductsController
         return $res->redirect(path: "/login");
     }
 
+    public function restockProducts(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            $body = $req->body();
+
+            $product = new Product($body);
+            $result = $product->restockProduct();
+        }
+        return $res->redirect(path: "/login");
+    }
 }

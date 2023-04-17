@@ -73,7 +73,7 @@ class Supplier
 //                                s4 on s2.supplier_id=s4.supplier_id and s4.`Last Purchase Date`=s2.date_time GROUP BY s.supplier_id ORDER BY s.supplier_id
 //
 //"
-    public function addSuppliers()
+    public function addSuppliers(): bool|array|string
     {
         $errors = $this->validateAddSupplierForm();
 

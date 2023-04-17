@@ -31,7 +31,7 @@ foreach ($products as $product) {
                                 data-modelId='{$product["ModelID"]}' 
                                 data-image='{$product["Image"]}' 
                                 data-description='{$product["Description"]}'>
-                            <button class='btn btn--rounded btn--info'>
+                            <button class='btn btn--rounded btn--info restock-product-btn'>
                                 <i class='fa-solid fa-cart-shopping'></i>
                             </button>
                             <button class='btn btn--rounded btn--warning update-product-btn'>
@@ -47,7 +47,7 @@ foreach ($products as $product) {
 
 <div class="stock-manager-add-button-set">
     <div class="add-button">
-        <a class="btn" href="products/add-products">
+        <a class="btn" href="products/add">
             <i class="fa-solid fa-plus"></i>
             Add Products</a>
     </div>

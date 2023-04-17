@@ -73,6 +73,8 @@
 @import "views/update-service.css";
 @import "views/update-products.css";
 @import "views/update-supplier.css";
+@import "views/restock-products.css";
+
 
 
 body{
