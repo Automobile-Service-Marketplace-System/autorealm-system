@@ -118,7 +118,7 @@ class VehiclesController
                 pageParams: ["vehicles" => $vehicles],
                 layoutParams: [
                     'title' => 'Vehicles',
-                    'pageMainHeading' => 'Vehicles',
+                    'pageMainHeading' => 'My Vehicles',
                     'customerId' => $customerId
                 ]);
         }

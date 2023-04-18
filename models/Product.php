@@ -24,11 +24,9 @@ class Product
         $this->body = $body;
     }
 
-    public function getProducts(): array
+    public function getProducts(): array|string
     {
-
-        return $this->pdo->query(
-            "SELECT 
+        $query = "SELECT 
     
                         p.item_code as ID, 
                         p.name as Name, 
@@ -51,8 +49,18 @@ class Product
                         INNER JOIN category c on p.category_id = c.category_id
                      
                     WHERE p.is_discontinued = FALSE
-                    ORDER BY p.item_code"
-        )->fetchAll(PDO::FETCH_ASSOC);
+                    ORDER BY p.item_code";
+
+        $result = $this->pdo->prepare($query);
+        try{
+            $result->execute();
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            return $e->getMessage();
+        }
+
+
+
     }
 
     public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
