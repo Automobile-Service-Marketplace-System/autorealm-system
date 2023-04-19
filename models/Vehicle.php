@@ -3,8 +3,10 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
 use PDOException;
+
 
 class Vehicle
 {
@@ -66,11 +68,50 @@ class Vehicle
                 v.customer_id = :customer_id");
             $statement->bindValue(":customer_id", $customer_id);
             $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-            if(!$result) {
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if(!$results) {
                 return "No vehicle found";
             }
-            return $result;
+
+            $resultsWithLastService = [];
+
+
+            foreach ($results as $result) {
+//                DevOnly::prettyEcho($result);
+
+                $statement = $this->pdo->prepare("SELECT
+                    mileage,
+                    start_date_time
+                FROM jobcard j
+                WHERE
+                    j.vin = :vin
+                ORDER BY
+                    j.start_date_time DESC
+                LIMIT 1");
+                $statement->bindValue(":vin", $result['vin']);
+                $statement->execute();
+                $lastService = $statement->fetch(PDO::FETCH_ASSOC);
+//                DevOnly::prettyEcho($lastService);
+
+                if($lastService) {
+                    $result['last_service_mileage'] = $lastService['mileage'];
+                    $result['last_service_date'] = $lastService['start_date_time'];
+                } else {
+                    $result['last_service_mileage'] = "No service history";
+                    $result['last_service_date'] = "N/A";
+                }
+
+                $resultsWithLastService[]= $result;
+//
+//                DevOnly::prettyEcho($result);
+            }
+
+//            DevOnly::prettyEcho($resultsWithLastService);
+
+
+            return $resultsWithLastService;
+
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
