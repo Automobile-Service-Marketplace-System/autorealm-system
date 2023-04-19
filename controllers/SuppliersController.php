@@ -51,7 +51,7 @@ class SuppliersController
     public function addSuppliers(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
-            $query = $req->query();
+
             $body = $req->body();
             $supplier = new Supplier($body);
             $result = $supplier->addSuppliers();

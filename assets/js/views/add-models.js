@@ -28,12 +28,12 @@ const addModelForm = htmlToElement(`<div>
                             <p>Model Type</p>
                                 <div class="model-type-radio-group">
                                     <div class="form-item--radio">
-                                        <label for="is_vehicle_brand">Vehicle</label>
-                                        <input type="radio" name="brand_type" value="vehicle">
+                                        <label for="model_type">Vehicle</label>
+                                        <input type="radio" name="model_type" value="vehicle">
                                     </div>
                                       <div class="form-item--radio">
-                                        <label for="is_product_brand">Product</label>
-                                        <input type="radio" name="brand_type" value="product">
+                                        <label for="model_type">Product</label>
+                                        <input type="radio" name="model_type" value="product">
                                     </div>
                                 
                                 </div>
@@ -65,3 +65,29 @@ addModelBtn?.addEventListener('click', () => {
         content: addModelForm,
     })
 });
+
+addModelForm?.querySelector("#add-model-modal-btn")?.addEventListener("click", (e) => {
+
+    const template =  `<div>
+                        <h3>Are you sure you want to add this model?</h3>
+                        <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
+                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin modal-close-btn" id="add-model-confirm-btn">Confirm</button>                        
+                        </div>
+                        </div>`
+
+
+    const element = htmlToElement(template);
+
+    element.querySelector("#add-model-confirm-btn").addEventListener('click', () => {
+        const submitBtn = addModelForm?.querySelector("#add-model-final-btn");
+        console.log("clicked")
+        submitBtn?.click();
+    })
+
+    Modal.show({
+        content: element,
+        key: "Add model confirmation",
+        closable: true,
+    })
+})
