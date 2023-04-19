@@ -45,12 +45,23 @@ foreach ($products as $product) {
 }
 ?>
 
-<div class="stock-manager-add-button-set">
+<div class="stock-manager-add-button-set-product-page">
+
+
+        <button class="btn btn--rounded pagination-item btn--white" id="add-model-btn" style="margin-right: 1rem">
+            <i class="fa-solid fa-m"></i>
+        </button>
+
+        <button class="btn btn--rounded pagination-item btn--white" id="add-brand-btn" style="margin-right: 1rem">
+            <i class="fa-solid fa-b"></i>
+        </button>
+
     <div class="add-button">
         <a class="btn" href="products/add">
             <i class="fa-solid fa-plus"></i>
             Add Products</a>
     </div>
+
 
 </div>
 
