@@ -347,4 +347,67 @@ class ProductsController
         ]);
 
     }
+
+    public function getBrandsAsJSON(Request $req, Response $res): string
+    {
+        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")){
+
+            $brandModel = new Brand();
+            $brandsList = $brandModel->getBrandsOptList();
+
+            if(is_string($brandsList)){
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "error" => "Internal Server Error"
+                ]);
+            }
+            elseif (empty($brandsList)){
+                $res->setStatusCode(code: 404);
+                return $res->json(data: [
+                    "message" => "No brands found"
+                ]);
+            }
+
+            $res->setStatusCode(code: 200);
+            return $res->json(data: $brandsList);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function addModel(Request $req, Response $res): string
+    {
+        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+            $body = $req->body();
+            $model = new Model($body);
+            $result = $model->addModel();
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "errors" => $result
+                ]);
+            }
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "errors" => [
+                        "error" => "Internal Server Error"
+                    ]
+                ]);
+            }
+
+            if ($result) {
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Model added successfully"
+                ]);
+            }
+
+
+        }
+        return $res->redirect(path: "/login");
+    }
+
+
 }

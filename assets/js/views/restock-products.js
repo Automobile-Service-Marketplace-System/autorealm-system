@@ -4,7 +4,7 @@ import {htmlToElement} from "../utils";
 
 const productRestockButtons = document.querySelectorAll(".restock-product-btn")
 //console.log(productRestockButtons)
-productRestockButtons.forEach(function (btn) {
+productRestockButtons?.forEach(function (btn) {
     btn.addEventListener("click", async function () {
         try{
             const productId = Number(btn.parentElement.dataset.productid);
