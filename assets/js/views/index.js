@@ -22,3 +22,5 @@ import "./update-suppliers"
 import "./delete-product"
 import "./update-order-status"
 import "./delete-service"
+
+import "./add-models"
