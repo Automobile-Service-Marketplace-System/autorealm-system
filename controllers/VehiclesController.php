@@ -114,6 +114,7 @@ class VehiclesController
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehiclesByID($customerId);
 
+
             return $res->render(view: "customer-dashboard-vehicles", layout: "customer-dashboard",
                 pageParams: ["vehicles" => $vehicles],
                 layoutParams: [

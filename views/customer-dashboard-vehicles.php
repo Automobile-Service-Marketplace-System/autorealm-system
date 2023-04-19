@@ -28,7 +28,7 @@ if(isset($error)) {
                 <img src='/images/placeholders/car-placeholder.svg' alt='vehicle-image' class='vehicle-card__image'>
                 <div class='vehicle-card__info'>
                     <h2>
-                        {$vehicle['brand_name']} {$vehicle['model_name']} {$manufacturedYear}
+                        {$vehicle['brand_name']} {$vehicle['model_name']} 
                         <span>
                             Registration Number: {$vehicle['reg_no']}
                         </span>
@@ -43,8 +43,8 @@ if(isset($error)) {
                 </div>
                 <div class='vehicle-card__service-info'>
                     <div>
-                        <p><span>Last Service Mileage:</span> 268635 KM</p>
-                        <p><span>Last Service Date:</span> 12/12/2020</p>
+                        <p><span>Last Service Mileage:</span> {$vehicle['last_service_mileage']}</p>
+                        <p><span>Last Service Date:</span> {$vehicle['last_service_date']}</p>
                     </div>
                     <a class='btn btn--danger' href='/dashboard/services?vehicle_id=123'>
                         View service history
