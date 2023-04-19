@@ -110,8 +110,8 @@ class Admitting
             $errors['additional_note'] = 'Additional note must not be empty.';
         }
 
-        if (strlen($this->body['dashboard']) == 0) {
-            $errors['dashboard'] = 'Dashboard must not be empty.';
+        if ($this->body['dashboard'] !== 'good' && $this->body['dashboard'] !== 'scratched'  && $this->body['dashboard'] !== 'damaged' && $this->body['dashboard'] !== 'burnt' && $this->body['dashboard'] !== 'stained') {
+            $errors['dashboard'] = 'You must select option of dashboard.';
         }
 
         if ($this->body['windshield'] !== 'good' && $this->body['windshield'] !== 'scratched' && $this->body['windshield'] !== 'cracked' && $this->body['windshield'] !== 'damaged') {
@@ -136,35 +136,60 @@ class Admitting
         if(empty($errors)){
             $query="insert into admitingreport 
                 (
-                    vehicle_reg_no, milage, current_fuel_level, admiting_time, departing_time, windshield, 	lights_lf, lights_rf, lights_rr, toolkit, sparewheel, rim_lf, rim_rf, rim_lr, seat_lf, seat_rf, seat_rear, carpet_lf, carpet_rf, carpet_rear, dashboard, customer_belongings, additional_note, employee_id
+                    vehicle_reg_no, milage, current_fuel_level, current_fuel_level_description, admiting_time, departing_time, windshield, windshield_description, 
+                    lights_lf, light_lf_description, lights_rf, light_rf_description, lights_lr, light_lr_description, lights_rr, light_rr_description, toolkit, sparewheel, rim_lf, rim_lf_description, 
+                    rim_rf, rim_rf_description, rim_lr, rim_lr_description, rim_rr, rim_rr_description, seat_lf, seat_lf_description, seat_rf, seat_rf_description, seat_rear, seat_rear_description, 
+                    carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id
                 )
                 values
                 (
-                    :vehicle_reg_no, :milage, :current_fuel_level, :admiting_time, :departing_time, :windshield, :lights_lf, :lights_rf, :lights_rr, :toolkit, :sparewheel, :rim_lf, :rim_rf, :rim_lr, :seat_lf, :seat_rf, :seat_rear, :carpet_lf, :carpet_rf, :carpet_rear, :dashboard, :customer_belongings, :additional_note, :id
+                    :vehicle_reg_no, :milage, :current_fuel_level,:current_fuel_level_description, :admiting_time, :departing_time, :windshield, :windshield_description, 
+                    :lights_lf, :light_lf_description, :lights_rf, :light_rf_description, :lights_lr, :light_lr_description, :lights_rr, :light_rr_description, :toolkit, :sparewheel, :rim_lf, :rim_lf_description,
+                    :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, seat_rf_description, :seat_rear, :seat_rear_description,
+                    :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id
                 )";
             var_dump($query);
             $statement=$this->pdo->prepare($query);
             $statement->bindvalue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
             $statement->bindvalue(":milage", $this->body["milage"]);
             $statement->bindvalue(":current_fuel_level", $this->body["current_fuel_level"]);
+            $statement->bindvalue(":current_fuel_level_description", $this->body["current_fuel_level_description"]);
             $statement->bindvalue(":admiting_time", $this->body["admiting_time"]);
             $statement->bindvalue(":departing_time", $this->body["departing_time"]);
             $statement->bindvalue(":windshield", $this->body["windshield"]);
+            $statement->bindvalue(":windshield_description", $this->body["windshield_description"]);
             $statement->bindvalue(":lights_lf", $this->body["lights_lf"]);
+            $statement->bindvalue(":light_lf_description", $this->body["light_lf_description"]);
             $statement->bindvalue(":lights_rf", $this->body["lights_rf"]);
+            $statement->bindvalue(":light_rf_description", $this->body["light_rf_description"]);
+            $statement->bindvalue(":lights_lr", $this->body["lights_lr"]);      
+            $statement->bindvalue(":light_lr_description", $this->body["light_lr_description"]);
             $statement->bindvalue(":lights_rr", $this->body["lights_rr"]);
+            $statement->bindvalue(":light_rr_description", $this->body["light_rr_description"]);
             $statement->bindvalue(":toolkit", $this->body["toolkit"]);
             $statement->bindvalue(":sparewheel", $this->body["sparewheel"]);
             $statement->bindvalue(":rim_lf", $this->body["rim_lf"]);
+            $statement->bindvalue(":rim_lf_description", $this->body["rim_lf_description"]);
             $statement->bindvalue(":rim_rf", $this->body["rim_rf"]);
+            $statement->bindvalue(":rim_rf_description", $this->body["rim_rf_description"]);
             $statement->bindvalue(":rim_lr", $this->body["rim_lr"]);
+            $statement->bindvalue(":rim_lr_description", $this->body["rim_lr_description"]);
+            $statement->bindvalue(":rim_rr", $this->body["rim_rr"]);
+            $statement->bindvalue(":rim_rr_description", $this->body["rim_rr_description"]);
             $statement->bindvalue(":seat_lf", $this->body["seat_lf"]);
+            $statement->bindvalue(":seat_lf_description", $this->body["seat_lf_description"]);
             $statement->bindvalue(":seat_rf", $this->body["seat_rf"]);
+            $statement->bindvalue(":seat_rf_description", $this->body["seat_rf_description"]);
             $statement->bindvalue(":seat_rear", $this->body["seat_rear"]);
+            $statement->bindvalue(":seat_rear_description", $this->body["seat_rear_description"]);
             $statement->bindvalue(":carpet_lf", $this->body["carpet_lf"]);
-            $statement->bindvalue(":carpet_rf", $this->body["carpet_rf"]);
+            $statement->bindvalue(":carpet_lf_description", $this->body["carpet_lf_description"]);
+            $statement->bindvalue(":carpet_rf", $this->body["carpet_rf"]);  
+            $statement->bindvalue(":carpet_rf_description", $this->body["carpet_rf_description"]);
             $statement->bindvalue(":carpet_rear", $this->body["carpet_rear"]);
+            $statement->bindvalue(":carpet_rear_description", $this->body["carpet_rear_description"]);
             $statement->bindvalue(":dashboard", $this->body["dashboard"]);
+            $statement->bindvalue(":dashboard_description", $this->body["dashboard_description"]);
             $statement->bindvalue(":customer_belongings", $this->body["customer_belongings"]);
             $statement->bindvalue(":additional_note", $this->body["additional_note"]);
             $statement->bindvalue(":id", $id);
