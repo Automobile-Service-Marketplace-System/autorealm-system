@@ -1,6 +1,6 @@
 .brand-type-radio-group{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .add-brand-actions{

@@ -5,14 +5,15 @@ import Notifier from "../components/Notifier";
 const addBrandBtn = document.querySelector('#add-brand-btn');
 
 
-const addBrandForm = htmlToElement(`<div>
-                     <form class="stock-manager-add-brand-form" id="stock-manager-add-brand-form">
+const addBrandForm = htmlToElement(`
+                <div>
+                     <form class="stock-manager-add-brand-form" id="stock-manager-add-brand-form" method="post">
                      <div class="top-part-form">
                          <div>
                             <h1>Add Brand</h1>
                         </div>
                         <div>
-                            <button class="modal-close-btn">
+                            <button class="modal-close-btn" type="button"">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
@@ -27,13 +28,13 @@ const addBrandForm = htmlToElement(`<div>
                             <div class="form-item">
                             <p>Brand Type</p>
                                 <div class="brand-type-radio-group">
-                                    <div class="form-item--radio">
-                                        <label for="brand_type">Vehicle</label>
-                                        <input type="radio" name="brand_type" value="vehicle">
+                                    <div class="form-item--checkbox">
+                                        <label for="is_vehicle_brand">Vehicle</label>
+                                        <input type="checkbox" name="is_vehicle_brand" value="1">
                                     </div>
-                                      <div class="form-item--radio">
-                                        <label for="brand_type">Product</label>
-                                        <input type="radio" name="brand_type" value="product">
+                                      <div class="form-item--checkbox">
+                                        <label for="is_product_brand">Product</label>
+                                        <input type="checkbox" name="is_product_brand" value="1">
                                     </div>
                                 
                                 </div>
@@ -47,6 +48,8 @@ const addBrandForm = htmlToElement(`<div>
                                 <button style="display: none" type="submit" id="add-brand-final-btn"></button>
     
                             </div>
+                        </form>
+                </div>
                      
                      `);
 
@@ -65,7 +68,7 @@ addBrandForm?.querySelector("#add-brand-modal-btn")?.addEventListener("click", (
     const template =  `<div>
                         <h3>Are you sure you want to add this brand?</h3>
                         <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
-                            <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
+                            <button class="btn btn--thin btn--danger modal-close-btn" >Cancel</button>                        
                             <button class="btn btn--thin modal-close-btn" id="add-brand-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
@@ -84,4 +87,54 @@ addBrandForm?.querySelector("#add-brand-modal-btn")?.addEventListener("click", (
         key: "Add Brand confirmation",
         closable: true,
     })
+})
+
+addBrandForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    try {
+        console.log('inside try')
+        const result = await fetch('/products/add-brands', {
+            method: 'POST',
+            body: formData,
+        })
+        if(result.status === 400) {
+            const resultBody = await result.json()
+            for (const inputName in resultBody.errors) {
+                const inputWrapper = addBrandForm.querySelector(`#${inputName}`).parentElement
+                inputWrapper.classList.add('form-item--error')
+                const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                inputWrapper.appendChild(errorElement)
+            }
+        }
+        else if (result.status === 201) {
+
+            // add success message to url search params
+            // window.location.search = new URLSearchParams({
+            //     ...params,
+            //     success: 'Supplier added successfully'
+            // }).toString()
+            Modal.close("add-Brand")
+            Notifier.show({
+                text: "Supplier added successfully",
+                type: "success",
+                header: "Success",
+            })
+            // setTimeout(() => {
+            //     Notifier.hide(
+            //         "Supplier added successfully",
+            //     )
+            // },4000)
+
+        }
+    }
+    catch (e) {
+        console.log(e);
+        Notifier.show({
+            closable: true,
+            header: 'Error',
+            type: 'danger',
+            text: e.message
+        })
+    }
 })

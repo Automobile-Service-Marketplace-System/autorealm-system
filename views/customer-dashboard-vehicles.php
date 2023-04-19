@@ -18,7 +18,7 @@ if(isset($error)) {
 
 <div class='vehicle-card-container'>
     <?php
-    if(empty($vehicles)) {
+    if(is_string($vehicles)) {
         echo "<p class='no-data'>Sorry! there are no Vehicles Registered</p>";
     } else {
         foreach ($vehicles as $vehicle) {
