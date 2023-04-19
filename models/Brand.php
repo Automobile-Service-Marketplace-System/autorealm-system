@@ -58,4 +58,22 @@ class Brand
     }
 
 
+    public function getBrandsOptList(): array|string
+    {
+        try {
+            $query = "SELECT brand_id, brand_name FROM brand";
+            $stmt = $this->pdo->query($query);
+            $stmt->execute();
+
+           return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return "Error getting brands list";
+
+        }
+
+
+    }
+
 }
