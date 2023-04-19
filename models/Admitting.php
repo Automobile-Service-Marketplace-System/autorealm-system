@@ -21,6 +21,19 @@ class Admitting
         $this->body = $registerBody;
     }
 
+    public function getAdmittingReports(): array
+    {
+
+        return $this->pdo->query("
+            SELECT 
+            concat(c.f_name,' ',c.l_name) as Name,
+            a.vehicle_reg_no as RegNo,
+            a.admitting_date as Date
+            from admitingreport a
+            inner join vehicle v on a.vehicle_reg_no=v.reg_no
+            inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function validated_byAdmittingReport():array{
         $errors=[];
 
