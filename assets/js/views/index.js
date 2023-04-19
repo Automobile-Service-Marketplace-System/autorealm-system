@@ -24,3 +24,4 @@ import "./update-order-status"
 import "./delete-service"
 
 import "./add-models"
+import "./add-brand"
