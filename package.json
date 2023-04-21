@@ -6,7 +6,6 @@
     "url": "git@github.com:Automobile-Service-Marketplace-System/autorealm-system.git"
   },
   "author": "Nethsara Sandeepa Elvitigala <nethsarasandeepaelvitigala@gmail.com>",
-  "license": "proprietary",
   "devDependencies": {
     "chart.js": "^4.2.1",
     "chokidar": "^3.5.3",
