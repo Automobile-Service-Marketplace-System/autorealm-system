@@ -97,11 +97,17 @@ export class ProductSelector {
         <i class="fa fa-spinner product-selector__spinner"></i>
         <div class="product-selector__body">
             <div class="product-selector__header">
-                <h3>Select a product</h3> 
-                <button class="btn btn--thin product-selector__finish">Finish</button>
-                <button class="modal-close-btn">
-                    <i class="fa fa-xmark"></i>
-                </button>
+                <h3>Select a product</h3>
+                <div class="flex items-center gap-4">
+                    <button class="btn btn--danger btn--thin modal-close-btn">
+                        <i class="fa fa-xmark"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn--thin product-selector__finish">
+                        <i class="fa fa-check"></i>
+                        Confirm
+                    </button>
+                </div> 
             </div>
             <div class="product-selector__filters">
                 <div class='form-item '>
@@ -123,9 +129,15 @@ export class ProductSelector {
                     </datalist>
                 </div>
             </div>
-            <p class="product-selector__result-indicator">Showing 8 of 16 results</p>
+            <p class="product-selector__result-indicator">
+                Showing <span id="product-selector__show-count"></span> of <span id="product-selector__total-count"></span> results
+            </p>
             <div class="product-selector__gallery product-selector__gallery--loading">
                 <i class="fa fa-spinner product-selector__spinner"></i>
+                <p class="product-selector__empty-message">
+                    <i class="fa fa-search"></i>
+                    No products found
+                </p>
             </div>
             <div class="pagination-container pagination-container--select">
             </div>
@@ -200,13 +212,11 @@ export class ProductSelector {
 
                 const inputName = input.name;
                 const isValueAnEmptyString = input.value === ""
-                // console.log(inputName)
                 /**
                  * @type {[]}
                  */
                 if (inputName === "categories") {
                     const category = this.categories.find((c) => c.name === input.value)
-                    // console.log(category)
                     if (!isValueAnEmptyString && !category) {
                         input.setCustomValidity("Invalid category, please select from the list")
                         input.reportValidity()
@@ -216,7 +226,6 @@ export class ProductSelector {
                     }
                 } else if (inputName === "brands") {
                     const brand = this.brands.find((b) => b.brand_name === input.value)
-                    // console.log(brand)
                     if (!isValueAnEmptyString && !brand) {
                         input.setCustomValidity("Invalid brand, please select from the list")
                         input.reportValidity()
@@ -226,7 +235,6 @@ export class ProductSelector {
                     }
                 } else if (inputName === "models") {
                     const model = this.models.find((m) => m.model_name === input.value)
-                    // console.log(model)
                     if (!isValueAnEmptyString && !model) {
                         input.setCustomValidity("Invalid model, please select from the list")
                         input.reportValidity()
@@ -245,11 +253,9 @@ export class ProductSelector {
 
     listenForFilterChanges() {
         this.element.querySelectorAll("input").forEach((input) => {
-            // console.log(input)
             input.addEventListener("change", () => {
                 if (input.checkValidity()) {
                     const inputName = input.name;
-                    console.log(`valid - ${inputName}`)
                     switch (inputName) {
                         // case "q":
                         //     this.selectedFilters.q = input.value;
@@ -285,7 +291,6 @@ export class ProductSelector {
                     this.selectedFilters.q = value;
                 }
 
-                console.log(`Searching for ${value}`)
             }, 500)
 
         })
@@ -304,7 +309,6 @@ export class ProductSelector {
                     }
                 }
             }
-            console.log(filters)
             const result = await fetch(`${url}?${new URLSearchParams(filters)}`);
 
             switch (result.status) {
@@ -325,6 +329,13 @@ export class ProductSelector {
             }
         } catch (e) {
             console.log(e)
+            Notifier.show({
+                text: "Something went wrong",
+                type: "danger",
+                header: "Error",
+                closable: true,
+                duration: 2000
+            })
         } finally {
             this.setLoading(false)
         }
@@ -356,6 +367,8 @@ export class ProductSelector {
         /**
          * @type {HTMLDivElement}
          */
+
+
         const productSelectorGallery = this.element.querySelector(".product-selector__gallery")
         while (productSelectorGallery.firstChild) {
             productSelectorGallery.removeChild(productSelectorGallery.firstChild)
@@ -363,6 +376,10 @@ export class ProductSelector {
 
         productSelectorGallery.innerHTML = `
                 <i class="fa fa-spinner product-selector__spinner"></i>
+                <p class="product-selector__empty-message">
+                    <i class="fa fa-search"></i>
+                    No products found
+                </p>
         `;
         products.forEach(product => {
             const isAlreadySelected = this.selectedProducts.find((p) => p.ID === product.ID)
@@ -382,10 +399,16 @@ export class ProductSelector {
                     productEl.classList.add("product-selector__gallery-item--selected")
                     this.selectedProducts.push(product)
                 }
-                console.log(this.selectedProducts)
             })
             productSelectorGallery.appendChild(productEl)
         })
+
+        if(products.length > 0) {
+            productSelectorGallery.classList.remove("product-selector__gallery--empty")
+        } else {
+            productSelectorGallery.classList.add("product-selector__gallery--empty")
+        }
+
         const paginationContainer = this.element.querySelector(".pagination-container")
         paginationContainer.innerHTML = "";
         for (let i = 1; i <= Math.ceil(this.total / this.limit); i++) {
@@ -396,6 +419,11 @@ export class ProductSelector {
             })
             paginationContainer.appendChild(button)
         }
+
+        const productSelectorShowCount = this.element.querySelector("#product-selector__show-count")
+        productSelectorShowCount.innerHTML = `${products.length}`
+        const productSelectorTotalCount = this.element.querySelector("#product-selector__total-count")
+        productSelectorTotalCount.innerHTML = `${this.total}`
     }
 
 
@@ -427,10 +455,6 @@ export class ProductSelector {
     }
 
     destroy() {
-        // ensure each of the event listeners are removed
-        while (this.element.firstChild) {
-            this.element.removeChild(this.element.firstChild)
-        }
         Modal.close("ProductSelector")
     }
 

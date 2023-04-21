@@ -275,7 +275,7 @@ class Product
             "model_id" => null,
         ],
         string|null $searchTerm = null
-    ): array | string
+    ): array|string
     {
 
         $limitClause = $count ? "LIMIT $count" : "";
@@ -295,6 +295,9 @@ class Product
             $whereClause = " WHERE " . implode(" AND ", $conditions);
         }
 
+        if ($searchTerm !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.name LIKE :search_term" : " WHERE p.name LIKE :search_term";
+        }
 
         try {
             $query = "SELECT 
@@ -323,6 +326,10 @@ class Product
                 }
             }
 
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
             $statement->execute();
             $products = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
 
@@ -330,7 +337,17 @@ class Product
                 "SELECT COUNT(*) as total FROM product p $whereClause"
             );
 
-            $statement->execute($values);
+            foreach ($options as $option_key => $option_value) {
+                if ($option_value) {
+                    $statement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%".$searchTerm."%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
             $totalProducts = $statement->fetch(mode: PDO::FETCH_ASSOC);
             return [
                 "products" => $products,
