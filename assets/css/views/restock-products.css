@@ -1,0 +1,66 @@
+
+#restock-product-form {
+    position: relative;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+#restock-product-form .top-part-form {
+
+    margin-bottom: 1.5rem;
+    /*background-color: #e53030;*/
+}
+
+
+#restock-product-form h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-right: 1 rem;
+}
+
+#restock-product-form p{
+    margin-top: 1rem;
+    font-weight: 550;
+    margin-right:4rem;
+
+
+}
+
+#restock-product-form .restock-product-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+}
+
+#restock-product-form  .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+
+#restock-product-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+#restock-product-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}
+
+#restock-product-form .restock-product-actions {
+    /*margin-top: 30px;*/
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}

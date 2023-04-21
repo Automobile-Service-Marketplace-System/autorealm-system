@@ -205,7 +205,7 @@ class Product
 //        $errors = $this->validateAddProducts();
         $errors = [];
         if (empty($errors)) {
-//            try {
+            //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
 //                $imagesAsJSON = json_encode($imageUrls);
 //            } catch (Exception $e) {
@@ -258,7 +258,6 @@ class Product
         }
     }
 
-
     /**
      * @param int|null $count
      * @param int|null $page
@@ -267,16 +266,15 @@ class Product
      * @return array
      */
     public function getProductsForProductSelector(
-        int|null    $count = null,
-        int|null    $page = 1,
-        array       $options = [
+        int|null $count = null,
+        int|null $page = 1,
+        array $options = [
             "category_id" => null,
             "brand_id" => null,
             "model_id" => null,
         ],
         string|null $searchTerm = null
-    ): array|string
-    {
+    ): array|string {
 
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
@@ -344,7 +342,7 @@ class Product
             }
 
             if ($searchTerm !== null) {
-                $statement->bindValue(":search_term", "%".$searchTerm."%", PDO::PARAM_STR);
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
             }
 
             $statement->execute();
@@ -356,9 +354,14 @@ class Product
         } catch (PDOException $e) {
             return $e->getMessage();
         }
+    }
+    public function restockProduct(): bool|array|string
+    {
+        $errors = [];
 
+        if (empty($errors)) {
+
+        }
     }
 
 }
-
-
