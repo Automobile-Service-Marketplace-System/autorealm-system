@@ -78,13 +78,13 @@ class Product
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
-        $totlaProducts = $this->pdo->query(
+        $totalProducts = $this->pdo->query(
             "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
         )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "products" => $products,
-            "total" => $totlaProducts['total']
+            "total" => $totalProducts['total']
         ];
     }
 
@@ -256,6 +256,90 @@ class Product
         } catch (PDOException $e) {
             return "Error deleting product";
         }
+    }
+
+
+    /**
+     * @param int|null $count
+     * @param int|null $page
+     * @param array $options
+     * @param string|null $searchTerm
+     * @return array
+     */
+    public function getProductsForProductSelector(
+        int|null    $count = null,
+        int|null    $page = 1,
+        array       $options = [
+            "category_id" => null,
+            "brand_id" => null,
+            "model_id" => null,
+        ],
+        string|null $searchTerm = null
+    ): array | string
+    {
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $whereClause = "";
+        $conditions = [];
+        $values = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value) {
+                $conditions[] = "p.$option_key = :$option_key";
+                $values[] = $option_value;
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = " WHERE " . implode(" AND ", $conditions);
+        }
+
+
+        try {
+            $query = "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity,
+                        p.image as Image
+
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id
+            
+                $whereClause ORDER BY p.item_code $limitClause $pageClause";
+
+            $statement = $this->pdo->prepare($query);
+
+            foreach ($options as $option_key => $option_value) {
+                if ($option_value) {
+                    $statement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            $statement->execute();
+            $products = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM product p $whereClause"
+            );
+
+            $statement->execute($values);
+            $totalProducts = $statement->fetch(mode: PDO::FETCH_ASSOC);
+            return [
+                "products" => $products,
+                "total" => $totalProducts['total']
+            ];
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+
     }
 
 }

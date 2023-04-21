@@ -14,7 +14,7 @@
     "dotenv": "^16.0.3",
     "rollup-plugin-brotli": "^3.1.0",
     "socket.io": "^4.6.1",
-    "vite": "^4.2.1",
+    "vite": "^4.3.1",
     "vite-plugin-compress": "^2.1.1"
   },
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^1.52.1",
-    "html5-qrcode": "^2.3.7",
+    "html5-qrcode": "^2.3.8",
     "qr-scanner": "^1.4.2"
   },
   "description": "PHP full stack application for the AutoRealm system",
