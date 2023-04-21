@@ -229,4 +229,19 @@ class Supplier
         }
     }
 
+    public function getSuppliersOptList(): array|string
+    {
+        try {
+            $query = "SELECT supplier_id, name FROM supplier WHERE is_discontinued = FALSE";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return "Error getting suppliers list";
+        }
+    }
+
 }

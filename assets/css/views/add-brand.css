@@ -1,0 +1,57 @@
+.brand-type-radio-group{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.add-brand-actions{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+}
+
+#stock-manager-add-brand-form {
+    position: relative;
+    padding-top: 1rem;
+
+}
+
+#stock-manager-add-brand-form .top-part-form {
+
+    margin-bottom: 2rem;
+    background-color: #e53030;
+}
+
+
+#stock-manager-add-brand-form h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+#stock-manager-add-brand-form .add-brand-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+}
+
+#stock-manager-add-brand-form  .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+
+#stock-manager-add-brand-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+#stock-manager-add-brand-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}

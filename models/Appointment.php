@@ -113,4 +113,40 @@ class Appointment
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getAppointmentsByCustomerID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                query: "SELECT
+                            a.appointment_id,
+                            a.vehicle_reg_no,                       
+                            a.remarks,
+                            a.service_type,
+                            a.date_and_time as 'created_date',
+                            t.date as 'appointment_date',
+                            t.from_time as 'appointment_time'
+                        FROM
+                            appointment a
+                        INNER JOIN timeslot t ON t.time_id = a.time_id
+                        
+                        WHERE 
+                            customer_id = :customer_id");
+            $statement->execute(['customer_id' => $customer_id]);
+            $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$appointments) {
+                return "No appointments available for this customer";
+            }
+            return $appointments;
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        return "Internal Server Error";
+    }
+
+
 }

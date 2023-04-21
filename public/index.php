@@ -154,13 +154,14 @@ if ($isInternal) {
     $app->router->post(path: "/suppliers/add", callback: [SuppliersController::class, 'addSuppliers']);
     $app->router->post(path: "/supplier/update", callback: [SuppliersController::class, 'updateSuppliers']);
     $app->router->post(path:"/suppliers/delete", callback: [SuppliersController::class, 'deleteSuppliers']);
+    $app->router->get(path: "/suppliers/options-json", callback: [SuppliersController::class, 'getSuppliersAsJSON']);
     $app->router->get(path: "/orders", callback: [OrdersController::class, 'getOrdersPage']);
     $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderById']);
     $app->router->post(path: "/orders/set-status", callback: [OrdersController::class, 'updateOrderStatus']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsPage']);
-
-
-
+    $app->router->post(path: "/products/add-brands", callback: [ProductsController::class, 'addBrand']);
+    $app->router->get(path: "/product/brands-options-json", callback: [ProductsController::class, 'getBrandsAsJSON']);
+    $app->router->post(path: "/products/add-model", callback: [ProductsController::class, 'addModel']);
 
 //office staff routes
     $app->router->get("/office-staff-login", [AuthenticationController::class, 'getOfficeStaffLoginPage']);

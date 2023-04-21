@@ -43,11 +43,18 @@ class AppointmentsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $customerId = $req->session->get("user_id");
+            $appointmentModel = new Appointment();
+            $appointments = $appointmentModel->getAppointmentsByCustomerID($customerId);
 
-            return $res->render(view: "customer-dashboard-appointments", layout: "customer-dashboard", layoutParams: [
+            return $res->render(view: "customer-dashboard-appointments", layout: "customer-dashboard",
+                pageParams: [
+                    "appointments" => $appointments,
+                ],
+                layoutParams: [
                 "title" => 'My Appointments',
                 'pageMainHeading' => 'My Appointments',
                 'customerId' => $customerId,
+
             ]);
         }
         return $res->redirect(path: "/login");

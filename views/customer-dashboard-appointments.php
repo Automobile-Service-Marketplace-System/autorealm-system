@@ -1,3 +1,20 @@
+<?php
+
+/**
+ * @var array $appointments
+
+ */
+
+//\app\utils\DevOnly::prettyEcho($appointments);
+
+if(isset($error)) {
+    echo "<p class='error'>$error</p>";
+    return;
+}
+
+?>
+
+
 <div class="product-filters justify-between">
     <div class="flex gap-4 items-center">
         <div class="product-search">
@@ -21,99 +38,58 @@
 </div>
 
 <div class="appointments-container">
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
-        </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
-                <div>
-                    <h3>Made on</h3>
-                    <p>
-                        2023/1/3
-                    </p>
+    <?php
+
+    if(is_string($appointments)){
+        echo "<p class='no-data'>Sorry! <br> there are no Appointments for you</p>";
+    }
+    else{
+        foreach ($appointments as $appointment){
+            echo "
+            <div class='appointment-card'>
+                <div class='appointment-card__header'>
+                    <p>Appointment Date: {$appointment['appointment_date']}</p>
+                    <p>Appointment Time: {$appointment['appointment_time']}</p>
+                    <p class='due'>Coming Soon</p>
                 </div>
-            </div>
-        </div>
-        <div class="appointment-card__footer">
-            <div><strong>
-                    For:
-                </strong>
-                Aston Martin DB11
-            </div>
-            <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
-        </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
-                <div>
-                    <h3>Made On</h3>
-                    <p>
-                        2023/1/3
-                    </p>
+                <div class='appointment-card__info'>
+                    <div class='appointment-card__info-date'>
+                        <div>
+                            <h3>Made on</h3>
+                            <p>
+                                {$appointment['created_date']}
+                            </p>
+                        </div>
+                        <div>
+                            <h3>Service Type</h3>
+                            <p>
+                                {$appointment['remarks']}
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="appointment-card__footer">
-            <div><strong>
-                    For:
-                </strong>
-                Aston Martin DB11
-            </div>
-            <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="appointment-card">
-        <div class="appointment-card__header">
-            <p>Appointment Date: 2023/2/3</p>
-            <p class="due">Coming Soon</p>
-        </div>
-        <div class="appointment-card__info">
-            <div class="appointment-card__info-date">
-                <div>
-                    <h3>Made On</h3>
-                    <p>
-                        2023/1/3
-                    </p>
+                <div class='appointment-card__footer'>
+                    <div><strong>
+                            For:
+                        </strong>
+                        {$appointment['vehicle_reg_no']}
+                    </div>
+                    <div class='flex items-center gap-4'>
+                        <button>
+                            Get QR Code
+                        </button>
+                        <button>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="appointment-card__footer">
-            <div><strong>
-                    For:
-                </strong>
-                Aston Martin DB11
-            </div>
-            <div class="flex items-center gap-4">
-                <button>
-                    Get QR Code
-                </button>
-                <button>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
+             </div>
+            ";
+        }
+    }
+
+ ?>
+
 
 </div>
 

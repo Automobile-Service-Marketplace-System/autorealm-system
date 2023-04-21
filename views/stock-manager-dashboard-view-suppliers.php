@@ -6,7 +6,7 @@
 
 use app\components\Table;
 
-//var_dump($suppliers);
+// \app\utils\DevOnly::prettyEcho($suppliers);
 
 $columns = ["ID", "Name", "Address", "Sales Manager", "Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
 

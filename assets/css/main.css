@@ -75,7 +75,8 @@
 @import "views/update-products.css";
 @import "views/update-supplier.css";
 @import "views/restock-products.css";
-
+@import "views/add-models.css";
+@import "views/add-brand.css";
 
 
 body{
