@@ -52,10 +52,10 @@ class Product
                     ORDER BY p.item_code";
 
         $result = $this->pdo->prepare($query);
-        try{
+        try {
             $result->execute();
             return $result->fetchAll(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             return $e->getMessage();
         }
 
@@ -253,6 +253,7 @@ class Product
                 return $errors;
             }
         }
+        return $errors;
     }
 
     public function deleteProductById(int $id): bool|string
@@ -268,11 +269,11 @@ class Product
         }
     }
 
-    public function restockProduct():bool|array|string
+    public function restockProduct(): bool|array|string
     {
         $errors = [];
         $dateTimeStamp = date("Y-m-d H:i:s");
-        if(empty($errors)){
+        if (empty($errors)) {
             $query = "INSERT INTO stockpurchasereport
                        (
                             item_code, date_time, supplier_id, unit_price ,amount
@@ -301,8 +302,9 @@ class Product
             } catch (Exception $e) {
                 return $e->getMessage();
             }
-      }
-  }
+        }
+        return $errors;
+    }
     /**
      * @param int|null $count
      * @param int|null $page
@@ -399,6 +401,5 @@ class Product
         } catch (PDOException $e) {
             return $e->getMessage();
         }
-        return $errors;
     }
 }
