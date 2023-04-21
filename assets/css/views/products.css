@@ -4,6 +4,8 @@
     justify-content: center;
     gap: 1rem;
     margin-block: 2rem;
+    overflow-x: auto;
+    padding-block: 0.2rem;
 }
 
 

@@ -1,8 +1,10 @@
 <?php
-namespace  app\models;
+
+namespace app\models;
 
 use app\core\Database;
 use PDO;
+use PDOException;
 
 class Model
 {
@@ -17,9 +19,15 @@ class Model
     }
 
 
-    public function  getModels() : array {
-        $stmt = $this->pdo->query("SELECT * FROM model");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getModels(): array
+    {
+        try {
+
+            $stmt = $this->pdo->query("SELECT brand_id, model_id, is_product_model, is_vehicle_model, model_name FROM model");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
     }
 
      public function addModel() : bool|array|string

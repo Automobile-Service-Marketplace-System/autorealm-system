@@ -10,6 +10,7 @@ use app\models\Brand;
 use app\models\Category;
 use app\models\Supplier;
 use app\models\Vehicle;
+use Exception;
 use JsonException;
 
 class ProductsController
@@ -281,9 +282,7 @@ class ProductsController
     public function restockProducts(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
-
-            $body = $req->body();
-
+             $body = $req->body();
             $product = new Product($body);
             $result = $product->restockProduct();
 
@@ -409,5 +408,65 @@ class ProductsController
         return $res->redirect(path: "/login");
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function getCategoriesBrandsModels(Request $req, Response $res): string
+    {
 
+        try {
+            $categoryModel = new Category();
+            $brandModel = new Brand();
+            $modelModel = new Model();
+            $res->setStatusCode(code: 200);
+            return $res->json([
+                "categories" => $categoryModel->getCategories(),
+                "brands" => $brandModel->getBrands(),
+                "models" => $modelModel->getModels()
+            ]);
+        } catch (Exception $e) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getProductSelectorProducts(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+        $categoryId = isset($query['categories']) ? (int)$query['categories'] : null;
+        $brandId = isset($query['brands']) ? (int)$query['brands'] : null;
+        $modelId = isset($query['models']) ? (int)$query['models'] : null;
+        $searchTerm = $query['q'] ?? null;
+
+
+        $productModel = new Product();
+        $result = $productModel->getProductsForProductSelector(count: $limit, page: $page, options: [
+            "category_id" => $categoryId,
+            "model_id" => $modelId,
+            "brand_id" => $brandId
+        ], searchTerm: $searchTerm);
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error",
+                "error" => $result
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            'products' => $result['products'],
+            'total' => $result['total'],
+            'limit' => $limit,
+            'page' => $page,
+        ]);
+    }
 }

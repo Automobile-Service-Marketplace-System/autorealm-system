@@ -8,6 +8,7 @@ use app\models\JobCard;
 use app\models\InspectionCondition;
 use app\models\Appointment;
 use app\models\Foreman;
+use app\models\MaintenanceInspectionReport;
 use app\utils\DevOnly;
 
 class JobsController
@@ -49,10 +50,13 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
-            $formCreated = isset($query["form_created"]) && $query["form_created"] === "true";
 
             $jobCardModel = new JobCard();
             $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["id"]);
+
+
+            $inspectionReportModel = new MaintenanceInspectionReport();
+            $inspectionReport = $inspectionReportModel->getJobCardInspectionReportStatus(jobId: $query["id"]);
 
             $suggestions = [
                 "services" => [
@@ -71,13 +75,14 @@ class JobsController
                     "Head Lights",
                 ]
             ];
-            if (!$formCreated) {
+            if (!$inspectionReport) {
                 $suggestions = [];
             }
             return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", pageParams: [
                 'jobId' => $query['id'],
                 'suggestions' => $suggestions,
                 'vehicleDetails' => $result,
+                'inspectionReport' => $inspectionReport ? $inspectionReport : null,
             ], layoutParams: [
                 'title' => "Job #{$query['id']}",
                 'pageMainHeading' => "Job #{$query['id']}",
@@ -98,11 +103,16 @@ class JobsController
             }
             $conditionModel = new InspectionCondition();
             $conditions = $conditionModel->getConditions();
+
+
+            $inspectionReportModel = new MaintenanceInspectionReport();
+            $preparedConditions = $inspectionReportModel->getSavedConditions(body: $conditions, jobId: $jobId);
+//            DevOnly::prettyEcho($result);
             $jobCardModel = new JobCard();
             $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
 
             return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", pageParams: [
-                "conditions" => $conditions,
+                "conditionsOfCategories" => $preparedConditions,
                 "vehicleDetails" => $result,
                 "jobId" => $jobId
             ], layoutParams: [
@@ -119,30 +129,51 @@ class JobsController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
             $jobId = $query["job_id"] ?? null;
-            var_dump($jobId);
             if (!$jobId) {
-                return $res->redirect(path: "/jobs");
+                return "The form was not submitted properly";
             }
-            DevOnly::printToBrowserConsole($req->body());
-            return "";
+            $reportModel = new MaintenanceInspectionReport();
+            $result = $reportModel->saveInspectionReport(jobId: $jobId, body: $req->body(), isDraft: false);
+            if (is_string($result)) {
+                return $result;
+            }
+            $res->setStatusCode(code: 201);
+            return $res->redirect(path: "/jobs/view?id=$jobId");
+
         }
         return $res->redirect(path: "/login");
     }
 
-    public function createInspectionReportDraft(Request $req, Response $res) : string {
+    /**
+     * @throws \JsonException
+     */
+    public function createInspectionReportDraft(Request $req, Response $res): string
+    {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
             $jobId = $query["job_id"] ?? null;
-            var_dump($jobId);
             if (!$jobId) {
-                return $res->redirect(path: "/jobs");
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => "Job ID is required"
+                ]);
             }
-//            DevOnly::printToBrowserConsole($req->body());
+            $reportModel = new MaintenanceInspectionReport();
+            $result = $reportModel->saveInspectionReport(jobId: $jobId, body: $req->body());
+            if (is_string($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $result
+                ]);
+            }
+            $res->setStatusCode(code: 201);
             return $res->json(data: [
-                "success" => true,
+                "success" => $result,
                 "message" => "Draft saved successfully",
-                "body" => $req->body()
             ]);
+
         }
         return $res->redirect(path: "/login");
     }
