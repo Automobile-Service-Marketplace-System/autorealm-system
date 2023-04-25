@@ -4,17 +4,18 @@ namespace app\models;
 
 use app\core\Database;
 use PDO, Exception;
+use PDOException;
 
 class ShoppingCart
 {
     private PDO $pdo;
 
-    public function __construct(array $body = [])
+    public function __construct()
     {
         $this->pdo = Database::getInstance()->pdo;
     }
 
-    public function addToCart(int $customerId, int $itemCode): bool|string|array
+    public function addToCart(int $customerId, int $itemCode, int $amount): bool|string|array|int
     {
         try {
             $query = "SELECT * FROM cart WHERE customer_id = :customer_id";
@@ -35,16 +36,18 @@ class ShoppingCart
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(['cart_id' => $cartId, 'item_code' => $itemCode]);
             $cartHasProduct = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // if item is already in cart, do nothing
+            // if item is already in cart, update quantity
             if (!empty($cartHasProduct)) {
-                return [
-                    "message" => "Item already in cart"
-                ];
+                $query = "UPDATE cart_has_product SET quantity = quantity + :quantity WHERE cart_id = :cart_id AND item_code = :item_code";
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute(['cart_id' => $cartId, 'item_code' => $itemCode, 'quantity' => $amount]);
+                // return the new quantity
+                return $cartHasProduct[0]['quantity'] + $amount;
             }
-            $query = "INSERT INTO cart_has_product (cart_id, item_code, quantity) VALUES  (:cart_id, :item_code, 1)";
+            $query = "INSERT INTO cart_has_product (cart_id, item_code, quantity) VALUES  (:cart_id, :item_code, :quantity)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute(['cart_id' => $cartId, 'item_code' => $itemCode]);
-            return true;
+            $stmt->execute(['cart_id' => $cartId, 'item_code' => $itemCode, 'quantity' => $amount]);
+            return 1;
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -60,7 +63,7 @@ class ShoppingCart
             if (empty($cart)) {
                 return [];
             }
-            $query = "SELECT * FROM cart_has_product WHERE cart_id = :cart_id";
+            $query = "SELECT * FROM cart_has_product WHERE cart_id = :cart_id ORDER BY created_at DESC";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(['cart_id' => $cart[0]['cart_id']]);
             $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -142,7 +145,7 @@ class ShoppingCart
     }
 
 
-    public function deleteItemFromCart(int $customerId, int $itemCode)
+    public function deleteItemFromCart(int $customerId, int $itemCode): array|bool|string
     {
         // check if the cart exists
         try {
@@ -256,6 +259,32 @@ class ShoppingCart
             ];
         } catch (Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+
+    public function getItemQuantity(int $itemCode, int $customerId): int
+    {
+        try {
+            $sql = "SELECT quantity FROM product WHERE item_code = :item_code";
+            $statement = $this->pdo->prepare($sql);
+            $statement->bindValue(":item_code", $itemCode);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $totalProductQuantity = $result['quantity'] ?? 0;
+
+
+            $sql = "SELECT quantity FROM cart_has_product WHERE item_code = :item_code AND cart_id = (SELECT cart_id FROM cart WHERE customer_id = :customer_id)";
+            $statement = $this->pdo->prepare($sql);
+            $statement->bindValue(":item_code", $itemCode);
+            $statement->bindValue(":customer_id", $customerId);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $totalCartQuantity = $result['quantity'] ?? 0;
+            return $totalProductQuantity - $totalCartQuantity;
+
+        } catch (PDOException $e) {
+            return 0;
         }
     }
 

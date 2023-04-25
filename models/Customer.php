@@ -231,7 +231,6 @@ class Customer
             } else {
                 return $errors;
             }
-
         } else {
             return $errors;
         }
@@ -512,4 +511,55 @@ class Customer
         return $errors;
     }
 
+    private function validateUpdateCustomerBody(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['f_name']) === '') {  //remove whitespaces by trim(string)
+            $errors['f_name'] = 'First name must not be empty.';
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['f_name'])) {
+            $errors['f_name'] = 'First name must contain only letters.';
+        }
+
+        if (trim($this->body['l_name']) === '') {
+            $errors['l_name'] = 'Last name must not be empty.';
+        } else if (!preg_match('/^[\p{L} ]+$/u', $this->body['l_name'])) {
+            $errors['l_name'] = 'First name must contain only letters.';
+        }
+
+        if (trim($this->body['address']) === '') {
+            $errors['address'] = 'Address must not be empty.';
+        }
+
+        return $errors;
+    }
+
+    public function updateCustomer()
+    {
+        $errors = $this->validateUpdateCustomerBody();
+        if (empty($errors)) {
+            $query = "UPDATE customer SET
+                        f_name= :f_name, 
+                        l_name= :l_name, 
+                        address= :address 
+                        WHERE customer_id= :customer_id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":f_name", $this->body["f_name"]);
+            $statement->bindValue(":l_name", $this->body["l_name"]);
+            $statement->bindValue(":address", $this->body["address"]);
+            $statement->bindValue(":customer_id", $this->body["customer_id"]);
+            
+            try {
+                $statement->execute();
+                return true;
+            } catch (PDOException $e) {
+                return $e->getMessage();
+            }
+
+        } else {
+            return $errors;
+        }
+    }
 }
+

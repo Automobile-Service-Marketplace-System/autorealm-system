@@ -644,7 +644,6 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 ?>
             </div>
 
-
         <div class="item-grid">
             <?php
                 FormItem::render(

@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Brand;
 use app\models\Customer;
 use app\models\Model;
+use app\models\Service;
 
 class CustomersController
 {
@@ -18,14 +19,20 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers();
 
+            $serviceModel = new Service();
+            $services = $serviceModel->getServices();
+
             if($req->session->get("user_role") === "office_staff_member"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
-                    pageParams:["customers" => $customers],
+                    pageParams:[
+                        'customers' => $customers,
+                        'services' => $services
+                    ],
                     layoutParams:[
                         'title' => 'Customers',
                         'pageMainHeading' => 'Customers',
                         'officeStaffId' => $req->session->get('user_id'),
-                ]);
+                    ]);
             }
 
             if($req->session->get("user_role") === "admin"){
@@ -123,6 +130,38 @@ class CustomersController
 
         return $res->render(view:"500", layout:"plain", pageParams:[
             "error" => "Something went wrong. Please try again later.",
+        ]);
+    }
+
+    public function updateCustomer(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $service = new Customer($body);
+        $result = $service->updateCustomer();
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Customer updated successfully"
+            ]);
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
         ]);
     }
 

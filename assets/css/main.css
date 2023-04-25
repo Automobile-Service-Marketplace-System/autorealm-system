@@ -21,6 +21,7 @@
 @import "components/tables.css";
 @import "components/notifiers.css";
 @import "components/modals.css";
+@import "components/product-selector.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
@@ -73,6 +74,11 @@
 @import "views/update-service.css";
 @import "views/update-products.css";
 @import "views/update-supplier.css";
+@import "views/restock-products.css";
+@import "views/add-models.css";
+@import "views/office-create-appointment.css";
+@import "views/add-brand.css";
+
 
 
 body{

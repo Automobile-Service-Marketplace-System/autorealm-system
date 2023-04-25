@@ -203,7 +203,7 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
-            return $res->redirect(path: "/office-staff-dashboard/profile");
+            return $res->redirect(path: "/profile");
         }
         {
             return $res->render(view: "500", layout: "error", pageParams: [
@@ -280,6 +280,8 @@ class AuthenticationController
             } elseif ($job_role === "security_officer") {
                 $path = "/security-officer-dashboard/check-appointment";
             }
+            var_dump("Got here 3");
+            exit();
             return $res->redirect(path: $path);
         }
         return $res->render(view: "employee-login", layout: "employee-auth", layoutParams: [

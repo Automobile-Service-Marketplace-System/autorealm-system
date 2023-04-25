@@ -3,8 +3,10 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
 use PDOException;
+
 
 class Vehicle
 {
@@ -43,11 +45,10 @@ class Vehicle
 
     }
 
-    public function getVehicleByID(int $customer_id): array
+    public function getVehiclesByID(int $customer_id): array | string
     {
-
-        return $this->pdo->query(
-            "SELECT
+        try {
+            $statement = $this->pdo->prepare("SELECT
                 vin,
                 reg_no,
                 engine_no,
@@ -64,8 +65,81 @@ class Vehicle
                 INNER JOIN brand b ON b.brand_id = v.brand_id
                 INNER JOIN customer c ON c.customer_id = v.customer_id
             WHERE
-                v.customer_id = $customer_id"
-        )->fetchAll(PDO::FETCH_ASSOC);
+                v.customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customer_id);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if(!$results) {
+                return "No vehicle found";
+            }
+
+            $resultsWithLastService = [];
+
+
+            foreach ($results as $result) {
+//                DevOnly::prettyEcho($result);
+
+                $statement = $this->pdo->prepare("SELECT
+                    mileage,
+                    start_date_time
+                FROM jobcard j
+                WHERE
+                    j.vin = :vin
+                ORDER BY
+                    j.start_date_time DESC
+                LIMIT 1");
+                $statement->bindValue(":vin", $result['vin']);
+                $statement->execute();
+                $lastService = $statement->fetch(PDO::FETCH_ASSOC);
+//                DevOnly::prettyEcho($lastService);
+
+                if($lastService) {
+                    $result['last_service_mileage'] = $lastService['mileage'];
+                    $result['last_service_date'] = $lastService['start_date_time'];
+                } else {
+                    $result['last_service_mileage'] = "No service history";
+                    $result['last_service_date'] = "N/A";
+                }
+
+                $resultsWithLastService[]= $result;
+//
+//                DevOnly::prettyEcho($result);
+            }
+
+//            DevOnly::prettyEcho($resultsWithLastService);
+
+
+            return $resultsWithLastService;
+
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
+
+    }
+
+
+    public function getVehicleNamesByID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT
+                v.reg_no,
+                m.model_name,
+                b.brand_name
+            FROM vehicle v 
+                INNER JOIN model m ON m.model_id = v.model_id
+                INNER JOIN brand b ON b.brand_id = v.brand_id
+            WHERE
+                v.customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customer_id);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
+
     }
 
     public function addVehicle(int $customer_id) 

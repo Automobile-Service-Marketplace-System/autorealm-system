@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
+use PDOException;
 
 class Appointment
 {
@@ -46,7 +47,8 @@ class Appointment
             "SELECT
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
-                CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',                milage as 'Milage',
+                CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+                mileage as 'Mileage',
                 remarks as 'Remarks',
                 service_type as 'Service Type',
                 date_and_time as 'Date & Time',
@@ -71,7 +73,8 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAppointments():array{
+    public function getAppointments(): array
+    {
         return $this->pdo->query(
             "SELECT
                 concat(f_name, ' ', l_name) as Name,
@@ -81,8 +84,90 @@ class Appointment
                 appointment.to_time as ToTime            
             FROM appointment 
             inner join customer on customer.customer_id=appointment.customer_id"
-            
+
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTimeslotsByDate(string $date): string|array
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                query: "SELECT
+                            time_id,
+                            from_time,
+                            to_time
+                        FROM
+                            timeslot
+                        WHERE 
+                            date = :date 
+                        AND 
+                            remaining_count > 0");
+            $statement->execute(['date' => $date]);
+            $timeslots = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$timeslots) {
+                return "No timeslots available for this date";
+            }
+            return $timeslots;
+
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+  
+    public function officeUpdateAppointment()
+    {
+        try {
+            $query = "UPDATE appointment SET
+            mileage = :mileage,
+            remarks = :remarks,
+            date_and_time = :date_and_time
+            WHERE
+                appointment_id = :appointment_id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
+            $statement->bindValue(":remarks", $this->body["remarks"]);
+            $statement->bindValue(":date_and_time", $this->body["date_time"]);            
+            $statement->bindValue(":appointment_id", $this->body["appointment_id"]);            
+            $statement-> execute();
+            return true;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+  
+    /**
+     * @return array
+     */
+    public function getAppointmentsByCustomerID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                query: "SELECT
+                            a.appointment_id,
+                            a.vehicle_reg_no,                       
+                            a.remarks,
+                            a.service_type,
+                            a.date_and_time as 'created_date',
+                            t.date as 'appointment_date',
+                            t.from_time as 'appointment_time'
+                        FROM
+                            appointment a
+                        INNER JOIN timeslot t ON t.time_id = a.time_id
+                        
+                        WHERE 
+                            customer_id = :customer_id");
+            $statement->execute(['customer_id' => $customer_id]);
+            $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$appointments) {
+                return "No appointments available for this customer";
+            }
+            return $appointments;
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        return "Internal Server Error";
+    }
 }

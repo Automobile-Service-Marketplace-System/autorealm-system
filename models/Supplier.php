@@ -6,6 +6,7 @@ use app\core\Database;
 use app\utils\DevOnly;
 use PDO;
 use Exception;
+use PDOException;
 
 class Supplier
 {
@@ -39,7 +40,8 @@ class Supplier
                 s.sales_manager as 'Sales Manager',
                 s.email as Email,
                 s.company_reg_no as 'Registration No'
-                FROM supplier s"
+                FROM supplier s 
+                WHERE s.is_discontinued = FALSE"
         )->fetchAll(PDO::FETCH_ASSOC);
         $supplierList = [];
         foreach ($suppliers as $supplier) {
@@ -71,7 +73,7 @@ class Supplier
 //                                s4 on s2.supplier_id=s4.supplier_id and s4.`Last Purchase Date`=s2.date_time GROUP BY s.supplier_id ORDER BY s.supplier_id
 //
 //"
-    public function addSuppliers()
+    public function addSuppliers(): bool|array|string
     {
         $errors = $this->validateAddSupplierForm();
 
@@ -208,6 +210,37 @@ class Supplier
             }
         } else {
             return $errors;
+        }
+    }
+
+    public function deleteSupplierById(int $id):bool|string
+    {
+        try {
+            $query ="UPDATE supplier SET is_discontinued = TRUE WHERE supplier_id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+
+            return $statement->rowCount() > 0;
+        }
+        catch (PDOException $e){
+            return "Error deleting Supplier";
+
+        }
+    }
+
+    public function getSuppliersOptList(): array|string
+    {
+        try {
+            $query = "SELECT supplier_id, name FROM supplier WHERE is_discontinued = FALSE";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return "Error getting suppliers list";
         }
     }
 

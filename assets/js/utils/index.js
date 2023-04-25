@@ -1,3 +1,5 @@
+export * from "./spinners.util";
+
 /**
  *
  * @param {string} template
@@ -7,3 +9,4 @@ export function htmlToElement(template) {
     templateEl.innerHTML = template;
     return templateEl.content.firstElementChild;
 }
+

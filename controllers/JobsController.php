@@ -8,6 +8,8 @@ use app\models\JobCard;
 use app\models\InspectionCondition;
 use app\models\Appointment;
 use app\models\Foreman;
+use app\models\MaintenanceInspectionReport;
+use app\utils\DevOnly;
 
 class JobsController
 {
@@ -30,15 +32,15 @@ class JobsController
                 ]);
             }
 
-            if ($req->session->get("user_role") === "admin") {
-                return $res->render(view: "foreman-dashboard-jobs", layout: "admin-dashboard", pageParams: [
-                    'jobs' => $jobCards,
-                ], layoutParams: [
-                    'title' => 'Assigned Jobs',
-                    'pageMainHeading' => 'Assigned Jobs',
-                    'employeeId' => $req->session->get("user_id"),
-                ]);
-            }
+//            if ($req->session->get("user_role") === "admin") {
+//                return $res->render(view: "foreman-dashboard-jobs", layout: "admin-dashboard", pageParams: [
+//                    'jobs' => $jobCards,
+//                ], layoutParams: [
+//                    'title' => 'Assigned Jobs',
+//                    'pageMainHeading' => 'Assigned Jobs',
+//                    'employeeId' => $req->session->get("user_id"),
+//                ]);
+//            }
 
         }
         return $res->redirect(path: "/login");
@@ -48,10 +50,13 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
-            $formCreated = isset($query["form_created"]) && $query["form_created"] === "true";
 
             $jobCardModel = new JobCard();
             $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["id"]);
+
+
+            $inspectionReportModel = new MaintenanceInspectionReport();
+            $inspectionReport = $inspectionReportModel->getJobCardInspectionReportStatus(jobId: $query["id"]);
 
             $suggestions = [
                 "services" => [
@@ -70,13 +75,14 @@ class JobsController
                     "Head Lights",
                 ]
             ];
-            if (!$formCreated) {
+            if (!$inspectionReport) {
                 $suggestions = [];
             }
             return $res->render(view: "foreman-dashboard-view-job", layout: "foreman-dashboard", pageParams: [
                 'jobId' => $query['id'],
                 'suggestions' => $suggestions,
                 'vehicleDetails' => $result,
+                'inspectionReport' => $inspectionReport ? $inspectionReport : null,
             ], layoutParams: [
                 'title' => "Job #{$query['id']}",
                 'pageMainHeading' => "Job #{$query['id']}",
@@ -91,14 +97,24 @@ class JobsController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            if (!$jobId) {
+                return $res->redirect(path: "/jobs");
+            }
             $conditionModel = new InspectionCondition();
             $conditions = $conditionModel->getConditions();
+
+
+            $inspectionReportModel = new MaintenanceInspectionReport();
+            $preparedConditions = $inspectionReportModel->getSavedConditions(body: $conditions, jobId: $jobId);
+//            DevOnly::prettyEcho($result);
             $jobCardModel = new JobCard();
-            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["job_id"]);
+            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
 
             return $res->render(view: "foreman-dashboard-inspection-reports-create", layout: "foreman-dashboard", pageParams: [
-                "conditions" => $conditions,
+                "conditionsOfCategories" => $preparedConditions,
                 "vehicleDetails" => $result,
+                "jobId" => $jobId
             ], layoutParams: [
                 'title' => "Maintenance Inspection report for job #{$query['job_id']}",
                 'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
@@ -110,11 +126,56 @@ class JobsController
 
     public function createInspectionReport(Request $req, Response $res): string
     {
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
-        echo "hello";
-        return "";
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            if (!$jobId) {
+                return "The form was not submitted properly";
+            }
+            $reportModel = new MaintenanceInspectionReport();
+            $result = $reportModel->saveInspectionReport(jobId: $jobId, body: $req->body(), isDraft: false);
+            if (is_string($result)) {
+                return $result;
+            }
+            $res->setStatusCode(code: 201);
+            return $res->redirect(path: "/jobs/view?id=$jobId");
+
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function createInspectionReportDraft(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            if (!$jobId) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => "Job ID is required"
+                ]);
+            }
+            $reportModel = new MaintenanceInspectionReport();
+            $result = $reportModel->saveInspectionReport(jobId: $jobId, body: $req->body());
+            if (is_string($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $result
+                ]);
+            }
+            $res->setStatusCode(code: 201);
+            return $res->json(data: [
+                "success" => $result,
+                "message" => "Draft saved successfully",
+            ]);
+
+        }
+        return $res->redirect(path: "/login");
     }
 
     public function getCreateJobCardPage(Request $req, Response $res): string
@@ -139,7 +200,7 @@ class JobsController
                 ]);
         }
 
-        return $res->redirect(path: "/employee-login");
+        return $res->redirect(path: "/login");
 
     }
 
