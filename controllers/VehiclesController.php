@@ -209,34 +209,35 @@ class VehiclesController
 
     public function updateVehicle(Request $req, Response $res): string
     {
-        $body = $req->body();
-        $vehicle = new Vehicle($body);
-        $result = $vehicle->updateVehicle();
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $body = $req->body();
+            $vehicle = new Vehicle($body);
+            $result = $vehicle->updateVehicle();
 
-        if (is_string($result)) {
-            $res->setStatusCode(code: 500);
-            return $res->json([
-                "message" => $result
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => $result
+                ]);
+            }
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "errors" => $result
+                ]);
+            }
+
+            if ($result) {
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Customer updated successfully"
+                ]);
+            }
+
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
             ]);
         }
-
-        if (is_array($result)) {
-            $res->setStatusCode(code: 400);
-            return $res->json([
-                "errors" => $result
-            ]);
-        }
-
-        if ($result) {
-            $res->setStatusCode(code: 201);
-            return $res->json([
-                "success" => "Customer updated successfully"
-            ]);
-        }
-
-        return $res->render("500", "error", [
-            "error" => "Something went wrong. Please try again later."
-        ]);
     }
-
 }

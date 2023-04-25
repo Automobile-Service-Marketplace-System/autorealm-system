@@ -68,12 +68,12 @@ use app\components\FormTextareaItem;
             <div class="flex items-center gap-4" style="width: 100%;background-color: teal">
                 <?php
                 FormItem::render(
-                    id: "milage",
-                    label: "Milage",
-                    name: "milage",
+                    id: "mileage",
+                    label: "Mileage",
+                    name: "mileage",
                     // hasError: $hasFNameError,
-                    // error: $hasFNameError ? $errors['milage'] : "",
-                    // value: $body['milage'] ?? null,
+                    // error: $hasFNameError ? $errors['mileage'] : "",
+                    // value: $body['mileage'] ?? null,
                 );
 
                 FormSelectItem::render(

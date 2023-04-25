@@ -413,9 +413,9 @@ use app\components\FormTextareaItem;
 <div class="item-grid">
     <?php
         FormItem::render(
-            id: "milage",
+            id: "mileage",
             label: "<b><br>Milage</b>",
-            name: "milage",
+            name: "mileage",
             type: "number",
         );
 

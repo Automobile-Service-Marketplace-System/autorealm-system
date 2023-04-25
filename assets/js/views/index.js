@@ -21,6 +21,8 @@ import "./restock-products"
 import "./update-suppliers"
 import "./delete-product"
 import "./update-order-status"
+import "./update-customers"
 import "./delete-service"
+import "./office-update-appointment"
 
 import "./add-models"
