@@ -280,8 +280,6 @@ class AuthenticationController
             } elseif ($job_role === "security_officer") {
                 $path = "/security-officer-dashboard/check-appointment";
             }
-            var_dump("Got here 3");
-            exit();
             return $res->redirect(path: $path);
         }
         return $res->render(view: "employee-login", layout: "employee-auth", layoutParams: [
