@@ -233,10 +233,10 @@
     padding: 0.25rem 1rem;
 }
 
-.btn--thin:hover {
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
-}
+/*.btn--thin:hover {*/
+/*    transform: translateY(-0.1rem);*/
+/*    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);*/
+/*}*/
 
 .btn--thin:active {
     transform: translateY(0.1rem);

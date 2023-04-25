@@ -3,12 +3,13 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO, Exception;
+use PDOException;
 
 class JobCard
 {
-    private \PDO $pdo;
-
+    private PDO $pdo;
 
     public function __construct()
     {
@@ -16,7 +17,8 @@ class JobCard
     }
 
 
-    public function getAllJobsByForemanID(int $foremanId) :array | string {
+    public function getAllJobsByForemanID(int $foremanId): array|string
+    {
         try {
 
             $statement = $this->pdo->prepare(query: "SELECT job_card_id as id, vin as regNo, status, TIMESTAMPDIFF(MINUTE , start_date_time, end_date_time) as time_collapsed  FROM jobcard  WHERE employee_id = :foremanId");
@@ -74,14 +76,15 @@ class JobCard
         }
     }
 
-    public function  getVehicleDetailsByJobId(int $jobId) : string | array {
+    public function getVehicleDetailsByJobId(int $jobId): string|array
+    {
         $query = "SELECT vin FROM jobcard WHERE job_card_id = :job_card_id";
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(param: ":job_card_id", value: $jobId);
         $statement->execute();
-        if($statement->rowCount() > 0)  {
-                $vin = $statement->fetch(mode: PDO::FETCH_ASSOC)['vin'];
-                $query = "SELECT 
+        if ($statement->rowCount() > 0) {
+            $vin = $statement->fetch(mode: PDO::FETCH_ASSOC)['vin'];
+            $query = "SELECT 
                             CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(my.year), ' Edition') as vehicle_name, 
                             v.reg_no as reg_no, 
                             CONCAT(c.f_name, ' ', c.l_name) as customer_name
@@ -91,9 +94,9 @@ class JobCard
                               INNER JOIN modelyear my on m.model_id = my.model_id 
                               INNER  JOIN customer c on v.customer_id = c.customer_id 
                           WHERE v.vin = :vin";
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(param: ":vin", value: $vin);
-                $statement->execute();
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":vin", value: $vin);
+            $statement->execute();
             return $statement->fetch(mode: PDO::FETCH_ASSOC);
         }
 

@@ -100,6 +100,11 @@ if ($isInternal) {
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginEmployee']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutEmployee']);
 
+
+    $app->router->get(path: "/products/categories-brands-models", callback: [ProductsController::class, 'getCategoriesBrandsModels']);
+    $app->router->get(path: "/products/for-selector", callback: [ProductsController::class, 'getProductSelectorProducts']);
+
+
 // foreman routes
     $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
     $app->router->get(path: "/foreman-dashboard/profile", callback: [DashboardController::class, 'getForemanDashboardProfile']);
@@ -154,9 +159,9 @@ if ($isInternal) {
     $app->router->get(path: "/orders/view", callback: [OrdersController::class, 'getOrderById']);
     $app->router->post(path: "/orders/set-status", callback: [OrdersController::class, 'updateOrderStatus']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsPage']);
-
-
-
+    $app->router->post(path: "/products/add-brands", callback: [ProductsController::class, 'addBrand']);
+    $app->router->get(path: "/product/brands-options-json", callback: [ProductsController::class, 'getBrandsAsJSON']);
+    $app->router->post(path: "/products/add-model", callback: [ProductsController::class, 'addModel']);
 
 //office staff routes
     $app->router->get(path: "/office-staff-login", callback: [AuthenticationController::class, 'getOfficeStaffLoginPage']);
