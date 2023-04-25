@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
 use PDOException;
 use Exception;
@@ -212,8 +213,9 @@ class Product
     public function updateProduct(): bool|array|string
     {
         //check for the errors
-//        $errors = $this->validateAddProducts();
-        $errors = [];
+//        return json_encode($this->body);
+        $errors = $this->validateUpdateProductBody();
+//      $errors = [];
         if (empty($errors)) {
             //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
@@ -401,5 +403,33 @@ class Product
         } catch (PDOException $e) {
             return $e->getMessage();
         }
+    }
+
+    private function validateUpdateProductBody(): array
+    {
+        $errors = [];
+        if(trim($this->body["name"] === "")){
+            $errors['name'] = 'Name must not be empty';
+        }else{
+            $query = "SELECT * FROM product WHERE name = :name AND name != :old_name";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name" , $this->body["name"]);
+            $statement->bindValue(":old_name", $this->body["old_name"]);
+            $statement->execute();
+
+            $product = $statement->fetch();
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = "Product name already exists";
+            }
+        }
+
+        if (trim($this->body['selling_price']) === "") {
+            $errors['selling_price'] = "Price must not be empty";
+        } else if (is_float($this->body['selling_price'])) {
+            $errors['selling_price'] = "Price can not be a negative number";
+        }
+
+        return $errors;
+
     }
 }

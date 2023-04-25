@@ -4,9 +4,9 @@ const productUpdateButtons = document.querySelectorAll(".update-product-btn")
 //console.log(productUpdateButtons)
 import {Modal} from '../components/Modal'
 import Notifier from "../components/Notifier";
-
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
+//
+// const urlSearchParams = new URLSearchParams(window.location.search);
+// const params = Object.fromEntries(urlSearchParams.entries());
 
 productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
@@ -107,6 +107,7 @@ productUpdateButtons.forEach(function (btn) {
                             <div class="form-item">
                                 <label for='name'>Product Name<sup>*</sup></label>
                                 <input type='text' name='name' id='name' placeholder='' required  value='${productInfo.productName}'   >
+                                <input style="display: none" name='old_name' id="old_name" value='${productInfo.productName}'>
                             </div>
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
@@ -198,13 +199,19 @@ productUpdateButtons.forEach(function (btn) {
             const formData = new FormData(e.target);
             try{
                 console.log("Inside try block")
+                // console.log(Object.fromEntries(formData.entries()))
                 const result = await fetch("/products/update", {
                     body: formData,
                     method: 'POST'
 
                 })
+                console.log(await result.text())
+                return;
+
                 if(result.status === 400) {
                     const resultBody = await result.json()
+                    console.log(resultBody)
+                    return
                     for (const inputName in resultBody.errors) {
                         const inputWrapper = updateProductForm.querySelector(`#${inputName}`).parentElement
                         inputWrapper.classList.add('form-item--error')
@@ -212,19 +219,21 @@ productUpdateButtons.forEach(function (btn) {
                         inputWrapper.appendChild(errorElement)
                     }
                 }
-                else if (result.status === 201) {
+                else if (result.status ===
+                    200) {
 
                     // add success message to url search params
-                    window.location.search = new URLSearchParams({
-                        ...params,
-                        success: 'Product updated successfully'
-                    }).toString()
-                    location.reload()
+                    // window.location.search = new URLSearchParams({
+                    //     ...params,
+                    //     success: 'Product updated successfully'
+                    // }).toString()
+                    // location.reload()
+
                 }
 
                 else if(result.status === 500){
 
-                    const data = await result.text()
+                    const data = await result.json()
                     console.log(data);
                 }
             }

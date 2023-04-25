@@ -527,26 +527,6 @@ class Customer
             $errors['l_name'] = 'First name must contain only letters.';
         }
 
-        if (trim($this->body['contact_no']) === '') {
-            $errors['contact_no'] = 'Contact number must not be empty.';
-        } else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
-            $errors['contact_no'] = 'Contact number must start with +94 7 and contain 10 digits.';
-        } else {
-            $query = "SELECT * FROM customer WHERE contact_no = :contact_no AND customer_id != :customer_id";
-            $statement = $this->pdo->prepare($query);
-            //prepare the query for the database
-            $statement->bindValue(":contact_no", $this->body["contact_no"]);
-            //contact_no replace with the contact_no of this->body
-            $statement->bindValue(":customer_id", $this->body["customer_id"]);
-
-            $statement->execute();
-            // click go
-            if ($statement->rowCount() > 0) {
-                //Return the number of rows
-                $errors['contact_no'] = 'Contact number already in use.';
-            }
-        }
-
         if (trim($this->body['address']) === '') {
             $errors['address'] = 'Address must not be empty.';
         }
@@ -561,14 +541,12 @@ class Customer
             $query = "UPDATE customer SET
                         f_name= :f_name, 
                         l_name= :l_name, 
-                        contact_no= :contact_no, 
                         address= :address 
                         WHERE customer_id= :customer_id";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(":f_name", $this->body["f_name"]);
             $statement->bindValue(":l_name", $this->body["l_name"]);
-            $statement->bindValue(":contact_no", $this->body["contact_no"]);
             $statement->bindValue(":address", $this->body["address"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
             

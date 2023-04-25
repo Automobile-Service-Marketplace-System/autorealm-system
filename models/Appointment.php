@@ -47,7 +47,8 @@ class Appointment
             "SELECT
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
-                CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',                milage as 'Milage',
+                CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+                mileage as 'Mileage',
                 remarks as 'Remarks',
                 service_type as 'Service Type',
                 date_and_time as 'Date & Time',
@@ -112,7 +113,29 @@ class Appointment
             return $e->getMessage();
         }
     }
+  
+    public function officeUpdateAppointment()
+    {
+        try {
+            $query = "UPDATE appointment SET
+            mileage = :mileage,
+            remarks = :remarks,
+            date_and_time = :date_and_time
+            WHERE
+                appointment_id = :appointment_id";
 
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
+            $statement->bindValue(":remarks", $this->body["remarks"]);
+            $statement->bindValue(":date_and_time", $this->body["date_time"]);            
+            $statement->bindValue(":appointment_id", $this->body["appointment_id"]);            
+            $statement-> execute();
+            return true;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+  
     /**
      * @return array
      */
@@ -147,6 +170,4 @@ class Appointment
 
         return "Internal Server Error";
     }
-
-
 }

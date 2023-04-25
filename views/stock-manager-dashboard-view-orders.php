@@ -3,7 +3,7 @@
 /**
  * @var array $orders
  */
-//var_dump($orders);
+//\app\utils\DevOnly::prettyEcho($orders);
 
 use app\components\Table;
 

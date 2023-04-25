@@ -1,5 +1,5 @@
-import {Modal} from "../components/Modal";
-import {htmlToElement} from "../utils";
+import { Modal } from "../components/Modal";
+import { htmlToElement } from "../utils";
 import Notifier from "../components/Notifier";
 
 const createAppointmentButton = document.querySelectorAll(
@@ -50,61 +50,59 @@ createAppointmentButton.forEach(function (btn) {
                     }).join("");
 
 
-                    const createAppointmentForm = htmlToElement(`
-    <div class="create-appointment">
-    <div class="add-vehicle-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
-        <h1 class="office-staff-add-customer-form__vehicle__title">
-            Create an appointment
-        </h1>
-        <p>${name}</p>
-    
-        <button class="modal-close-btn">
-            <i class="fas fa-times"></i>
-        </button>
-    </div><form action="/appointments/${customerID}" method="post" class="create-appointment-form"
-    enctype="multipart/form-data">
-        <div class="create-appointment-form__top">
-               <div class='form-item '>
-                  <label for='vehicle'>Vehicle<sup>*</sup></label>
-                  <select  name='vehicle_reg_no' id='vehicle' required> 
-                      ${vehicleOptions}
-                    </select> 
-               </div>
-               <div class='form-item '>
-                    <label for='mileage'>Mileage<sup>*</sup></label>
-                    <input type='text' name='mileage' id='mileage' placeholder='' required  value=''>
-               </div>
+    const createAppointmentForm = htmlToElement(`
+        <form action="/appointments/${customerID}" method="post" class="office-create-appointment-form" enctype="multipart/form-data">
+            <div class="office-create-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
+                <button class="modal-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
 
-               <div class='form-item'>
+                <h1>
+                    Create an appointment
+                </h1>
+
+                <h2>
+                    ${name}
+                </h2>
+            </div>
+
+            <div class="office-create-appointment-input-wrapper">  
+                <div class='form-item '>
+                    <label for='vehicle'>Vehicle<sup>*</sup></label>
+                    <select  name='vehicle_reg_no' id='vehicle' required> 
+                        ${vehicleOptions}
+                    </select> 
+                </div>
+                
+                <div class='form-item '>
+                    <label for='mileage'>Mileage<sup>*</sup></label>
+                    <input type='number' name='mileage' id='mileage' placeholder='' required  value='' min="0" max="100000">
+                </div>
+
+                <div class='form-item create-appointment-remarks'>
                     <label for='remarks'>Remarks<sup>*</sup></label>
                     <textarea name='remarks' id='remarks' placeholder='' required  value='' rows="1" style="height: 40px">
                     </textarea>
-                    </div>
-
-                    <div class="create-timeslot">
-                    <div class='form-item'>
-                    <label for='remarks'>Date<sup>*</sup></label>
+                </div>
+                
+                <div class='form-item create-timeslot'>
+                    <label for='date'>Date<sup>*</sup></label>
                     <input type="date" name="date" id="date">
-                    </div>
+                </div>
 
-                    <div class="create-timeslot">
-                    <div class='form-item'>
-                    <label for='remarks'>Timeslot<sup>*</sup></label>
-                    <select name='timeslot' id='timeslot' required>
-                    </select>
-                    </div>
-                    </div>
+                <div class='form-item'>
+                    <label for='timeslot'>Timeslot<sup>*</sup></label>
+                    <select name='timeslot' id='timeslot' required> </select>
+                </div>
+            </div>
 
-                    <div class="create-appointment__actions">
-                    <button type="reset" class="btn btn--danger">Reset</button>
-                    <button type="button" class="btn" id="create-appointment-modal-btn">Submit</button>
-                    <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
-                    </div>
-                    </div>
-                    </div>
-                    </form>
-                    </div>`
-                    );
+            <div class="office-create-appointment__actions">
+                <button type="reset" class="btn btn--danger">Reset</button>
+                <button type="button" class="btn" id="create-appointment-modal-btn">Submit</button>
+                <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
+            </div>
+    </form>
+`);
 
                     const form = createAppointmentForm.querySelector("form");
 
@@ -116,28 +114,25 @@ createAppointmentButton.forEach(function (btn) {
                     createAppointmentForm
                         ?.querySelector("#create-appointment-modal-btn")
                         ?.addEventListener("click", (e) => {
-                            const template =
-                                `<div style="width: 350px">
-                                    <h3>Are you sure you want to create this appointment?</h3>
-                                    <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
-                                        <button class="btn btn--thin btn--danger modal-close-btn">
-                                            Cancel
-                                        </button>
-                                        <button class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
-                                            Confirm
-                                        </button>
-                                    </div>
-                                </div>`
-                            ;
-                            const createAppointmentConfirmationModal = htmlToElement(template);
+                            const template = `<div style="width: 350px">
+                                <h3>Are you sure you want to create this appointment?</h3>
+                                <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
+                                    <button class="btn btn--thin btn--danger modal-close-btn">
+                                        Cancel
+                                    </button>
+                                    <button class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
+                                        Confirm
+                                    </button>
+                                </div>
+                            </div>`;
 
+                            const createAppointmentConfirmationModal = htmlToElement(template);
 
                             createAppointmentConfirmationModal
                                 .querySelector("#create-appointment-confirm-btn")
                                 .addEventListener("click", () => {
                                     const submitBtn = createAppointmentForm?.querySelector(
-                                        "#create-appointment-final-btn"
-                                    );
+                                        "#create-appointment-final-btn");
                                     submitBtn?.click();
                                 });
 
@@ -151,7 +146,7 @@ createAppointmentButton.forEach(function (btn) {
                     form?.addEventListener("submit", async (e) => {
                         e.preventDefault();
                         if (
-                            form.classList.contains("update-vehicle-form--error")
+                            form.classList.contains("create-appointment-form--error")
                         ) {
                             form
                                 .querySelectorAll(".form-item")
@@ -161,15 +156,15 @@ createAppointmentButton.forEach(function (btn) {
                                 });
                         }
                         const formData = new FormData(e.target);
-                        console.log(Object.fromEntries(formData.entries()))
-                        return;
+                        // console.log(Object.fromEntries(formData.entries()))
+                        // return;
                         try {
                             const result = await fetch(`/appointments?id=${customerID}`, {
                                 body: formData,
                                 method: "POST",
                             });
                             if (result.status === 400) {
-                                form?.classList.add("update-vehicle-form--error");
+                                form?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
                                 for (const inputName in resultBody.errors) {
                                     const inputWrapper = form.querySelector(

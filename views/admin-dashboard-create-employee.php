@@ -33,7 +33,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
             <div class="role-input-item">
                 <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
                 <label for="office-staff">Office Staff</label>
-            </div>
+            </div> 
             <div class="role-input-item">
                 <input type="radio" id="foreman" name="job_role" value="foreman">
                 <label for="foreman">Foreman</label>
