@@ -15,7 +15,7 @@ class AppointmentsController
             return $res->render(view: "security-officer-dashboard-check-qrcode", layout: "security-officer-dashboard", layoutParams: [
                 "title" => "Check QR code",
                 "pageMainHeading" => "Check QR code",
-                "securityOfficerId" => $req->session->get("user_id"),
+                "employeeId" => $req->session->get("user_id"),
             ]);
         }
 
@@ -33,7 +33,7 @@ class AppointmentsController
                ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
-                'securityOfficerId' => $req->session->get("user_id"),
+                'employeeId' => $req->session->get("user_id"),
             ]);
         }
         return $res->redirect(path: "/login");
@@ -76,7 +76,7 @@ class AppointmentsController
                     layoutParams: [
                         'title' => 'Create an appointment',
                         'pageMainHeading' => 'Create an appointment',
-                        'officeStaffId' => $req->session->get('user_id')
+                        'employeeId' => $req->session->get('user_id')
                     ]);
             }
 
@@ -98,7 +98,7 @@ class AppointmentsController
                 layoutParams: [
                     "title" => "Appointments",
                     "pageMainHeading" => "Appointments",
-                    'officeStaffId' => $req->session->get('user_id')
+                    'employeeId' => $req->session->get('user_id')
                 ]);
         }
 

@@ -10,7 +10,7 @@
         <i class="fa-solid fa-plus"></i>
         Add Employee
     </a>
-</div>
+</div> 
 
 <div class="employee-container">
     <?php

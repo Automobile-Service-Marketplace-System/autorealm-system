@@ -21,6 +21,16 @@ class Admitting
         $this->body = $registerBody;
     }
 
+    public function getAdmittingReportById(int $report_no): bool|object
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM admitingreport WHERE report_no = :report_no");
+        $stmt->execute([
+            ":report_no" => $report_no,
+
+        ]);
+        return $stmt->fetchObject();
+    }
+
     public function getAdmittingReports(): array
     {
 
@@ -28,7 +38,8 @@ class Admitting
             SELECT 
             concat(c.f_name,' ',c.l_name) as Name,
             a.vehicle_reg_no as RegNo,
-            a.admitting_date as Date
+            a.admitting_date as Date,
+            a.report_no as ID
             from admitingreport a
             inner join vehicle v on a.vehicle_reg_no=v.reg_no
             inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
