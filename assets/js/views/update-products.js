@@ -137,7 +137,7 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='price'>Selling Price<sup>*</sup></label>
-                                <input type='number' name='selling_price' id='price' placeholder='' required  value='${productInfo.price}'   >
+                                <input type='number' name='selling_price' id='selling_price' placeholder='' required  value='${productInfo.price}'   >
                             </div>
                             
                             <div class="form-item update-product-description">
@@ -205,29 +205,31 @@ productUpdateButtons.forEach(function (btn) {
                     method: 'POST'
 
                 })
-                console.log(await result.text())
-                return;
 
                 if(result.status === 400) {
                     const resultBody = await result.json()
                     console.log(resultBody)
-                    return
                     for (const inputName in resultBody.errors) {
-                        const inputWrapper = updateProductForm.querySelector(`#${inputName}`).parentElement
+                        const inputWrapper = updateProductForm.querySelector(
+                            `#${inputName}`).parentElement
                         inputWrapper.classList.add('form-item--error')
-                        const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                        const errorElement = htmlToElement(
+                            `<small>${resultBody.errors[inputName]}</small>`
+                        )
                         inputWrapper.appendChild(errorElement)
                     }
                 }
-                else if (result.status ===
-                    200) {
+                else if (result.status === 200) {
+                    Modal.close("update-product")
+                    Notifier.show({
+                        text: "Product updated successfully",
+                        type: "success",
+                        header: "Success",
+                    })
+                    setTimeout(() => {
+                        location.reload()
+                    }, 2000)
 
-                    // add success message to url search params
-                    // window.location.search = new URLSearchParams({
-                    //     ...params,
-                    //     success: 'Product updated successfully'
-                    // }).toString()
-                    // location.reload()
 
                 }
 

@@ -425,8 +425,10 @@ class Product
 
         if (trim($this->body['selling_price']) === "") {
             $errors['selling_price'] = "Price must not be empty";
-        } else if (is_float($this->body['selling_price'])) {
-            $errors['selling_price'] = "Price can not be a negative number";
+        } else if ($this->body['selling_price'] == 0) {
+            $errors['selling_price'] = "Price can not be a zero";
+        } else if ($this->body['selling_price'] < 0){
+            $errors['selling_price'] = "Price can not be negative";
         }
 
         return $errors;
