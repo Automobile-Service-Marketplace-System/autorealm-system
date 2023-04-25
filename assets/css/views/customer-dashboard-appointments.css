@@ -60,7 +60,7 @@
 }
 
 .appointment-card__header p.due:last-child {
-    align-items: flex-end; !important;
+    align-items: flex-end !important;
     background-color: rgba(var(--danger), 0.3);
     color: var(--color-danger);
 
@@ -106,7 +106,7 @@
     font-weight: bold;
 }
 
-.item-toggle  {
+.item-toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -214,6 +214,7 @@ class ProductsController
     public function updateProducts(Request $req, Response $res): string
     {
         $body = $req->body();
+//        return json_encode($body, JSON_THROW_ON_ERROR);
         $product = new Product($body);
         $result = $product->updateProduct();
 
@@ -232,7 +233,7 @@ class ProductsController
         }
 
         if ($result) {
-            $res->setStatusCode(code: 201);
+            $res->setStatusCode(code: 200);
             return $res->json([
                 "success" => "Product updated successfully"
             ]);
