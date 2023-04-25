@@ -48,11 +48,6 @@ updateCustomerButton.forEach(function (btn){
           </div>
 
           <div class='form-item'>
-                  <label for='address'>Contact No<sup>*</sup></label>
-                  <input type='text' name='contact_no' id='contact_no' placeholder='' required  value='${customerContactNo}'>
-          </div>
-
-          <div class='form-item'>
                   <label for='address'>Address<sup>*</sup></label>
                   <input type='text' name='address' id='address' placeholder='' required  value='${customerAddress}'>
           </div>
