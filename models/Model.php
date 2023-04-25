@@ -32,7 +32,7 @@ class Model
 
      public function addModel() : bool|array|string
      {
-        $errors = [];
+        $errors = $this->validateModelName();
          $is_vehicle_model = false;
          $is_product_model = false;
 
@@ -63,4 +63,16 @@ class Model
         }
         return $errors;
      }
+
+    private function validateModelName(): array
+    {
+        $errors = [];
+        if (trim($this->body["model_name"]) === "") {
+            $errors['model_name'] = "Model name cannot be empty";
+        }
+        elseif (preg_match("/^[0-9]+$/", $this->body["model_name"])) {
+            $errors['model_name'] = "Model name cannot be only numbers";
+        }
+        return $errors;
+    }
 }

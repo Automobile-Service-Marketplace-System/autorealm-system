@@ -31,7 +31,7 @@ class Brand
 
     public function addBrand() : bool|array|string
     {
-        $errors = [];
+        $errors = $this->validataModelName();
 
         if($this->body['is_product_brand'] == '1' && $this->body['is_vehicle_brand'] == '1'){
         $this->body['is_vehicle_brand']  = true;
@@ -82,5 +82,6 @@ class Brand
 
 
     }
+
 
 }

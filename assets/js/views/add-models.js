@@ -62,7 +62,7 @@ addModelBtn?.addEventListener('click', async function (btn) {
                                     </div>
                                       <div class="form-item--radio">
                                         <label for="model_type">Product</label>
-                                        <input type="radio" name="model_type" value="product">
+                                        <input type="radio" name="model_type" value="product" checked>
                                     </div>
                                 
                                 </div>

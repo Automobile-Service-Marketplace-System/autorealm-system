@@ -196,6 +196,14 @@ productUpdateButtons.forEach(function (btn) {
         updateProductForm?.addEventListener('submit', async (e) =>{
             e.preventDefault();
             console.log("Inside submit event listiner")
+
+            //remove previous errors
+            if(updateProductForm.classList.contains("update-product-form--error")){
+                updateProductForm.querySelectorAll(".form-item").forEach((inputWrapper)=>{
+                    inputWrapper.classList.remove("form-item--error")
+                    inputWrapper.querySelector("small")?.remove()
+                })
+            }
             const formData = new FormData(e.target);
             try{
                 console.log("Inside try block")
@@ -247,6 +255,17 @@ productUpdateButtons.forEach(function (btn) {
                     text: e.message
                 })
             }
+
+            updateProductForm?.addEventListener("reset", (e) => {
+                const formItems = updateProductForm.querySelectorAll(".form-item");
+                formItems.forEach((item) => {
+                    item.classList.remove("form-item--error");
+                    const errorElement = item.querySelector("small");
+                    if (errorElement) {
+                        item.removeChild(errorElement);
+                    }
+                });
+            });
         })
 
 
