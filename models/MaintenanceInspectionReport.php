@@ -38,7 +38,7 @@ class MaintenanceInspectionReport
 
     }
 
-    public function getSavedConditions(
+    public function  getSavedConditions(
         #[ArrayShape([
             "category_less" => "array",
             "Lights" => "array",

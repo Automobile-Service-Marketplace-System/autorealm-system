@@ -388,6 +388,8 @@ export class ProductSelector {
                     <div class="product-selector__gallery-item ${isAlreadySelected ? 'product-selector__gallery-item--selected' : ''}">
                         <h4>${product.Name}</h4>
                         <img src="${product.Image}" alt="${product.Image}'s image">
+                        <p  style="font-size: 0.8rem;color: ${product.Quantity > 0 ? 'var(--color-info);' : 'var(--color-danger);'}">Available stock: ${product.Quantity}</p>
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
                     `
             )
