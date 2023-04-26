@@ -107,8 +107,13 @@ class Supplier
                 $query = "INSERT INTO suppliercontact (supplier_id, contact_no) VALUES (:supplier_id, :contact_no)";
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":supplier_id", $this->pdo->lastInsertId());
-                $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue(":contact_no", $this->body["contact_no_1"]);
                 $statement->execute();
+                $query2 = "INSERT INTO suppliercontact (supplier_id, contact_no) VALUES (:supplier_id, :contact_no)";
+                $statement2 = $this->pdo->prepare($query2);
+                $statement2->bindValue(":supplier_id", $this->pdo->lastInsertId());
+                $statement2->bindValue(":contact_no", $this->body["contact_no_2"]);
+                $statement2->execute();
                 return true;
 
             } catch (\PDOException $e) {
@@ -238,21 +243,31 @@ class Supplier
         }
 
 
-        if (empty($this->body["contact_no"])) {
+        if (empty($this->body["contact_no_1"])) {
             $errors["contact_no"] = "Contact Number is required";
         }
-        else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no'])) {
+        else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no_1'])) {
                 $errors['contact_no'] = 'Contact number must start with +947 and contain 12 digits.';
             }
         else {
             $query = "SELECT * FROM suppliercontact WHERE contact_no = :contact_no";
             $statement = $this->pdo->prepare($query);
 
-            $statement->bindValue(":contact_no", $this->body["contact_no"]);
+            $statement->bindValue(":contact_no", $this->body["contact_no_1"]);
             $statement->execute();
 
             if ($statement->rowCount() > 0) {
-                $errors['contact_no'] = 'Contact Number already in use.';
+                $errors['contact_no_1'] = 'Contact Number already in use.';
+            }
+
+            $query2 = "SELECT * FROM suppliercontact WHERE contact_no = :contact_no";
+            $statement2 = $this->pdo->prepare($query2);
+
+            $statement2->bindValue(":contact_no", $this->body["contact_no_2"]);
+            $statement2->execute();
+
+            if ($statement2->rowCount() > 0) {
+                $errors['contact_no_2'] = 'Contact Number already in use.';
             }
         }
 

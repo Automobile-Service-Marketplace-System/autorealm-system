@@ -12,7 +12,7 @@ $columns = ["ID", "Name", "Address","Registration No", "Sales Manager","Contacts
 
 $items = [];
 
-//make "Contact Numbers" array into string seperate eleents by comma
+
 
 
 
