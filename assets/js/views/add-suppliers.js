@@ -38,10 +38,20 @@ const addSupplierForm = htmlToElement(`<div>
                     <label for='email'>Email.<sup>*</sup></label>
                     <input type='text' name='email' id='email' placeholder='' required  value=''   >
                 </div>
-          
+            
+                 <div class="form-item">
+                    <label for='sales_manager'>Sales Manager Name.<sup>*</sup></label>
+                    <input type='text' name='sales_manager' id='sales_manager' placeholder='' required  value=''   >
+                </div>
+                
                 <div class="form-item">
-                    <label for='contact_no'>Mobile Number<sup>*</sup></label>
-                    <input type='text' name='contact_no' id="contact_no" placeholder='' required  value=''   >
+                    <label for='contact_no_1'>Mobile Number 1<sup>*</sup></label>
+                    <input type='text' name='contact_no_1' id="contact_no_1" placeholder='' required  value=''   >
+                
+                </div>
+                 <div class="form-item">
+                    <label for='contact_no_2'>Mobile Number 2<sup>*</sup></label>
+                    <input type='text' name='contact_no_2' id="contact_no_2" placeholder='' required  value=''   >
                 
                 </div>
            
@@ -50,10 +60,7 @@ const addSupplierForm = htmlToElement(`<div>
                     <input type='text' name='address' id='address' placeholder='' required  value=''   >
                 </div>
                 
-                <div class="form-item">
-                    <label for='sales_manager'>Sales Manager Name.<sup>*</sup></label>
-                    <input type='text' name='sales_manager' id='sales_manager' placeholder='' required  value=''   >
-                </div>
+                
             </div>
             
             <div class="add-supplier-actions">
@@ -137,7 +144,7 @@ addSupplierForm?.addEventListener('submit', async (e) => {
             })
             setTimeout(() => {
                 location.reload()
-            }, 1000)
+            }, 2000)
         }
     } catch (e) {
         Notifier.show({
