@@ -50,7 +50,6 @@ class Appointment
                 CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
                 mileage as 'Mileage',
                 remarks as 'Remarks',
-                service_type as 'Service Type',
                 date_and_time as 'Date & Time',
                 time_id as 'Time ID'
             FROM 
