@@ -6,19 +6,31 @@
 
 use app\components\Table;
 
-// \app\utils\DevOnly::prettyEcho($suppliers);
+//\app\utils\DevOnly::prettyEcho($suppliers);
 
-$columns = ["ID", "Name", "Address", "Sales Manager", "Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
+$columns = ["ID", "Name", "Address","Registration No", "Sales Manager","Contacts","Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
 
 $items = [];
 
+//make "Contact Numbers" array into string seperate eleents by comma
+
+
+
 
 foreach ($suppliers as $supplier) {
+    $contacts = "";
+
+    foreach ($supplier["Contact Numbers"] as $contact) {
+        $contacts .= $contact . ", ";
+    }
+
     $items[] = [
         "ID" => $supplier["ID"],
         "Name" => $supplier["Name"],
         "Address" => $supplier["Address"],
+        "Registration No" => $supplier["Registration No"],
         "Sales Manager" => $supplier["Sales Manager"],
+        "Contacts" => $contacts,
         "Last Purchase Date" => $supplier["Last Purchase Date"] ?? "N/A",
         "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
         "Email" => $supplier["Email"],

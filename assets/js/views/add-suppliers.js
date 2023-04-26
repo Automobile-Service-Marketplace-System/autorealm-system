@@ -137,7 +137,7 @@ addSupplierForm?.addEventListener('submit', async (e) => {
             })
             setTimeout(() => {
                 location.reload()
-            }, 1000)
+            }, 2000)
         }
     } catch (e) {
         Notifier.show({
