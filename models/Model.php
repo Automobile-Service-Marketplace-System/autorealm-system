@@ -73,6 +73,15 @@ class Model
         elseif (preg_match("/^[0-9]+$/", $this->body["model_name"])) {
             $errors['model_name'] = "Model name cannot be only numbers";
         }
+        else{
+            $stmt = $this->pdo->prepare("SELECT model_name FROM model WHERE model_name = :model_name");
+            $stmt->bindValue(":model_name", $this->body['model_name']);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($result){
+                $errors['model_name'] = "Model name already exists";
+            }
+        }
         return $errors;
     }
 }

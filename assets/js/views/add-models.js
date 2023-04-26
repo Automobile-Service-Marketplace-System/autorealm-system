@@ -152,7 +152,8 @@ addModelBtn?.addEventListener('click', async function (btn) {
                                     closable: true,
                                     header: 'Error',
                                     type: 'danger',
-                                    text: resultBody.message,
+                                    text: "Unacceptable details provided",
+                                    // text: resultBody.message,
                                     duration:5000,
                                 })
                                 break;
