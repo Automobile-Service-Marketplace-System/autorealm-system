@@ -287,6 +287,8 @@ class ProductsController
             $product = new Product($body);
             $result = $product->restockProduct();
 
+//            return json_encode($result, JSON_THROW_ON_ERROR);
+
             if (is_array($result)) {
                 $res->setStatusCode(code: 400);
                 return $res->json([

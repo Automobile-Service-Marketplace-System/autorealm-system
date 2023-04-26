@@ -31,7 +31,8 @@ class Brand
 
     public function addBrand() : bool|array|string
     {
-        $errors = [];
+        $errors = $this->validateBrandName();
+//        $errors = [];
 
         if($this->body['is_product_brand'] == '1' && $this->body['is_vehicle_brand'] == '1'){
         $this->body['is_vehicle_brand']  = true;
@@ -82,5 +83,26 @@ class Brand
 
 
     }
+    private function validateBrandName(): array
+    {
+        $errors = [];
+        if (trim($this->body["brand_name"]) === "") {
+            $errors['brand_name'] = "Brand name cannot be empty";
+        }
+        elseif (preg_match("/^[0-9]+$/", $this->body["brand_name"])) {
+            $errors['brand_name'] = "Brand name cannot be only numbers";
+        }
+        else{
+            $stmt = $this->pdo->prepare("SELECT brand_name FROM brand WHERE brand_name = :brand_name");
+            $stmt->bindValue(":brand_name", $this->body['brand_name']);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($result){
+                $errors['model_name'] = "Model name already exists";
+            }
+        }
+        return $errors;
+    }
+
 
 }
