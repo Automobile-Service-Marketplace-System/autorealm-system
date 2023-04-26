@@ -44,14 +44,13 @@ createAppointmentButton.forEach(function (btn) {
                      */
                     const vehicles = await result.json();
 
-
                     let vehicleOptions = vehicles.map((vehicle) => {
                         return `<option value="${vehicle.reg_no}">${vehicle.reg_no} - ${vehicle.brand_name} ${vehicle.model_name}</option>`;
                     }).join("");
 
 
     const createAppointmentForm = htmlToElement(`
-        <form action="/appointments/${customerID}" method="post" class="office-create-appointment-form" enctype="multipart/form-data">
+        <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
             <div class="office-create-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
                 <button class="modal-close-btn">
                     <i class="fas fa-times"></i>
@@ -75,7 +74,7 @@ createAppointmentButton.forEach(function (btn) {
                 </div>
                 
                 <div class='form-item '>
-                    <label for='mileage'>Mileage<sup>*</sup></label>
+                    <label for='mileage'>Mileage (Km)<sup>*</sup></label>
                     <input type='number' name='mileage' id='mileage' placeholder='' required  value='' min="0" max="100000">
                 </div>
 
@@ -159,7 +158,7 @@ createAppointmentButton.forEach(function (btn) {
                         // console.log(Object.fromEntries(formData.entries()))
                         // return;
                         try {
-                            const result = await fetch(`/appointments?id=${customerID}`, {
+                            const result = await fetch(`/appointmentsBy?id=${customerID}`, {
                                 body: formData,
                                 method: "POST",
                             });

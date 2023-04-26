@@ -114,17 +114,27 @@ class Appointment
         }
     }
 
-    public function officeUpdateAppointment()
+    public function officeCreateAppointment()
     {
         try {
-            $query = "UPDATE appointment SET
-            mileage = :mileage,
-            remarks = :remarks,
-            date_and_time = :date_and_time
-            WHERE
-                appointment_id = :appointment_id";
+            $query = "  INSERT INTO 
+                            appointment(
+                                vehicle_reg_no,
+                                mileage,
+                                remarks,
+                                date_and_time,
+                                customer_id)
+                        VALUES(
+                                :vehicle_reg_no,
+                                :mileage,
+                                :remarks,
+                                :date_and_time,
+                                :customer_id,
+                                :appointment_id)
+                            ";
 
             $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $this->body[":vehicle_reg_no"]);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":remarks", $this->body["remarks"]);
             $statement->bindValue(":date_and_time", $this->body["date_time"]);            

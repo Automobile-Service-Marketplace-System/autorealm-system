@@ -25,7 +25,7 @@ updateCustomerButton.forEach(function (btn){
       const customerAddressElement = customerRow.querySelector("td:nth-child(4)");
       const customerAddress = customerAddressElement.textContent;
   
-        const updatecustomerForm = htmlToElement(`<form id="update-customer-details">
+        const updateCustomerForm = htmlToElement(`<form id="update-customer-details">
         <div class="modal-header">
             <h3>
             Update customer info
@@ -69,7 +69,7 @@ updateCustomerButton.forEach(function (btn){
         )
         
 
-        updatecustomerForm?.querySelector("#update-customer-modal-btn")?.addEventListener("click", (e) => {
+        updateCustomerForm?.querySelector("#update-customer-modal-btn")?.addEventListener("click", (e) => {
             const template =  `<div style="width: 350px">
                                 <h3>Are you sure you want to update this customer?</h3>
                                 <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
@@ -80,7 +80,7 @@ updateCustomerButton.forEach(function (btn){
             const element = htmlToElement(template);
             // console.log(element)
             element.querySelector("#update-customer-confirm-btn").addEventListener('click', () => {
-                const submitBtn = updatecustomerForm?.querySelector("#update-customer-final-btn");
+                const submitBtn = updateCustomerForm?.querySelector("#update-customer-final-btn");
                 submitBtn?.click();
             })
         
@@ -92,7 +92,7 @@ updateCustomerButton.forEach(function (btn){
         })
         
 
-        updatecustomerForm?.addEventListener('submit', async (e) => {
+        updateCustomerForm?.addEventListener('submit', async (e) => {
             
             e.preventDefault();
             const formData = new FormData(e.target);
@@ -104,7 +104,7 @@ updateCustomerButton.forEach(function (btn){
                 if(result.status === 400) {
                     const resultBody = await result.json()
                     for (const inputName in resultBody.errors) {
-                        const inputWrapper = updatecustomerForm.querySelector(`#${inputName}`).parentElement
+                        const inputWrapper = updateCustomerForm.querySelector(`#${inputName}`).parentElement
                         inputWrapper.classList.add('form-item--error')
                         const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
                         inputWrapper.appendChild(errorElement)
@@ -129,8 +129,8 @@ updateCustomerButton.forEach(function (btn){
             }
         })
         
-        updatecustomerForm?.addEventListener('reset', (e) => {
-            const formItems = updatecustomerForm.querySelectorAll('.form-item')
+        updateCustomerForm?.addEventListener('reset', (e) => {
+            const formItems = updateCustomerForm.querySelectorAll('.form-item')
             formItems.forEach(item => {
                 item.classList.remove('form-item--error')
                 const errorElement = item.querySelector('small')
@@ -141,9 +141,9 @@ updateCustomerButton.forEach(function (btn){
         })
 
         Modal.show({
-                content: updatecustomerForm,
+                content: updateCustomerForm,
                 closable: false,
-                key: "updatecustomerForm"
+                key: "updateCustomerForm"
         })
     })
 })
