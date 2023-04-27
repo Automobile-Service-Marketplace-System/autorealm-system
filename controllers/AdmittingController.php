@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Admitting;
+use Exception;
 
 class AdmittingController{
     public function getCreateAdmittingReportPage(Request $req, Response $res):string{
@@ -65,16 +66,16 @@ class AdmittingController{
                 ], layoutParams: [
                     "title" => "Create an admitting report",
                     'pageMainHeading' => 'Create an admitting report',
-                    'empoyeeId'=> $req->session->get("user_id")
+                    'employeeId'=> $req->session->get("user_id")
                 ]);
             }
-            if ($result) {
-                return $res->redirect("/security-officer-dashboard/admitting-reports/view");
-            }
 
-            return $res->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
+
+            if (is_int($result)) {
+                return $res->redirect("/security-officer-dashboard/admitting-reports/view?id=$result");
+            }
+            throw new Exception("Internal Server Error");
         }
+        return $res->redirect("/login");
     }
 }
