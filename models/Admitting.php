@@ -40,7 +40,7 @@ class Admitting
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
             a.report_no as ID
-            from admitingreport a
+            from admittingreportphoto a
             inner join vehicle v on a.vehicle_reg_no=v.reg_no
             inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -57,7 +57,7 @@ async function createDraft() {
                     type: "success",
                     header: "Success",
                     closable: true,
-                    duration: 2000
+                    duration: 5000
                 })
                 break;
             case 400:
@@ -68,7 +68,7 @@ async function createDraft() {
                     type: "success",
                     header: "Success",
                     closable: true,
-                    duration: 2000
+                    duration: 5000
                 })
                 break;
             default:
@@ -77,7 +77,7 @@ async function createDraft() {
                         type: "error",
                         header: "Error",
                         closable: true,
-                        duration: 2000
+                        duration: 5000
                     }
                 )
 
@@ -90,7 +90,7 @@ async function createDraft() {
             type: "error",
             header: "Error",
             closable: true,
-            duration: 2000
+            duration: 5000
         })
     } finally {
         isDraftBeingCreated.value = false;

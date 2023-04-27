@@ -52,6 +52,7 @@ $app = new Application(dirname(__DIR__));
 
 // main routes
 if (!$isInternal) {
+
     $app->router->get(path: "/", callback: [SiteController::class, 'getHomePage']);
     $app->router->get(path: "/products", callback: [SiteController::class, 'getProductsPage']);
     $app->router->get(path: "/services", callback: [SiteController::class, 'getServicesPage']);
@@ -93,7 +94,9 @@ if (!$isInternal) {
 
 if ($isInternal) {
 
-//    $app->router->get("/");
+    $app->router->get("/", function (\app\core\Request $req, \app\core\Response $res) {
+        return $res->render(view: "temp", layout: "plain");
+    });
 
 // definitive employ/ee routes
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getEmployeeLoginPage']);

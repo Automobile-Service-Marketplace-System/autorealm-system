@@ -32,7 +32,7 @@ class Model
 
      public function addModel() : bool|array|string
      {
-        $errors = [];
+        $errors = $this->validateModelName();
          $is_vehicle_model = false;
          $is_product_model = false;
 
@@ -63,4 +63,25 @@ class Model
         }
         return $errors;
      }
+
+    private function validateModelName(): array
+    {
+        $errors = [];
+        if (trim($this->body["model_name"]) === "") {
+            $errors['model_name'] = "Model name cannot be empty";
+        }
+        elseif (preg_match("/^[0-9]+$/", $this->body["model_name"])) {
+            $errors['model_name'] = "Model name cannot be only numbers";
+        }
+        else{
+            $stmt = $this->pdo->prepare("SELECT model_name FROM model WHERE model_name = :model_name");
+            $stmt->bindValue(":model_name", $this->body['model_name']);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($result){
+                $errors['model_name'] = "Model name already exists";
+            }
+        }
+        return $errors;
+    }
 }

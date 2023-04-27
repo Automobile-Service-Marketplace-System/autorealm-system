@@ -62,7 +62,7 @@ addModelBtn?.addEventListener('click', async function (btn) {
                                     </div>
                                       <div class="form-item--radio">
                                         <label for="model_type">Product</label>
-                                        <input type="radio" name="model_type" value="product">
+                                        <input type="radio" name="model_type" value="product" checked>
                                     </div>
                                 
                                 </div>
@@ -152,7 +152,8 @@ addModelBtn?.addEventListener('click', async function (btn) {
                                     closable: true,
                                     header: 'Error',
                                     type: 'danger',
-                                    text: resultBody.message,
+                                    text: "Unacceptable details provided",
+                                    // text: resultBody.message,
                                     duration:5000,
                                 })
                                 break;
