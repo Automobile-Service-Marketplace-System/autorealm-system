@@ -128,6 +128,7 @@ if ($isInternal) {
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
+    $app->router->get(path: "/employees/delete", callback: [EmployeeController::class, 'deleteEmployee']);
     
     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     // $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);

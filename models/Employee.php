@@ -374,4 +374,12 @@ class Employee
             return $errors;
         }
     }
+
+    public function deleteEmployeeById(int $employee_id): bool
+    {
+        $query = "UP FROM employee WHERE employee_id = :employee_id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(":employee_id", $employee_id);
+        return $statement->execute();
+    }
 }

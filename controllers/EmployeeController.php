@@ -116,4 +116,20 @@ class EmployeeController
             "error" => "Something went wrong. Please try again later."
         ]);
     }
+
+    public function deleteEmployee(Request $req, Response $res):string{
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
+            $body = $req->body();
+            $ID = $body['employee_id'] ?? null;
+            if (!$ID) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+            $employeeModel = new Employee();
+            $result = $employeeModel->deleteEmployeeById($ID);
+            // var_dump($result);
+        }
+    }
 }
