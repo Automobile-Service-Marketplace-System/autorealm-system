@@ -6,7 +6,7 @@
  * @var array $categories
  * @var array $models
  */
-
+\app\utils\DevOnly::prettyEcho($products);
 use app\components\Table;
 
 
@@ -63,6 +63,22 @@ foreach ($products as $product) {
     </div>
 
 
+</div>
+
+<div class="product-filters">
+    <div class="product-search">
+        <input type="text" placeholder="Search Product by Name">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <div class="product-filter--select ">
+        <select name="category" id="category-filter">
+            <option value="0">All Categories</option>
+            <?php foreach ($categories as $category) : ?>
+                <option value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 </div>
 
 <?php
