@@ -92,7 +92,7 @@ class Application
                     exit;
                 case "security_officer":
                     echo $this->response->render(view: "_error", layout: "security-officer-dashboard", pageParams: $errorParams, layoutParams: [
-                        'securityOfficerId' => $this->request->session->get('user_id'),
+                        'employeeId' => $this->request->session->get('user_id'),
                         "pageMainHeading" => "Error"
                     ]);
                     exit;
