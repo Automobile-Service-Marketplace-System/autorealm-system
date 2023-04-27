@@ -24,14 +24,15 @@ class AppointmentsController
 
     }
 
-    public function getSecurityAppointments(Request $req, Response $res): string
+    public function getAllAppointmentsDetails(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
-//            $appointmentModel = new Appointment();
-//            $appointments = $appointmentModel->getAppointments();
+           $appointmentModel = new Appointment();
+           $appointments = $appointmentModel->getAppointments();
+        //    var_dump($appointments);
 
             return $res->render(view: "security-officer-dashboard-view-appointment", layout: "security-officer-dashboard", pageParams: [
-            ], layoutParams: [
+                "appointments" => $appointments], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'employeeId' => $req->session->get("user_id"),
