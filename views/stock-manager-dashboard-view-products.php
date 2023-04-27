@@ -10,6 +10,7 @@
  * @var  int $total
  */
 //\app\utils\DevOnly::prettyEcho($products);
+//var_dump("total => ".$total);
 use app\components\Table;
 
 
@@ -51,8 +52,8 @@ foreach ($products as $product) {
 <div class="product-count-and-actions">
     <div class="product-table-count">
         <p >
-        <!--    Showing --><?php //echo $limit; ?><!-- of --><?php //echo $total; ?><!-- products-->
-            Showing 25 out of 100 products
+            Showing <?php echo $limit; ?> of <?php echo $total; ?> products
+<!--            Showing 25 out of 100 products-->
         </p>
     </div>
     <div class="stock-manager-add-button-set-product-page">
@@ -118,15 +119,15 @@ foreach ($products as $product) {
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
-<!--<div class="pagination-container">-->
-<!--    --><?php
-//    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-//    foreach (range(1, ceil($total / $limit)) as $i) {
-//        $isActive = $i === (float)$page ? "pagination-item--active" : "";
-//        echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
-//    }
-//    ?>
-<!--</div>-->
+<div class="pagination-container">
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "pagination-item--active" : "";
+        echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+</div>
 
 
  <script>

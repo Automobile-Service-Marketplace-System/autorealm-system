@@ -20,18 +20,30 @@ class ProductsController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            //for pagination
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //for the model
             $productModel = new Product();
             $brandModel = new Brand();
             $categoryModel = new Category();
             $modelModel = new Model();
-            $products = $productModel->getProducts();
+
+            $result = $productModel->getProducts(count: $limit, page: $page);
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
-                    "products" => $products,
+
                     "brands" => $brandModel->getBrands(),
                     "categories" => $categoryModel->getCategories(),
                     "models" => $modelModel->getModels(),
+                    "limit" => $limit,
+                    "page" => $page,
+                    'products' => $result['products'],
+                    'total' => $result['total'],
+
                 ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
