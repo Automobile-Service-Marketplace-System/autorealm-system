@@ -117,6 +117,18 @@ foreach ($products as $product) {
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
+
+<!--<div class="pagination-container">-->
+<!--    --><?php
+//    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+//    foreach (range(1, ceil($total / $limit)) as $i) {
+//        $isActive = $i === (float)$page ? "pagination-item--active" : "";
+//        echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
+//    }
+//    ?>
+<!--</div>-->
+
+
  <script>
     <?php
     try {
