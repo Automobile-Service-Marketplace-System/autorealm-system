@@ -1,5 +1,5 @@
-import {Modal} from "../components/Modal"
-import {htmlToElement} from "../utils";
+import { Modal } from "../components/Modal"
+import { htmlToElement } from "../utils";
 import Notifier from "../components/Notifier";
 
 const addBrandBtn = document.querySelector('#add-brand-btn');
@@ -65,7 +65,7 @@ addBrandBtn?.addEventListener('click', () => {
 
 addBrandForm?.querySelector("#add-brand-modal-btn")?.addEventListener("click", (e) => {
 
-    const template =  `<div>
+    const template = `<div>
                         <h3>Are you sure you want to add this brand?</h3>
                         <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
                             <button class="btn btn--thin btn--danger modal-close-btn" >Cancel</button>                        
@@ -98,9 +98,10 @@ addBrandForm?.addEventListener('submit', async (e) => {
             method: 'POST',
             body: formData,
         })
-        if(result.status === 400) {
-            const resultBody = await result.text()
-            console.log(resultBody)
+
+
+        if (result.status === 400) {
+            const resultBody = await result.json()
             for (const inputName in resultBody.errors) {
                 const inputWrapper = addBrandForm.querySelector(`#${inputName}`).parentElement
                 inputWrapper.classList.add('form-item--error')
@@ -123,8 +124,17 @@ addBrandForm?.addEventListener('submit', async (e) => {
             })
             setTimeout(() => {
                 location.reload()
-            },4000)
+            }, 4000)
 
+        } else {
+            const resData = await result.json()
+            console.log(resData.errors.error)
+            Modal.close("add-Brand")
+            Notifier.show({
+                text: "Something went wrong",
+                type: "danger",
+                header: "Error",
+            })
         }
     }
     catch (e) {
