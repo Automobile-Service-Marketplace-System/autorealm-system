@@ -69,7 +69,7 @@ class EmployeeController
     public function getEditEmployeePage(Request $req, Response $res):string{
         $body = $req->body();
         $query=$req->query();
-        var_dump($query);
+        // var_dump($query);
         $employeeModel=new Employee();
         $employee=$employeeModel->getEmployeeById((int)$query["employee_id"]);
         // var_dump((int)$query["employee_id"]);
@@ -117,10 +117,11 @@ class EmployeeController
         ]);
     }
 
-    public function deleteEmployee(Request $req, Response $res):string{
+    public function deleteEmployees(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
             $body = $req->body();
             $ID = $body['employee_id'] ?? null;
+            var_dump($ID);
             if (!$ID) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
@@ -128,8 +129,25 @@ class EmployeeController
                 ]);
             }
             $employeeModel = new Employee();
+            // var_dump($employeeModel);
             $result = $employeeModel->deleteEmployeeById($ID);
-            // var_dump($result);
+            var_dump($result);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Employee deleted successfully"
+                ]);
+
+            }
         }
+
+        return $res->redirect(path: "/login");
     }
 }

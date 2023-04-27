@@ -375,11 +375,19 @@ class Employee
         }
     }
 
-    public function deleteEmployeeById(int $employee_id): bool
+    public function deleteEmployeeById(int $employee_id):bool|string
     {
-        $query = "UP FROM employee WHERE employee_id = :employee_id";
-        $statement = $this->pdo->prepare($query);
-        $statement->bindValue(":employee_id", $employee_id);
-        return $statement->execute();
+        try {
+            $query ="UPDATE employee SET is_discontinued = TRUE WHERE employee_id = :employee_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":employee_id", $employee_id);
+            $statement->execute();
+
+            return $statement->rowCount() > 0;
+        }
+        catch (PDOException $e){
+            return "Error deleting Supplier";
+
+        }
     }
 }

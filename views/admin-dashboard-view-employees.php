@@ -52,6 +52,8 @@
                     <a class='employee-card__contact' href='mailto:{$employee['Email']}'>{$employee['Email']}</a>
                 </div> 
               </div>";
+
+        
     }
     ?>
 </div>
