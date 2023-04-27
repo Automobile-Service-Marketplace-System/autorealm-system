@@ -99,42 +99,7 @@ class Product
         ];
     }
 
-    private function validateAddProducts(): array
-    {
-        $errors = [];
 
-        if (trim($this->body['name']) === "") {
-            $errors['name'] = "Product name must not be empty";
-        } else {
-            $query = "SELECT * FROM product WHERE lower(name) = lower(:name)";
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":name", $this->body['name']);
-            $statement->execute();
-            if ($statement->rowCount() > 0) {
-                $errors['name'] = "Product name already exists";
-            }
-        }
-
-        if (trim($this->body['selling_price']) === "") {
-            $errors['selling_price'] = "Price must not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
-            $errors['selling_price'] = "Price can not be a negative number";
-        }
-
-        if (trim($this->body['quantity']) === "") {
-            $errors['quantity'] = "Quantity not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['quantity'])) {
-            $errors['quantity'] = "Quantity must be a positive";
-        }
-
-        if (trim($this->body['unit_price']) === "") {
-            $errors['unit_price'] = "Price must not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['unit_price'])) {
-            $errors['unit_price'] = "Price must be a positive";
-        }
-
-        return $errors;
-    }
 
     public function addProducts(): bool|array|string
     {
@@ -215,6 +180,10 @@ class Product
         //check for the errors
 //        return json_encode($this->body);
         $errors = $this->validateUpdateProductBody();
+//        $errors = [];
+
+//        echo json_encode($errors);
+//        exit();
 //      $errors = [];
         if (empty($errors)) {
             //            try {
@@ -273,7 +242,9 @@ class Product
 
     public function restockProduct(): bool|array|string
     {
-        $errors = [];
+//        $errors = [];
+        $errors = $this->validateRestock();
+
         $dateTimeStamp = date("Y-m-d H:i:s");
         if (empty($errors)) {
             $query = "INSERT INTO stockpurchasereport
@@ -405,6 +376,10 @@ class Product
         }
     }
 
+
+
+    // validations
+
     private function validateUpdateProductBody(): array
     {
         $errors = [];
@@ -425,11 +400,72 @@ class Product
 
         if (trim($this->body['selling_price']) === "") {
             $errors['selling_price'] = "Price must not be empty";
-        } else if (is_float($this->body['selling_price'])) {
-            $errors['selling_price'] = "Price can not be a negative number";
+        } else if ($this->body['selling_price'] == 0) {
+            $errors['selling_price'] = "Price can not be a zero";
+        } else if ($this->body['selling_price'] < 0){
+            $errors['selling_price'] = "Price can not be negative";
         }
 
         return $errors;
 
+    }
+
+
+
+    private function validateAddProducts(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['name']) === "") {
+            $errors['name'] = "Product name must not be empty";
+        } else {
+            $query = "SELECT * FROM product WHERE lower(name) = lower(:name)";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name", $this->body['name']);
+            $statement->execute();
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = "Product name already exists";
+            }
+        }
+
+        if (trim($this->body['selling_price']) === "") {
+            $errors['selling_price'] = "Price must not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
+            $errors['selling_price'] = "Price can not be a negative number";
+        }
+
+        if (trim($this->body['quantity']) === "") {
+            $errors['quantity'] = "Quantity not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['quantity'])) {
+            $errors['quantity'] = "Quantity must be a positive";
+        }
+
+        if (trim($this->body['unit_price']) === "") {
+            $errors['unit_price'] = "Price must not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['unit_price'])) {
+            $errors['unit_price'] = "Price must be a positive";
+        }
+
+        return $errors;
+    }
+
+    private function validateRestock(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['stock_quantity']) === "") {
+            $errors['stock_quantity'] = "Quantity not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['stock_quantity'])) {
+            $errors['stock_quantity'] = "Quantity must be a positive";
+        }
+
+        if(trim($this->body['unit_price']) === "") {
+            $errors['unit_price'] = "Price must not be empty";
+        }else if($this->body['unit_price'] < 0){
+            $errors['unit_price'] = "Price can not be a negative";
+        }
+
+
+        return $errors;
     }
 }

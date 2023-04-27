@@ -30,11 +30,11 @@ const addBrandForm = htmlToElement(`
                                 <div class="brand-type-radio-group">
                                     <div class="form-item--checkbox">
                                         <label for="is_vehicle_brand">Vehicle</label>
-                                        <input type="checkbox" name="is_vehicle_brand" value="1">
+                                        <input type="checkbox" name="is_vehicle_brand" id="is_vehicle_brand"value="1">
                                     </div>
                                       <div class="form-item--checkbox">
                                         <label for="is_product_brand">Product</label>
-                                        <input type="checkbox" name="is_product_brand" value="1">
+                                        <input type="checkbox" name="is_product_brand" value="1"  id="is_product_brand" checked>
                                     </div>
                                 
                                 </div>
@@ -99,7 +99,8 @@ addBrandForm?.addEventListener('submit', async (e) => {
             body: formData,
         })
         if(result.status === 400) {
-            const resultBody = await result.json()
+            const resultBody = await result.text()
+            console.log(resultBody)
             for (const inputName in resultBody.errors) {
                 const inputWrapper = addBrandForm.querySelector(`#${inputName}`).parentElement
                 inputWrapper.classList.add('form-item--error')
@@ -120,11 +121,9 @@ addBrandForm?.addEventListener('submit', async (e) => {
                 type: "success",
                 header: "Success",
             })
-            // setTimeout(() => {
-            //     Notifier.hide(
-            //         "Supplier added successfully",
-            //     )
-            // },4000)
+            setTimeout(() => {
+                location.reload()
+            },4000)
 
         }
     }
