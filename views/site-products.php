@@ -17,7 +17,7 @@ use app\components\ProductCard;
         <input type="text" placeholder="Search">
         <i class="fa-solid fa-magnifying-glass"></i>
     </div>
-        <select name="type" id="product-type" class="product-filter--select">
+        <select name="type" id="product-type" class="product-filte      r--select">
             <option value="Tyres">Tyres</option>
             <option value="Tyres">Tyres</option>
             <option value="Tyres">Tyres</option>

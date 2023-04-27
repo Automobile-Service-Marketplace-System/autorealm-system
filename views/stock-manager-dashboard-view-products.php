@@ -5,12 +5,15 @@
  * @var array $brands
  * @var array $categories
  * @var array $models
+ * @var  int $limit
+ * @var  int $page
+ * @var  int $total
  */
-\app\utils\DevOnly::prettyEcho($products);
+//\app\utils\DevOnly::prettyEcho($products);
 use app\components\Table;
 
 
-$columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity", "Actions"];
+$columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity","Type", "Actions"];
 
 $items = [];
 foreach ($products as $product) {
@@ -24,6 +27,7 @@ foreach ($products as $product) {
         "Brand" => $product["Brand"],
         "Price" => $product["Price (LKR)"],
         "Quantity" => $quantityElement,
+        "Type" => $product["Type"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'
                                 data-productId='{$product["ID"]}'              
                                 data-categoryId='{$product["CategoryID"]}' 
@@ -44,8 +48,14 @@ foreach ($products as $product) {
     ];
 }
 ?>
-
-<div class="stock-manager-add-button-set-product-page">
+<div class="product-count-and-actions">
+    <div class="product-table-count">
+        <p >
+        <!--    Showing --><?php //echo $limit; ?><!-- of --><?php //echo $total; ?><!-- products-->
+            Showing 25 out of 100 products
+        </p>
+    </div>
+    <div class="stock-manager-add-button-set-product-page">
 
 
         <button class="btn btn--rounded pagination-item btn--white" id="add-model-btn" style="margin-right: 1rem">
@@ -56,12 +66,14 @@ foreach ($products as $product) {
             <i class="fa-solid fa-b"></i>
         </button>
 
-    <div class="add-button">
-        <a class="btn" href="products/add">
-            <i class="fa-solid fa-plus"></i>
-            Add Products</a>
-    </div>
+        <div class="add-button">
+            <a class="btn" href="products/add">
+                <i class="fa-solid fa-plus"></i>
+                Add Products</a>
+        </div>
 
+
+    </div>
 
 </div>
 
@@ -71,14 +83,35 @@ foreach ($products as $product) {
         <i class="fa-solid fa-magnifying-glass"></i>
     </div>
 
-    <div class="product-filter--select ">
-        <select name="category" id="category-filter">
+    <div >
+        <select name="category" id="category-filter" class="product-filter--select ">
             <option value="0">All Categories</option>
             <?php foreach ($categories as $category) : ?>
                 <option value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
             <?php endforeach; ?>
         </select>
     </div>
+
+    <div >
+        <select name="type" id="type-filter" class="product-filter--select">
+            <option value="0">All Types</option>
+            <option value="spare part">Spare Part</option>
+            <option value="accessory">Accessory</option>
+        </select>
+    </div>
+
+
+    <div >
+        <select name="quantity" id="quantity-filter" class="product-filter--select ">
+            <option value="0">All Quantities</option>
+            <option value="1">🔴 Low Quantity </option>
+            <option value="2">🟡 Medium Quantity</option>
+            <option value="3">🟢 High Quantity</option>
+        </select>
+    </div>
+
+
+
 </div>
 
 <?php
