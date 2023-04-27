@@ -91,3 +91,15 @@
 .product-price input::placeholder {
     text-align: center;
 }
+
+.product-count-and-actions{
+    display: flex;
+    justify-content: space-between;
+
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+.product-table-count{
+    text-align: center;
+}

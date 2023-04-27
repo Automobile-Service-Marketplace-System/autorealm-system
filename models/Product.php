@@ -40,7 +40,8 @@ class Product
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
                         p.image as Image,
                         p.description as Description,
-                        p.quantity as Quantity
+                        p.quantity as Quantity,
+                        p.product_type as Type
                         
 
                     FROM product p 
