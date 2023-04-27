@@ -18,7 +18,7 @@ export class ProductSelector {
      */
     categories = []
     /**
-     * @type {{brand_name: string; brand_id: number; brand_type: string; is_vehicle_model: number; is_product_model: number}[]}
+     * @type {{brand_name: string; brand_id: number; is_vehicle_model: number; is_product_model: number}[]}
      */
     brands = []
 
