@@ -25,8 +25,12 @@ class Product
         $this->body = $body;
     }
 
-    public function getProducts(): array|string
+    public function getProducts(int|null $count = null, int|null $page = 1): array|string
     {
+        //if there are no parameters, set empty string
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
         $query = "SELECT 
     
                         p.item_code as ID, 
@@ -51,12 +55,19 @@ class Product
                         INNER JOIN category c on p.category_id = c.category_id
                      
                     WHERE p.is_discontinued = FALSE
-                    ORDER BY p.item_code";
+                    ORDER BY p.item_code $limitClause $pageClause";
 
         $result = $this->pdo->prepare($query);
         try {
             $result->execute();
-            return $result->fetchAll(PDO::FETCH_ASSOC);
+
+            $totalProducts = $this->pdo->query(
+                "SELECT COUNT(*) as total FROM product WHERE is_discontinued = FALSE"
+            )->fetch(PDO::FETCH_ASSOC);
+            return [
+              "products" => $result->fetchAll(PDO::FETCH_ASSOC),
+              "total" => $totalProducts['total']
+            ];
         } catch (PDOException $e) {
             return $e->getMessage();
         }
