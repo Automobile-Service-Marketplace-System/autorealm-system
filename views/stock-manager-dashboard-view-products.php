@@ -93,13 +93,13 @@ foreach ($products as $product) {
         </select>
     </div>
 
-    <div >
-        <select name="type" id="type-filter" class="product-filter--select">
-            <option value="0">All Types</option>
-            <option value="spare part">Spare Part</option>
-            <option value="accessory">Accessory</option>
-        </select>
-    </div>
+    <!--    <div >-->
+    <!--        <select name="type" id="type-filter" class="product-filter--select">-->
+    <!--            <option value="0">All Types</option>-->
+    <!--            <option value="spare part">Spare Part</option>-->
+    <!--            <option value="accessory">Accessory</option>-->
+    <!--        </select>-->
+    <!--    </div>-->
 
 
     <div >

@@ -48,6 +48,34 @@ foreach ($orders as $order){
                       </div>"
     ];
 }
+?>
+<div class="order-filtering-and-sort">
+    <div class="product-filters">
+        <div class="product-search">
+            <input type="text" placeholder="Search Order by ID">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
 
+        <div>
+            <select name="status-type" id="status-type" class="product-filter--select">
+                <option value="all">All Orders</option>
+                <option value="not-prepared">Not Prepared</option>
+                <option value="prepared">Prepared</option>
+                <option value="delivery">Delivery</option>
+                <option value="courier-confirmed">Courier Confirmed</option>
+                <option value="customer-confirmed">Customer Confirmed</option>
+            </select>
+        </div>
+    </div>
+    <div class="order-sort">
+
+        <select name="sort-type" id="sort-type" class="product-filter--select">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+        </select>
+    </div>
+</div>
+
+<?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
-
+?>
