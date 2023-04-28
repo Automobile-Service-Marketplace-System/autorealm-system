@@ -14,11 +14,8 @@ import "./customer-create-appointment"
 import "./update-products"
 import "./update-services"
 import "./update-vehicles"
-<<<<<<< HEAD
 // import "./create-admitting-report"
-=======
 import "./admitting-report"
->>>>>>> 76645fb51a2560b3c0c7367e97c5562816435d07
 import "./delete-suppliers"
 import "./restock-products"
 // import "./checkout-cart"
@@ -31,4 +28,5 @@ import "./office-update-appointment"
 import "./create-job"
 import "./add-models"
 import "./add-brand"
+import "./delete-employee"
 

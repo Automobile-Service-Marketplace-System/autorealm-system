@@ -24,7 +24,7 @@ class EmployeeController
 
     public function getViewEmployeesPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
 
             $employeeModel=new Employee();
             $employees=$employeeModel->getEmployees();
@@ -119,16 +119,18 @@ class EmployeeController
 
     public function deleteEmployees(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
-            $query= $req->query();
-            $ID = $query['employee_id'] ?? null;
-            if (!$ID) {
+            $body=$req->body();
+            if (empty($body['employee_id'])) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
                     "message" => "Bad Request"
                 ]);
             }
+
+            $ID = $body['employee_id'];
             $employeeModel = new Employee();
             $result = $employeeModel->deleteEmployeeById($ID);
+
 
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
@@ -141,7 +143,6 @@ class EmployeeController
                 return $res->json([
                     "message" => "Employee deleted successfully"
                 ]);
-
             }
         }
 

@@ -175,7 +175,7 @@ $image = $employee->image ? $employee->image : "";
         </div>
         <div class="flex items-center justify-between my-4">
             <button type="reset" id='rst' class="btn">Cancel</button>
-            <button type="submit" id='sm' class="btn btn--danger" href="/employees/delete?employee_id=<?php (int)$employee->employee_id?>">Delete</button>
+            <button type="button" id='delete-employee-btn' class="btn btn--danger" data-employeeid="<?= $employee->employee_id ?>">Delete</button>
             <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
         </div>
     </form>
