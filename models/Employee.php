@@ -386,7 +386,7 @@ class Employee
             return $statement->rowCount() > 0;
         }
         catch (PDOException $e){
-            return "Error deleting Supplier";
+            return "Error deleting Employee";
 
         }
     }

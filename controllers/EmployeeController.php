@@ -119,9 +119,8 @@ class EmployeeController
 
     public function deleteEmployees(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
-            $body = $req->body();
-            $ID = $body['employee_id'] ?? null;
-            var_dump($ID);
+            $query= $req->query();
+            $ID = $query['employee_id'] ?? null;
             if (!$ID) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
@@ -129,9 +128,7 @@ class EmployeeController
                 ]);
             }
             $employeeModel = new Employee();
-            // var_dump($employeeModel);
             $result = $employeeModel->deleteEmployeeById($ID);
-            var_dump($result);
 
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
