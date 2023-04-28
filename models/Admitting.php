@@ -53,63 +53,63 @@ class Admitting
         }
 
         if ($this->body['lights_lf'] !== 'good' && $this->body['lights_lf'] !== 'scratched' && $this->body['lights_lf'] !== 'cracked' && $this->body['lights_lf'] !== 'damaged' && $this->body['lights_lf'] !== 'not working') {
-            $errors['lights_lf'] = 'You must select LF of lights.';
+            $errors['lights_lf'] = 'You must select the state of  LF lights.';
         }
 
         if ($this->body['lights_rf'] !== 'good' && $this->body['lights_rf'] !== 'scratched' && $this->body['lights_rf'] !== 'cracked' && $this->body['lights_rf'] !== 'damaged' && $this->body['lights_rf'] !== 'not working') {
-            $errors['lights_rf'] = 'You must select RF of lights.';
+            $errors['lights_rf'] = 'You must select the state of  RF lights.';
         }  
         
         if ($this->body['lights_lr'] !== 'good' && $this->body['lights_lr'] !== 'scratched' && $this->body['lights_lr'] !== 'cracked' && $this->body['lights_lr'] !== 'damaged' && $this->body['lights_lr'] !== 'not working') {
-            $errors['lights_lr'] = 'You must select LR of lights.';
+            $errors['lights_lr'] = 'You must select the state of  LR lights.';
         }         
 
         if ($this->body['lights_rr'] !== 'good' && $this->body['lights_rr'] !== 'scratched' && $this->body['lights_rr'] !== 'cracked' && $this->body['lights_rr'] !== 'damaged' && $this->body['lights_rr'] !== 'not working') {
-            $errors['lights_rr'] = 'You must select RR of lights.';
+            $errors['lights_rr'] = 'You must select the state of  RR lights.';
         }
 
         if ($this->body['seat_lf'] !== 'good' && $this->body['seat_lf'] !== 'worn' && $this->body['seat_lf'] !== 'burnholes' && $this->body['seat_lf'] !== 'torn' && $this->body['seat_lf'] !== 'stained') {
-            $errors['seat_lf'] = 'You must select LF of seat.';
+            $errors['seat_lf'] = 'You must select the state of  LF seat.';
         }
 
         if ($this->body['seat_rf'] !== 'good' && $this->body['seat_rf'] !== 'worn' && $this->body['seat_rf'] !== 'burnholes' && $this->body['seat_rf'] !== 'torn' && $this->body['seat_rf'] !== 'stained') {
-            $errors['seat_rf'] = 'You must select RF of seat.';
+            $errors['seat_rf'] = 'You must select the state of  RF seat.';
         }
 
         if ($this->body['seat_rear'] !== 'good' && $this->body['seat_rear'] !== 'worn' && $this->body['seat_rear'] !== 'burnholes' && $this->body['seat_rear'] !== 'torn' && $this->body['seat_rear'] !== 'stained') {
-            $errors['seat_rear'] = 'You must select REAR of seat.';
+            $errors['seat_rear'] = 'You must select the state of  REAR seat.';
         }
 
         if ($this->body['carpet_lf'] !== 'good' && $this->body['carpet_lf'] !== 'worn' && $this->body['carpet_lf'] !== 'burnholes' && $this->body['carpet_lf'] !== 'torn' && $this->body['carpet_lf'] !== 'stained' && $this->body['carpet_lf'] !== 'missing') {
-            $errors['carpet_lf'] = 'You must select LF of carpet.';
+            $errors['carpet_lf'] = 'You must select the state of  LF carpet.';
         }
 
         if ($this->body['carpet_rf'] !== 'good' && $this->body['carpet_rf'] !== 'worn' && $this->body['carpet_rf'] !== 'burnholes' && $this->body['carpet_rf'] !== 'torn' && $this->body['carpet_rf'] !== 'stained' && $this->body['carpet_rf'] !== 'missing') {
-            $errors['carpet_rf'] = 'You must select RF of carpet.';
+            $errors['carpet_rf'] = 'You must select the state of  RF carpet.';
         }
 
         if ($this->body['carpet_rear'] !== 'good' && $this->body['carpet_rear'] !== 'worn' && $this->body['carpet_rear'] !== 'burnholes' && $this->body['carpet_rear'] !== 'torn' && $this->body['carpet_rear'] !== 'stained' && $this->body['carpet_rear'] !== 'missing') {
-            $errors['carpet_rear'] = 'You must select REAR of carpet.';
+            $errors['carpet_rear'] = 'You must select the state of  REAR carpet.';
         }
 
-        if ($this->body['rim_lf'] !== 'good' && $this->body['rim_lf'] !== 'scratched'  && $this->body['rim_lf'] !== 'cracked' && $this->body['rim_lf'] !== 'damaged' && $this->body['rim_lf'] !== 'missing') {
-            $errors['rim_lf'] = 'You must select LF of rim.';
+        if (!isset($this->body['rim_lf']) ||($this->body['rim_lf'] !== 'good' && $this->body['rim_lf'] !== 'scratched'  && $this->body['rim_lf'] !== 'cracked' && $this->body['rim_lf'] !== 'damaged' && $this->body['rim_lf'] !== 'missing')) {
+            $errors['rim_lf'] = 'You must select the state of  LF rim.';
         }
 
         if ($this->body['rim_rf'] !== 'good' && $this->body['rim_rf'] !== 'scratched'  && $this->body['rim_rf'] !== 'cracked' && $this->body['rim_rf'] !== 'damaged' && $this->body['rim_rf'] !== 'missing') {
-            $errors['rim_rf'] = 'You must select RF of rim.';
+            $errors['rim_rf'] = 'You must select the state of  RF rim.';
         }
 
         if ($this->body['rim_lr'] !== 'good' && $this->body['rim_lr'] !== 'scratched'  && $this->body['rim_lr'] !== 'cracked' && $this->body['rim_lr'] !== 'damaged' && $this->body['rim_lr'] !== 'missing') {
-            $errors['rim_lr'] = 'You must select LR of rim.';
+            $errors['rim_lr'] = 'You must select the state of  LR rim.';
         }
 
         if ($this->body['rim_rr'] !== 'good' && $this->body['rim_rr'] !== 'scratched'  && $this->body['rim_rr'] !== 'cracked' && $this->body['rim_rr'] !== 'damaged' && $this->body['rim_rr'] !== 'missing') {
-            $errors['rim_rr'] = 'You must select RR of rim.';
+            $errors['rim_rr'] = 'You must select the state of  RR rim.';
         }
         
         if ($this->body['current_fuel_level'] !== 'full' && $this->body['current_fuel_level'] !== 'empty' && $this->body['current_fuel_level'] !== 'half' && $this->body['current_fuel_level'] !== '3/4' && $this->body['current_fuel_level'] !== '1/4') {
-            $errors['current_fuel_level'] = 'You must select capacity';
+            $errors['current_fuel_level'] = 'You must select the state of  capacity';
         }
 
         if (trim($this->body['milage']) === "") {
@@ -135,44 +135,43 @@ class Admitting
         }
 
         if ($this->body['dashboard'] !== 'good' && $this->body['dashboard'] !== 'scratched'  && $this->body['dashboard'] !== 'damaged' && $this->body['dashboard'] !== 'burnt' && $this->body['dashboard'] !== 'stained') {
-            $errors['dashboard'] = 'You must select option of dashboard.';
+            $errors['dashboard'] = 'You must select the state of  dashboard.';
         }
 
         if ($this->body['windshield'] !== 'good' && $this->body['windshield'] !== 'scratched' && $this->body['windshield'] !== 'cracked' && $this->body['windshield'] !== 'damaged') {
-            $errors['windshield'] = 'You must select windsheild';
+            $errors['windshield'] = 'You must select the state of  windsheild';
         }
 
         if ($this->body['toolkit'] !== 'have' && $this->body['toolkit'] !== 'missing') {
-            $errors['toolkit'] = 'You must select toolkit';
+            $errors['toolkit'] = 'You must select the state of  toolkit';
         }
 
         if ($this->body['sparewheel'] !== 'have' && $this->body['sparewheel'] !== 'missing') {
-            $errors['sparewheel'] = 'You must select sparewheel';
+            $errors['sparewheel'] = 'You must select the state of  sparewheel';
         }
 
         return $errors;
     }
 
  
-    public function addAdmittingReport(int $id){
+    public function addAdmittingReport(int $id) : array | int{
         $errors = $this->validated_byAdmittingReport();
-        // var_dump($id);
+        var_dump($errors);
         if(empty($errors)){
             $query="insert into admitingreport 
                 (
                     vehicle_reg_no, milage, current_fuel_level, current_fuel_level_description, admiting_time, departing_time, windshield, windshield_description, 
                     lights_lf, light_lf_description, lights_rf, light_rf_description, lights_lr, light_lr_description, lights_rr, light_rr_description, toolkit, sparewheel, rim_lf, rim_lf_description, 
                     rim_rf, rim_rf_description, rim_lr, rim_lr_description, rim_rr, rim_rr_description, seat_lf, seat_lf_description, seat_rf, seat_rf_description, seat_rear, seat_rear_description, 
-                    carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id
+                    carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id, admitting_date
                 )
                 values
                 (
                     :vehicle_reg_no, :milage, :current_fuel_level,:current_fuel_level_description, :admiting_time, :departing_time, :windshield, :windshield_description, 
                     :lights_lf, :light_lf_description, :lights_rf, :light_rf_description, :lights_lr, :light_lr_description, :lights_rr, :light_rr_description, :toolkit, :sparewheel, :rim_lf, :rim_lf_description,
-                    :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, seat_rf_description, :seat_rear, :seat_rear_description,
-                    :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id
+                    :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, :seat_rf_description, :seat_rear, :seat_rear_description,
+                    :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id, :date
                 )";
-            var_dump($query);
             $statement=$this->pdo->prepare($query);
             $statement->bindvalue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
             $statement->bindvalue(":milage", $this->body["milage"]);
@@ -217,9 +216,11 @@ class Admitting
             $statement->bindvalue(":customer_belongings", $this->body["customer_belongings"]);
             $statement->bindvalue(":additional_note", $this->body["additional_note"]);
             $statement->bindvalue(":id", $id);
+            $statement->bindvalue(":date", date('Y-m-d'));
+            // $statement->bindvalue(":cur_date()", $cur_date());
             // $statement->bindvalue(":employee_id", $id);
             $statement->execute();
-            return true;   
+            return $this->pdo->lastInsertId();
         }
         else{
             return $errors;

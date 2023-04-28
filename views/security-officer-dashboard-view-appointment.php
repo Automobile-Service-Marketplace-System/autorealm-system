@@ -1,4 +1,4 @@
-<div class="appointments-container">
+<!-- <div class="appointments-container">
     <div class="appointment-card">
         <div class="appointment-card__header">
             <p>Appointment Date: 2023/2/3</p>
@@ -96,4 +96,22 @@
     <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=4&limit=2'>4</a>
     <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=5&limit=2'>5</a>
     <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=6&limit=2'>6</a>
-</div>
+</div> -->
+
+<?php
+/**
+ * @var array $appointments
+ */
+?>
+
+<?php 
+        foreach($appointments as $appointment){            
+            echo " <a class='appointment-card' href='/security-officer-dashboard/check-appointment'>Scan QR code
+            <p class='appointment-card__name'>{$appointment['Name']}</p>
+            <p class='appointment-card__regno'>{$appointment['RegNo']}</p>
+            <p class='appointment-card__from_time'>{$appointment['FromTime']}</p>
+            <p class='appointment-card__to_time'>{$appointment['ToTime']}</p>
+            <p class='appointment-card__date'>{$appointment['Date']}</p>
+            </a>";
+        }
+?>

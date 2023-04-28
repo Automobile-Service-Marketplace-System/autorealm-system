@@ -1,9 +1,11 @@
 <?php
+use app\utils\DevOnly;
 /**
  * @var object $employee
  * @var array $errors
  */
 
+var_dump((int)$employee->employee_id);
 use app\components\FormItem;
 
 $hasErrors = isset($errors) && !empty($errors);
@@ -173,6 +175,7 @@ $image = $employee->image ? $employee->image : "";
         </div>
         <div class="flex items-center justify-between my-4">
             <button type="reset" id='rst' class="btn">Cancel</button>
+            <button type="submit" id='sm' class="btn btn--danger" href="/employees/delete?employee_id=<?php (int)$employee->employee_id?>">Delete</button>
             <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
         </div>
     </form>

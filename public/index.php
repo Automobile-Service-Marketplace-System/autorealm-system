@@ -131,6 +131,7 @@ if ($isInternal) {
     $app->router->get(path: "/employees/add", callback: [EmployeeController::class, 'getCreateEmployeePage']);
     $app->router->post(path: "/employees/add", callback: [EmployeeController::class, 'registerEmployee']);
     $app->router->get(path: "/employees/view", callback: [EmployeeController::class, 'getEditEmployeePage']);
+    $app->router->post(path: "/employees/delete", callback: [EmployeeController::class, 'deleteEmployees']);
     
     $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
     // $app->router->post(path: "/employees/edit", callback: [EmployeeController::class, 'editEmployee']);
@@ -198,11 +199,12 @@ if ($isInternal) {
     $app->router->post(path: "/security-officer-login", callback: [AuthenticationController::class, 'loginSecurityOfficer']);
     $app->router->get(path: "/security-officer-dashboard/profile", callback: [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get(path: "/security-officer-dashboard/check-appointment", callback: [AppointmentsController::class, 'getCheckAppointmentPage']);
-    $app->router->get(path: "/security-officer-dashboard/view-appointment", callback: [AppointmentsController::class, 'getSecurityAppointments']);
+    $app->router->get(path: "/security-officer-dashboard/view-appointment", callback: [AppointmentsController::class, 'getAllAppointmentsDetails']);
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'getCreateAdmittingReportPage']);
     $app->router->post(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'addAdmittingReportPage']);
     $app->router->get(path: "/security-officer-dashboard/view-admitting-reports", callback: [AdmittingController::class, 'getAdmittingReportsDetails']);
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/view", callback: [AdmittingController::class, 'viewAdmittingReportDetails']);
+    // $app->router->get(path: "/security-officer-dashboard/view-appointments", callback: [AppointmentsController::class, 'getSecurityAppointments']);
 }
 // run the application
 $app->run();

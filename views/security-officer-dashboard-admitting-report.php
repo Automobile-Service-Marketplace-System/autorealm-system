@@ -2,6 +2,7 @@
 
 /**
  * @var array $errors
+ * @var array $body
  */
 
 use app\components\FormItem;
@@ -16,35 +17,35 @@ $hasAdmittingTimeError = $hasErrors && isset($errors['admiting_time']);
 $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
 $hasWindshieldError = $hasErrors && isset($errors['windshield']);
 $hasWindshieldDescriptionError = $hasErrors && isset($errors['windshield_description']);
-// $hasLightsLFError = $hasErrors && isset($errors['lights_lf']);
+$hasLightsLFError = $hasErrors && isset($errors['lights_lf']);
 $hasLightLFDescriptionError = $hasErrors && isset($errors['light_lf_description']);
-// $hasLightsRFError = $hasErrors && isset($errors['lights_rf']);
+$hasLightsRFError = $hasErrors && isset($errors['lights_rf']);
 $hasLightRFDescriptionError = $hasErrors && isset($errors['light_rf_description']);
-// $hasLightsLRError = $hasErrors && isset($errors['lights_lr']);
+$hasLightsLRError = $hasErrors && isset($errors['lights_lr']);
 $hasLightLRDescriptionError = $hasErrors && isset($errors['light_lr_description']);
-// $hasLightsRRError = $hasErrors && isset($errors['lights_rr']);
+$hasLightsRRError = $hasErrors && isset($errors['lights_rr']);
 $hasLightRRDescriptionError = $hasErrors && isset($errors['light_rr_description']);
-// $hasToolkitError = $hasErrors && isset($errors['toolkit']);
-// $hasSparewheelError = $hasErrors && isset($errors['sparewheele']);
-// $hasRimLFError = $hasErrors && isset($errors['rim_lf']);
+$hasToolkitError = $hasErrors && isset($errors['toolkit']);
+$hasSparewheelError = $hasErrors && isset($errors['sparewheele']);
+$hasRimLFError = $hasErrors && isset($errors['rim_lf']);
 $hasRimLFDescriptionError = $hasErrors && isset($errors['rim_lf_description']);
-// $hasRimRFError = $hasErrors && isset($errors['rim_rf']);
+$hasRimRFError = $hasErrors && isset($errors['rim_rf']);
 $hasRimRFDescriptionError = $hasErrors && isset($errors['rim_rf_description']);
-// $hasRimLRError = $hasErrors && isset($errors['rim_lr']);
+$hasRimLRError = $hasErrors && isset($errors['rim_lr']);
 $hasRimLRDescriptionError = $hasErrors && isset($errors['rim_lr_description']);
-// $hasRimRRError = $hasErrors && isset($errors['rim_rr']);
+$hasRimRRError = $hasErrors && isset($errors['rim_rr']);
 $hasRimRRDescriptionError = $hasErrors && isset($errors['rim_rr_description']);
-// $hasSeatLFError = $hasErrors && isset($errors['seat_lf']);
+$hasSeatLFError = $hasErrors && isset($errors['seat_lf']);
 $hasSeatLFDescriptionError = $hasErrors && isset($errors['seat_lf_description']);
-// $hasSeatRFError = $hasErrors && isset($errors['seat_rf']);
+$hasSeatRFError = $hasErrors && isset($errors['seat_rf']);
 $hasSeatRFDescriptionError = $hasErrors && isset($errors['seat_rf_description']);
-// $hasSeatREARError = $hasErrors && isset($errors['seat_rear']);
+$hasSeatREARError = $hasErrors && isset($errors['seat_rear']);
 $hasSeatREARDescriptionError = $hasErrors && isset($errors['seat_rear_description']);
-// $hasCarpetLFError = $hasErrors && isset($errors['carpet_lf']);
+$hasCarpetLFError = $hasErrors && isset($errors['carpet_lf']);
 $hasCarpetLFDescriptionError = $hasErrors && isset($errors['carpet_lf_description']);
-// $hasCarpetRFError = $hasErrors && isset($errors['carpet_rf']);
+$hasCarpetRFError = $hasErrors && isset($errors['carpet_rf']);
 $hasCarpetRFDescriptionError = $hasErrors && isset($errors['carpet_rf_description']);
-// $hasCarpetREARError = $hasErrors && isset($errors['carpet_rear']);
+$hasCarpetREARError = $hasErrors && isset($errors['carpet_rear']);
 $hasCarpetREARDescriptionError = $hasErrors && isset($errors['carpet_rear_description']);
 $hasDashboardError = $hasErrors && isset($errors['dashboard']);
 $hasDashboardDescriptionError = $hasErrors && isset($errors['dashboard_description']);
@@ -92,7 +93,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     </div>                
                     <div class="radio-type2">
                         <input type="radio" id="light_lf_cracked" name="lights_lf" value="cracked">
-                        <label for="light_lf_scratched">Cracked</label>
+                        <label for="light_lf_cracked">Cracked</label>
                     </div>
                     <div class="radio-type3">
                         <input type="radio" id="light_lf_damaged" name="lights_lf" value="damaged">
@@ -109,6 +110,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "light_lf_description",
                         type: "text",
+                        required: false,
                         hasError: $hasLightLFDescriptionError,
                         error: $hasLightLFDescriptionError ? $errors['light_lf_description'] : "",
                         value: $body['light_lf_description'] ?? null,
@@ -145,8 +147,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "light_rf_description",
                         type: "text",
-                        hasError: $hasLightRFDescriptionError,
-                        error: $hasLightRFDescriptionError ? $errors['light_rf_description'] : "",
+                        required: false,
+                        // hasError: $hasLightRFDescriptionError,
+                        // error: $hasLightRFDescriptionError ? $errors['light_rf_description'] : "",
                         value: $body['light_rf_description'] ?? null,
                     );
                 ?>
@@ -181,8 +184,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "light_lr_description",
                         type: "text",
-                        hasError: $hasLightLRDescriptionError,
-                        error: $hasLightLRDescriptionError ? $errors['light_lr_description'] : "",
+                        required: false,
+                        // hasError: $hasLightLRDescriptionError,
+                        // error: $hasLightLRDescriptionError ? $errors['light_lr_description'] : "",
                         value: $body['light_lr_description'] ?? null,
                     );
                 ?>
@@ -217,8 +221,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "light_rr_description",
                         type: "text",
-                        hasError: $hasLightRRDescriptionError,
-                        error: $hasLightRRDescriptionError ? $errors['light_rr_description'] : "",
+                        required: false,
+                        // hasError: $hasLightRRDescriptionError,
+                        // error: $hasLightRRDescriptionError ? $errors['light_rr_description'] : "",
                         value: $body['light_rr_description'] ?? null,
                     );
                 ?>
@@ -256,8 +261,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "seat_lf_description",
                         type: "text",
-                        hasError: $hasSeatLFDescriptionError,
-                        error: $hasSeatLFDescriptionError ? $errors['seat_lf_description'] : "",
+                        required: false,
+                        // hasError: $hasSeatLFDescriptionError,
+                        // error: $hasSeatLFDescriptionError ? $errors['seat_lf_description'] : "",
                         value: $body['seat_lf_description'] ?? null,
                     );
                 ?>
@@ -292,8 +298,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "seat_rf_description",
                         type: "text",
-                        hasError: $hasSeatRFDescriptionError,
-                        error: $hasSeatRFDescriptionError ? $errors['seat_rf_description'] : "",
+                        required: false,
+                        // hasError: $hasSeatRFDescriptionError,
+                        // error: $hasSeatRFDescriptionError ? $errors['seat_rf_description'] : "",
                         value: $body['seat_rf_description'] ?? null,
                     );
                 ?>
@@ -301,7 +308,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
             <div class="form-item">
                 <p>REAR</p>
                 <div class="form-radio">
-                <div class="radio-type1">
+                    <div class="radio-type1">
                         <input type="radio" id="seat_rear_good" name="seat_rear" value="good">
                         <label for="seat_rear_good">Good</label>
                     </div>
@@ -328,8 +335,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "seat_rear_description",
                         type: "text",
-                        hasError: $hasSeatREARDescriptionError,
-                        error: $hasSeatREARDescriptionError ? $errors['seat_rear_description'] : "",
+                        required: false,
+                        // hasError: $hasSeatREARDescriptionError,
+                        // error: $hasSeatREARDescriptionError ? $errors['seat_rear_description'] : "",
                         value: $body['seat_rear_description'] ?? null,
                     );
                 ?>
@@ -346,7 +354,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         <label for="carpet_lf_good">Good</label>
                     </div>
                     <div class="radio-type2">
-                        <input type="radio" id="carpet_lf_worn" name="carpet_lf_carpet_lf" value="worn">
+                        <input type="radio" id="carpet_lf_worn" name="carpet_lf" value="worn">
                         <label for="carpet_lf_worn">Worn</label>
                     </div>
                     <div class="radio-type3">
@@ -372,8 +380,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "carpet_lf_description",
                         type: "text",
-                        hasError: $hasCarpetLFDescriptionError,
-                        error: $hasCarpetLFDescriptionError ? $errors['carpet_lf_description'] : "",
+                        required: false,
+                        // hasError: $hasCarpetLFDescriptionError,
+                        // error: $hasCarpetLFDescriptionError ? $errors['carpet_lf_description'] : "",
                         value: $body['carpet_lf_description'] ?? null,
                     );
                 ?>
@@ -412,8 +421,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "carpet_rf_description",
                         type: "text",
-                        hasError: $hasCarpetRFDescriptionError,
-                        error: $hasCarpetRFDescriptionError ? $errors['carpet_rf_description'] : "",
+                        required: false,
+                        // hasError: $hasCarpetRFDescriptionError,
+                        // error: $hasCarpetRFDescriptionError ? $errors['carpet_rf_description'] : "",
                         value: $body['carpet_rf_description'] ?? null,
                     );
                 ?>
@@ -452,8 +462,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "carpet_rear_description",
                         type: "text",
-                        hasError: $hasCarpetREARDescriptionError,
-                        error: $hasCarpetREARDescriptionError ? $errors['carpet_rear_description'] : "",
+                        required: false,
+                        // hasError: $hasCarpetREARDescriptionError,
+                        // error: $hasCarpetREARDescriptionError ? $errors['carpet_rear_description'] : "",
                         value: $body['carpet_rear_description'] ?? null,
                     );
                 ?>
@@ -478,7 +489,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         <label for="rim_lf_cracked">Cracked</label>
                     </div>
                     <div class="radio-type3">
-                        <input type="radio" id="rim_lf_dameged" name="rim_lf" value="damaged">
+                        <input type="radio" id="rim_lf_damaged" name="rim_lf" value="damaged">
                         <label for="rim_lf_damaged">Damaged</label>
                     </div>
                     <div class="radio-type3">
@@ -492,8 +503,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "rim_lf_description",
                         type: "text",
-                        hasError: $hasRimLFDescriptionError,
-                        error: $hasRimLFDescriptionError ? $errors['rim_lf_description'] : "",
+                        required: false,
+                        // hasError: $hasRimLFDescriptionError,
+                        // error: $hasRimLFDescriptionError ? $errors['rim_lf_description'] : "",
                         value: $body['rim_lf_description'] ?? null,
                     );
                 ?>
@@ -528,8 +540,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "rim_rf_description",
                         type: "text",
-                        hasError: $hasRimRFDescriptionError,
-                        error: $hasRimRFDescriptionError ? $errors['rim_rf_description'] : "",
+                        required: false,
+                        // hasError: $hasRimRFDescriptionError,
+                        // error: $hasRimRFDescriptionError ? $errors['rim_rf_description'] : "",
                         value: $body['rim_rf_description'] ?? null,
                     );
                 ?>
@@ -547,7 +560,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     </div>
                     <div class="radio-type2">
                         <input type="radio" id="rim_lr_cracked" name="rim_lr" value="cracked">
-                        <label for="rim_lr_scratched">Cracked</label>
+                        <label for="rim_lr_cracked">Cracked</label>
                     </div>
                     <div class="radio-type3">
                         <input type="radio" id="rim_lr_damaged" name="rim_lr" value="damaged">
@@ -564,8 +577,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "rim_lr_description",
                         type: "text",
-                        hasError: $hasRimLRDescriptionError,
-                        error: $hasRimLRDescriptionError ? $errors['rim_lr_description'] : "",
+                        required: false,
+                        // hasError: $hasRimLRDescriptionError,
+                        // error: $hasRimLRDescriptionError ? $errors['rim_lr_description'] : "",
                         value: $body['rim_lr_description'] ?? null,
                     );
                 ?>
@@ -600,8 +614,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "rim_rr_description",
                         type: "text",
-                        hasError: $hasRimRRDescriptionError,
-                        error: $hasRimRRDescriptionError ? $errors['rim_rr_description'] : "",
+                        required: false,
+                        // hasError: $hasRimRRDescriptionError,
+                        // error: $hasRimRRDescriptionError ? $errors['rim_rr_description'] : "",
                         value: $body['rim_rr_description'] ?? null,
                     );
                 ?>
@@ -637,8 +652,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "current_fuel_level_description",
                         type: "text",
-                        hasError: $hasCurrentFuelLevelDescriptionError,
-                        error: $hasCurrentFuelLevelDescriptionError ? $errors['current_fuel_level_description'] : "",
+                        required: false,
+                        // hasError: $hasCurrentFuelLevelDescriptionError,
+                        // error: $hasCurrentFuelLevelDescriptionError ? $errors['current_fuel_level_description'] : "",
                         value: $body['current_fuel_level_description'] ?? null,
                     );
                 ?>
@@ -719,7 +735,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         <label for="dashbard_damaged">Damaged</label>
                     </div>
                     <div class="radio-type2">
-                        <input type="radio" id="dashbard_cracked" name="dashboard" value="burnt">
+                        <input type="radio" id="dashbard_burnt" name="dashboard" value="burnt">
                         <label for="dashbard_burnt">Burnt</label>
                     </div>
                     <div class="radio-type3">
@@ -733,8 +749,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "dashboard_description",
                         type: "text",
-                        hasError: $hasDashboardDescriptionError,
-                        error: $hasDashboardDescriptionError ? $errors['dashboard_description'] : "",
+                        required: false,
+                        // hasError: $hasDashboardDescriptionError,
+                        // error: $hasDashboardDescriptionError ? $errors['dashboard_description'] : "",
                         value: $body['dashboard_description'] ?? null,
                     );
                 ?>
@@ -766,8 +783,9 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         label: "",
                         name: "windshield_description",
                         type: "text",
-                        hasError: $hasWindshieldDescriptionError,
-                        error: $hasWindshieldDescriptionError ? $errors['windshield_description'] : "",
+                        required: false,
+                        // hasError: $hasWindshieldDescriptionError,
+                        // error: $hasWindshieldDescriptionError ? $errors['windshield_description'] : "",
                         value: $body['windshield_description'] ?? null,
                     );
                 ?>
@@ -803,7 +821,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
         </div>
 
         <div class="flex items-center justify-between mt-4 mb-8">
-            <button type="submit" id="create-button" class="btn">Create</button>
             <button type="reset" id="cancel-button" class="btn btn--danger">Cancel</button>
+            <button type="submit" id="create-button" class="btn">Create</button>
         </div>
     </form>
