@@ -17,7 +17,7 @@ use app\components\ProductCard;
         <input type="text" placeholder="Search">
         <i class="fa-solid fa-magnifying-glass"></i>
     </div>
-        <select name="type" id="product-type" class="product-filte      r--select">
+        <select name="type" id="product-type" class="product-filter--select">
             <option value="Tyres">Tyres</option>
             <option value="Tyres">Tyres</option>
             <option value="Tyres">Tyres</option>
@@ -44,7 +44,7 @@ use app\components\ProductCard;
 </div>
 
 <p class="product-count">
-    Showing <?php echo $limit; ?> of <?php echo $total; ?> products
+    Showing <?php echo $limit; ?> of <?php echo $total; ?> orders
 </p>
 
 <div class="products-gallery">

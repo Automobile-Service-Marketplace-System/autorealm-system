@@ -20,9 +20,13 @@ class Order
         $this->body = $body;
     }
 
-    public function getOrders(): array
+    public function getOrders(int|null $count = null, int|null $page = 1): array
     {
-        return $this->pdo->query(
+        //number of rows
+        $limitClause = $count ? "LIMIT $count" : "";
+        //starting point of retrieving rows
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $orders =  $this->pdo->query(
             "SELECT 
                           DISTINCT(o.order_no) as ID,
                           o.status as Status,
@@ -34,12 +38,21 @@ class Order
                      FROM `order` o
                           INNER JOIN customer c on o.customer_id = c.customer_id
                           INNER JOIN orderhasproduct h on o.order_no = h.order_no
-                          
+                     WHERE o.status != 'Unpaid'    
                      GROUP BY o.order_no, o.created_at
-                     ORDER BY o.created_at DESC "
+                     ORDER BY o.created_at DESC $limitClause $pageClause"
 
 
         )->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalOrders = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "orders" => $orders,
+            "total" => $totalOrders['total'],
+        ];
     }
 
 

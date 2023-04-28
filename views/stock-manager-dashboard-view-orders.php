@@ -2,9 +2,12 @@
 
 /**
  * @var array $orders
+ * @var  int $limit
+ * @var  int $page
+ * @var  int $total
  */
 //\app\utils\DevOnly::prettyEcho($orders);
-
+//var_dump($total);
 use app\components\Table;
 
 $columns = ["ID", "Customer Name", "Shipping Address", "Order Date","Payment Amount (Rs)","Status", " "];
@@ -49,6 +52,11 @@ foreach ($orders as $order){
     ];
 }
 ?>
+
+<p class="order-count">
+    Showing <?php echo $limit; ?> of <?php echo $total; ?> products
+</p>
+
 <div class="order-filtering-and-sort">
     <div class="product-filters">
         <div class="product-search">
@@ -79,3 +87,14 @@ foreach ($orders as $order){
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
 ?>
+
+
+<div class="pagination-container">
+    <?php
+
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "pagination-item--active" : "";
+        echo "<a class='pagination-item $isActive' href='/orders?page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+</div>
