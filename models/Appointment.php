@@ -50,11 +50,21 @@ class Appointment
                 CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
                 mileage as 'Mileage',
                 remarks as 'Remarks',
-                date_and_time as 'Date & Time',
-                time_id as 'Time ID'
+                a.date as 'Date',
+                a.time_id as 'Time ID',
+                t.from_time as 'From Time',
+                t.to_time as 'To Time',
+                a.customer_id as 'Customer ID'            
             FROM 
                 appointment a
-            INNER JOIN customer c ON c.customer_id = a.customer_id"
+            INNER JOIN 
+                customer c 
+            ON  
+                c.customer_id = a.customer_id
+            INNER JOIN  
+                timeslot t 
+            ON 
+                t.time_id = a.time_id"
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -121,26 +131,29 @@ class Appointment
                                 vehicle_reg_no,
                                 mileage,
                                 remarks,
-                                date_and_time,
-                                customer_id)
+                                date,
+                                customer_id,
+                                time_id)
                         VALUES(
                                 :vehicle_reg_no,
                                 :mileage,
                                 :remarks,
-                                :date_and_time,
+                                :date,
                                 :customer_id,
-                                :appointment_id)
+                                :time_id)
                             ";
 
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":vehicle_reg_no", $this->body[":vehicle_reg_no"]);
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":remarks", $this->body["remarks"]);
-            $statement->bindValue(":date_and_time", $this->body["date_time"]);            
-            $statement->bindValue(":appointment_id", $this->body["appointment_id"]);            
+            $statement->bindValue(":date", $this->body["date"]); 
+            $statement->bindValue(":customer_id", $this->body["customerID"]);                       
+            $statement->bindValue(":time_id", $this->body["timeslot"]);            
             $statement-> execute();
             return true;
         } catch (PDOException $e) {
+            var_dump($e->getMessage());
             return $e->getMessage();
         }
     }

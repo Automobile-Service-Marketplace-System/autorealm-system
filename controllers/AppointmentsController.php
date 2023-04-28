@@ -105,7 +105,7 @@ class AppointmentsController
         }
 
         return $res->redirect(path: "/login");
-
+        
     }
 
     /**

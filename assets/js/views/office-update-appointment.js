@@ -4,11 +4,11 @@ import Notifier from "../components/Notifier";
 
 const updateAppointmentButton = document.querySelectorAll(".office-update-appointment-btn");
 
-
 updateAppointmentButton.forEach(function (btn) {
   btn.addEventListener("click", function () {
-    const appointmentRow = btn.parentElement.parentElement.parentElement;
+    const customerID = btn.dataset.customerid;         
 
+    const appointmentRow = btn.parentElement.parentElement.parentElement;
     const appointmentIDElement = appointmentRow.querySelector("td:nth-child(1)");
     const appointmentID = appointmentIDElement.textContent;
 
@@ -24,40 +24,53 @@ updateAppointmentButton.forEach(function (btn) {
     const remarksElement = appointmentRow.querySelector("td:nth-child(5)");
     const remarks = remarksElement.textContent;
 
-    const dateTimeElement = appointmentRow.querySelector("td:nth-child(6)");
-    const dateTime = dateTimeElement.textContent;
+    const dateElement = appointmentRow.querySelector("td:nth-child(6)");
+    const date = dateElement.textContent;
 
-    const officeUpdateAppointmentForm = htmlToElement(`<form id="office-update-appointment-details">
-        <div class="modal-header">
-            <h3>
-            Update appointment details
-            </h3>
+    const officeUpdateAppointmentForm = htmlToElement(`<form method="post" class="office-update-appointment-form" enctype="multipart/form-data">
+        <div class="office-update-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
+            <button class="modal-close-btn">
+              <i class="fas fa-times"></i>
+            </button>
+            <h1>
+              Update appointment details
+            </h1>
             <h2>
              ${customerName} - ${vehicleReg}
             </h2>
-        <button class="modal-close-btn">
-            <i class="fas fa-times"></i>
-        </button>
         </div>
 
-        <div class="grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap:1.5rem;">
-        
-        <input style="display: none" name='appointment_id' id='appointment_id' value='${appointmentID}'>
+        <div class="office-update-appointment-input-wrapper">  
+                <div class='form-item '>
+                    <label for='vehicle'>Vehicle<sup>*</sup></label>
+                    <select  name='vehicle_reg_no' id='vehicle' required> 
+                
+                    </select> 
+                </div>
+                
+                <div class='form-item '>
+                    <label for='mileage'>Mileage (Km)<sup>*</sup></label>
+                    <input type='number' name='mileage' id='mileage' placeholder='' required min="0" max="100000" value='${mileage}'>
+                </div>
 
-        <div class='form-item'>
-                <label for='vin'>Mileage<sup>*</sup></label>
-                <input type='text' name='mileage' id='mileage' placeholder='' required  value='${mileage}'>
-        </div>
+                <div class='form-item update-appointment-remarks'>
+                    <label for='remarks'>Remarks</sup></label>
+                    <textarea name='remarks' id='remarks' placeholder='' rows="1" style="height: 40px"> ${remarks}
+                    </textarea>
+                </div>
+                
+                <div class='form-item update-timeslot'>
+                    <label for='date'>Date<sup>*</sup></label>
+                    <input type="date" name="date" id="date">
+                </div>
+                <input style="display: none" name='customerID' id='customerID'>
 
-        <div class='form-item'>
-                <label for='reg_no'>Remarks<sup>*</sup></label>
-                <input type='text' name='remarks' id='remarks' placeholder='' required  value='${remarks}'>
-        </div>
-
-        <div class='form-item'>
-                <label for='engine_no'>Date & Time<sup>*</sup></label>
-                <input type='text' name='date_time' id='date_time' placeholder='' required  value='${dateTime}'>      
-        </div>
+                <div class='form-item'>
+                    <label for='timeslot'>Timeslot<sup>*</sup></label>
+                    <select name='timeslot' id='timeslot' required> </select>
+                </div>
+                // <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
+            </div>
 
         <div class="flex-centered-y justify-between mt-4">
             <button class="btn btn--thin btn--danger" type="reset">
