@@ -13,21 +13,35 @@ class OrdersController
     public function getOrdersPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit']:8;
+            $page = isset($query['page']) ? (int)$query['page']:1;
+
             $orderModel = new Order();
-            $orders = $orderModel->getOrders();
+            $result = $orderModel->getOrders(count: $limit , page: $page);
 //            echo "<pre>";
 //            print_r($orders);
 //            echo "</pre>";
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "stock-manager-dashboard",
-                    pageParams: ["orders" => $orders],
+                    pageParams: [
+                        "orders" => $result['orders'],
+                        'total' => $result['total'],
+                        'limit' => $limit,
+                        'page' => $page,
+                    ],
                     layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
             }
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "admin-dashboard",
-                    pageParams: ["orders" => $orders],
+                    pageParams: [ "orders" => $result['orders'],
+                        'total' => $result['total'],
+                        'limit' => $limit,
+                        'page' => $page,
+                        ],
                     layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
             }
 
