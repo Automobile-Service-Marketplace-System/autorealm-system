@@ -247,7 +247,7 @@ class Employee
                 job_role as JobType,
                 is_active as isActive,
                 image as Image
-            FROM employee")->fetchAll(PDO::FETCH_ASSOC);
+            FROM employee where is_Active=1")->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
@@ -376,9 +376,11 @@ class Employee
     }
 
     public function deleteEmployeeById(int $employee_id):bool|string
+
     {
+        var_dump($employee_id);
         try {
-            $query ="UPDATE employee SET is_discontinued = TRUE WHERE employee_id = :employee_id";
+            $query ="UPDATE employee SET is_active = FALSE WHERE employee_id = :employee_id";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(":employee_id", $employee_id);
             $statement->execute();
@@ -386,6 +388,8 @@ class Employee
             return $statement->rowCount() > 0;
         }
         catch (PDOException $e){
+
+        var_dump($e->getMessage());
             return "Error deleting Employee";
 
         }
