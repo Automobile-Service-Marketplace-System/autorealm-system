@@ -191,6 +191,8 @@ if ($isInternal) {
     $app->router->post(path: "/customers/update", callback: [CustomersController::class, 'updateCustomer']);
     $app->router->post(path: "/vehicles/update", callback: [VehiclesController::class, 'updateVehicle']);
     $app->router->post(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
+    $app->router->get(path: "/jobs", callback: [JobsController::class, 'getAllJobsPage']);
+
 //    $app
 
     

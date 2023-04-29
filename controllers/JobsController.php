@@ -248,4 +248,22 @@ class JobsController
         }
         return $res->redirect(path: "/login");
     }
+
+    public function getAllJobsPage(Request $req, Response $res) : string {
+
+        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $jobCardModel = new JobCard();
+            $jobCards = $jobCardModel->getAllJobs();
+
+            return $res->render(view: "office-staff-dashboard-all-jobs-page", layout: "office-staff-dashboard",
+                pageParams: ["jobCards"=>$jobCards], 
+                layoutParams: [
+                    'title' => 'Jobs',
+                    'pageMainHeading' => 'Jobs',
+                    'officeStaffId' => $req->session->get('user_id')
+            ]);
+        }
+
+        return $res->redirect(path: "/login");
+    }
 }

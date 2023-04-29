@@ -104,4 +104,28 @@ class JobCard
             "error" => "Invalid job id"
         ];
     }
+
+    public function getAllJobs(): array
+    {
+
+        return $this->pdo->query("
+            SELECT
+                job_card_id as 'JobCard ID',
+                concat(c.f_name,' ',c.l_name) as 'Customer Name',
+                concat(e.f_name,' ',e.l_name) as 'Employee Name',
+                vin as 'VIN',
+                start_date_time as 'Start Date Time',
+                end_date_time as 'End Date Time',
+                status as 'Status',
+                mileage as 'Mileage',
+                customer_observation as 'Customer Observation'
+            FROM 
+                jobcard j 
+            INNER JOIN 
+                customer c ON c.customer_id = j.customer_id
+            INNER JOIN 
+                employee e ON e.employee_id = j.employee_id"
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 }
