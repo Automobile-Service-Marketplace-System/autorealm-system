@@ -28,7 +28,7 @@ class Supplier
     }
 
 
-    public function getSuppliersList(): array
+    public function getSuppliersList(int|null $count = null, int|null $page = 1): array
     {
 
         $suppliers = $this->pdo->query(

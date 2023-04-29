@@ -14,14 +14,21 @@ class SuppliersController
 
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
             $supplierModel = new Supplier();
-            $suppliers = $supplierModel->getSuppliersList();
+            $result = $supplierModel->getSuppliersList(count: $limit, page: $page);
 
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "stock-manager-dashboard",
                     pageParams: [
-                        'suppliers' => $suppliers
+                        'suppliers' => $result['suppliers'],
+                        'total' => $result['total'],
+                        'limit' => $limit,
+                        'page' => $page,
                     ],
                     layoutParams: [
                         'title' => 'Suppliers',
