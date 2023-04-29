@@ -30,6 +30,8 @@ class Supplier
 
     public function getSuppliersList(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
         $suppliers = $this->pdo->query(
             "SELECT 
@@ -41,7 +43,7 @@ class Supplier
                 s.email as Email,
                 s.company_reg_no as 'Registration No'
                 FROM supplier s 
-                WHERE s.is_discontinued = FALSE"
+                WHERE s.is_discontinued = FALSE $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
         $supplierList = [];
         foreach ($suppliers as $supplier) {
@@ -61,7 +63,14 @@ class Supplier
             $supplier["Contact Numbers"] = $contactNumbers;
         }
 
-        return $supplierList;
+        $totalSuppliers = $this->pdo->query(
+            "SELECT COUNT(*) FROM supplier where is_discontinued = FALSE"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "suppliers" => $supplierList,
+            "total" => $totalSuppliers["COUNT(*)"]
+        ];
     }
 //"SELECT
 //

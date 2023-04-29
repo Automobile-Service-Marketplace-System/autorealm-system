@@ -2,6 +2,9 @@
 
 /**
  * @var array $suppliers
+ * @var  int $limit
+ * @var  int $page
+ * @var  int $total
  */
 
 use app\components\Table;
@@ -52,7 +55,13 @@ foreach ($suppliers as $supplier) {
 }
 
 ?>
-
+<div class="product-count-and-actions">
+    <div class="product-table-count">
+        <p >
+            Showing <?php echo $limit; ?> of <?php echo $total; ?> products
+            <!--            Showing 25 out of 100 products-->
+        </p>
+    </div>
     <div class="stock-manager-add-button-set">
         <div class="add-button">
             <button class="btn" id="add-supplier-btn">
@@ -62,9 +71,20 @@ foreach ($suppliers as $supplier) {
         </div>
 
     </div>
+</div>
 
 <?php
 
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
 ?>
+
+<div class="pagination-container">
+    <?php
+
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "pagination-item--active" : "";
+        echo "<a class='pagination-item $isActive' href='/suppliers?page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+</div>
