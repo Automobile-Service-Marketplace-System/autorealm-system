@@ -6,7 +6,7 @@ const updateAppointmentButton = document.querySelectorAll(".office-update-appoin
 
 updateAppointmentButton.forEach(function (btn) {
   btn.addEventListener("click", function () {
-    const customerID = btn.dataset.customerid;         
+    const customerID = Number(btn.dataset.customerid);         
 
     const appointmentRow = btn.parentElement.parentElement.parentElement;
     const appointmentIDElement = appointmentRow.querySelector("td:nth-child(1)");
@@ -69,7 +69,7 @@ updateAppointmentButton.forEach(function (btn) {
                     <label for='timeslot'>Timeslot<sup>*</sup></label>
                     <select name='timeslot' id='timeslot' required> </select>
                 </div>
-                // <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
+                <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
             </div>
 
         <div class="flex-centered-y justify-between mt-4">
@@ -171,3 +171,54 @@ updateAppointmentButton.forEach(function (btn) {
     });
   });
 });
+
+/**
+ * @param event {InputEvent}
+ * @param formEl {HTMLElement}
+ * @returns {Promise<void>}
+ */
+async function loadTimeSlots(event, formEl) {
+  try {
+      /**
+       * @type {HTMLInputElement}
+       */
+      const input = event.target;
+      const date = input.value;
+      const result = await fetch(`/appointments/timeslots?date=${date}`);
+
+      switch (result.status) {
+          case 404:
+              Notifier.show({
+                  text: "No timeslots available",
+                  type: "danger",
+                  header: "Error",
+                  closable: true,
+                  duration: 5000
+              });
+              timeslots = [];
+          case 200:
+              const resultBody = await result.json();
+              timeslots = resultBody;
+              const selectTag = formEl.querySelector("select#timeslot");
+              timeslots.forEach((timeslot) => {
+                  const option = htmlToElement(
+                      `<option value="${timeslot.time_id}">
+                                  ${timeslot.from_time} - ${timeslot.to_time}
+                               </option>`
+                  )
+                  selectTag.appendChild(option)
+              })
+
+      }
+  } catch (e) {
+      console.log(e)
+      Notifier.show({
+          text: "Something went wrong",
+          type: "danger",
+          header: "Error",
+          closable: true,
+          duration: 5000,
+      });
+  }
+
+}

@@ -24,5 +24,6 @@ import "./update-order-status"
 import "./update-customers"
 import "./delete-service"
 import "./office-update-appointment"
+import "./office-delete-appointment"
 
 import "./add-models"

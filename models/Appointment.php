@@ -158,4 +158,19 @@ class Appointment
         }
     }
 
+    public function deleteAppointmentById(int $id):bool|string
+    {
+        try {
+            $query ="DELETE FROM appointment WHERE appointment_id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return true;
+        }
+        catch (PDOException $e){
+            return "Error deleting Supplier";
+
+        }
+    }
+
 }
