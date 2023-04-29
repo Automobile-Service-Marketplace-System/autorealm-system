@@ -40,7 +40,8 @@ class SuppliersController
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "admin-dashboard",
                     pageParams: [
-                        'suppliers' => $suppliers
+                        'suppliers' => $result['suppliers'],
+                        'total' => $result['total'],
                     ],
                     layoutParams: [
                         'title' => 'Suppliers',
