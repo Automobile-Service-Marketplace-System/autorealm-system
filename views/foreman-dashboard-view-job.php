@@ -81,11 +81,48 @@ if (empty($suggestions)) {
     echo "</div>";
 }
 ?>
+<form action="/jobs/start?id=<?= $jobId ?>">
+    <h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Selected products</h2>
+    <section class="create-job__products">
+        <div class="create-job__products-item">
+            <h4>Mobil Super™ 1000 -10W-30</h4>
+            <img src="/uploads/products//163a4927c71de59.30734595.jpg"
+                 alt="/uploads/products//163a4927c71de59.30734595.jpg's image">
+            <button class="py-2 btn btn--danger btn--block btn--text">
+                <i class='fa-solid fa-xmark'></i>
+                Remove
+            </button>
+            <input type="text">
+        </div>
+        <div class="create-job__products-item">
+            <h4>Honda Air Filter 17220-5AA-A00</h4>
+            <img src="/uploads/products//163a497755f8dd0.97511177.jpg"
+                 alt="/uploads/products//163a497755f8dd0.97511177.jpg's image">
+            <button class="py-2 btn btn--danger btn--block btn--text">
+                <i class='fa-solid fa-xmark'></i>
+                Remove
+            </button>
+            <input type="text">
+        </div>
+        <button class="create-job__products-item create-job__products-item--new">
+            <i class="fa-solid fa-plus"></i>
+            Manually add a product
+        </button>
+    </section>
 
-<h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Selected products</h2>
-<section class="create-job__products">
-    <button class="create-job__products-item create-job__products-item--new">
-        <i class="fa-solid fa-plus"></i>
-        Manually add a product
-    </button>
-</section>
+    <h2 class='suggestions-heading'><i class='fa-solid fa-wrench'></i>Selected services</h2>
+    <section class="create-job__services">
+        <button class="create-job__services-item create-job__services-item--new">
+            <i class="fa-solid fa-plus"></i>
+            Manually add a product
+        </button>
+    </section>
+
+
+    <h2 class='suggestions-heading'><i class="fa-solid fa-user"></i></i>Selected technicians</h2>
+    <section class="create-job__employees">
+    </section>
+    <div class="flex items-center justify-end gap-4 my-8">
+        <button class="btn">Start job</button>
+    </div>
+</form>

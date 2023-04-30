@@ -178,7 +178,7 @@
 }
 
 .filters__dropdown--active {
-    height: 150px;
+    height: 206px;
     /*overflow-;*/
     padding: 1rem;
     border: 1px solid rgba(var(--black), 0.2);
