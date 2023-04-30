@@ -20,10 +20,16 @@ class ProductsController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
-            //for pagination
+            //for pagination & filtering
             $query = $req->query();
-            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
-            $page = isset($query['page']) ? (int)$query['page'] : 1;
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 8;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+            $searchTerm = $query['q'] ?? null;
+            $categoryName = isset($query['category_name'])? ($query['category_name'] == "" ? "all" : $query['category_name']) : "all";
+            $brandName = isset($query['brand_name']) ? ($query['brand_name'] == "" ? "all" : $query['brand_name']) : "all";
+            $productType = isset($query['product_type']) ? ($query['product_type'] == "" ? "all" : $query['product_type']) : "all";
+            $quantityLevel = isset($query['quantity']) ? ($query['quantity'] == "" ? "all" : $query['quantity']) : "all";
+            $status = $query['status'] ?? "active";
 
             //for the model
             $productModel = new Product();
@@ -31,7 +37,23 @@ class ProductsController
             $categoryModel = new Category();
             $modelModel = new Model();
 
-            $result = $productModel->getProducts(count: $limit, page: $page);
+            $result = $productModel->getProducts(
+                count: $limit,
+                page: $page,
+                options: [
+                    'category_name' => $categoryName,
+                    'brand_name' => $brandName,
+                    'product_type' => $productType,
+                    'quantity_level' => $quantityLevel,
+                    'status' => $status,
+                ],
+                searchTerm: $searchTerm
+            );
+
+            if (is_string($result)) {
+                var_dump($result);
+                return "";
+            }
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
@@ -121,7 +143,7 @@ class ProductsController
 
     public function AddProducts(Request $req, Response $res): string
     {
-        $body = $req->Body();
+        $body = $req->body();
         $product = new Product($body);
         $result = $product->addProducts();
 
@@ -295,7 +317,7 @@ class ProductsController
     public function restockProducts(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
-             $body = $req->body();
+            $body = $req->body();
             $product = new Product($body);
             $result = $product->restockProduct();
 
@@ -364,18 +386,17 @@ class ProductsController
 
     public function getBrandsAsJSON(Request $req, Response $res): string
     {
-        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")){
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $brandModel = new Brand();
             $brandsList = $brandModel->getBrandsOptList();
 
-            if(is_string($brandsList)){
+            if (is_string($brandsList)) {
                 $res->setStatusCode(code: 500);
                 return $res->json(data: [
                     "error" => "Internal Server Error"
                 ]);
-            }
-            elseif (empty($brandsList)){
+            } elseif (empty($brandsList)) {
                 $res->setStatusCode(code: 404);
                 return $res->json(data: [
                     "message" => "No brands found"
@@ -390,7 +411,7 @@ class ProductsController
 
     public function addModel(Request $req, Response $res): string
     {
-        if($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
             $body = $req->body();
             $model = new Model($body);
             $result = $model->addModel();

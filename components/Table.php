@@ -38,7 +38,7 @@ class Table
             $tr .= "</tr>";
             $template .= $tr;
         }
-        $template .= "</tbody></table><div>";
+        $template .= "</tbody></table></div>";
         echo $template;
     }
 }
