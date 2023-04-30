@@ -85,7 +85,7 @@ foreach ($products as $product) {
 
 <div class="filters" id="dashboard-product-filters">
     <div class="filters__actions">
-        <div class="filters__dropdown-trigger">
+        <div class="filters__dropdown-trigger" >
             Search & Filter
             <i class="fa-solid fa-chevron-right"></i>
         </div>
@@ -97,56 +97,62 @@ foreach ($products as $product) {
                 <input type="text" placeholder="Search Product by Name" id="dashboard-product-search" name="q">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <div class="form-item">
-                <input list="categories" name="category_name" id="category-filter"
-                       placeholder="Category">
-                <datalist id="categories">
-                    <option data-value="all" value="all" selected>All Categories</option>
-                    <?php foreach ($categories as $category) : ?>
-                        <option value="<?= $category["name"] ?>"
-                                data-value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
-                    <?php endforeach; ?>
-                </datalist>
+            <p >Filter products by</p>
+            <div class="filters__dropdown-content">
+                <div class="form-item">
+                    <input list="categories" name="category_name" id="category-filter"
+                           placeholder="Category">
+                    <datalist id="categories">
+                        <option data-value="all" value="all" selected>All Categories</option>
+                        <?php foreach ($categories as $category) : ?>
+                            <option value="<?= $category["name"] ?>"
+                                    data-value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+
+                <div class="form-item">
+                    <input list="brands" name="brand_name" id="brand-filter"
+                           placeholder="Brand">
+                    <datalist id="brands">
+                        <option data-value="all" value="all" selected>All Brands</option>
+                        <?php foreach ($brands as $brand) : ?>
+                            <option value="<?= $brand["brand_name"] ?>"
+                                    data-value="<?= $brand["brand_id"] ?>"><?= $brand["brand_name"] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+
+                <div class="form-item">
+                    <select name="product_type" id="type-filter" class="product-filter--select">
+                        <option value="all">All Types</option>
+                        <option value="spare part">Spare Part</option>
+                        <option value="accessory">Accessory</option>
+                    </select>
+                </div>
+
+
+                <div class="form-item">
+                    <select name="quantity" id="quantity-filter" class="product-filter--select ">
+                        <option value="all">All Quantities</option>
+                        <option value="low">🔴 Low Quantity</option>
+                        <option value="medium">🟡 Medium Quantity</option>
+                        <option value="high">🟢 High Quantity</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <select name="status" id="status-filter" class="product-filter--select ">
+                        <option value="active" selected>Currently active products</option>
+                        <option value="discontinued">Discontinued products</option>
+                    </select>
+                </div>
+
             </div>
-
-            <div class="form-item">
-                <input list="brands" name="brand_name" id="brand-filter"
-                       placeholder="Brand">
-                <datalist id="brands">
-                    <option data-value="all" value="all" selected>All Brands</option>
-                    <?php foreach ($brands as $brand) : ?>
-                        <option value="<?= $brand["brand_name"] ?>"
-                                data-value="<?= $brand["brand_id"] ?>"><?= $brand["brand_name"] ?></option>
-                    <?php endforeach; ?>
-                </datalist>
+            <div class="filter-action-buttons">
+                <button class="btn btn-outlined btn-outlined--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
+                <button class="btn btn-outlined btn--thin" id="apply-filters-btn">Submit</button>
             </div>
-
-            <div class="form-item">
-                <select name="product_type" id="type-filter" class="product-filter--select">
-                    <option value="all">All Types</option>
-                    <option value="spare part">Spare Part</option>
-                    <option value="accessory">Accessory</option>
-                </select>
-            </div>
-
-
-            <div class="form-item">
-                <select name="quantity" id="quantity-filter" class="product-filter--select ">
-                    <option value="all">All Quantities</option>
-                    <option value="low">🔴 Low Quantity</option>
-                    <option value="medium">🟡 Medium Quantity</option>
-                    <option value="high">🟢 High Quantity</option>
-                </select>
-            </div>
-
-            <div class="form-item">
-                <select name="status" id="status-filter" class="product-filter--select ">
-                    <option value="active" selected>Currently active products</option>
-                    <option value="discontinued">Discontinued products</option>
-                </select>
-            </div>
-
-            <button class="btn" style="height: 40px;">Submit</button>
         </div>
     </form>
 
