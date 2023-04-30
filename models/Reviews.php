@@ -22,10 +22,12 @@ class Reviews
         $this->body = $body;
     }
 
-    public function getReviews(): array
+    public function getReviews(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query(
+        $reviews = $this->pdo->query(
             "SELECT 
                         
                         r.text as Review, 
@@ -43,9 +45,17 @@ class Reviews
                         INNER JOIN customer c on r.customer_id = c.customer_id
 
 
-                    ORDER BY r.created_at DESC"
+                    ORDER BY r.created_at DESC $limitClause $pageClause"
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
+        $totalReviews = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM review"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'reviews' => $reviews,
+            'total' => $totalReviews['total']
+        ];
     }
 }
