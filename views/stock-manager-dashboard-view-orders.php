@@ -89,7 +89,7 @@ foreach ($orders as $order) {
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="status" id="dashboard-order-status-filter">
-                            <option value="All">Status</option>
+                            <option value="all">Status</option>
                             <option value="Not Prepared">Not Prepared</option>
                             <option value="Prepared">Prepared</option>
                             <option value="Delivery">Delivery</option>
@@ -100,17 +100,17 @@ foreach ($orders as $order) {
                     <div class="form-item form-item--no-label">
                         <select name="payment" id="dashboard-order-payment-filter">
                             <option value="Paid">Paid</option>
-                            <option value="Not Paid">Not Paid</option>
+                            <option value="NotPaid">Not Paid</option>
                         </select>
                     </div>
                     <div class="form-item form-item--no-label">
                         <select name="date" id="dashboard-order-date-filter">
-                            <option value="">Date</option>
+                            <option value="all">Date</option>
                             <option value="Today">Today</option>
                             <option value="Yesterday">Yesterday</option>
-                            <option value="Last 7 Days">Last 7 Days</option>
-                            <option value="Last 30 Days">Last 30 Days</option>
-                            <option value="Last 90 Days">Last 90 Days</option>
+                            <option value="Last7">Last 7 Days</option>
+                            <option value="Last30">Last 30 Days</option>
+                            <option value="Last90Days">Last 90 Days</option>
                         </select>
                     </div>
 

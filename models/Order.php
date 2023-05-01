@@ -20,8 +20,22 @@ class Order
         $this->body = $body;
     }
 
-    public function getOrders(int|null $count = null, int|null $page = 1): array
+    public function getOrders(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermCustomer = null,
+        string $searchTermOrder = null,
+        array $options = [
+            'status' => null,
+            'order_date' => null,
+            'order_payment' => null,
+        ]
+    ): array | string
+
     {
+        DevOnly::prettyEcho($options);
+        var_dump($searchTermCustomer);
+        var_dump($searchTermOrder);
         //number of rows
         $limitClause = $count ? "LIMIT $count" : "";
         //starting point of retrieving rows

@@ -14,15 +14,32 @@ class OrdersController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            //for pagination
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit']:8;
             $page = isset($query['page']) ? (int)$query['page']:1;
 
+            //for search and filtering
+            $searchTermCustomer = $query["cus"] ?? null;
+            $searchTermOrder = $query["id"] ?? null;
+            $orderStatus = isset($query["status"]) ? ($query["status"] == "" ? "all" : $query["status"]) : "all";
+            $orderDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
+            $orderPayment = isset($query["payment"]) ? ($query["payment"] == "" ? "all" : $query["payment"]) : "all";
+
+
             $orderModel = new Order();
-            $result = $orderModel->getOrders(count: $limit , page: $page);
-//            echo "<pre>";
-//            print_r($orders);
-//            echo "</pre>";
+            $result = $orderModel->getOrders(
+                count: $limit ,
+                page: $page,
+                searchTermCustomer: $searchTermCustomer,
+                searchTermOrder: $searchTermOrder,
+                options:[
+                    'status' => $orderStatus,
+                    'order_date' => $orderDate,
+                    'order_payment' => $orderPayment,
+
+                ]
+            );
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "stock-manager-dashboard",
@@ -56,11 +73,12 @@ class OrdersController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $customerId = $req->session->get("user_id");
 
-
+            //for pagination
             $query = $req->query();
             $page = $query["page"] ?? 1;
             $limit = $query["limit"] ?? 4;
             $status = $query["status"] ?? "Prepared";
+
 
             $orderModel = new Order();
             $result = $orderModel->getOrdersForCustomer(customerId: $customerId, page: (int)$page, limit: (int)$limit, status: $status);

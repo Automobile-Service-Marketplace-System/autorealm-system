@@ -14,9 +14,13 @@ class SuppliersController
 
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            //for pagination
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //for search
+            $searchTermCustomer =
 
             $supplierModel = new Supplier();
             $result = $supplierModel->getSuppliersList(count: $limit, page: $page);
