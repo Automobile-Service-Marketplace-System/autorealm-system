@@ -11,13 +11,13 @@ use app\components\Table;
 
 //\app\utils\DevOnly::prettyEcho($suppliers);
 
-$columns = ["ID", "Name", "Address","Registration No", "Sales Manager","Contacts","Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
+$columns = ["ID", "Name", "Address", "Registration No", "Sales Manager", "Contacts", "Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
 
 $items = [];
 
-
-
-
+$noOfSuppliers = count($suppliers);
+$startNo = ($page - 1) * $limit + 1;
+$endNo = $startNo + $noOfSuppliers - 1;
 
 
 foreach ($suppliers as $supplier) {
@@ -57,9 +57,8 @@ foreach ($suppliers as $supplier) {
 ?>
 <div class="product-count-and-actions">
     <div class="product-table-count">
-        <p >
-            Showing <?php echo $limit; ?> of <?php echo $total; ?> products
-            <!--            Showing 25 out of 100 products-->
+        <p>
+            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> suppliers
         </p>
     </div>
     <div class="stock-manager-add-button-set">
@@ -79,12 +78,29 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
 ?>
 
-<div class="pagination-container">
+<div class="dashboard-pagination-container">
     <?php
 
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "pagination-item--active" : "";
-        echo "<a class='pagination-item $isActive' href='/suppliers?page=$i&limit=$limit'>$i</a>";
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?page=$i&limit=$limit'>$i</a>";
     }
     ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>
