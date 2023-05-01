@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Appointment;
+use app\models\JobCard;
 use app\models\Service;
 
 class AppointmentsController
@@ -210,6 +211,28 @@ class AppointmentsController
         }
 
         return $res->redirect(path: "/login");
+    }
+
+    public function officeCreateJobCard(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $jobCardModel = new JobCard();
+            $jobCard = $jobcardModel->createJobCard();
+            $officeUserId = $req->session->get('user_id');
+
+            return $res->render(view: "office-staff-dashboard-appointments-page", layout: "office-staff-dashboard",
+                pageParams: [
+                    "appointments" => $appointments
+                ],
+                layoutParams: [
+                    "title" => "Appointments",
+                    "pageMainHeading" => "Appointments",
+                    'officeStaffId' => $req->session->get('user_id')
+                ]);
+        }
+
+        return $res->redirect(path: "/login");
+        
     }
 }
 

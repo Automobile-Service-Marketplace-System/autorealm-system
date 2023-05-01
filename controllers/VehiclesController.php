@@ -17,6 +17,7 @@ class VehiclesController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicles();
+            var_dump($vehicles);
             $modelModel = new Model();
             $brandModel = new Brand();
 

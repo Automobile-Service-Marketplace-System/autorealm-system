@@ -58,7 +58,7 @@ DocumentHead::createHead(
                 </span>
             </a>
             <a href="/jobs">
-                <i class="fa-solid fa-calendar-check"></i>
+                <i class='fa-solid fa-wrench'></i>      
                 <span>
                     Jobs
                 </span>

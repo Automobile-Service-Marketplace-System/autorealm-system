@@ -184,11 +184,10 @@ class JobsController
             $query = $req->query();
             $appointmentModel = new Appointment();
             $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
-
             $foremanModel = new Foreman();
             $foremanInfo = $foremanModel->getForemanAvailability();
 
-            return $res->render(view: "office-staff-dashboard-jobcard-page", layout: "office-staff-dashboard",
+            return $res->render(view: "office-staff-dashboard-create-jobcard-page", layout: "office-staff-dashboard",
                 pageParams: [
                     "appointmentInfo" => $appointmentInfo,
                     "foremanAvailability" => $foremanInfo

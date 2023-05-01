@@ -193,6 +193,7 @@ if ($isInternal) {
     $app->router->get(path: "/jobs", callback: [JobsController::class, 'getAllJobsPage']);
     $app->router->get(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
     $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
+    $app->router->post(path: "/office-create-job-card", callback: [AppointmentsController::class, 'officeCreateJobCard']);
 //    $app
 
     
