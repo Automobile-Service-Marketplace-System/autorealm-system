@@ -20,10 +20,12 @@ class ProductsController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
-            //for pagination & filtering
+            //for pagination
             $query = $req->query();
             $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 8;
             $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+
+            //for search
             $searchTerm = $query['q'] ?? null;
             $categoryName = isset($query['category_name'])? ($query['category_name'] == "" ? "all" : $query['category_name']) : "all";
             $brandName = isset($query['brand_name']) ? ($query['brand_name'] == "" ? "all" : $query['brand_name']) : "all";

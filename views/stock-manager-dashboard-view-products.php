@@ -151,7 +151,7 @@ foreach ($products as $product) {
             </div>
             <div class="filter-action-buttons">
                 <button class="btn btn-outlined btn-outlined--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
-                <button class="btn btn-outlined btn--thin" id="apply-filters-btn">Submit</button>
+                <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
             </div>
         </div>
     </form>

@@ -1,9 +1,9 @@
 /**
  * @type {HTMLDivElement | null}
  */
-const filtersContainer = document.querySelector('.filters');
+const ProductFiltersContainer = document.querySelector('#dashboard-product-filters');
 
-if(filtersContainer) {
+if(ProductFiltersContainer) {
     /**
      * @type {HTMLDivElement}
      */
@@ -14,7 +14,6 @@ if(filtersContainer) {
     const filterDropdown = document.querySelector('.filters__dropdown');
 
     filterDropdownTrigger?.addEventListener("click", () => {
-        filterDropdownTrigger.classList.toggle('filters__dropdown-trigger--active');
         filterDropdown.classList.toggle('product-filters__dropdown--active');
     })
 
