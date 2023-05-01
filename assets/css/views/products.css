@@ -144,11 +144,8 @@
 }
 
 
-/********************for filters in product page*************************/
+/******************** for filters in product page *************************/
 
 .product-filters__dropdown--active {
-   height: 280px;
-    /*overflow-;*/
-    padding: 1rem;
-    border: 1px solid rgba(var(--black), 0.2);
+   height: 280px !important;
 }

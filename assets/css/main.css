@@ -23,7 +23,9 @@
 @import "components/modals.css";
 @import "components/product-selector.css";
 @import "components/calendar-view.css";
+@import "components/service-selector.css";
 @import "components/filter.css";
+
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
