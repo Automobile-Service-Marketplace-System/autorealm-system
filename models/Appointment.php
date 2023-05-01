@@ -50,12 +50,21 @@ class Appointment
                 CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
                 mileage as 'Mileage',
                 remarks as 'Remarks',
-                service_type as 'Service Type',
-                date_and_time as 'Date & Time',
-                time_id as 'Time ID'
+                a.date as 'Date',
+                a.time_id as 'Time ID',
+                t.from_time as 'From Time',
+                t.to_time as 'To Time',
+                a.customer_id as 'Customer ID'            
             FROM 
                 appointment a
-            INNER JOIN customer c ON c.customer_id = a.customer_id"
+            INNER JOIN 
+                customer c 
+            ON  
+                c.customer_id = a.customer_id
+            INNER JOIN  
+                timeslot t 
+            ON 
+                t.time_id = a.time_id"
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -114,24 +123,37 @@ class Appointment
         }
     }
   
-    public function officeUpdateAppointment()
+    public function officeCreateAppointment()
     {
         try {
-            $query = "UPDATE appointment SET
-            mileage = :mileage,
-            remarks = :remarks,
-            date_and_time = :date_and_time
-            WHERE
-                appointment_id = :appointment_id";
+            $query = "  INSERT INTO 
+                            appointment(
+                                vehicle_reg_no,
+                                mileage,
+                                remarks,
+                                date,
+                                customer_id,
+                                time_id)
+                        VALUES(
+                                :vehicle_reg_no,
+                                :mileage,
+                                :remarks,
+                                :date,
+                                :customer_id,
+                                :time_id)
+                            ";
 
             $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":remarks", $this->body["remarks"]);
-            $statement->bindValue(":date_and_time", $this->body["date_time"]);            
-            $statement->bindValue(":appointment_id", $this->body["appointment_id"]);            
+            $statement->bindValue(":date", $this->body["date"]); 
+            $statement->bindValue(":customer_id", $this->body["customerID"]);                       
+            $statement->bindValue(":time_id", $this->body["timeslot"]);            
             $statement-> execute();
             return true;
         } catch (PDOException $e) {
+            var_dump($e->getMessage());
             return $e->getMessage();
         }
     }
@@ -162,12 +184,27 @@ class Appointment
             if (!$appointments) {
                 return "No appointments available for this customer";
             }
-            return $appointments;
-
+            return $appointments;    
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
         return "Internal Server Error";
     }
+
+    public function deleteAppointmentById(int $id):bool|string
+    {
+        try {
+            $query ="DELETE FROM appointment WHERE appointment_id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            return true;
+        }
+        catch (PDOException $e){
+            return "Error deleting Supplier";
+
+        }
+    }
 }
+

@@ -1,27 +1,22 @@
-// const productFiltersContainer = document.querySelector('#dashboard-product-filters');
-//
-// if (productFiltersContainer) {
-//     /**
-//      * @type {HTMLInputElement}
-//      */
-//     const dashboardProductSearch = productFiltersContainer.querySelector('#dashboard-product-search');
-//
-//     // /**
-//     //  * @type {NodeListOf<HTMLDivElement>}
-//     //  */
-//     // const formItems = productFiltersContainer.querySelectorAll(".form-item");
-//     //
-//     // formItems.forEach((fe) => {
-//     //     /**
-//     //      * @type {HTMLInputElement | HTMLSelectElement}
-//     //      */
-//     //     const formInputElement = fe.querySelector('input, select');
-//     //
-//     //     formInputElement.addEventListener('change', (e) => {
-//     //         console.log(formInputElement.value)
-//     //     })
-//     //
-//     // })
-//
-// }
-//
+/**
+ * @type {HTMLDivElement | null}
+ */
+const filtersContainer = document.querySelector('.filters');
+
+if(filtersContainer) {
+    /**
+     * @type {HTMLDivElement}
+     */
+    const filterDropdownTrigger = document.querySelector('.filters__dropdown-trigger');
+    /**
+     * @type {HTMLDivElement}
+     */
+    const filterDropdown = document.querySelector('.filters__dropdown');
+
+    filterDropdownTrigger?.addEventListener("click", () => {
+        filterDropdownTrigger.classList.toggle('filters__dropdown-trigger--active');
+        filterDropdown.classList.toggle('product-filters__dropdown--active');
+    })
+
+
+}

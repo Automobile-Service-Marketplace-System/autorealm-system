@@ -387,3 +387,16 @@
     display: grid;
     place-items: center;
 }
+
+
+.btn-outlined{
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.btn-outlined--danger{
+     border: 2px solid var(--color-danger) !important;
+    color: var(--color-danger) !important;
+}

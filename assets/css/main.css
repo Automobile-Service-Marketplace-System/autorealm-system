@@ -24,6 +24,8 @@
 @import "components/product-selector.css";
 @import "components/calendar-view.css";
 @import "components/service-selector.css";
+@import "components/filter.css";
+
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
@@ -79,9 +81,8 @@
 @import "views/restock-products.css";
 @import "views/add-models.css";
 @import "views/office-create-appointment.css";
+@import "views/office-update-appointment.css";
 @import "views/add-brand.css";
-
-
 
 body{
   font-family: "Nunito", sans-serif;

@@ -145,6 +145,7 @@ class Product
                         p.product_type as Type,
                         p.low_quantity,
                         p.medium_quantity
+
                     FROM product p 
                         
                         INNER JOIN model m on p.model_id = m.model_id 

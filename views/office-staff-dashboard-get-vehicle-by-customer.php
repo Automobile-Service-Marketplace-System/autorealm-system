@@ -13,20 +13,18 @@ if(isset($error)) {
     return;
 }
 
-
 ?>
-
-
 
 <div class="add-vehicle-for-customer">
     <div class="customer-details">
         <strong class='customer-title'>
             Customer Name:
         </strong>
-        <?php echo "{$customer->f_name} $customer->l_name" ?>
+        <?php echo "{$customer->f_name} {$customer->l_name}" ?>
     </div>
     <button id="add-vehicle-for-customer" class="btn">Add vehicle</button>
 </div>
+
 <div class='vehicle-card-container'>
     <?php
     if(empty($vehicles)) {
