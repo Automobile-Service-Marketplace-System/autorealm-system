@@ -1,11 +1,12 @@
-.create-admitting-reports{
-    width: 100vw;
-    transition: all 0.2s ease-in-out;
-} 
+.create-admitting-reports .form-item {
+    width:100% !important;
+    
+}
 
 .create-admitting-reports-button{
     margin:1cm;
 }
+
 .admitting-images{
     display: flex;
     width: 100px;
@@ -13,37 +14,15 @@
     margin: .5cm;
 }
 
-.create-admitting-report-btn{
-    display: flex;
-    gap: 10rem;
-    margin-left: 20rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-#create-btn, #cansel-btn{
-    width: 10rem;
-}
 
 .item-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-.description-grid{
-    margin-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
-#spare_wheel{
-    margin-left: 42rem;
-}
 
 .add-extra-image{
-    /* background-color:red; */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -41,15 +41,17 @@ class Admitting
             a.admitting_date as Date,
             a.report_no as ID
             from admitingreport a
-            inner join vehicle v on a.vehicle_reg_no=v.reg_no
-            inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
+            left join vehicle v on a.vehicle_reg_no=v.reg_no
+            left join customer c on v.customer_id=c.customer_id"
+
+            )->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function validated_byAdmittingReport():array{
         $errors=[];
 
-        if (strlen($this->body['vehicle_reg_no']) == 0) {
-            $errors['vehicle_reg_no'] = 'Registration No must not be empty.';
+        if(trim($this->body["vehicle_reg_no"] === " ")){
+            $errors['vehicle_reg_no'] = 'Registraion number must not be empty';
         }
 
         if ($this->body['lights_lf'] !== 'good' && $this->body['lights_lf'] !== 'scratched' && $this->body['lights_lf'] !== 'cracked' && $this->body['lights_lf'] !== 'damaged' && $this->body['lights_lf'] !== 'not working') {
