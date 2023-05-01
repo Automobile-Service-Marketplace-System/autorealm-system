@@ -85,11 +85,11 @@ foreach ($orders as $order) {
                     </div>
                 </div>
 
-                <p>Filter products by</p>
+                <p>Filter orders by</p>
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="status" id="dashboard-order-status-filter">
-                            <option value="">Status</option>
+                            <option value="All">Status</option>
                             <option value="Not Prepared">Not Prepared</option>
                             <option value="Prepared">Prepared</option>
                             <option value="Delivery">Delivery</option>
@@ -99,7 +99,6 @@ foreach ($orders as $order) {
                     </div>
                     <div class="form-item form-item--no-label">
                         <select name="payment" id="dashboard-order-payment-filter">
-                            <option value="">Payment</option>
                             <option value="Paid">Paid</option>
                             <option value="Not Paid">Not Paid</option>
                         </select>

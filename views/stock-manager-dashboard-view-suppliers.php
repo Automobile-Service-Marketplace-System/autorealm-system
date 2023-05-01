@@ -84,46 +84,33 @@ foreach ($suppliers as $supplier) {
         <div class="filters__dropdown">
             <div class="order-filter-search-items">
                 <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                    <input type="text" placeholder="Search Order by Customer Name"
-                           id="dashboard-order-cus-name-search" name="cus">
+                    <input type="text" placeholder="Search Supplier by Name"
+                           id="dashboard-supplier-name-search" name="sup">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
 
                 <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                    <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id">
+                    <input type="email" placeholder="Search Supplier by Email"
+                           id="dashboard-supplier-email-search" name="mail">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </div>
 
-            <p>Filter products by</p>
+            <p>Filter suppliers by</p>
             <div class="filters__dropdown-content">
+<!--                filter by last supply date-->
                 <div class="form-item form-item--no-label">
-                    <select name="status" id="dashboard-order-status-filter">
-                        <option value="">Status</option>
-                        <option value="Not Prepared">Not Prepared</option>
-                        <option value="Prepared">Prepared</option>
-                        <option value="Delivery">Delivery</option>
-                        <option value="CourierConfirmed">Courier Confirmed</option>
-                        <option value="CustomerConfirmed">Customer Confirmed</option>
-                    </select>
-                </div>
-                <div class="form-item form-item--no-label">
-                    <select name="payment" id="dashboard-order-payment-filter">
-                        <option value="">Payment</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Not Paid">Not Paid</option>
-                    </select>
-                </div>
-                <div class="form-item form-item--no-label">
-                    <select name="date" id="dashboard-order-date-filter">
-                        <option value="">Date</option>
-                        <option value="Today">Today</option>
-                        <option value="Yesterday">Yesterday</option>
-                        <option value="Last 7 Days">Last 7 Days</option>
-                        <option value="Last 30 Days">Last 30 Days</option>
-                        <option value="Last 90 Days">Last 90 Days</option>
-                    </select>
-                </div>
+                <select name="date" id="dashboard-last-supply-date-filter">
+                    <option value="">Last Supply Date</option>
+                    <option value="Today">Today</option>
+                    <option value="Yesterday">Yesterday</option>
+                    <option value="Last 7 Days">Last 7 Days</option>
+                    <option value="Last 30 Days">Last 30 Days</option>
+                    <option value="Last 90 Days">Last 90 Days</option>
+                </select>
+            </div>
+
+
 
             </div>
             <div class="filter-action-buttons">
