@@ -14,11 +14,16 @@
 use app\components\Table;
 
 
-$columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity","Type", "Actions"];
+$columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity", "Type", "Actions"];
 
 $items = [];
+$noOfProducts = count($products);
+$startNo = ($page - 1) * $limit + 1;
+$endNo = $startNo + $noOfProducts - 1;
+
+
 foreach ($products as $product) {
-    $quantityColor = $product["Quantity"] > 20 ? "success" : ($product["Quantity"] > 10 ? "warning" : "danger");
+    $quantityColor = $product["Quantity"] > $product["medium_quantity"] ? "success" : ($product["Quantity"] > $product["low_quantity"] ? "warning" : "danger");
     $quantityElement = "<p class='product-quantity'>  <span class='status status--$quantityColor'></span>{$product["Quantity"]}</p>";
     $items[] = [
         "ID" => $product["ID"],
@@ -51,9 +56,9 @@ foreach ($products as $product) {
 ?>
 <div class="product-count-and-actions">
     <div class="product-table-count">
-        <p >
-            Showing <?php echo $limit; ?> of <?php echo $total; ?> products
-<!--            Showing 25 out of 100 products-->
+        <p>
+            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> products
+            <!--            Showing 25 out of 100 products-->
         </p>
     </div>
     <div class="stock-manager-add-button-set-product-page">
@@ -78,40 +83,78 @@ foreach ($products as $product) {
 
 </div>
 
-<div class="product-filters">
-    <div class="product-search">
-        <input type="text" placeholder="Search Product by Name">
-        <i class="fa-solid fa-magnifying-glass"></i>
+<div class="filters" id="dashboard-product-filters">
+    <div class="filters__actions">
+        <div class="filters__dropdown-trigger" >
+            Search & Filter
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
     </div>
 
-    <div >
-        <select name="category" id="category-filter" class="product-filter--select ">
-            <option value="0">All Categories</option>
-            <?php foreach ($categories as $category) : ?>
-                <option value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+    <form>
+        <div class="filters__dropdown">
+            <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                <input type="text" placeholder="Search Product by Name" id="dashboard-product-search" name="q">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <p >Filter products by</p>
+            <div class="filters__dropdown-content">
+                <div class="form-item">
+                    <input list="categories" name="category_name" id="category-filter"
+                           placeholder="Category">
+                    <datalist id="categories">
+                        <option data-value="all" value="all" selected>All Categories</option>
+                        <?php foreach ($categories as $category) : ?>
+                            <option value="<?= $category["name"] ?>"
+                                    data-value="<?= $category["category_id"] ?>"><?= $category["name"] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
 
-    <!--    <div >-->
-    <!--        <select name="type" id="type-filter" class="product-filter--select">-->
-    <!--            <option value="0">All Types</option>-->
-    <!--            <option value="spare part">Spare Part</option>-->
-    <!--            <option value="accessory">Accessory</option>-->
-    <!--        </select>-->
-    <!--    </div>-->
+                <div class="form-item">
+                    <input list="brands" name="brand_name" id="brand-filter"
+                           placeholder="Brand">
+                    <datalist id="brands">
+                        <option data-value="all" value="all" selected>All Brands</option>
+                        <?php foreach ($brands as $brand) : ?>
+                            <option value="<?= $brand["brand_name"] ?>"
+                                    data-value="<?= $brand["brand_id"] ?>"><?= $brand["brand_name"] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+
+                <div class="form-item">
+                    <select name="product_type" id="type-filter" class="product-filter--select">
+                        <option value="all">All Types</option>
+                        <option value="spare part">Spare Part</option>
+                        <option value="accessory">Accessory</option>
+                    </select>
+                </div>
 
 
-    <div >
-        <select name="quantity" id="quantity-filter" class="product-filter--select ">
-            <option value="0">All Quantities</option>
-            <option value="1">🔴 Low Quantity </option>
-            <option value="2">🟡 Medium Quantity</option>
-            <option value="3">🟢 High Quantity</option>
-        </select>
-    </div>
+                <div class="form-item">
+                    <select name="quantity" id="quantity-filter" class="product-filter--select ">
+                        <option value="all">All Quantities</option>
+                        <option value="low">🔴 Low Quantity</option>
+                        <option value="medium">🟡 Medium Quantity</option>
+                        <option value="high">🟢 High Quantity</option>
+                    </select>
+                </div>
 
+                <div class="form-item">
+                    <select name="status" id="status-filter" class="product-filter--select ">
+                        <option value="active" selected>Currently active products</option>
+                        <option value="discontinued">Discontinued products</option>
+                    </select>
+                </div>
 
+            </div>
+            <div class="filter-action-buttons">
+                <button class="btn btn-outlined btn-outlined--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
+                <button class="btn btn-outlined btn--thin" id="apply-filters-btn">Submit</button>
+            </div>
+        </div>
+    </form>
 
 </div>
 
@@ -119,18 +162,35 @@ foreach ($products as $product) {
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
-<div class="pagination-container">
+<div class="dashboard-pagination-container">
+    <?php
+
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
     <?php
     //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "pagination-item--active" : "";
-        echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
     }
     ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>
 
 
- <script>
+<script>
     <?php
     try {
         $categoriesString = json_encode($categories, JSON_THROW_ON_ERROR);
