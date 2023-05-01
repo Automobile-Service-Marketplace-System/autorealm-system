@@ -106,12 +106,14 @@ if ($isInternal) {
 
     $app->router->get(path: "/products/categories-brands-models", callback: [ProductsController::class, 'getCategoriesBrandsModels']);
     $app->router->get(path: "/products/for-selector", callback: [ProductsController::class, 'getProductSelectorProducts']);
+    $app->router->get(path: "/services/for-selector", callback: [ServicesController::class, 'getServiceSelectorServices']);
 
 
 // foreman routes
     $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
     $app->router->get(path: "/foreman-dashboard/profile", callback: [DashboardController::class, 'getForemanDashboardProfile']);
     $app->router->get(path: "/jobs", callback: [JobsController::class, 'getJobsPage']);
+    $app->router->post(path: "/jobs/start", callback: [JobsController::class, 'startJob']);
     $app->router->get(path: "/jobs/view", callback: [JobsController::class, 'viewJobPage']);
     $app->router->get(path: "/all-jobs", callback: [JobsController::class, 'getListOfJobsPage']);
     $app->router->get(path: "/inspection-reports/create", callback: [JobsController::class, 'getCreateInspectionReportPage']);
@@ -184,13 +186,14 @@ if ($isInternal) {
     $app->router->get(path: "/appointments/for-vin", callback: [AppointmentsController::class, 'getCreateAppointmentPage']);
     $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);
     $app->router->get(path: "/appointments", callback: [AppointmentsController::class, 'getOfficeAppointmentsPage']);
-    $app->router->post(path: "/appointments", callback: [AppointmentsController::class, 'officeCreateAppointment']);
+    $app->router->post(path: "/appointments/create", callback: [AppointmentsController::class, 'officeCreateAppointment']);
     $app->router->get(path: "/create-job-card", callback: [JobsController::class, 'getCreateJobCardPage']);
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOfficeStaffOverviewPage']);
     $app->router->get(path: "/invoices/create", callback: [InvoicesController::class, 'getCreateInvoicePage']);
     $app->router->post(path: "/customers/update", callback: [CustomersController::class, 'updateCustomer']);
     $app->router->post(path: "/vehicles/update", callback: [VehiclesController::class, 'updateVehicle']);
-    $app->router->post(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
+    $app->router->get(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
+    $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
 //    $app
 
     

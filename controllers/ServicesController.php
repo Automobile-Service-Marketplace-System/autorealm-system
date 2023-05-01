@@ -182,4 +182,35 @@ class ServicesController
         }
         return $res->redirect(path: "/login");
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function getServiceSelectorServices(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+        $searchTerm = $query['q'] ?? null;
+
+
+        $serviceModel = new Service();
+        $result = $serviceModel->getServicesForServiceSelector(count: $limit, page: $page, searchTerm: $searchTerm);
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error",
+                "error" => $result
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            'services' => $result['services'],
+            'total' => $result['total'],
+            'limit' => $limit,
+            'page' => $page,
+        ]);
+    }
 }
