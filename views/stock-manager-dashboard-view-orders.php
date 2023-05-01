@@ -57,35 +57,76 @@ foreach ($orders as $order) {
 }
 ?>
 
-<p class="order-count">
+<p class="order-count" style="margin-bottom: 1rem">
     Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> orders
 </p>
 
 <div class="order-filtering-and-sort">
-    <div class="product-filters">
-        <div class="product-search">
-            <input type="text" placeholder="Search Order by ID">
-            <i class="fa-solid fa-magnifying-glass"></i>
+    <div class="filters" id="dashboard-order-filters">
+        <div class="filters__actions">
+            <div class="filters__dropdown-trigger">
+                Search & Filter
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
         </div>
 
-        <div>
-            <select name="status-type" id="status-type" class="product-filter--select">
-                <option value="all">All Orders</option>
-                <option value="not-prepared">Not Prepared</option>
-                <option value="prepared">Prepared</option>
-                <option value="delivery">Delivery</option>
-                <option value="courier-confirmed">Courier Confirmed</option>
-                <option value="customer-confirmed">Customer Confirmed</option>
-            </select>
-        </div>
-    </div>
-    <div class="order-sort">
+        <form>
+            <div class="filters__dropdown">
+                <div class="order-filter-search-items">
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search Order by Customer Name"
+                               id="dashboard-order-cus-name-search" name="cus">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
 
-        <select name="sort-type" id="sort-type" class="product-filter--select">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-        </select>
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <p>Filter products by</p>
+                <div class="filters__dropdown-content">
+                    <div class="form-item form-item--no-label">
+                        <select name="status" id="dashboard-order-status-filter">
+                            <option value="">Status</option>
+                            <option value="Not Prepared">Not Prepared</option>
+                            <option value="Prepared">Prepared</option>
+                            <option value="Delivery">Delivery</option>
+                            <option value="CourierConfirmed">Courier Confirmed</option>
+                            <option value="CustomerConfirmed">Customer Confirmed</option>
+                        </select>
+                    </div>
+                    <div class="form-item form-item--no-label">
+                        <select name="payment" id="dashboard-order-payment-filter">
+                            <option value="">Payment</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Not Paid">Not Paid</option>
+                        </select>
+                    </div>
+                    <div class="form-item form-item--no-label">
+                        <select name="date" id="dashboard-order-date-filter">
+                            <option value="">Date</option>
+                            <option value="Today">Today</option>
+                            <option value="Yesterday">Yesterday</option>
+                            <option value="Last 7 Days">Last 7 Days</option>
+                            <option value="Last 30 Days">Last 30 Days</option>
+                            <option value="Last 90 Days">Last 90 Days</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="filter-action-buttons">
+                    <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
+                    </button>
+                    <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
     </div>
+
 </div>
 
 <?php

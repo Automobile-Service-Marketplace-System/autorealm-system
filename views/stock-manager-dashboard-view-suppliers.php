@@ -72,6 +72,71 @@ foreach ($suppliers as $supplier) {
     </div>
 </div>
 
+<div class="filters" id="dashboard-supplier-filters">
+    <div class="filters__actions">
+        <div class="filters__dropdown-trigger">
+            Search & Filter
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <form>
+        <div class="filters__dropdown">
+            <div class="order-filter-search-items">
+                <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                    <input type="text" placeholder="Search Order by Customer Name"
+                           id="dashboard-order-cus-name-search" name="cus">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                    <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+            <p>Filter products by</p>
+            <div class="filters__dropdown-content">
+                <div class="form-item form-item--no-label">
+                    <select name="status" id="dashboard-order-status-filter">
+                        <option value="">Status</option>
+                        <option value="Not Prepared">Not Prepared</option>
+                        <option value="Prepared">Prepared</option>
+                        <option value="Delivery">Delivery</option>
+                        <option value="CourierConfirmed">Courier Confirmed</option>
+                        <option value="CustomerConfirmed">Customer Confirmed</option>
+                    </select>
+                </div>
+                <div class="form-item form-item--no-label">
+                    <select name="payment" id="dashboard-order-payment-filter">
+                        <option value="">Payment</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Not Paid">Not Paid</option>
+                    </select>
+                </div>
+                <div class="form-item form-item--no-label">
+                    <select name="date" id="dashboard-order-date-filter">
+                        <option value="">Date</option>
+                        <option value="Today">Today</option>
+                        <option value="Yesterday">Yesterday</option>
+                        <option value="Last 7 Days">Last 7 Days</option>
+                        <option value="Last 30 Days">Last 30 Days</option>
+                        <option value="Last 90 Days">Last 90 Days</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="filter-action-buttons">
+                <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
+                </button>
+                <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
 <?php
 
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);

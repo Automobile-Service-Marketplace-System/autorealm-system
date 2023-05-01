@@ -164,3 +164,14 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.order-filters__dropdown--active {
+    height: 215px !important;
+}
+
+.order-filter-search-items{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+}
