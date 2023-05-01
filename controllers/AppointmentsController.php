@@ -6,7 +6,6 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Appointment;
 use app\models\Service;
-use app\utils\DevOnly;
 
 class AppointmentsController
 {
@@ -85,7 +84,7 @@ class AppointmentsController
                     layoutParams: [
                         'title' => 'Create an appointment',
                         'pageMainHeading' => 'Create an appointment',
-                        'employeeId' => $req->session->get('user_id')
+                        'officeStaffId' => $req->session->get('user_id')
                     ]);
             }
 
@@ -108,12 +107,12 @@ class AppointmentsController
                 layoutParams: [
                     "title" => "Appointments",
                     "pageMainHeading" => "Appointments",
-                    'employeeId' => $req->session->get('user_id')
+                    'officeStaffId' => $req->session->get('user_id')
                 ]);
         }
 
         return $res->redirect(path: "/login");
-
+        
     }
 
     /**
@@ -148,70 +147,69 @@ class AppointmentsController
         ]);
     }
 
-    // public function officeCreateAppointment(Request $req, Response $res): string {
-    //     $body = $req->body();
-    //     var_dump($body)
-        // $vehicle = new Appointment($body);
-        // $result = $vehicle->updateVehicle();
+    public function officeCreateAppointment(Request $req, Response $res): string {
+        $body = $req->body();
+        $appointment = new Appointment($body);
+        $result = $appointment->officeCreateAppointment();
 
-        // if (is_string($result)) {
-        //     $res->setStatusCode(code: 500);
-        //     return $res->json([
-        //         "message" => $result
-        //     ]);
-        // }
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => $result
+            ]);
+        }
 
-        // if (is_array($result)) {
-        //     $res->setStatusCode(code: 400);
-        //     return $res->json([
-        //         "errors" => $result
-        //     ]);
-        // }
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
 
-        // if ($result) {
-        //     $res->setStatusCode(code: 201);
-        //     return $res->json([
-        //         "success" => "Customer updated successfully"
-        //     ]);
-        // }
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Customer updated successfully"
+            ]);
+        }
 
-        // return $res->render("500", "error", [
-        //     "error" => "Something went wrong. Please try again later."
-        // ]);
-    // }
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+    }
 
-    public function officeUpdateAppointment(Request $req, Response $res): string
+    public function officeDeleteAppointment(Request $req, Response $res):string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            $body = $req->body();
-            $appointment = new Appointment($body);
-            $result = $appointment->officeUpdateAppointment();
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member")) {
+
+            $body= $req->body();
+            if(empty($body['appointment_id'])){
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message"=> "Bad Request"
+                ]);
+            }
+            $appointment_id=$body['appointment_id'];
+            $appointmentModel=new Appointment();
+            $result=$appointmentModel->deleteAppointmentById(id: $appointment_id);
+
 
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json([
-                    "message" => $result
+                    "message" => "Internal Server Error"
                 ]);
             }
-
-            if (is_array($result)) {
-                $res->setStatusCode(code: 400);
-                return $res->json([
-                    "errors" => $result
-                ]);
-            }
-
             if ($result) {
-                $res->setStatusCode(code: 201);
+                $res->setStatusCode(code: 204);
                 return $res->json([
-                    "success" => "Appointment updated successfully"
+                    "message" => "Appointment deleted successfully"
                 ]);
-            }
 
-            return $res->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
+            }
         }
+
+        return $res->redirect(path: "/login");
     }
 }
 

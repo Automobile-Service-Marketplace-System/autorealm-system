@@ -79,9 +79,8 @@
 @import "views/restock-products.css";
 @import "views/add-models.css";
 @import "views/office-create-appointment.css";
+@import "views/office-update-appointment.css";
 @import "views/add-brand.css";
-
-
 
 body{
   font-family: "Nunito", sans-serif;

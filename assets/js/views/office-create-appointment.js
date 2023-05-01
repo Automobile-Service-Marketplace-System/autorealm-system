@@ -19,7 +19,6 @@ createAppointmentButton.forEach(function (btn) {
             const customerNameElement = customerRow.querySelector("td:nth-child(2)");
             const name = customerNameElement.textContent;
 
-
             let customerVehicles = [];
 
             const result = await fetch(`/vehicles/by-customer-json?id=${customerID}`, {
@@ -44,19 +43,17 @@ createAppointmentButton.forEach(function (btn) {
                      */
                     const vehicles = await result.json();
 
-
                     let vehicleOptions = vehicles.map((vehicle) => {
                         return `<option value="${vehicle.reg_no}">${vehicle.reg_no} - ${vehicle.brand_name} ${vehicle.model_name}</option>`;
                     }).join("");
 
 
     const createAppointmentForm = htmlToElement(`
-        <form action="/appointments/${customerID}" method="post" class="office-create-appointment-form" enctype="multipart/form-data">
+        <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
             <div class="office-create-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
                 <button class="modal-close-btn">
                     <i class="fas fa-times"></i>
                 </button>
-
                 <h1>
                     Create an appointment
                 </h1>
@@ -75,13 +72,13 @@ createAppointmentButton.forEach(function (btn) {
                 </div>
                 
                 <div class='form-item '>
-                    <label for='mileage'>Mileage<sup>*</sup></label>
+                    <label for='mileage'>Mileage (Km)<sup>*</sup></label>
                     <input type='number' name='mileage' id='mileage' placeholder='' required  value='' min="0" max="100000">
                 </div>
 
                 <div class='form-item create-appointment-remarks'>
-                    <label for='remarks'>Remarks<sup>*</sup></label>
-                    <textarea name='remarks' id='remarks' placeholder='' required  value='' rows="1" style="height: 40px">
+                    <label for='remarks'>Remarks</sup></label>
+                    <textarea name='remarks' id='remarks' placeholder='' value='' rows="1" style="height: 40px">
                     </textarea>
                 </div>
                 
@@ -89,6 +86,7 @@ createAppointmentButton.forEach(function (btn) {
                     <label for='date'>Date<sup>*</sup></label>
                     <input type="date" name="date" id="date">
                 </div>
+                <input style="display: none" name='customerID' id='customerID' value='${customerID}'>
 
                 <div class='form-item'>
                     <label for='timeslot'>Timeslot<sup>*</sup></label>
@@ -104,7 +102,6 @@ createAppointmentButton.forEach(function (btn) {
     </form>
 `);
 
-                    const form = createAppointmentForm.querySelector("form");
 
                     createAppointmentForm.querySelector("input#date")?.addEventListener('change', async (e) => {
                         await loadTimeSlots(e, createAppointmentForm)
@@ -138,17 +135,17 @@ createAppointmentButton.forEach(function (btn) {
 
                             Modal.show({
                                 content: createAppointmentConfirmationModal,
-                                key: "Update vehicle confirmation",
+                                key: "create appointment confirmation",
                                 closable: true,
                             });
                         });
 
-                    form?.addEventListener("submit", async (e) => {
+                    createAppointmentForm?.addEventListener("submit", async (e) => {
                         e.preventDefault();
                         if (
-                            form.classList.contains("create-appointment-form--error")
+                        createAppointmentForm.classList.contains("create-appointment-form--error")
                         ) {
-                            form
+                            createAppointmentForm
                                 .querySelectorAll(".form-item")
                                 .forEach((inputWrapper) => {
                                     inputWrapper.classList.remove("form-item--error");
@@ -159,15 +156,18 @@ createAppointmentButton.forEach(function (btn) {
                         // console.log(Object.fromEntries(formData.entries()))
                         // return;
                         try {
-                            const result = await fetch(`/appointments?id=${customerID}`, {
+                            const result = await fetch(`/appointments/create`, {
                                 body: formData,
                                 method: "POST",
                             });
+
+
+       
                             if (result.status === 400) {
-                                form?.classList.add("create-appointment-form--error");
+                                createAppointmentForm?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
                                 for (const inputName in resultBody.errors) {
-                                    const inputWrapper = form.querySelector(
+                                    const inputWrapper = createAppointmentForm.querySelector(
                                         `#${inputName}`
                                     ).parentElement;
                                     inputWrapper.classList.add("form-item--error");
@@ -190,8 +190,8 @@ createAppointmentButton.forEach(function (btn) {
                         }
                     });
 
-                    form?.addEventListener("reset", (e) => {
-                        const formItems = form.querySelectorAll(".form-item");
+                    createAppointmentForm?.addEventListener("reset", (e) => {
+                        const formItems = createAppointmentForm.querySelectorAll(".form-item");
                         formItems.forEach((item) => {
                             item.classList.remove("form-item--error");
                             const errorElement = item.querySelector("small");
