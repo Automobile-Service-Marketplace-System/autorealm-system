@@ -11,19 +11,29 @@
     </a>
 </div>
 
-<!-- <div class="appointment-card-wrapper"> -->
+<div class="admitting-report">
     <!-- <a class="appointment-card"> -->
     <?php 
         foreach($admittingReports as $admittingReport){
+            if($admittingReport['Name']!=null){
+                echo "
+                <a class='admitting-report-wrapper' href='/security-officer-dashboard/admitting-reports/view?id={$admittingReport['ID']}' >
+                <p class='admitting_card__name'><b>Name: </b>{$admittingReport['Name']}</p>
+                <p class='admitting_card__regno'><b>Registration Number: </b>{$admittingReport['RegNo']}</p>
+                <p class='admitting_card__date'><b>Date: </b>{$admittingReport['Date']}</p>
+                </a>";
+            }
+            else{
+                echo "
+                <a class='admitting-report-wrapper' href='/security-officer-dashboard/admitting-reports/view?id={$admittingReport['ID']}' >
+                <p class='admitting_card__name''><b>Name: </b><span style='color: gray;'>N/A</span></p>
+                <p class='admitting_card__regno'><b>Registration Number: </b> {$admittingReport['RegNo']}</p>
+                <p class='admitting_card__date'><b>Date: </b> {$admittingReport['Date']}</p>
+                </a>";
+            }
             
-            echo "
-            <a class='appointment-card' href='/security-officer-dashboard/admitting-reports/view?id={$admittingReport['ID']}' >
-            <p class='appointment-card__name'>{$admittingReport['Name']}</p>
-            <p class='appointment-card__date'>{$admittingReport['RegNo']}</p>
-            <p class='appointment-card__date'>{$admittingReport['Date']}</p>
-            </a>";
         }
     ?>
-<!-- </div> -->
+</div>
 
 
