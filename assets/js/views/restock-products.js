@@ -4,7 +4,7 @@ import {htmlToElement} from "../utils";
 
 const productRestockButtons = document.querySelectorAll(".restock-product-btn")
 //console.log(productRestockButtons)
-productRestockButtons.forEach(function (btn) {
+productRestockButtons?.forEach(function (btn) {
     btn.addEventListener("click", async function () {
         try{
             const productId = Number(btn.parentElement.dataset.productid);
@@ -57,16 +57,16 @@ productRestockButtons.forEach(function (btn) {
                             <div class="restock-product-input-wrapper">
                                 <div class="form-item">
                                     <label for='stock_quantity'>Stock Quantity.<sup>*</sup></label>
-                                    <input type='number' name='stock_quantity' id='stock_quantity' placeholder='' required  value=''   >
+                                    <input type='number' name='stock_quantity' id='stock_quantity' placeholder='' required  value=''  min="1" step="1" >
                                 </div>
                                 
                                 <div class="form-item">
                                     <label for='unit_price'>Unit Price.<sup>*</sup></label>
-                                    <input type='number' name='unit_price' id='unit_price' placeholder='' required  value=''   >
+                                    <input type='number' name='unit_price' id='unit_price' placeholder='' required  value=''  step='0.01' min='0.01'  >
                                 </div>
                                 
                                 <div class="form-item">
-                                    <label for='sup_date'>Supplier.<sup>*</sup></label>
+                                    <label for='sup_id'>Supplier.<sup>*</sup></label>
                                     <select name="supplier_id" id="supplier_id" required>
                                     ${supplierOptions}
                                     </select>
@@ -74,7 +74,7 @@ productRestockButtons.forEach(function (btn) {
                                 
                                <div class="form-item">
                                     <label for='sup_date'>Received Date.<sup>*</sup></label>
-                                    <input type='date' name='sup_date' id='sup_date' placeholder='' required  value=''   >
+                                    <input type='date' name='sup_date' id='sup_date' placeholder='' required  value=''  >
                                 </div>
                                      <input style="display: none" type="number" value="${productId}" name="product_id">
                             </div>
@@ -132,7 +132,8 @@ productRestockButtons.forEach(function (btn) {
                             })
 
                             if (result.status === 400) {
-                                const resultBody = await result.json()
+                                const resultBody = await result.text()
+                                console.log(resultBody)
                                 for (const inputName in resultBody.errors) {
                                     const inputWrapper = restockProductForm.querySelector(`#${inputName}`).parentElement
                                     inputWrapper.classList.add('form-item--error')

@@ -28,8 +28,10 @@ class Supplier
     }
 
 
-    public function getSuppliersList(): array
+    public function getSuppliersList(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
         $suppliers = $this->pdo->query(
             "SELECT 
@@ -41,7 +43,7 @@ class Supplier
                 s.email as Email,
                 s.company_reg_no as 'Registration No'
                 FROM supplier s 
-                WHERE s.is_discontinued = FALSE"
+                WHERE s.is_discontinued = FALSE $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
         $supplierList = [];
         foreach ($suppliers as $supplier) {
@@ -54,8 +56,21 @@ class Supplier
             $supplierList[] = $supplier;
 
         }
+        //get multiple contact numbers for the relevant supplier from suppliercontact table
+        foreach ($supplierList as &$supplier) {
+            $id = $supplier["ID"];
+            $contactNumbers = $this->pdo->query("SELECT contact_no FROM suppliercontact WHERE supplier_id = $id")->fetchAll(PDO::FETCH_COLUMN);
+            $supplier["Contact Numbers"] = $contactNumbers;
+        }
 
-        return $supplierList;
+        $totalSuppliers = $this->pdo->query(
+            "SELECT COUNT(*) FROM supplier where is_discontinued = FALSE"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "suppliers" => $supplierList,
+            "total" => $totalSuppliers["COUNT(*)"]
+        ];
     }
 //"SELECT
 //
@@ -101,8 +116,13 @@ class Supplier
                 $query = "INSERT INTO suppliercontact (supplier_id, contact_no) VALUES (:supplier_id, :contact_no)";
                 $statement = $this->pdo->prepare($query);
                 $statement->bindValue(":supplier_id", $this->pdo->lastInsertId());
-                $statement->bindValue(":contact_no", $this->body["contact_no"]);
+                $statement->bindValue(":contact_no", $this->body["contact_no_1"]);
                 $statement->execute();
+                $query2 = "INSERT INTO suppliercontact (supplier_id, contact_no) VALUES (:supplier_id, :contact_no)";
+                $statement2 = $this->pdo->prepare($query2);
+                $statement2->bindValue(":supplier_id", $this->pdo->lastInsertId());
+                $statement2->bindValue(":contact_no", $this->body["contact_no_2"]);
+                $statement2->execute();
                 return true;
 
             } catch (\PDOException $e) {
@@ -114,75 +134,13 @@ class Supplier
 
     }
 
-    private function validateAddSupplierForm(): array
-    {
-        $errors = [];
 
-        if (empty($this->body["name"])) {
-            $errors["name"] = "Name is required";
-        } else {
-            $query = "SELECT * FROM supplier WHERE name = :name";
-            $statement = $this->pdo->prepare($query);
-
-            $statement->bindValue(":name", $this->body["name"]);
-            $statement->execute();
-
-            if ($statement->rowCount() > 0) {
-                $errors['name'] = 'Supplier Name already in use.';
-            }
-        }
-
-        if (empty($this->body["company_reg_no"])) {
-            $errors["company_reg_no"] = "Business reg no is required";
-        } else {
-            $query = "SELECT * FROM supplier WHERE company_reg_no = :company_reg_no";
-            $statement = $this->pdo->prepare($query);
-
-            $statement->bindValue(":company_reg_no", $this->body["company_reg_no"]);
-            $statement->execute();
-
-            if ($statement->rowCount() > 0) {
-                $errors['company_reg_no'] = 'Company Registration Number already in use.';
-            }
-        }
-
-        if (empty($this->body["email"])) {
-            $errors["email"] = "Email is required";
-        } else {
-            $query = "SELECT * FROM supplier WHERE email = :email";
-            $statement = $this->pdo->prepare($query);
-
-            $statement->bindValue(":email", $this->body["email"]);
-            $statement->execute();
-
-            if ($statement->rowCount() > 0) {
-                $errors['email'] = 'Email already in use.';
-            }
-        }
-
-
-        if (empty($this->body["contact_no"])) {
-            $errors["contact_no"] = "Contact Number is required";
-        } else {
-            $query = "SELECT * FROM suppliercontact WHERE contact_no = :contact_no";
-            $statement = $this->pdo->prepare($query);
-
-            $statement->bindValue(":contact_no", $this->body["contact_no"]);
-            $statement->execute();
-
-            if ($statement->rowCount() > 0) {
-                $errors['contact_no'] = 'Contact Number already in use.';
-            }
-        }
-
-        return $errors;
-    }
 
     public function updateSupplier(): bool|array|string
     {
         //check for the errors
-        //$errors = $this->validateAddSupplierForm();
-        $errors = [];
+        $errors = $this->validateUpdateSupplier();
+//        $errors = [];
 
         if (empty($errors)) {
             $query = "UPDATE supplier SET
@@ -243,5 +201,140 @@ class Supplier
             return "Error getting suppliers list";
         }
     }
+
+
+    //validations
+
+    private function validateAddSupplierForm(): array
+    {
+        $errors = [];
+
+        if (trim($this->body["name"]) === "") {
+            $errors["name"] = "Name is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE name = :name";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":name", $this->body["name"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = 'Supplier Name already in use.';
+            }
+        }
+
+        if (trim($this->body["company_reg_no"])==="") {
+            $errors["company_reg_no"] = "Business reg no is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE company_reg_no = :company_reg_no";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":company_reg_no", $this->body["company_reg_no"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['company_reg_no'] = 'Company Registration Number already in use.';
+            }
+        }
+
+        if (trim($this->body["email"])==="") {
+            $errors["email"] = "Email is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE email = :email";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":email", $this->body["email"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['email'] = 'Email already in use.';
+            }
+        }
+
+
+        if (empty($this->body["contact_no_1"])) {
+            $errors["contact_no"] = "Contact Number is required";
+        }
+        else if (!preg_match('/^\+947\d{8}$/', $this->body['contact_no_1'])) {
+                $errors['contact_no'] = 'Contact number must start with +947 and contain 12 digits.';
+            }
+        else {
+            $query = "SELECT * FROM suppliercontact WHERE contact_no = :contact_no";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":contact_no", $this->body["contact_no_1"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['contact_no_1'] = 'Contact Number already in use.';
+            }
+
+            $query2 = "SELECT * FROM suppliercontact WHERE contact_no = :contact_no";
+            $statement2 = $this->pdo->prepare($query2);
+
+            $statement2->bindValue(":contact_no", $this->body["contact_no_2"]);
+            $statement2->execute();
+
+            if ($statement2->rowCount() > 0) {
+                $errors['contact_no_2'] = 'Contact Number already in use.';
+            }
+        }
+
+        return $errors;
+    }
+
+    private function validateUpdateSupplier(): array
+    {
+        $errors = [];
+
+        if (trim($this->body["name"]) === "") {
+            $errors["name"] = "Name is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE name = :name AND name != :old_name";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":name", $this->body["name"]);
+            $statement->bindValue(":old_name", $this->body["old_name"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = 'Supplier Name already in use.';
+            }
+        }
+
+        if (trim($this->body["company_reg_no"])==="") {
+            $errors["company_reg_no"] = "Business reg no is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE company_reg_no = :company_reg_no AND company_reg_no != :old_company_reg_no";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":company_reg_no", $this->body["company_reg_no"]);
+            $statement->bindValue(":old_company_reg_no", $this->body["old_company_reg_no"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['company_reg_no'] = 'Company Registration Number already in use.';
+            }
+        }
+
+        if (trim($this->body["email"])==="") {
+            $errors["email"] = "Email is required";
+        } else {
+            $query = "SELECT * FROM supplier WHERE email = :email AND email != :old_email";
+            $statement = $this->pdo->prepare($query);
+
+            $statement->bindValue(":email", $this->body["email"]);
+            $statement->bindValue(":old_email", $this->body["old_email"]);
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $errors['email'] = 'Email already in use.';
+            }
+
+        }
+
+        return $errors;
+    }
+
 
 }

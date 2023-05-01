@@ -10,7 +10,7 @@
         <i class="fa-solid fa-plus"></i>
         Add Employee
     </a>
-</div>
+</div> 
 
 <div class="employee-container">
     <?php
@@ -52,6 +52,8 @@
                     <a class='employee-card__contact' href='mailto:{$employee['Email']}'>{$employee['Email']}</a>
                 </div> 
               </div>";
+
+        
     }
     ?>
 </div>

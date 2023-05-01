@@ -84,17 +84,17 @@ class Appointment
 
     public function getAppointments(): array
     {
-        return $this->pdo->query(
-            "SELECT
-                concat(f_name, ' ', l_name) as Name,
-                appointment.vehicle_reg_no as RegNo,
-                appointment.date as Date,
-                appointment.from_time as FromTime,
-                appointment.to_time as ToTime            
-            FROM appointment 
-            inner join customer on customer.customer_id=appointment.customer_id"
 
-        )->fetchAll(PDO::FETCH_ASSOC);
+        return $this->pdo->query("
+            SELECT 
+            concat(c.f_name,' ',c.l_name) as Name,
+            a.vehicle_reg_no as RegNo,
+            t.date as Date,
+            t.from_time as FromTime,
+            t.to_time as ToTime
+            from appointment a
+            inner join customer c on a.customer_id=c.customer_id
+            inner join timeslot t on t.time_id=a.time_id")->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getTimeslotsByDate(string $date): string|array
@@ -122,8 +122,8 @@ class Appointment
             return $e->getMessage();
         }
     }
-
-    public function officeCreateAppointment()
+  
+    public function officeUpdateAppointment()
     {
         try {
             $query = "  INSERT INTO 
@@ -157,6 +157,40 @@ class Appointment
             return $e->getMessage();
         }
     }
+  
+    /**
+     * @return array
+     */
+    public function getAppointmentsByCustomerID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                query: "SELECT
+                            a.appointment_id,
+                            a.vehicle_reg_no,                       
+                            a.remarks,
+                            a.service_type,
+                            a.date_and_time as 'created_date',
+                            t.date as 'appointment_date',
+                            t.from_time as 'appointment_time'
+                        FROM
+                            appointment a
+                        INNER JOIN timeslot t ON t.time_id = a.time_id
+                        
+                        WHERE 
+                            customer_id = :customer_id");
+            $statement->execute(['customer_id' => $customer_id]);
+            $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$appointments) {
+                return "No appointments available for this customer";
+            }
+            return $appointments;    
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        return "Internal Server Error";
+    }
 
     public function deleteAppointmentById(int $id):bool|string
     {
@@ -172,5 +206,5 @@ class Appointment
 
         }
     }
-
 }
+

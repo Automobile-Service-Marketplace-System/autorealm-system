@@ -21,6 +21,9 @@
 @import "components/tables.css";
 @import "components/notifiers.css";
 @import "components/modals.css";
+@import "components/product-selector.css";
+@import "components/calendar-view.css";
+@import "components/filter.css";
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
@@ -77,6 +80,7 @@
 @import "views/add-models.css";
 @import "views/office-create-appointment.css";
 @import "views/office-update-appointment.css";
+@import "views/add-brand.css";
 
 body{
   font-family: "Nunito", sans-serif;

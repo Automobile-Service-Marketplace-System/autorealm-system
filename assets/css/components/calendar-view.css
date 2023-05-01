@@ -1,0 +1,98 @@
+.calendar-view {
+    border-radius: 0.5rem;
+    height: 300px;
+}
+
+.calendar-view__header {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+
+.calendar-view__month {
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+    border-radius: 0.5rem 0.5rem 0 0;
+
+}
+
+#next-month {
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    transition: all 0.2s ease-in-out;
+}
+
+#next-month:hover {
+    transform: translateY(-50%) translateX(0.25rem);
+}
+
+#prev-month {
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    transition: all 0.2s ease-in-out;
+}
+
+#prev-month:hover {
+    transform: translateY(-50%) translateX(-0.25rem);
+}
+
+.calendar-view__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-view__day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    width: 50px;
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.calendar-view__dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    transition: all 0.3s ease-in-out;
+}
+
+.calendar-view__dates--destroy {
+    opacity: 0;
+    transform: translateY(-20%);
+}
+
+.calendar-view__dates--appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.calendar-view__date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #fff;
+    width: 50px;
+}
+
+.calendar-view__date--disabled {
+    color: #fff;
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.calendar-view__date--restricted {
+    background-color: rgba(var(--danger), 0.5);
+    cursor: not-allowed;
+}

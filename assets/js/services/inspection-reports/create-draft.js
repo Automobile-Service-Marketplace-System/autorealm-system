@@ -1,4 +1,5 @@
 import {setSpinner} from "../../utils"
+import Notifier from "../../components/Notifier";
 
 /**
  * @type {HTMLButtonElement | null}
@@ -28,6 +29,15 @@ async function createDraft() {
         const inputs = maintenanceInspectionForm.querySelectorAll("input");
         const formData = new FormData();
         inputs.forEach(input => {
+            // check if input is a radio button
+            if (input.type === "radio") {
+                // check if the radio button is checked
+                if (input.checked) {
+                    // append the radio button to the form data
+                    formData.append(input.name, input.value);
+                }
+                return
+            }
             formData.append(input.name, input.value);
         })
 
@@ -38,10 +48,50 @@ async function createDraft() {
             body: formData
         })
 
-        const data = await result.text();
-        console.log(data)
+        switch (result.status) {
+            case 201:
+                const response = await result.json();
+                console.log(response)
+                Notifier.show({
+                    text: response.message,
+                    type: "success",
+                    header: "Success",
+                    closable: true,
+                    duration: 5000
+                })
+                break;
+            case 400:
+                const data = await result.json();
+                console.log(data)
+                Notifier.show({
+                    text: data.message,
+                    type: "success",
+                    header: "Success",
+                    closable: true,
+                    duration: 5000
+                })
+                break;
+            default:
+                Notifier.show({
+                        text: "An error occurred while creating draft",
+                        type: "error",
+                        header: "Error",
+                        closable: true,
+                        duration: 5000
+                    }
+                )
+
+        }
+
     } catch (e) {
         console.log(e)
+        Notifier.show({
+            text: "An error occurred while creating draft",
+            type: "error",
+            header: "Error",
+            closable: true,
+            duration: 5000
+        })
     } finally {
         isDraftBeingCreated.value = false;
         setSpinner(saveInspectionReportDraftButton.querySelector("svg"), false, isDraftBeingCreated)
@@ -50,7 +100,9 @@ async function createDraft() {
 
 saveInspectionReportDraftButton?.addEventListener("click", createDraft)
 
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+if (saveInspectionReportDraftButton) {
+    saveInspectionReportDraftButton.click()
+    setInterval(() => {
+        saveInspectionReportDraftButton.click()
+    }, 30000)
 }

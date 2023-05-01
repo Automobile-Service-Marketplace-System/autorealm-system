@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
+use app\utils\Validation;
 use PDO;
 use PDOException;
 use Exception;
@@ -24,8 +26,108 @@ class Product
         $this->body = $body;
     }
 
-    public function getProducts(): array|string
+    public function getProducts(
+        int|null $count = null,
+        int|null $page = 1,
+        array    $options = [
+            'category_name' => null,
+            'brand_name' => null,
+            'product_type' => null,
+            'quantity_level' => null,
+            'status' => 0,
+        ],
+        string   $searchTerm = null
+    ): array|string
     {
+//        DevOnly::prettyEcho($options);
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+//                $conditions[] = "p.$option_key = :$option_key"; // p.name = :name
+                switch ($option_key) {
+                    case "category_name":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "c.name LIKE :category_name";
+                                $options['category_name'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "c.name = :category_name";
+                                break;
+                        }
+//                        $conditions[] = "c.name = :category_name";
+                        break;
+                    case "brand_name":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "b.brand_name LIKE :brand_name";
+                                $options['brand_name'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "b.brand_name = :brand_name";
+                                break;
+                        }
+//                        $conditions[] = "b.brand_name = :brand_name";
+                        break;
+                    case "product_type":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "p.product_type LIKE :product_type";
+                                $options['product_type'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "p.product_type = :product_type";
+                                break;
+                        }
+//                        $conditions[] = "p.product_type = :product_type";
+                        break;
+                    case "quantity_level":
+                        switch ($option_value) {
+                            case  "all":
+                                break;
+                            case "low":
+                                $conditions[] = "p.quantity <= p.low_quantity";
+                                break;
+                            case "medium":
+                                $conditions[] = "p.quantity <= p.medium_quantity AND p.quantity > p.low_quantity";
+                                break;
+                            case "high":
+                                $conditions[] = "p.quantity > p.medium_quantity";
+                                break;
+                        }
+                        break;
+                    case "status":
+                        switch ($option_value) {
+                            case "active":
+                                $conditions[] = "p.is_discontinued = FALSE";
+                                break;
+                            case "discontinued":
+                                $conditions[] = "p.is_discontinued = TRUE";
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = " WHERE " . implode(" AND ", $conditions);
+        }
+
+        if ($searchTerm !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.name LIKE :search_term" : " WHERE p.name LIKE :search_term AND p.is_discontinued = FALSE";
+        }
+
+//        DevOnly::prettyEcho($whereClause);
+
+
+        //if there are no parameters, set empty string
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
         $query = "SELECT 
     
                         p.item_code as ID, 
@@ -39,26 +141,73 @@ class Product
                         ROUND(p.price/100, 2) as 'Price (LKR)', 
                         p.image as Image,
                         p.description as Description,
-                        p.quantity as Quantity
-                        
+                        p.quantity as Quantity,
+                        p.product_type as Type,
+                        p.low_quantity,
+                        p.medium_quantity
 
                     FROM product p 
                         
                         INNER JOIN model m on p.model_id = m.model_id 
                         INNER JOIN brand b on p.brand_id = b.brand_id 
                         INNER JOIN category c on p.category_id = c.category_id
-                     
-                    WHERE p.is_discontinued = FALSE
-                    ORDER BY p.item_code";
+            
+                    $whereClause
+                    ORDER BY p.item_code $limitClause $pageClause";
 
-        $result = $this->pdo->prepare($query);
-        try{
-            $result->execute();
-            return $result->fetchAll(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
-            return $e->getMessage();
+        $statement = $this->pdo->prepare($query);
+
+        $firstThirdOptions = array_slice($options, 0, 3);
+
+        foreach ($firstThirdOptions as $option_key => $option_value) {
+            if ($option_value !== null) {
+                $statement->bindValue(":$option_key", $option_value);
+            }
         }
 
+        if ($searchTerm !== null) {
+            $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+        }
+
+
+        try {
+            $statement->execute();
+            $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+            $statement = $this->pdo->prepare("
+                        SELECT COUNT(*) as total FROM product p       
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id 
+                        $whereClause"
+            );
+
+            foreach ($firstThirdOptions as $option_key => $option_value) {
+                if ($option_value !== null) {
+                    $statement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+
+            $totalProducts = $statement->fetch(PDO::FETCH_ASSOC);
+
+//
+//            $totalProducts = $this->pdo->query(
+//                "SELECT COUNT(*) as total FROM product $whereClause"
+//            )->fetch(PDO::FETCH_ASSOC);
+            return [
+                "total" => $totalProducts['total'],
+                "products" => $products
+            ];
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
 
 
     }
@@ -88,52 +237,16 @@ class Product
 
         )->fetchAll(PDO::FETCH_ASSOC);
 
-        $totlaProducts = $this->pdo->query(
+        $totalProducts = $this->pdo->query(
             "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
         )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "products" => $products,
-            "total" => $totlaProducts['total']
+            "total" => $totalProducts['total']
         ];
     }
 
-    private function validateAddProducts(): array
-    {
-        $errors = [];
-
-        if (trim($this->body['name']) === "") {
-            $errors['name'] = "Product name must not be empty";
-        } else {
-            $query = "SELECT * FROM product WHERE lower(name) = lower(:name)";
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":name", $this->body['name']);
-            $statement->execute();
-            if ($statement->rowCount() > 0) {
-                $errors['name'] = "Product name already exists";
-            }
-        }
-
-        if (trim($this->body['selling_price']) === "") {
-            $errors['selling_price'] = "Price must not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['selling_price'])) {
-            $errors['selling_price'] = "Price can not be a negative number";
-        }
-
-        if (trim($this->body['quantity']) === "") {
-            $errors['quantity'] = "Quantity not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['quantity'])) {
-            $errors['quantity'] = "Quantity must be a positive";
-        }
-
-        if (trim($this->body['unit_price']) === "") {
-            $errors['unit_price'] = "Price must not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['unit_price'])) {
-            $errors['unit_price'] = "Price must be a positive";
-        }
-
-        return $errors;
-    }
 
     public function addProducts(): bool|array|string
     {
@@ -148,12 +261,12 @@ class Product
             if (empty($errors)) {
                 $query = "INSERT INTO product 
                     (
-                        name, category_id,product_type, brand_id, model_id, description, price, quantity,image
+                        name, category_id,product_type, brand_id, model_id, description, price, quantity,image, low_quantity, medium_quantity
                     ) 
                  
                     VALUES 
                     (
-                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity, :image
+                        :name, :category_id, :product_type, :brand_id, :model_id, :description, :price, :quantity, :image, :low_quantity, :medium_quantity
                     )";
                 //for product table
                 $statement = $this->pdo->prepare($query);
@@ -166,6 +279,8 @@ class Product
                 $statement->bindValue(":price", $this->body["selling_price"] * 100);
                 $statement->bindValue(":quantity", $this->body["quantity"]);
                 $statement->bindValue(":image", $imagesAsJSON ?? json_encode(["/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg", "/images/placeholders/product-image-placeholder.jpg"]));
+                $statement->bindValue(":low_quantity", $this->body["low_quantity"]);
+                $statement->bindValue(":medium_quantity", $this->body["medium_quantity"]);
 
                 try {
                     $statement->execute();
@@ -212,10 +327,15 @@ class Product
     public function updateProduct(): bool|array|string
     {
         //check for the errors
-//        $errors = $this->validateAddProducts();
-        $errors = [];
+//        return json_encode($this->body);
+        $errors = $this->validateUpdateProductBody();
+//        $errors = [];
+
+//        echo json_encode($errors);
+//        exit();
+//      $errors = [];
         if (empty($errors)) {
-//            try {
+            //            try {
 //                $imageUrls = FSUploader::upload(multiple: true, innerDir: "products/");
 //                $imagesAsJSON = json_encode($imageUrls);
 //            } catch (Exception $e) {
@@ -253,6 +373,7 @@ class Product
                 return $errors;
             }
         }
+        return $errors;
     }
 
     public function deleteProductById(int $id): bool|string
@@ -268,12 +389,13 @@ class Product
         }
     }
 
-
-    public function restockProduct():bool|array|string
+    public function restockProduct(): bool|array|string
     {
-        $errors = [];
+//        $errors = [];
+        $errors = $this->validateRestock();
+
         $dateTimeStamp = date("Y-m-d H:i:s");
-        if(empty($errors)){
+        if (empty($errors)) {
             $query = "INSERT INTO stockpurchasereport
                        (
                             item_code, date_time, supplier_id, unit_price ,amount
@@ -302,11 +424,219 @@ class Product
             } catch (Exception $e) {
                 return $e->getMessage();
             }
-
         }
         return $errors;
     }
 
+    /**
+     * @param int|null $count
+     * @param int|null $page
+     * @param array $options
+     * @param string|null $searchTerm
+     * @return array
+     */
+    public function getProductsForProductSelector(
+        int|null    $count = null,
+        int|null    $page = 1,
+        array       $options = [
+            "category_id" => null,
+            "brand_id" => null,
+            "model_id" => null,
+        ],
+        string|null $searchTerm = null
+    ): array|string
+    {
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $whereClause = "";
+        $conditions = [];
+        $values = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value) {
+                $conditions[] = "p.$option_key = :$option_key";
+                $values[] = $option_value;
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = " WHERE " . implode(" AND ", $conditions);
+        }
+
+        if ($searchTerm !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.name LIKE :search_term" : " WHERE p.name LIKE :search_term";
+        }
+
+        try {
+            $query = "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity,
+                        p.image as Image
+
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id
+            
+                $whereClause ORDER BY p.item_code $limitClause $pageClause";
+
+            $statement = $this->pdo->prepare($query);
+
+            foreach ($options as $option_key => $option_value) {
+                if ($option_value) {
+                    $statement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $products = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM product p $whereClause"
+            );
+
+            foreach ($options as $option_key => $option_value) {
+                if ($option_value) {
+                    $statement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalProducts = $statement->fetch(mode: PDO::FETCH_ASSOC);
+            return [
+                "products" => $products,
+                "total" => $totalProducts['total']
+            ];
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+    // validations
+
+    private function validateUpdateProductBody(): array
+    {
+        $errors = [];
+        if (trim($this->body["name"] === "")) {
+            $errors['name'] = 'Name must not be empty';
+        } else {
+            $query = "SELECT * FROM product WHERE name = :name AND name != :old_name";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name", $this->body["name"]);
+            $statement->bindValue(":old_name", $this->body["old_name"]);
+            $statement->execute();
+
+            $product = $statement->fetch();
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = "Product name already exists";
+            }
+        }
+
+        if (trim($this->body['selling_price']) === "") {
+            $errors['selling_price'] = "Price must not be empty";
+        } else if ($this->body['selling_price'] == 0) {
+            $errors['selling_price'] = "Price can not be a zero";
+        } else if ($this->body['selling_price'] < 0) {
+            $errors['selling_price'] = "Price can not be negative";
+        }
+
+        return $errors;
+
+    }
+
+
+    private function validateAddProducts(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['name']) === "") {
+            $errors['name'] = "Product name must not be empty";
+        } else {
+            $query = "SELECT * FROM product WHERE lower(name) = lower(:name)";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":name", $this->body['name']);
+            $statement->execute();
+            if ($statement->rowCount() > 0) {
+                $errors['name'] = "Product name already exists";
+            }
+        }
+
+        if (trim($this->body['selling_price']) === "") {
+            $errors['selling_price'] = "Price must not be empty";
+        } else if (!Validation::isPositiveNumber($this->body['selling_price'])) {
+            $errors['selling_price'] = "Price can not be a negative number";
+        }
+
+        if (trim($this->body['quantity']) === "") {
+            $errors['quantity'] = "Quantity not be empty";
+        } else if (
+            !Validation::isPositiveInteger($this->body['quantity'])
+        ) {
+            $errors['quantity'] = "Quantity must be a positive number";
+        }
+
+        if (trim($this->body['low_quantity']) === "") {
+            $errors['low_quantity'] = "Low quantity can not be empty";
+        } else if (!Validation::isPositiveInteger($this->body['low_quantity'])) {
+            $errors['low_quantity'] = "Low quantity must be a positive";
+        }
+
+        if (trim($this->body['medium_quantity']) === "") {
+            $errors['medium_quantity'] = "Medium quantity not be empty";
+        } else if (!Validation::isPositiveInteger($this->body['medium_quantity'])) {
+            $errors['medium_quantity'] = "Quantity must be a positive";
+        }
+
+        if (trim($this->body['unit_price']) === "") {
+            $errors['unit_price'] = "Price must not be empty";
+        } else if (!Validation::isPositiveNumber($this->body['unit_price'])) {
+            $errors['unit_price'] = "Price must be a positive number";
+        }
+
+        if (isset($this->body['low_quantity']) && isset($this->body['medium_quantity'])) {
+            if (is_numeric($this->body['low_quantity']) && is_numeric($this->body['medium_quantity'])) {
+                if ($this->body['medium_quantity'] <= $this->body['low_quantity']) {
+                    $errors['medium_quantity'] = "Medium quantity must be greater than low quantity";
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    private function validateRestock(): array
+    {
+        $errors = [];
+
+        if (trim($this->body['stock_quantity']) === "") {
+            $errors['stock_quantity'] = "Quantity not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['stock_quantity'])) {
+            $errors['stock_quantity'] = "Quantity must be a positive";
+        }
+
+        if (trim($this->body['unit_price']) === "") {
+            $errors['unit_price'] = "Price must not be empty";
+        } else if ($this->body['unit_price'] < 0) {
+            $errors['unit_price'] = "Price can not be a negative";
+        }
+
+
+        return $errors;
+    }
 }
-
-
