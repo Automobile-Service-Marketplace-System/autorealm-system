@@ -40,7 +40,7 @@ class Admitting
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
             a.report_no as ID
-            from admittingreportphoto a
+            from admitingreport a
             inner join vehicle v on a.vehicle_reg_no=v.reg_no
             inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -156,7 +156,6 @@ class Admitting
  
     public function addAdmittingReport(int $id) : array | int{
         $errors = $this->validated_byAdmittingReport();
-        var_dump($errors);
         if(empty($errors)){
             $query="insert into admitingreport 
                 (
@@ -217,8 +216,6 @@ class Admitting
             $statement->bindvalue(":additional_note", $this->body["additional_note"]);
             $statement->bindvalue(":id", $id);
             $statement->bindvalue(":date", date('Y-m-d'));
-            // $statement->bindvalue(":cur_date()", $cur_date());
-            // $statement->bindvalue(":employee_id", $id);
             $statement->execute();
             return $this->pdo->lastInsertId();
         }

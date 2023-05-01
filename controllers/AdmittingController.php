@@ -70,7 +70,6 @@ class AdmittingController{
                 ]);
             }
 
-
             if (is_int($result)) {
                 return $res->redirect("/security-officer-dashboard/admitting-reports/view?id=$result");
             }

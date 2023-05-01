@@ -54,20 +54,20 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
 
 ?>
 
+<div class="create-admitting-reports">  
     <form action="/security-officer-dashboard/admitting-reports/add" method="post" enctype="multipart/form-data">
-        <!-- <div class="form-input"> -->
             <?php
                 FormItem::render(
                     id: "vehicle_reg_no",
                     label: "<b>Registration Number</b>",
                     name: "vehicle_reg_no",
                     type: "text",
+                    // required:false,
                     hasError: $hasVehicleRegNoError,
                     error: $hasVehicleRegNoError ? $errors['vehicle_reg_no'] : "",
                     value: $body['vehicle_reg_no'] ?? null,
                 );
             ?>
-        <!-- </div> -->
 
             <!-- <div class="images">
                 <br><img src="/images/placeholders/vehicle1.png">
@@ -80,7 +80,6 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
 
             <br><p><b>Light</b></p>
             <div class="form-item">
-                <!-- <label for="LF">LF</label> -->
                 <p>LF</p>
                 <div class="form-radio">
                     <div class="radio-type1">
@@ -99,10 +98,11 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         <input type="radio" id="light_lf_damaged" name="lights_lf" value="damaged">
                         <label for="light_lf_damaged">Damaged</label>
                     </div>
-                    <div class="radio-type3">
+                    <div class="radio-type4">
                         <input type="radio" id="light_lf_not_working" name="lights_lf" value="not working">
                         <label for="light_lf_not_working">Not Working</label>
                     </div>
+                  
                 </div>   
                 <?php
                     FormItem::render(
@@ -821,7 +821,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
         </div>
 
         <div class="flex items-center justify-between mt-4 mb-8">
-            <button type="reset" id="cancel-button" class="btn btn--danger">Cancel</button>
-            <button type="submit" id="create-button" class="btn">Create</button>
+            <button type="reset" class="btn btn--danger">Cancel</button>
+            <button type="submit" class="btn">Create</button>
         </div>
     </form>
+</div>

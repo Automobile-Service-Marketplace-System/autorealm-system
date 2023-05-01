@@ -1,26 +1,11 @@
- #cancel-button{
-    margin-top: 1cm;
-    background-color: #e53030;
-    color: #fff;
-    border-color: #e53030;
-    width: 100px;
-    height: 50px;
-    border-radius: 8px;
-    margin-left: 2cm;
-}
-
-#create-button{
-    margin-top: 1cm;
-    width: 100px;
-    height: 50px;
-    background: #6100FF;
-    border-color: #6100ff;
-    border-radius: 8px;
-    color: #fff;
-    margin-left: 1.5cm;
-    float: left;
+.create-admitting-reports{
+    width: 100vw;
+    transition: all 0.2s ease-in-out;
 } 
 
+.create-admitting-reports-button{
+    margin:1cm;
+}
 .admitting-images{
     display: flex;
     width: 100px;
@@ -100,32 +85,7 @@
 .form-radio{
     display: flex;
     gap: 2rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100vw;
 }
-
-/*input[type='radio']:after {*/
-/*    width: 15px;*/
-/*    height: 15px;*/
-/*    border-radius: 15px;*/
-/*    top: -2px;*/
-/*    left: -1px;*/
-/*    position: relative;*/
-/*    background-color:white;*/
-/*    content: '';*/
-/*    display: inline-block;*/
-/*    visibility: visible;*/
-/*    border: 2px solid blue;*/
-/*}*/
-
-/*input[type='radio']:checked:after {*/
-/*    width: 15px;*/
-/*    height: 15px;*/
-/*    border-radius: 15px;*/
-/*    top: -2px;*/
-/*    left: -1px;*/
-/*    position: relative;*/
-/*    background-color: blue;*/
-/*    content: '';*/
-/*    display: inline-block;*/
-/*    visibility: visible;*/
-/*    border: 2px solid blue;*/
-/*}*/
