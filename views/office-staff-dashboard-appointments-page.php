@@ -30,7 +30,7 @@ if (empty($appointments)) {
                             <button class='btn btn--rounded btn--danger office-delete-appointment-btn' data-appointmentID='{$appointment['Appointment ID']}'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
-
+                            
                         </div>"
         ];
     }

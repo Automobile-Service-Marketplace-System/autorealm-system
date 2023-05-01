@@ -84,7 +84,7 @@ class AppointmentsController
                     layoutParams: [
                         'title' => 'Create an appointment',
                         'pageMainHeading' => 'Create an appointment',
-                        'employeeId' => $req->session->get('user_id')
+                        'officeStaffId' => $req->session->get('user_id')
                     ]);
             }
 
@@ -107,7 +107,7 @@ class AppointmentsController
                 layoutParams: [
                     "title" => "Appointments",
                     "pageMainHeading" => "Appointments",
-                    'employeeId' => $req->session->get('user_id')
+                    'officeStaffId' => $req->session->get('user_id')
                 ]);
         }
 

@@ -123,7 +123,7 @@ class Appointment
         }
     }
   
-    public function officeUpdateAppointment()
+    public function officeCreateAppointment()
     {
         try {
             $query = "  INSERT INTO 
