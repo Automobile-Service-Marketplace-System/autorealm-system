@@ -42,7 +42,7 @@ async function addProductsToJob(products) {
                     <div class="create-job__products-item">
                         <h4>${product.Name}</h4>
                         <img src="${product.Image}" alt="${product.Image}'s image">
-                        <button class="py-2 btn btn--danger btn--block btn--text">
+                        <button class="py-2 btn btn--danger btn--block btn--text create-job__roduct-remove-btn" type="button">
                             <i class='fa-solid fa-xmark'></i>
                             Remove
                         </button>

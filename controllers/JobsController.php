@@ -248,4 +248,14 @@ class JobsController
         }
         return $res->redirect(path: "/login");
     }
+
+
+    public function startJob(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            DevOnly::prettyEcho($req->body());
+            return "";
+        }
+        return $res->redirect(path: "/login");
+    }
 }

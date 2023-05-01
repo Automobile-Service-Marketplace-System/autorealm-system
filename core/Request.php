@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\utils\DevOnly;
+
 /**
  * @package app\core
  */
@@ -49,11 +51,19 @@ class Request
         }
         return $query;
     }
+
     public function body(): array
     {
         $body = [];
         foreach ($_POST as $key => $value) {
-            $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $value[$k] = filter_var($v, FILTER_SANITIZE_SPECIAL_CHARS);
+                }
+                $body[$key] = $value;
+            } else {
+                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
         }
 
         // also should check for json body
@@ -67,7 +77,7 @@ class Request
         return $body;
     }
 
-    public function cookies() : array
+    public function cookies(): array
     {
         $cookies = [];
         foreach ($_COOKIE as $key => $value) {
