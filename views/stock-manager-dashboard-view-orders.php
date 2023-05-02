@@ -10,38 +10,42 @@
 //var_dump($total);
 use app\components\Table;
 
-$columns = ["ID", "Customer Name", "Shipping Address", "Order Date","Payment Amount (Rs)","Status", " "];
+$columns = ["ID", "Customer Name", "Shipping Address", "Order Date", "Payment Amount (Rs)", "Status", " "];
 $items = [];
 
-foreach ($orders as $order){
+$noOfOrders = count($orders);
+$startNo = ($page - 1) * $limit + 1;
+$endNo = $startNo + $noOfOrders - 1;
+
+foreach ($orders as $order) {
     $paymentAmount = $order["Payment Amount"] / 100;
-    if($order["Status"] === "Paid"){
+    if ($order["Status"] === "Paid") {
         $order["Status"] = "Not Prepared";
     }
     $statusElements = "";
-        switch ($order["Status"]) {
-            case "Not Prepared":
-                $statusElements = "<span class='status-btn-shape ntprep-st-col'>{$order["Status"]}</span>";
-                break;
-            case "Prepared":
-                $statusElements = "<span class='status-btn-shape prep-st-col'>{$order["Status"]}</span>";
-                break;
-            case "Delivery":
-                $statusElements = "<span class='status-btn-shape del-st-col'>{$order["Status"]}</span>";
-                break;
-            case "CourierConfirmed":
-                $statusElements = "<span class='status-btn-shape cur-st-col'>{$order["Status"]}</span>";
-                break;
-            case "CustomerConfirmed":
-                $statusElements = "<span class='status-btn-shape cus-st-col'>{$order["Status"]}</span>";
-                break;
-        }
-    $items[]=[
+    switch ($order["Status"]) {
+        case "Not Prepared":
+            $statusElements = "<span class='status-btn-shape ntprep-st-col'>{$order["Status"]}</span>";
+            break;
+        case "Prepared":
+            $statusElements = "<span class='status-btn-shape prep-st-col'>{$order["Status"]}</span>";
+            break;
+        case "Delivery":
+            $statusElements = "<span class='status-btn-shape del-st-col'>{$order["Status"]}</span>";
+            break;
+        case "CourierConfirmed":
+            $statusElements = "<span class='status-btn-shape cur-st-col'>{$order["Status"]}</span>";
+            break;
+        case "CustomerConfirmed":
+            $statusElements = "<span class='status-btn-shape cus-st-col'>{$order["Status"]}</span>";
+            break;
+    }
+    $items[] = [
         "ID" => $order["ID"],
         "Customer Name" => $order["Customer Name"],
         "Shipping Address" => $order["Shipping Address"],
         "Order Date" => $order["Order Date"],
-        "Payment Amount" => number_format($paymentAmount,2, '.', ','),
+        "Payment Amount" => number_format($paymentAmount, 2, '.', ','),
         "Status" => $statusElements,
 
         " " => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
@@ -53,48 +57,104 @@ foreach ($orders as $order){
 }
 ?>
 
-<p class="order-count">
-    Showing <?php echo $limit; ?> of <?php echo $total; ?> products
+<p class="order-count" style="margin-bottom: 1rem">
+    Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> orders
 </p>
 
 <div class="order-filtering-and-sort">
-    <div class="product-filters">
-        <div class="product-search">
-            <input type="text" placeholder="Search Order by ID">
-            <i class="fa-solid fa-magnifying-glass"></i>
+    <div class="filters" id="dashboard-order-filters">
+        <div class="filters__actions">
+            <div class="filters__dropdown-trigger">
+                Search & Filter
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
         </div>
 
-        <div>
-            <select name="status-type" id="status-type" class="product-filter--select">
-                <option value="all">All Orders</option>
-                <option value="not-prepared">Not Prepared</option>
-                <option value="prepared">Prepared</option>
-                <option value="delivery">Delivery</option>
-                <option value="courier-confirmed">Courier Confirmed</option>
-                <option value="customer-confirmed">Customer Confirmed</option>
-            </select>
-        </div>
-    </div>
-    <div class="order-sort">
+        <form>
+            <div class="filters__dropdown">
+                <div class="order-filter-search-items">
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search Order by Customer Name"
+                               id="dashboard-order-cus-name-search" name="cus">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
 
-        <select name="sort-type" id="sort-type" class="product-filter--select">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-        </select>
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <p>Filter orders by</p>
+                <div class="filters__dropdown-content">
+                    <div class="form-item form-item--no-label">
+                        <select name="status" id="dashboard-order-status-filter">
+                            <option value="all">Status</option>
+                            <option value="Not Prepared">Not Prepared</option>
+                            <option value="Prepared">Prepared</option>
+                            <option value="Delivery">Delivery</option>
+                            <option value="CourierConfirmed">Courier Confirmed</option>
+                            <option value="CustomerConfirmed">Customer Confirmed</option>
+                        </select>
+                    </div>
+                    <div class="form-item form-item--no-label">
+                        <select name="payment" id="dashboard-order-payment-filter">
+                            <option value="Paid">Paid</option>
+                            <option value="Unpaid">Not Paid</option>
+                        </select>
+                    </div>
+                    <div class="form-item form-item--no-label">
+                        <select name="date" id="dashboard-order-date-filter">
+                            <option value="all">Date</option>
+                            <option value="Today">Today</option>
+                            <option value="Yesterday">Yesterday</option>
+                            <option value="Last7">Last 7 Days</option>
+                            <option value="Last30">Last 30 Days</option>
+                            <option value="Last90Days">Last 90 Days</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="filter-action-buttons">
+                    <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
+                    </button>
+                    <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
     </div>
+
 </div>
 
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
 ?>
 
-
-<div class="pagination-container">
+<div class="dashboard-pagination-container">
     <?php
 
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "pagination-item--active" : "";
-        echo "<a class='pagination-item $isActive' href='/orders?page=$i&limit=$limit'>$i</a>";
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/orders?page=$i&limit=$limit'>$i</a>";
     }
     ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>

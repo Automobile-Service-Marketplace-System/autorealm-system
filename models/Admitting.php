@@ -40,16 +40,20 @@ class Admitting
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
             a.report_no as ID
-            from admittingreportphoto a
-            inner join vehicle v on a.vehicle_reg_no=v.reg_no
-            inner join customer c on v.customer_id=c.customer_id")->fetchAll(PDO::FETCH_ASSOC);
+
+            from admitingreport a
+            left join vehicle v on a.vehicle_reg_no=v.reg_no
+            left join customer c on v.customer_id=c.customer_id"
+
+            )->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
     public function validated_byAdmittingReport():array{
         $errors=[];
 
-        if (strlen($this->body['vehicle_reg_no']) == 0) {
-            $errors['vehicle_reg_no'] = 'Registration No must not be empty.';
+        if(trim($this->body["vehicle_reg_no"] === " ")){
+            $errors['vehicle_reg_no'] = 'Registraion number must not be empty';
         }
 
         if ($this->body['lights_lf'] !== 'good' && $this->body['lights_lf'] !== 'scratched' && $this->body['lights_lf'] !== 'cracked' && $this->body['lights_lf'] !== 'damaged' && $this->body['lights_lf'] !== 'not working') {
@@ -126,11 +130,11 @@ class Admitting
             $errors['departing_time'] = 'Department time must not be empty.';
         }
 
-        if (strlen($this->body['customer_belongings']) == 0) {
+        if (trim($this->body["customer_belongings"] === " ")) {
             $errors['customer_belongings'] = 'Customer belongings must not be empty.';
         }
 
-        if (strlen($this->body['additional_note']) == 0) {
+        if (trim($this->body["additional_note"] === " ")) {
             $errors['additional_note'] = 'Additional note must not be empty.';
         }
 
@@ -156,7 +160,6 @@ class Admitting
  
     public function addAdmittingReport(int $id) : array | int{
         $errors = $this->validated_byAdmittingReport();
-        var_dump($errors);
         if(empty($errors)){
             $query="insert into admitingreport 
                 (
@@ -217,8 +220,6 @@ class Admitting
             $statement->bindvalue(":additional_note", $this->body["additional_note"]);
             $statement->bindvalue(":id", $id);
             $statement->bindvalue(":date", date('Y-m-d'));
-            // $statement->bindvalue(":cur_date()", $cur_date());
-            // $statement->bindvalue(":employee_id", $id);
             $statement->execute();
             return $this->pdo->lastInsertId();
         }

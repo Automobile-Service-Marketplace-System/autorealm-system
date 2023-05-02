@@ -146,9 +146,10 @@
 .btn--text {
     background-color: transparent !important;
     color: var(--color-primary);
-    padding: 0;
+    /*padding: 0;*/
     border: none;
     outline: none;
+    font-weight: bold;
 }
 
 .btn--text.btn--primary {
@@ -169,6 +170,10 @@
 
 .btn--text.btn--danger {
     color: var(--color-danger);
+}
+
+.btn--text.btn--danger:hover {
+    background-color: rgba(var(--danger), 0.1) !important;
 }
 
 .btn--text.btn--light {
@@ -198,6 +203,7 @@
 .btn--text:hover {
     transform: translateY(0);
     box-shadow: none;
+    background-color: rgba(var(--primary), 0.1) !important;
 }
 
 .btn--text:active {

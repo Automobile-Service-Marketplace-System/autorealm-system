@@ -209,11 +209,11 @@ class JobsController
 
             $body = $req->body();
             $jobCardModel = new JobCard($body);
-            $result = $jobCardModel->createJobCard();
+            // $result = $jobCardModel->createJobCard();
 
-            if ($result) {
-                return $res->redirect(path: "/jobs");
-            }
+            // if ($result) {
+            //     return $res->redirect(path: "/jobs");
+            // }
     
             return $res->render(view:"500", layout:"plain", pageParams:[
                 "error" => "Something went wrong. Please try again later.",
@@ -290,7 +290,15 @@ class JobsController
                     'officeStaffId' => $req->session->get('user_id')
             ]);
         }
+        return $res->redirect(path: "/login");
+    }
 
+    public function startJob(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            DevOnly::prettyEcho($req->body());
+            return "";
+        }
         return $res->redirect(path: "/login");
     }
 }

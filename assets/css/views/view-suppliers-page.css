@@ -1,8 +1,8 @@
 .stock-manager-add-button-set {
     display: flex;
     justify-content: end;
-    margin-bottom: 20px;
 }
+
 
 
 
@@ -59,6 +59,10 @@
     gap: 1rem;
 }
 
+
+.supplier-filters__dropdown--active {
+    height: 215px !important;
+}
 
 /*update suppliers css*/
 

@@ -106,12 +106,14 @@ if ($isInternal) {
 
     $app->router->get(path: "/products/categories-brands-models", callback: [ProductsController::class, 'getCategoriesBrandsModels']);
     $app->router->get(path: "/products/for-selector", callback: [ProductsController::class, 'getProductSelectorProducts']);
+    $app->router->get(path: "/services/for-selector", callback: [ServicesController::class, 'getServiceSelectorServices']);
 
 
 // foreman routes
     $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
     $app->router->get(path: "/foreman-dashboard/profile", callback: [DashboardController::class, 'getForemanDashboardProfile']);
     $app->router->get(path: "/jobs", callback: [JobsController::class, 'getJobsPage']);
+    $app->router->post(path: "/jobs/start", callback: [JobsController::class, 'startJob']);
     $app->router->get(path: "/jobs/view", callback: [JobsController::class, 'viewJobPage']);
     $app->router->get(path: "/all-jobs", callback: [JobsController::class, 'getListOfJobsPage']);
     $app->router->get(path: "/inspection-reports/create", callback: [JobsController::class, 'getCreateInspectionReportPage']);
@@ -203,6 +205,7 @@ if ($isInternal) {
     $app->router->get(path: "/security-officer-dashboard/profile", callback: [DashboardController::class, 'getSecurityOfficerDashboardProfile']);
     $app->router->get(path: "/security-officer-dashboard/check-appointment", callback: [AppointmentsController::class, 'getCheckAppointmentPage']);
     $app->router->get(path: "/security-officer-dashboard/view-appointment", callback: [AppointmentsController::class, 'getAllAppointmentsDetails']);
+    
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'getCreateAdmittingReportPage']);
     $app->router->post(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'addAdmittingReportPage']);
     $app->router->get(path: "/security-officer-dashboard/view-admitting-reports", callback: [AdmittingController::class, 'getAdmittingReportsDetails']);
