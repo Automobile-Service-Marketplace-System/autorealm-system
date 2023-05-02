@@ -105,10 +105,11 @@ class JobCard
         ];
     }
 
-    public function getAllJobs(): array
+    public function getAllJobs(int|null $count = null, int|null $page = 1): array
     {
-
-        return $this->pdo->query("
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $jobs =  $this->pdo->query("
             SELECT
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
@@ -124,8 +125,46 @@ class JobCard
             INNER JOIN 
                 customer c ON c.customer_id = j.customer_id
             INNER JOIN 
-                employee e ON e.employee_id = j.employee_id"
+                employee e ON e.employee_id = j.employee_id
+            ORDER BY
+                j.job_card_id $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
 
+        $totalJobs = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM jobcard"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalJobs['total'],
+            "jobCards" => $jobs
+        ];
+
     }
+
+    // public function createJobCard(): bool | string
+    // {
+    //     try {
+    //         $query = $this->pdo->prepare("INSERT INTO jobcard 
+    //             (
+    //                 start_date_time, customer_observation, mileage, vin, customer_id
+    //             ) 
+    //             VALUES 
+    //             (
+    //                 :start_date_time, :customer_observation, :mileage, :vin, :customer_id
+    //             )"
+    //         );
+
+    //     $statement = $this->pdo->prepare($query);
+    //     $statement->bindValue(":start_date_time", $this->body["start_date_time"]);
+    //     $statement->bindValue(":customer_observation", $this->body["customer_observation"]);
+    //     $statement->bindValue(":mileage", $this->body["mileage"]);
+    //     $statement->bindValue(":vin", $this->body["vin"]);
+    //     $statement->bindValue(":customer_id", $this->body["customer_id"]);
+    //     $statement->execute();
+    //     return true;
+    //     } catch (PDOException $e) {
+    //         echo $e->getMessage();
+    //     }
+    //     return "Internal Server Error";
+    // }
 }

@@ -4,12 +4,10 @@
  * @var array $foremanAvailability
  */
 
-var_dump($appointmentInfo);
 $start_date_time = date('Y-m-d H:i:s');
-var_dump($start_date_time);
 ?>
 
-<form action="/office-create-job-card" method="post" class="office-staff-create-jobCard" enctype="multipart/form-data">
+<form action="/create-job-card" method="post" class="office-staff-create-jobCard" enctype="multipart/form-data">
     <div class="appointment-info">
         <p>
             <strong>
@@ -35,7 +33,7 @@ var_dump($start_date_time);
             class="office-staff-dashboard-create-job-card-form" enctype="multipart/form-data">
             <div class="assign-a-foreman">
                 <p>Customer Observation:</p>
-                <textarea name="customer_observation_textarea" cols="90" rows="3" resize="none"></textarea>
+                <textarea name="customer_observation" cols="90" rows="3" resize="none"></textarea>
                 <p>Assign a Foreman</p>
                 <div class="select-foreman-cards">
                     <?php
@@ -57,12 +55,12 @@ var_dump($start_date_time);
                 </div>
             </div>
                 
-            <input style="display: none" name='start_date_time' id='start_date_time' value='$start_date_time'>
-            <input style="display: none" name='mileage' id='mileage' value='$mileage'>
-            <input style="display: none" name='vin' id='vin' value='$vehicle_reg_no'>
-            <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
-            <input style="display: none" name='employee_id' id='employee_id' value='${customerID}'>
-        
+            <input style="display: none" name='start_date_time' id='start_date_time' value='<?php echo $start_date_time ?>'>
+            <input style="display: none" name='mileage' id='mileage' value='<?php echo($appointmentInfo[0]['mileage']) ?>'>
+            <input style="display: none" name='vin' id='vin' value='<?php echo($appointmentInfo[0]['vehicle_reg_no']) ?>'>
+            <input style="display: none" name='customer_id' id='customer_id' value='<?php echo($appointmentInfo[0]['customer_id']) ?>'> 
+            <input style="display: none" name='employee_id' id='employee_id'>
+            
             <div class="office-staff-btn">
                 <button class="btn btn--danger">
                     Reset
