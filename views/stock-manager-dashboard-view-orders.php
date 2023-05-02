@@ -100,7 +100,7 @@ foreach ($orders as $order) {
                     <div class="form-item form-item--no-label">
                         <select name="payment" id="dashboard-order-payment-filter">
                             <option value="Paid">Paid</option>
-                            <option value="NotPaid">Not Paid</option>
+                            <option value="Unpaid">Not Paid</option>
                         </select>
                     </div>
                     <div class="form-item form-item--no-label">
