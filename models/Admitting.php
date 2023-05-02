@@ -130,11 +130,11 @@ class Admitting
             $errors['departing_time'] = 'Department time must not be empty.';
         }
 
-        if (strlen($this->body['customer_belongings']) == 0) {
+        if (trim($this->body["customer_belongings"] === " ")) {
             $errors['customer_belongings'] = 'Customer belongings must not be empty.';
         }
 
-        if (strlen($this->body['additional_note']) == 0) {
+        if (trim($this->body["additional_note"] === " ")) {
             $errors['additional_note'] = 'Additional note must not be empty.';
         }
 
