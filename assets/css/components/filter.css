@@ -31,7 +31,12 @@
     flex-direction: column;
 }
 
-
+.filters__dropdown--active {
+    height: 200px;
+    /*overflow-;*/
+    padding: 1rem;
+    border: 1px solid rgba(var(--black), 0.2);
+}
 
 .filters__dropdown-content{
     display: grid;
@@ -44,3 +49,4 @@
     justify-content: flex-end;
     gap: 1rem;
 }
+

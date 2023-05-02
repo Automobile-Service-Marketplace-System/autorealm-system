@@ -40,11 +40,13 @@ class Admitting
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
             a.report_no as ID
+
             from admitingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
             left join customer c on v.customer_id=c.customer_id"
 
             )->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
     public function validated_byAdmittingReport():array{
