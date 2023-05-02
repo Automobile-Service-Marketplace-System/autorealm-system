@@ -364,11 +364,17 @@ class Employee
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
                 $statement->bindValue(":employee_id", $this->body["employee_id"]);
                 $statement->bindValue(":image", $imageUrl ?? "");
-
+                try{
+                    $statement->execute();
+                    return $statement->rowCount() > 0;
+                }
+                catch(PDOException $e){
+                    $errors["db_error"] = $e->getMessage();
+                    return $errors;
+                }
             } else {
                 return $errors;
             }
-
         } 
         else {
             return $errors;
