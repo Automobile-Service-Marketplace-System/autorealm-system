@@ -15,8 +15,12 @@ class VehiclesController
     {
 
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehicles();
+            $vehicles = $vehicleModel->getVehicles(count: $limit, page: $page);
             $modelModel = new Model();
             $brandModel = new Brand();
 
@@ -24,6 +28,9 @@ class VehiclesController
                 return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
                     pageParams: [
                         "vehicles" => $vehicles,
+                        "total"=>$vehicles['total'],
+                        "limit"=>$limit,
+                        "page"=>$page,
                         "models" => $modelModel->getMOdels(),
                         "brands" => $brandModel->getBrands()],
                     layoutParams: [

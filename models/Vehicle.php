@@ -21,8 +21,11 @@ class Vehicle
         $this->body = $registerBody;
     }
 
-    public function getVehicles(): array
+    public function getVehicles(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
         try{
             $statement = $this->pdo->prepare(
                 "SELECT
@@ -42,13 +45,22 @@ class Vehicle
                 FROM 
                     vehicle v 
                 INNER JOIN model m ON m.model_id = v.model_id
-                INNER JOIN brand b ON b.brand_id = v.brand_id");
+                INNER JOIN brand b ON b.brand_id = v.brand_id
+                ORDER BY v.vin $limitClause $pageClause");
             $statement->execute();
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
+            $vehicles = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $e) {
             echo $e->getMessage();
         }
-        return "Internal Server Error";
+
+        $totalVehicles = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM vehicle"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalVehicles['total'],
+            "vehicles" => $vehicles
+        ];
     }
 
     public function getVehiclesByID(int $customer_id): array | string
