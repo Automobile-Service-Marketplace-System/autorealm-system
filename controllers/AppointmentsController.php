@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Appointment;
+use app\models\JobCard;
 use app\models\Service;
 
 class AppointmentsController
