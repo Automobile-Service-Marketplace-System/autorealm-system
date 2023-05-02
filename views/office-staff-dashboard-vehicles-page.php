@@ -54,7 +54,7 @@ Table::render(items: $items, columns: $columns, keyColumns: ["VIN", "Actions"]);
     <?php 
         foreach(range(1,ceil($total / $limit)) as $i) {
             $isActive = $i === (float)$page ? "pagination-item--active" : "";
-            echo "<a class='pagination-item $isActive' href='/jobs?page=$i&limit=$limit'>$i</a>";
+            echo "<a class='pagination-item $isActive' href='/vehicles?page=$i&limit=$limit'>$i</a>";
         }
         ?>
 </div>

@@ -261,18 +261,29 @@ class Customer
         return $errors;
     }
 
-    public function getCustomers(): array
+    public function getCustomers(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query("
-            SELECT 
+        $customers = $this->pdo->query(
+            "SELECT 
                 customer_id as ID,
                 CONCAT(f_name, ' ', l_name) as 'Full Name',
                 contact_no as 'Contact No',
                 address as Address,
                 email as Email
-            FROM customer")->fetchAll(PDO::FETCH_ASSOC);
+            FROM customer
+            ORDER BY customer_id $limitClause $pageClause")->fetchAll(PDO::FETCH_ASSOC);
 
+        $totalCustomers = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM customer"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalCustomers['total'],
+            "customers" => $customers
+        ];
     }
 
     public function setPaymentId(int $customerId, string $paymentId): string|array
