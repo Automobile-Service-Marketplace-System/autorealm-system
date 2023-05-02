@@ -40,10 +40,12 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllAppointments(): array
+    public function getAllAppointments(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query(
+        $appointments = $this->pdo->query(
             "SELECT
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
@@ -64,8 +66,19 @@ class Appointment
             INNER JOIN  
                 timeslot t 
             ON 
-                t.time_id = a.time_id"
+                t.time_id = a.time_id
+            ORDER BY
+                a.appointment_id $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
+        
+        $totalAppointments = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM appointment"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalAppointments['total'],
+            "appointments" => $appointments
+        ];
     }
 
     public function getAppointmentInfo(int $appointment_id): array | string
