@@ -70,7 +70,6 @@
 @import "views/view-appointment.css";
 @import "views/view-reviews.css";
 @import "views/view-order-details.css";
-@import "views/view-admitting-reports.css";
 @import "views/office-staff-dashboard-generate-invoice-page.css";
 @import "views/cart-checkout.css";
 @import "views/all-jobs.css";
@@ -83,6 +82,7 @@
 @import "views/office-create-appointment.css";
 @import "views/office-update-appointment.css";
 @import "views/add-brand.css";
+@import "views/view-admitting-reports.css";
 
 body{
   font-family: "Nunito", sans-serif;
