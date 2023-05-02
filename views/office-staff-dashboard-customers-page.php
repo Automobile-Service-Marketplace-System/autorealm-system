@@ -49,7 +49,7 @@ foreach($customers['customers'] as $customer) {
 <div class="product-count-and-actions">
     <div class="product-table-count">
         <p>
-            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> jobs
+            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> customers
             <!--            Showing 25 out of 100 products-->
         </p>
     </div>
