@@ -31,24 +31,31 @@ $image = $employee->image ? $employee->image : "";
         <p>Update the account of <?php echo $employee->f_name ?></p><br>
         <b>Choose the account type</b>
         <div class="role-input">
+            <?php 
+                $is_security_officer = $employee->job_role === "security_officer" ? "checked" : "";
+                $is_office_staff_member = $employee->job_role === "office_staff_member" ? "checked" : "";
+                $is_foreman = $employee->job_role === "foreman" ? "checked" : "";
+                $is_technician = $employee->job_role === "technician" ? "checked" : "";
+                $is_stock_manager = $employee->job_role === "stock_manager" ? "checked" : "";
+            ?>
             <div class="role-input-item">
-                <input type="radio" id="security-officer" name="job_role" value="security_officer">
+                <input type="radio" id="security-officer" name="job_role" value="security_officer" <?= $is_security_officer?>>
                 <label for="security-officer">Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
+                <input type="radio" id="office-staff" name="job_role" value="office_staff_member" <?= $is_office_staff_member ?>>
                 <label for="office-staff">Office Staff</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="foreman" name="job_role" value="foreman">
+                <input type="radio" id="foreman" name="job_role" value="foreman" <?= $is_foreman ?>>
                 <label for="foreman">Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="technician" name="job_role" value="technician">
+                <input type="radio" id="technician" name="job_role" value="technician" <?= $is_technician ?>>
                 <label for="technician">Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="stock-manager" name="job_role" value="stock_manager">
+                <input type="radio" id="stock-manager" name="job_role" value="stock_manager" <?= $is_stock_manager ?>>
                 <label for="stock-manager">Stock Manager</label>
 
             </div>
