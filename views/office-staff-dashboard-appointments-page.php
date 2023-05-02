@@ -2,16 +2,19 @@
 
 use app\components\Table;
 
-// var_dump($appointments);
+$noOfJobs = $appointments['total'];
+$startNo = ($page - 1) * $limit + 1;
+$endNo = min($startNo + $limit - 1, $noOfJobs);
+
 $columns = [];
-if (empty($appointments)) {
+if (empty($appointments['appointments'])) {
     echo "<p class='no-data'>No Appointments as of now </p>";
 } else {
     $columns = array("Appointment ID","Reg No", "Customer Name", "Mileage (KM)", "Remarks", "Date", "From Time", "To Time", "Actions");
 
     $items = [];
 
-    foreach ($appointments as $appointment) {
+    foreach ($appointments['appointments'] as $appointment) {
         $items[] = [
             "Appointment ID" => $appointment["Appointment ID"],
             "Vehicle Reg No" => $appointment["Vehicle Reg No"],
@@ -33,6 +36,27 @@ if (empty($appointments)) {
                         </div>"
         ];
     }
-
-    Table::render(items: $items, columns: $columns, keyColumns: ["appointment_id", "Actions"]);
 }
+?>
+
+<div class="product-count-and-actions">
+    <div class="product-table-count">
+        <p>
+            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> appointments
+            <!--            Showing 25 out of 100 products-->
+        </p>
+    </div>
+</div>
+
+<?php
+    Table::render(items: $items, columns: $columns, keyColumns: ["appointment_id", "Actions"]);
+?>
+
+<div class="pagination-container">
+    <?php 
+        foreach(range(1,ceil($total / $limit)) as $i) {
+            $isActive = $i === (float)$page ? "pagination-item--active" : "";
+            echo "<a class='pagination-item $isActive' href='/appointments?page=$i&limit=$limit'>$i</a>";
+        }
+        ?>
+</div>
