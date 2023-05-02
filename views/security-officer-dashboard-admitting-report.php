@@ -96,9 +96,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "not working" => "Not Working",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "light_lf_description",
                         label: "",
@@ -129,9 +127,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "not working" => "Not Working",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "light_rf_description",
                         label: "",
@@ -162,9 +158,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "not working" => "Not Working",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "light_lr_description",
                         label: "",
@@ -195,8 +189,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "not working" => "Not Working",
                         ],
                     );
-                ?>
-                <?php
+
                     FormItem::render(
                         id: "light_rr_description",
                         label: "",
@@ -228,9 +221,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "stained" => "Stained",
                         ],
                     );
-                ?>  
-   
-                <?php
+
                     FormItem::render(
                         id: "seat_lf_description",
                         label: "",
@@ -261,9 +252,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "stained" => "Stained",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "seat_rf_description",
                         label: "",
@@ -294,9 +283,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "stained" => "Stained",
                         ],
                     );
-                ?>
-   
-                <?php
+
                     FormItem::render(
                         id: "seat_rear_description",
                         label: "",
@@ -329,9 +316,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => " Missing",
                         ],
                     );
-                ?>  
 
-                <?php
                     FormItem::render(
                         id: "carpet_lf_description",
                         label: "",
@@ -363,9 +348,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => " Missing",
                         ],
                     );
-                ?>
-   
-                <?php
+
                     FormItem::render(
                         id: "carpet_rf_description",
                         label: "",
@@ -397,9 +380,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => " Missing",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "carpet_rear_description",
                         label: "",
@@ -433,9 +414,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => "Missing",
                         ],
                     );
-                ?>
 
-                <?php
                     FormItem::render(
                         id: "rim_lf_description",
                         label: "",
@@ -466,9 +445,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => "Missing",
                         ],
                     );
-                ?>
-   
-                <?php
+
                     FormItem::render(
                         id: "rim_rf_description",
                         label: "",
@@ -499,9 +476,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => "Missing",
                         ],
                     );
-                ?>
-    
-                <?php
+
                     FormItem::render(
                         id: "rim_lr_description",
                         label: "",
@@ -532,9 +507,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                             "missing" => "Missing",
                         ],
                     );
-                ?>
-  
-                <?php
+
                     FormItem::render(
                         id: "rim_rr_description",
                         label: "",
@@ -566,9 +539,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         "1/4" => "1/4",
                     ],
                 );  
-            ?> 
 
-            <?php
                 FormItem::render(
                     id: "current_fuel_level_description",
                     label: "",
@@ -580,10 +551,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     error: $hasCurrentFuelLevelDescriptionError ? $errors['current_fuel_level_description'] : "",
                     value: $body['current_fuel_level_description'] ?? null,
                 );
-            ?>
 
-
-        <?php
             FormItem::render(
                 id: "milage",
                 label: "<b><br>Milage</b>",
@@ -659,9 +627,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         "stained" => "Stained",
                     ],
                 );
-            ?>
-   
-            <?php
+
                 FormItem::render(
                     id: "dashboard_description",
                     label: "",
@@ -691,9 +657,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         "damaged" => "Damaged",
                     ],
                 );
-            ?>
 
-            <?php
                 FormItem::render(
                     id: "windshield_description",
                     label: "",
