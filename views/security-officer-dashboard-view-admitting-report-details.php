@@ -2,12 +2,20 @@
 
 /**
  * @var object $admittingReport
+ * @var array $errors
  */
 
 use app\components\FormItem;
 use app\components\FormSelectItem;
 use app\components\FormTextareaItem;
 
+$hasErrors = isset($errors) && !empty($errors);
+$hasDepartingTimeError = $hasErrors && isset($errors['departing_time']); 
+
+?>
+
+<!-- <form action="/security-officer-dashboard/admitting-reports/add" method="post" enctype="multipart/form-data"> -->
+<?php
     FormItem::render(
         id:"vehicle_reg_no",
         label:"<b>Registration Number</b>",
@@ -436,8 +444,8 @@ use app\components\FormTextareaItem;
             id: "departing_time",
             label: "<b><br>Departing Time</b>",
             name: "departing_time",
-            value: $admittingReport->departing_time,
             additionalAttributes: "readonly",
+            value: $body['departing_time'] ?? null,
         );
     ?>
 </div>
@@ -537,9 +545,10 @@ use app\components\FormTextareaItem;
             <label for="sparewheel_missing">Missing</label>
         </div>
 </div>
-            
 
-<div class="flex items-center justify-between mt-4 mb-8">
+<!-- <div class="flex items-center justify-between mt-4 mb-8">
     <button type="reset" class="btn btn--danger">Cancel</button>
     <button type="submit" class="btn">Create</button>
-</div>
+</div> -->
+
+</form>
