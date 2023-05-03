@@ -90,7 +90,7 @@ class Supplier
             }
         }
 
-        var_dump($dateFrom);
+//        var_dump($dateFrom);
 
         if(!empty($conditions)) {
             $whereClause = "WHERE " . implode(" AND ", $conditions);
@@ -106,7 +106,7 @@ class Supplier
                                             " WHERE s.email LIKE :search_term_mail AND s.is_discontinued = FALSE";
         }
 
-       var_dump($whereClause);
+//       var_dump($whereClause);
 
 
         $limitClause = $count ? "LIMIT $count" : "";
