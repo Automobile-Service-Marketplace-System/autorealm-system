@@ -9,6 +9,7 @@ use app\models\InspectionCondition;
 use app\models\Appointment;
 use app\models\Foreman;
 use app\models\MaintenanceInspectionReport;
+use app\models\Technician;
 use app\utils\DevOnly;
 
 class JobsController
@@ -294,12 +295,71 @@ class JobsController
         return $res->redirect(path: "/login");
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function startJob(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
             DevOnly::prettyEcho($req->body());
-            return "";
+            $body = $req->body();
+            $query = $req->query();
+            $jobId = $query["id"] ?? null;
+            $productIds = $body["products"] ?? null;
+            $serviceCodes = $body["services"] ?? null;
+            $technicianIds = $body["technicians"] ?? null;
+            if(!$jobId || !$productIds || !$serviceCodes || !$technicianIds) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => "Job ID, Product IDs, Service Codes and Technician IDs are required"
+                ]);
+            }
+            $jobCardModel = new JobCard();
+            $result = $jobCardModel->startJob(jobId: $jobId, productIds: $productIds, serviceCodes: $serviceCodes, technicianIds: $technicianIds);
+            if(is_string($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $result
+                ]);
+            }
+            $res->setStatusCode(code: 204);
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Job started successfully"
+            ]);
         }
         return $res->redirect(path: "/login");
+    }
+
+
+    /**
+     * @throws \JsonException
+     */
+    public function getAvailableTechniciansForJob(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $technicianModel = new Technician();
+            $technicians = $technicianModel->getCurrentlyAvailableTechnicians();
+            if (is_string($technicians)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $technicians
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Available technicians fetched successfully",
+                "data" => $technicians
+            ]);
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            "success" => false,
+            "message" => "You are not authorized to access this resource"
+        ]);
     }
 }

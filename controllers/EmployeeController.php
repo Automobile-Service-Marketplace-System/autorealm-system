@@ -87,7 +87,7 @@ class EmployeeController
     public function editEmployee(Request $req, Response $res):string{
         $body = $req->body();
         $query= $req->query();
-        $employeeId = $query["employee_id"] ?? null;
+        $employeeId = $query["id"] ?? null;
         if(!$employeeId){
             return $res->redirect("/employees");
         }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use app\utils\FSUploader;
 use app\utils\Util;
 use Exception;
@@ -334,6 +335,8 @@ class Employee
 
     public function update(int $employee_id): bool|array
     {
+        DevOnly::prettyEcho($this->body);
+        exit();
         $errors = $this->validateUpdateFormBody();
         if (empty($errors)) {
             try {

@@ -105,6 +105,71 @@ class JobCard
         ];
     }
 
+    public function startJob(int $jobId, array $productIds, array $serviceCodes, array $technicianIds): bool|string
+    {
+        try {
+            $this->pdo->beginTransaction();
+            foreach ($productIds as $productId) {
+                $query = "SELECT quantity FROM product WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare(query: $query);
+                $statement->bindValue(param: ":item_code", value: $productId);
+                $statement->execute();
+                $product = $statement->fetch(mode: PDO::FETCH_ASSOC);
+                if (!$product) {
+                    throw new Exception(message: "Invalid product id");
+                }
+
+                if ($product['quantity'] <= 0) {
+                    throw new Exception(message: "Product out of stock");
+                }
+
+
+                $query = "UPDATE product SET quantity = quantity - 1 WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare(query: $query);
+                $statement->bindValue(param: ":item_code", value: $productId);
+                $statement->execute();
+
+                $query = "INSERT INTO jobcardhasproduct (job_card_id, item_code) VALUES (:job_card_id, :product_id)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":product_id", value: $productId);
+                $statement->execute();
+            }
+
+            foreach ($serviceCodes as $serviceCode) {
+                $query = "INSERT INTO jobcardhasservice (job_card_id, service_code) VALUES (:job_card_id, :service_code)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":service_code", value: $serviceCode);
+                $statement->execute();
+            }
+
+            foreach ($technicianIds as $technicianId) {
+                $query = "INSERT INTO jobcardhastechnician (job_card_id, employee_id) VALUES (:job_card_id, :employee_id)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":employee_id", value: $technicianId);
+                $statement->execute();
+
+
+                $query = "UPDATE technician SET is_available = FALSE WHERE employee_id = :employee_id";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":employee_id", value: $technicianId);
+                $statement->execute();
+            }
+
+            $query = "UPDATE jobcard SET status = 'in-progress' WHERE job_card_id = :job_card_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $this->pdo->commit();
+            return true;
+        } catch (PDOException|Exception $e) {
+            $this->pdo->rollBack();
+            return $e->getMessage();
+        }
+    }
+
     public function getAllJobs(int|null $count = null, int|null $page = 1): array
     {
         $limitClause = $count ? "LIMIT $count" : "";

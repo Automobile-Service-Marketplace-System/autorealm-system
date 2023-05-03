@@ -22,7 +22,7 @@ const selectProductBtn = document.querySelector(".create-job__products-item--new
 /**
  * @type {HTMLDivElement | null}
  */
-const createJobProductsContainer = document.querySelector(".create-job__products")
+export const createJobProductsContainer = document.querySelector(".create-job__products")
 
 
 selectProductBtn?.addEventListener("click", async () => {
@@ -42,7 +42,7 @@ async function addProductsToJob(products) {
                     <div class="create-job__products-item">
                         <h4>${product.Name}</h4>
                         <img src="${product.Image}" alt="${product.Image}'s image">
-                        <button class="py-2 btn btn--danger btn--block btn--text create-job__roduct-remove-btn" type="button">
+                        <button class="py-2 btn btn--danger btn--block btn--text create-job__product-remove-btn" type="button">
                             <i class='fa-solid fa-xmark'></i>
                             Remove
                         </button>
@@ -50,6 +50,9 @@ async function addProductsToJob(products) {
                     </div>
                     `
         )
+        productItem.querySelector(".create-job__product-remove-btn")?.addEventListener("click", () => {
+            productItem.remove()
+        })
         createJobProductsContainer.insertBefore(productItem, selectProductBtn)
     })
 }
