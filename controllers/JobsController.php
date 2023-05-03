@@ -250,6 +250,7 @@ class JobsController
             ]);
 
         }
+        return $res->redirect(path: "/login");
 
     }
 
@@ -315,8 +316,8 @@ class JobsController
                     "page"=>$page
                 ],  
                 layoutParams: [
-                    'title' => 'Jobs',
-                    'pageMainHeading' => 'Jobs',
+                    'title' => 'JobCards',
+                    'pageMainHeading' => 'JobCards',
                     'officeStaffId' => $req->session->get('user_id')
             ]);
         }

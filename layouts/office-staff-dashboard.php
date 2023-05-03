@@ -57,10 +57,10 @@ DocumentHead::createHead(
                     Appointments
                 </span>
             </a>
-            <a href="/jobs">
+            <a href="/jobcards">
                 <i class='fa-solid fa-wrench'></i>      
                 <span>
-                    Jobs
+                    JobCards
                 </span>
             </a>
 

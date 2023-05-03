@@ -98,18 +98,25 @@ foreach ($suppliers as $supplier) {
 
             <p>Filter suppliers by</p>
             <div class="filters__dropdown-content">
-<!--                filter by last supply date-->
+                <!--                filter by last supply date-->
                 <div class="form-item form-item--no-label">
-                <select name="date" id="dashboard-last-supply-date-filter">
-                    <option value="">Last Supply Date</option>
-                    <option value="Today">Today</option>
-                    <option value="Yesterday">Yesterday</option>
-                    <option value="Last 7 Days">Last 7 Days</option>
-                    <option value="Last 30 Days">Last 30 Days</option>
-                    <option value="Last 90 Days">Last 90 Days</option>
-                </select>
-            </div>
+                    <select name="date" id="dashboard-last-supply-date-filter">
+                        <option value="all">Last Supply Date</option>
+                        <option value="Today">Today</option>
+                        <option value="Yesterday">Yesterday</option>
+                        <option value="Last7">Last 7 Days</option>
+                        <option value="Last30">Last 30 Days</option>
+                        <option value="Last90">Last 90 Days</option>
+                    </select>
+                </div>
+                <!--                filter by supplier discontinued or no-->
+                <div class="form-item form-item--no-label">
+                    <select name="status" id="dashboard-supplier-status-filter">
+                        <option value="active">Currently Active</option>
+                        <option value="discontinued">Discontinued</option>
+                    </select>
 
+                </div>
 
 
             </div>

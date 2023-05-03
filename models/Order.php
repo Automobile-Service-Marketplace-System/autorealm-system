@@ -23,14 +23,13 @@ class Order
     public function getOrders(
         int|null $count = null,
         int|null $page = 1,
-        string $searchTermCustomer = null,
-        string $searchTermOrder = null,
-        array $options = [
+        string   $searchTermCustomer = null,
+        string   $searchTermOrder = null,
+        array    $options = [
             'status' => null,
             'order_date' => null,
-            'order_payment' => null,
         ]
-    ): array | string
+    ): array|string
 
     {
 //        DevOnly::prettyEcho($options);
@@ -40,12 +39,14 @@ class Order
 
         $whereClause = null;
         $conditions = [];
+        $dateFrom = null;
+        $dateTo = null;
 
         foreach ($options as $option_key => $option_value) {
             if ($option_value !== null) {
                 switch ($option_key) {
                     case "status":
-                        switch($option_value) {
+                        switch ($option_value) {
                             case "all":
                                 $conditions[] = "o.status != 'Unpaid'";
                                 break;
@@ -68,38 +69,55 @@ class Order
                         }
                         break;
                     case "order_date":
-                        switch($option_value) {
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'Today':
+                                $dateFrom = date('Y-m-d 00:00:00');
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Yesterday':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
+                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
+                                break;
+                            case 'Last7':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last30':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last90Days':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
 
                         }
                         break;
-                    case "order_payment":
-                        switch($option_value) {
-//                            case "Paid":
-//                                $conditions[] = "o.status != 'Unpaid'";
-//                                break;
-//                            case "Unpaid":
-//                                $conditions[] = "o.status = 'Unpaid'";
-//                                break;
 
-                        }
-                        break;
                 }
             }
         }
 
-        if (!empty($conditions)){
+        if(isset($dateTo) && isset($dateFrom)){
+            $conditions[] = "o.created_at BETWEEN :dateFrom AND :dateTo";
+        }
+
+        if (!empty($conditions)) {
             $whereClause = "WHERE " . implode(" AND ", $conditions);
         }
 
 //        DevOnly::prettyEcho($whereClause);
 
-        if($searchTermCustomer !== null){
+        if ($searchTermCustomer !== null) {
             $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE c.f_name LIKE :search_term_cus AND o.status != 'Unpaid'";
         }
 
-        if($searchTermOrder !== null){
+        if ($searchTermOrder !== null) {
             $whereClause = $whereClause ? $whereClause . " AND o.order_no LIKE :search_term_id" : "WHERE o.order_no LIKE :search_term_id AND o.status != 'Unpaid'";
         }
+
 
 //        DevOnly::prettyEcho($whereClause);
 
@@ -126,19 +144,23 @@ class Order
 
         $stmt = $this->pdo->prepare($query);
 
-        if($searchTermCustomer !== null){
-            $stmt->bindValue(":search_term_cus", "%".$searchTermCustomer."%",PDO::PARAM_STR);
+        if ($searchTermCustomer !== null) {
+            $stmt->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
         }
 
-        if($searchTermOrder !== null){
-            $stmt->bindValue(":search_term_id", "%".$searchTermOrder."%",PDO::PARAM_STR);
+        if ($searchTermOrder !== null) {
+            $stmt->bindValue(":search_term_id", "%" . $searchTermOrder . "%", PDO::PARAM_STR);
         }
 
-        try{
+        if(isset($dateTo) && isset($dateFrom)){
+            $stmt->bindValue(":dateFrom", $dateFrom);
+            $stmt->bindValue(":dateTo", $dateTo);
+        }
+
+        try {
             $stmt->execute();
             $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             return $e->getMessage();
         }
 
@@ -374,13 +396,13 @@ class Order
 
 
     private function getPreviousStatus(string $status): string
-        {
-            return match ($status) {
-                "Delivery" => "Prepared",
-                "CourierConfirmed" => "Delivery",
-                default => "Paid",
-            };
-        }
+    {
+        return match ($status) {
+            "Delivery" => "Prepared",
+            "CourierConfirmed" => "Delivery",
+            default => "Paid",
+        };
+    }
 
 
     private function validateUpdateOrderStatusBody(array $body): array
