@@ -191,7 +191,7 @@ class JobCard
             }
 
 
-            $query = "SELECT s.servicecode as Code, s.service_name as Name, jobcardhasservice.is_completed as IsCompleted FROM jobcardhasservice INNER  JOIN service s on jobcardhasservice.service_code = s.servicecode WHERE job_card_id = :job_card_id";
+            $query = "SELECT s.servicecode as Code, s.service_name as Name, jobcardhasservice.is_completed as IsCompleted FROM jobcardhasservice INNER  JOIN service s on jobcardhasservice.service_code = s.servicecode WHERE job_card_id = :job_card_id ORDER BY jobcardhasservice.created_at, jobcardhasservice.is_completed DESC";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(param: ":job_card_id", value: $jobId);
             $statement->execute();

@@ -27,9 +27,9 @@
 
 <ul class="job-actions">
     <li>
-        <a href="/inspection-reports/create?job_id=<?php echo $jobId; ?>">
+        <a href="/jobs/update?job_id=<?php echo $jobId; ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            Update the inspection report
+            Update this job
         </a>
     </li>
     <li>
@@ -47,7 +47,7 @@
 </ul>
 
 
-<h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Selected products</h2>
+<h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Products used in this job</h2>
 <section class="view-job__products">
     <?php
 
@@ -65,7 +65,7 @@
     ?>
 </section>
 
-<h2 class='suggestions-heading'><i class='fa-solid fa-wrench'></i>Selected services</h2>
+<h2 class='suggestions-heading'><i class='fa-solid fa-wrench'></i>Services completion progress</h2>
 <section class="view-job__services">
     <?php
 
@@ -77,7 +77,7 @@
                 <div class='view-job__services-item'>
                         <h4>$name</h4>
                         <div class='form-item form-item--checkbox'>
-                            <input type='checkbox'  $checked readonly>
+                            <input type='checkbox'  $checked readonly onclick='return false;'>
                         </div>    
                 </div>
     ";
@@ -87,7 +87,7 @@
 </section>
 
 
-<h2 class='suggestions-heading'><i class="fa-solid fa-user"></i>Selected technicians</h2>
+<h2 class='suggestions-heading'><i class="fa-solid fa-user"></i>Assigned technicians</h2>
 <section class="view-job__employees">
     <?php
 
@@ -99,7 +99,7 @@
         echo "<div class='view-job__technicians-item'>
                     <img src='$image' alt='$name'>
                     <h4>$name</h4>
-                    <i class='fa-solid fa-circle-check'></i>
+                    <i class='fa-solid fa-pho
                </div>";
     }
     ?>

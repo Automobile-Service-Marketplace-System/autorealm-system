@@ -223,7 +223,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-direction: column;
+    /*flex-direction: column;*/
 }
 
 .view-job__services-item--new {
@@ -304,10 +304,9 @@
     /*.view-job__services {*/
     /*    grid-template-columns: 1fr 1fr;*/
     /*}*/
-
-    /*.view-job__employees {*/
-    /*    grid-template-columns: 1fr 1fr;*/
-    /*}*/
+    .view-job__employees {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media screen and (min-width: 768px) {
@@ -315,12 +314,11 @@
         grid-template-columns: 1fr 1fr 1fr;
     }
 
-    .view-job__services {
-        grid-template-columns: 1fr 1fr;
-    }
-
+    /*.view-job__services {*/
+    /*    grid-template-columns: 1fr 1fr;*/
+    /*}*/
     .view-job__employees {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 }
 
@@ -331,7 +329,7 @@
 
 
     .view-job__employees {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 }
 
@@ -340,11 +338,10 @@
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     }
 
-    .view-job__services {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-
+    /*.view-job__services {*/
+    /*    grid-template-columns: 1fr 1fr 1fr;*/
+    /*}*/
     .view-job__employees {
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 }
