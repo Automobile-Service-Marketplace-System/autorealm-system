@@ -161,7 +161,7 @@
     cursor: pointer;
     outline: 2px solid transparent;
     transition: all 0.2s ease-in-out;
-    height: 300px;
+    height: 225px;
     position: relative;
     gap: 0.5rem;
 }
@@ -295,9 +295,24 @@
     color: var(--color-success);
 }
 
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 500px) {
     .view-job__products {
         grid-template-columns: 1fr 1fr;
+    }
+
+    /*.view-job__services {*/
+    /*    grid-template-columns: 1fr 1fr;*/
+    /*}*/
+
+    /*.view-job__employees {*/
+    /*    grid-template-columns: 1fr 1fr;*/
+    /*}*/
+}
+
+@media screen and (min-width: 768px) {
+    .view-job__products {
+        grid-template-columns: 1fr 1fr 1fr;
     }
 
     .view-job__services {
@@ -311,7 +326,7 @@
 
 @media screen and (min-width: 1024px) {
     .view-job__products {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 
 

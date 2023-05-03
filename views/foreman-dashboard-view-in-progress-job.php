@@ -72,10 +72,14 @@
     foreach ($services as $service) {
         $name = $service['Name'];
         $code = $service['Code'];
+        $checked = $service['IsCompleted'] ? 'checked' : '';
         echo "
                 <div class='view-job__services-item'>
                         <h4>$name</h4>
-                    </div>
+                        <div class='form-item form-item--checkbox'>
+                            <input type='checkbox'  $checked readonly>
+                        </div>    
+                </div>
     ";
     }
 
