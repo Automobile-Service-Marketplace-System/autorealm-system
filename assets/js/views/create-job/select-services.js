@@ -17,7 +17,7 @@ const selectServiceBtn = document.querySelector(".create-job__services-item--new
 /**
  * @type {HTMLDivElement | null}
  */
-const createJobServicesContainer = document.querySelector(".create-job__services")
+export const createJobServicesContainer = document.querySelector(".create-job__services")
 
 
 selectServiceBtn?.addEventListener("click", async () => {
@@ -36,15 +36,17 @@ async function addServicesToJob(services) {
             `
                     <div class="create-job__services-item">
                         <h4>${service.Name}</h4>
-                        <img src="${service.Image}" alt="${service.Image}'s image">
-                        <button class="py-2 btn btn--danger btn--block btn--text create-job__roduct-remove-btn" type="button">
+                        <button class="py-2 btn btn--danger btn--block btn--text create-job__product-remove-btn" type="button">
                             <i class='fa-solid fa-xmark'></i>
                             Remove
                         </button>
-                        <input type="text" name="services[]" value="${service.ID}">
+                        <input type="text" name="services[]" value="${service.Code}" style="display: none">
                     </div>
                     `
         )
+        serviceItem.querySelector(".create-job__product-remove-btn")?.addEventListener("click", () => {
+            serviceItem.remove()
+        })
         createJobServicesContainer.insertBefore(serviceItem, selectServiceBtn)
     })
 }
