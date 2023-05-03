@@ -1,0 +1,193 @@
+.create-job__products {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 2rem;
+    gap: 1rem 2rem;
+
+}
+
+
+.create-job__products-item {
+    background-color: var(--color-bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(var(--dark), 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    height: 300px;
+    position: relative;
+    gap: 0.5rem;
+}
+
+.create-job__products-item--new {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    justify-content: center;
+}
+
+
+.create-job__products-item--new svg {
+    font-size: 3rem;
+}
+
+
+.create-job__products-item--new:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+
+.create-job__products-item h4 {
+    font-size: 0.8rem;
+    font-weight: normal;
+    margin-block: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.create-job__products-item img {
+    height: 150px;
+    width: 150px;
+    /*object-fit: cover;*/
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.create-job__products-item input {
+    display: none;
+}
+
+
+.create-job__services {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.create-job__services-item {
+    background-color: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.create-job__services-item--new {
+    justify-content: center;
+    gap: 1rem;
+}
+
+.create-job__employees {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-block: 2rem;
+    gap: 1rem 2rem;
+}
+
+.create-job__technicians-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(var(--dark), 0.1);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+}
+
+.create-job__technicians-item > div:first-child span {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: var(--color-success);
+    display: inline-block;
+}
+
+
+.create-job__technicians-item > div:first-child span.danger {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: var(--color-danger);
+    display: inline-block;
+}
+
+
+.create-job__technicians-item:hover {
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+
+.create-job__technicians-item svg {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.create-job__technicians-item--selected {
+    outline: 2px solid var(--color-success);
+}
+
+.create-job__technicians-item--selected svg {
+    /*display: initial;*/
+    opacity: 1;
+    font-size: 1.5rem;
+    background-color: #fff;
+    color: var(--color-success);
+}
+
+@media screen and (min-width: 768px) {
+    .create-job__products {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .create-job__services {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .create-job__employees {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .create-job__products {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+
+    .create-job__employees {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .create-job__products {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .create-job__services {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .create-job__employees {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+}

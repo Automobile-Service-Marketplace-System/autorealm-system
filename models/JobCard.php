@@ -170,4 +170,60 @@ class JobCard
             return $e->getMessage();
         }
     }
+
+    public function getProductsServicesTechniciansInJob(int $jobId): array|string
+    {
+        try {
+
+            $query = "SELECT p.item_code as ID, p.name as Name, p.image as images FROM jobcardhasproduct INNER  JOIN product p on jobcardhasproduct.item_code = p.item_code WHERE job_card_id = :job_card_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $rawProducts = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $products = [];
+
+            foreach ($rawProducts as $product) {
+                $products[] = [
+                    "ID" => $product['ID'],
+                    "Name" => $product['Name'],
+                    "Image" => json_decode($product['images'])[0]
+                ];
+            }
+
+
+            $query = "SELECT s.servicecode as Code, s.service_name as Name FROM jobcardhasservice INNER  JOIN service s on jobcardhasservice.service_code = s.servicecode WHERE job_card_id = :job_card_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $services = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $query = "SELECT e.employee_id as ID, CONCAT(e.f_name, ' ', e.l_name) as Name, e.image as Image FROM jobcardhastechnician INNER  JOIN employee e on jobcardhastechnician.employee_id = e.employee_id WHERE job_card_id = :job_card_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $technicians = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
+            $statement = $this->pdo->prepare(query: $query);
+            $statement->bindValue(param: ":jobId", value: $jobId);
+            $statement->execute();
+            $serviceStatusResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
+            $all = (int)$serviceStatusResult["not_completed_count"] + (int)$serviceStatusResult["completed_count"];
+            $done = (int)$serviceStatusResult["completed_count"];
+
+            return [
+                "products" => $products,
+                "services" => $services,
+                "technicians" => $technicians,
+                "service_status" => [
+                    "all" => $all,
+                    "done" => $done
+                ]
+            ];
+
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
