@@ -24,7 +24,6 @@ class OrdersController
             $searchTermOrder = $query["id"] ?? null;
             $orderStatus = isset($query["status"]) ? ($query["status"] == "" ? "all" : $query["status"]) : "all";
             $orderDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
-            $orderPayment = isset($query["payment"]) ? ($query["payment"] == "" ? "all" : $query["payment"]) : "all";
 
 
             $orderModel = new Order();
@@ -36,7 +35,6 @@ class OrdersController
                 options: [
                     'status' => $orderStatus,
                     'order_date' => $orderDate,
-                    'order_payment' => $orderPayment,
 
                 ],
             );

@@ -221,6 +221,7 @@ class JobsController
             ]);
 
         }
+        return $res->redirect(path: "/login");
 
     }
 
