@@ -20,10 +20,22 @@ class SuppliersController
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
             //for search
-            $searchTermCustomer =
+            $searchTermSupplier = $query["sup"] ?? null;
+            $searchTermMail = $query["mail"] ?? null;
+            $supplierStatus = isset($query["status"]) ? ($query["status"] == "" ? "active" : $query["status"]) : "active";
+            $supplyDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
 
             $supplierModel = new Supplier();
-            $result = $supplierModel->getSuppliersList(count: $limit, page: $page);
+            $result = $supplierModel->getSuppliersList(
+                count: $limit,
+                page: $page,
+                searchTermSupplier: $searchTermSupplier,
+                searchTermMail: $searchTermMail,
+                options: [
+                    'status' => $supplierStatus,
+                    'supply_date' => $supplyDate,
+                ],
+            );
 
 
             if ($req->session->get("user_role") === "stock_manager") {

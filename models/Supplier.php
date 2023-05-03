@@ -28,7 +28,17 @@ class Supplier
     }
 
 
-    public function getSuppliersList(int|null $count = null, int|null $page = 1): array
+    public function getSuppliersList(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermSupplier = null,
+        string $searchTermMail = null,
+        array $options = [
+                'status' => null,
+                'supply_date' => null,
+            ]
+
+    ): array|string
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";

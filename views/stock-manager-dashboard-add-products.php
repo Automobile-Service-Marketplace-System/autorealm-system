@@ -131,7 +131,7 @@ $hasMediumQuantityError = $hasErrors && isset($errors['medium_quantity']);
         </div>
         <br>
         <h2 class="product-form-subheading">Stock keeping Details</h2>
-        <div class="stock-manager-add-products-form__product">
+        <div class="stock-manager-add-products-form__stock-keeping">
             <?php
             FormItem::render(
                 id: "low_quantity",
