@@ -179,12 +179,11 @@ class JobCard
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
                 concat(e.f_name,' ',e.l_name) as 'Employee Name',
-                vin as 'VIN',
+                vehicle_reg_no as 'Vehicle Reg. No',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
                 status as 'Status',
                 mileage as 'Mileage',
-                customer_observation as 'Customer Observation'
             FROM 
                 jobcard j 
             INNER JOIN 

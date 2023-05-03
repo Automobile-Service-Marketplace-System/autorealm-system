@@ -32,8 +32,6 @@ $start_date_time = date('Y-m-d H:i:s');
         <form action="office-staff-dashboard/create-job-card" method="post"
             class="office-staff-dashboard-create-job-card-form" enctype="multipart/form-data">
             <div class="assign-a-foreman">
-                <p>Customer Observation:</p>
-                <textarea name="customer_observation" cols="90" rows="3" resize="none"></textarea>
                 <p>Assign a Foreman</p>
                 <div class="select-foreman-cards">
                     <?php
