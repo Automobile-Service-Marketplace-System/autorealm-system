@@ -40,10 +40,12 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllAppointments(): array
+    public function getAllAppointments(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query(
+        $appointments = $this->pdo->query(
             "SELECT
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
@@ -64,22 +66,47 @@ class Appointment
             INNER JOIN  
                 timeslot t 
             ON 
-                t.time_id = a.time_id"
+                t.time_id = a.time_id
+            ORDER BY
+                a.appointment_id $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
+        
+        $totalAppointments = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM appointment"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalAppointments['total'],
+            "appointments" => $appointments
+        ];
     }
 
-    public function getAppointmentInfo(int $customer_id): array
+    public function getAppointmentInfo(int $appointment_id): array | string
     {
-
-        return $this->pdo->query(
-            "SELECT
-            CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
-            vehicle_reg_no
-            FROM appointment a 
-                INNER JOIN customer c ON c.customer_id = a.customer_id
-            WHERE 
-                c.customer_id = $customer_id"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        try{
+            $statement = $this->pdo->prepare(
+                "SELECT
+                    CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
+                    vehicle_reg_no,
+                    a.appointment_id,
+                    a.mileage,
+                    a.vehicle_reg_no,
+                    a.customer_id
+                FROM 
+                    appointment a 
+                INNER JOIN 
+                    customer c 
+                ON  
+                    a.customer_id = c.customer_id
+                WHERE 
+                    a.appointment_id = :appointment_id");
+            $statement->bindValue(":appointment_id", $appointment_id);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
     }
 
     public function getAppointments(): array

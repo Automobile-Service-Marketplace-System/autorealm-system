@@ -16,19 +16,31 @@ class Invoice
         $this->body = $registerBody;
     }
 
-    public function getInvoices(): array
+    public function getInvoices(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query("
-            SELECT
-            invoice_no as 'Invoice No',
-            customer_name as 'Customer Name',
-            total_cost as 'Total Cost',
-            type as Type,
-            employee_id as 'Employee ID',
-            job_card_id as 'JobCard ID'
-            FROM invoice"
+        $invoices = $this->pdo->query(
+            "SELECT
+                invoice_no as 'Invoice No',
+                customer_name as 'Customer Name',
+                total_cost as 'Total Cost',
+                type as Type,
+                employee_id as 'Employee ID',
+                job_card_id as 'JobCard ID'
+            FROM 
+                invoice
+            ORDER BY invoice_no $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
 
+        $totalInvoices = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM invoice"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalInvoices['total'],
+            "invoices" => $invoices
+        ];
     }
 }

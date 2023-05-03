@@ -214,11 +214,10 @@ class JobsController
             $query = $req->query();
             $appointmentModel = new Appointment();
             $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
-
             $foremanModel = new Foreman();
             $foremanInfo = $foremanModel->getForemanAvailability();
 
-            return $res->render(view: "office-staff-dashboard-jobcard-page", layout: "office-staff-dashboard",
+            return $res->render(view: "office-staff-dashboard-create-jobcard-page", layout: "office-staff-dashboard",
                 pageParams: [
                     "appointmentInfo" => $appointmentInfo,
                     "foremanAvailability" => $foremanInfo
@@ -231,6 +230,26 @@ class JobsController
         }
 
         return $res->redirect(path: "/login");
+
+    }
+
+    public function createJobCard(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+
+            $body = $req->body();
+            $jobCardModel = new JobCard($body);
+            // $result = $jobCardModel->createJobCard();
+
+            // if ($result) {
+            //     return $res->redirect(path: "/jobs");
+            // }
+    
+            return $res->render(view:"500", layout:"plain", pageParams:[
+                "error" => "Something went wrong. Please try again later.",
+            ]);
+
+        }
 
     }
 
@@ -279,6 +298,30 @@ class JobsController
         return $res->redirect(path: "/login");
     }
 
+    public function getAllJobsPage(Request $req, Response $res) : string {
+
+        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+            $jobCardModel = new JobCard();
+            $jobCards = $jobCardModel->getAllJobs(count: $limit, page: $page);
+
+            return $res->render(view: "office-staff-dashboard-all-jobs-page", layout: "office-staff-dashboard",
+                pageParams: [
+                    "jobCards"=>$jobCards,
+                    "total"=>$jobCards['total'],
+                    "limit"=>$limit,
+                    "page"=>$page
+                ],  
+                layoutParams: [
+                    'title' => 'Jobs',
+                    'pageMainHeading' => 'Jobs',
+                    'officeStaffId' => $req->session->get('user_id')
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
 
     /**
      * @throws \JsonException

@@ -57,6 +57,12 @@ DocumentHead::createHead(
                     Appointments
                 </span>
             </a>
+            <a href="/jobs">
+                <i class='fa-solid fa-wrench'></i>      
+                <span>
+                    Jobs
+                </span>
+            </a>
 
         </nav>
     </aside>
