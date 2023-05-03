@@ -5,7 +5,6 @@ use app\utils\DevOnly;
  * @var array $errors
  */
 
-var_dump((int)$employee->employee_id);
 use app\components\FormItem;
 
 $hasErrors = isset($errors) && !empty($errors);
@@ -28,8 +27,7 @@ $image = $employee->image ? $employee->image : "";
 
 <main class="update-employee">
     <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
-        <p>Update the account of <?php echo $employee->f_name ?></p><br>
-        <b>Choose the account type</b>
+        <b>Choose the employee's role</b>
         <div class="role-input">
             <div class="role-input-item">
                 <input type="radio" id="security-officer" name="job_role" value="security_officer">

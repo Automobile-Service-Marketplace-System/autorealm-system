@@ -119,6 +119,7 @@ if ($isInternal) {
     $app->router->get(path: "/inspection-reports/create", callback: [JobsController::class, 'getCreateInspectionReportPage']);
     $app->router->post(path: "/inspection-reports/create", callback: [JobsController::class, 'createInspectionReport']);
     $app->router->post(path: "/inspection-reports/create-draft", callback: [JobsController::class, 'createInspectionReportDraft']);
+    $app->router->get(path: "/technicians", callback: [JobsController::class, 'getAvailableTechniciansForJob']);
 
 // technician routes
 
