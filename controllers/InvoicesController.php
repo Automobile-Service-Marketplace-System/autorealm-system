@@ -11,11 +11,19 @@ class InvoicesController
     public function getInvoicesPage(Request $req, Response $res) : string {
 
         if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
             $invoiceModel = new Invoice();
-            $invoices = $invoiceModel->getInvoices();
+            $invoices = $invoiceModel->getInvoices(count: $limit, page: $page);
 
             return $res->render(view: "office-staff-dashboard-invoices-page", layout: "office-staff-dashboard",
-                pageParams: ["invoices"=>$invoices], 
+                pageParams: [
+                    "invoices"=>$invoices,
+                    "total"=>$invoices['total'],
+                    "limit"=>$limit,
+                    "page"=>$page], 
                 layoutParams: [
                     'title' => 'Invoices',
                     'pageMainHeading' => 'Invoices',
