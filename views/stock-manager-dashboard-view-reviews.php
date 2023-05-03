@@ -15,7 +15,7 @@ $startNo = ($page - 1) * $limit + 1;
 $endNo = $startNo + $noOfReviews - 1;
 ?>
 
-<div class="product-table-count">
+<div class="product-table-count" style="text-align: left">
     <p>
         Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> reviews
         <!--            Showing 25 out of 100 products-->

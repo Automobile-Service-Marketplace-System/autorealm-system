@@ -33,14 +33,80 @@ class Order
     ): array | string
 
     {
-        DevOnly::prettyEcho($options);
-        var_dump($searchTermCustomer);
-        var_dump($searchTermOrder);
+//        DevOnly::prettyEcho($options);
+//        var_dump($searchTermCustomer);
+//        var_dump($searchTermOrder);
         //number of rows
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                switch ($option_key) {
+                    case "status":
+                        switch($option_value) {
+                            case "all":
+                                $conditions[] = "o.status != 'Unpaid'";
+                                break;
+                            case "Not Prepared":
+                                $conditions[] = "o.status = 'Paid'";
+                                break;
+                            case "Prepared":
+                                $conditions[] = "o.status = 'Prepared'";
+                                break;
+                            case "Delivery":
+                                $conditions[] = "o.status = 'Delivery'";
+                                break;
+                            case "CourierConfirmed":
+                                $conditions[] = "o.status = 'CourierConfirmed'";
+                                break;
+                            case "CustomerConfirmed":
+                                $conditions[] = "o.status = 'CustomerConfirmed'";
+                                break;
+
+                        }
+                        break;
+                    case "order_date":
+                        switch($option_value) {
+
+                        }
+                        break;
+                    case "order_payment":
+                        switch($option_value) {
+//                            case "Paid":
+//                                $conditions[] = "o.status != 'Unpaid'";
+//                                break;
+//                            case "Unpaid":
+//                                $conditions[] = "o.status = 'Unpaid'";
+//                                break;
+
+                        }
+                        break;
+                }
+            }
+        }
+
+        if (!empty($conditions)){
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+//        DevOnly::prettyEcho($whereClause);
+
+        if($searchTermCustomer !== null){
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE c.f_name LIKE :search_term_cus AND o.status != 'Unpaid'";
+        }
+
+        if($searchTermOrder !== null){
+            $whereClause = $whereClause ? $whereClause . " AND o.order_no LIKE :search_term_id" : "WHERE o.order_no LIKE :search_term_id AND o.status != 'Unpaid'";
+        }
+
+//        DevOnly::prettyEcho($whereClause);
+
         $limitClause = $count ? "LIMIT $count" : "";
         //starting point of retrieving rows
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $orders =  $this->pdo->query(
+        $query =
             "SELECT 
                           DISTINCT(o.order_no) as ID,
                           o.status as Status,
@@ -52,12 +118,29 @@ class Order
                      FROM `order` o
                           INNER JOIN customer c on o.customer_id = c.customer_id
                           INNER JOIN orderhasproduct h on o.order_no = h.order_no
-                     WHERE o.status != 'Unpaid'    
+                    
+                     $whereClause
+                     
                      GROUP BY o.order_no, o.created_at
-                     ORDER BY o.created_at DESC $limitClause $pageClause"
+                     ORDER BY o.created_at DESC $limitClause $pageClause";
 
+        $stmt = $this->pdo->prepare($query);
 
-        )->fetchAll(PDO::FETCH_ASSOC);
+        if($searchTermCustomer !== null){
+            $stmt->bindValue(":search_term_cus", "%".$searchTermCustomer."%",PDO::PARAM_STR);
+        }
+
+        if($searchTermOrder !== null){
+            $stmt->bindValue(":search_term_id", "%".$searchTermOrder."%",PDO::PARAM_STR);
+        }
+
+        try{
+            $stmt->execute();
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
 
         $totalOrders = $this->pdo->query(
             "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
