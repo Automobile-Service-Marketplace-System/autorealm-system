@@ -83,6 +83,9 @@ async function updateOrderStatus(inputElement, mode) {
                     type: "success",
                     header: "Success",
                 })
+                setTimeout(() => {
+                    location.reload()
+                }, 2000);
                 break;
 
             case 500:
