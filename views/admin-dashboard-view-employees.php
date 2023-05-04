@@ -1,6 +1,9 @@
 <?php
 /**
  * @var array $employees
+ * @var int $limit
+ * @var int $page
+ * @var int $total
  */
 
 ?>
@@ -51,9 +54,16 @@
                     <a class='employee-card__contact' href='tel:{$employee['Contact No']}'>{$employee['Contact No']}</a>
                     <a class='employee-card__contact' href='mailto:{$employee['Email']}'>{$employee['Email']}</a>
                 </div> 
-              </div>";
-
-        
+              </div>";  
     }
     ?>
+
+    <div class="pagination-container">
+        <?php 
+            foreach(range(1, ceil($total / $limit)) as $i){
+                $activePage = $i === (float)$page ? "pagination-item--active" : "";
+                echo "<a class='pagination-item $activePage' href='/employees?page=$i&limit=$limit'> $i </a>";
+            }
+        ?>
+    </div>
 </div>
