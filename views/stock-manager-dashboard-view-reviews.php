@@ -45,7 +45,7 @@ $endNo = $startNo + $noOfReviews - 1;
             <div class="filters__dropdown-content">
 
                 <div class="form-item form-item--no-label">
-                    <select name="date" id="dashboard-review-rating-filter">
+                    <select name="rating" id="dashboard-review-rating-filter">
                         <option value="all">Rating</option>
                         <option value="1star">1 Star ⭐</option>
                         <option value="2star">2 Star ⭐⭐</option>

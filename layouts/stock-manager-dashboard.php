@@ -58,6 +58,12 @@ DocumentHead::createHead(
                     Reviews
                 </span>
             </a>
+            <a href="/analytics">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>
+                    Analytics
+                </span>
+            </a>
 
         </nav>
     </aside>

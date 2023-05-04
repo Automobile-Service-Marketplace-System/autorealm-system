@@ -15,11 +15,26 @@ class ReviewController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
             $query = $req->query();
+//          for pagination
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
+//          for searching
+            $searchTermProduct = $query["product"] ?? null;
+            $reviewRating = isset($query["rating"]) ? ($query["rating"] == "" ? "all" : $query["rating"]) : "all";
+            $reviewDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
+
             $reviewModel = new Reviews();
-            $results = $reviewModel->getReviews(count: $limit, page: $page);
+            $results = $reviewModel->getReviews(
+                count: $limit,
+                page: $page,
+                searchTermProduct: $searchTermProduct,
+                options: [
+                    'rating' => $reviewRating,
+                    'review_date' => $reviewDate,
+                ]
+
+            );
             // DevOnly::prettyEcho($reviews);
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-reviews", layout: "stock-manager-dashboard",
