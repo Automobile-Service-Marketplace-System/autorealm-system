@@ -5,7 +5,6 @@ use app\utils\DevOnly;
  * @var array $errors
  */
 
-var_dump((int)$employee->employee_id);
 use app\components\FormItem;
 
 $hasErrors = isset($errors) && !empty($errors);
@@ -28,7 +27,6 @@ $image = $employee->image ? $employee->image : "";
 
 <main class="update-employee">
     <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
-        <p>Update the account of <?php echo $employee->f_name ?></p><br>
         <b>Choose the account type</b>
         <div class="role-input">
             <?php 
@@ -181,9 +179,11 @@ $image = $employee->image ? $employee->image : "";
                 </div>
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="reset" id='rst' class="btn">Cancel</button>
-            <button type="button" id='delete-employee-btn' class="btn btn--danger" data-employeeid="<?= $employee->employee_id ?>">Delete</button>
-            <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
+            <button type="reset" class="btn">Cancel</button>
+            <div class="delete-update-btn">
+                <button type="button" id='delete-employee-btn' class="btn btn--danger" data-employeeid="<?= $employee->employee_id ?>">Delete</button>
+                <button type="submit" class="btn btn--warning" href=>Update</button>
+            </div>
         </div>
     </form>
 </main>

@@ -82,3 +82,10 @@
         width: 600px;
         height: 480px;
     }
+
+    .delete-update-btn{
+        float: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
