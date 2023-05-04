@@ -89,7 +89,7 @@ class EmployeeController
 
     public function editEmployee(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
-
+        
             $body = $req->body();
             $query= $req->query();
             $employeeId = $query["id"] ?? null;

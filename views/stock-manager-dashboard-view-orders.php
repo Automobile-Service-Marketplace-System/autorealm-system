@@ -97,12 +97,7 @@ foreach ($orders as $order) {
                             <option value="CustomerConfirmed">Customer Confirmed</option>
                         </select>
                     </div>
-                    <div class="form-item form-item--no-label">
-                        <select name="payment" id="dashboard-order-payment-filter">
-                            <option value="Paid">Paid</option>
-                            <option value="NotPaid">Not Paid</option>
-                        </select>
-                    </div>
+
                     <div class="form-item form-item--no-label">
                         <select name="date" id="dashboard-order-date-filter">
                             <option value="all">Date</option>
@@ -110,7 +105,7 @@ foreach ($orders as $order) {
                             <option value="Yesterday">Yesterday</option>
                             <option value="Last7">Last 7 Days</option>
                             <option value="Last30">Last 30 Days</option>
-                            <option value="Last90Days">Last 90 Days</option>
+                            <option value="Last90">Last 90 Days</option>
                         </select>
                     </div>
 

@@ -23,24 +23,108 @@ class Order
     public function getOrders(
         int|null $count = null,
         int|null $page = 1,
-        string $searchTermCustomer = null,
-        string $searchTermOrder = null,
-        array $options = [
+        string   $searchTermCustomer = null,
+        string   $searchTermOrder = null,
+        array    $options = [
             'status' => null,
             'order_date' => null,
-            'order_payment' => null,
         ]
-    ): array | string
+    ): array|string
 
     {
-        DevOnly::prettyEcho($options);
-        var_dump($searchTermCustomer);
-        var_dump($searchTermOrder);
+//        DevOnly::prettyEcho($options);
+//        var_dump($searchTermCustomer);
+//        var_dump($searchTermOrder);
         //number of rows
+
+        $whereClause = null;
+        $conditions = [];
+        $dateFrom = null;
+        $dateTo = null;
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                switch ($option_key) {
+                    case "status":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "o.status != 'Unpaid'";
+                                break;
+                            case "Not Prepared":
+                                $conditions[] = "o.status = 'Paid'";
+                                break;
+                            case "Prepared":
+                                $conditions[] = "o.status = 'Prepared'";
+                                break;
+                            case "Delivery":
+                                $conditions[] = "o.status = 'Delivery'";
+                                break;
+                            case "CourierConfirmed":
+                                $conditions[] = "o.status = 'CourierConfirmed'";
+                                break;
+                            case "CustomerConfirmed":
+                                $conditions[] = "o.status = 'CustomerConfirmed'";
+                                break;
+
+                        }
+                        break;
+                    case "order_date":
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'Today':
+                                $dateFrom = date('Y-m-d 00:00:00');
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Yesterday':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
+                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
+                                break;
+                            case 'Last7':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last30':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last90Days':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+
+                        }
+                        break;
+
+                }
+            }
+        }
+
+        if(isset($dateTo) && isset($dateFrom)){
+            $conditions[] = "o.created_at BETWEEN :dateFrom AND :dateTo";
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+//        DevOnly::prettyEcho($whereClause);
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE c.f_name LIKE :search_term_cus AND o.status != 'Unpaid'";
+        }
+
+        if ($searchTermOrder !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND o.order_no LIKE :search_term_id" : "WHERE o.order_no LIKE :search_term_id AND o.status != 'Unpaid'";
+        }
+
+
+//        DevOnly::prettyEcho($whereClause);
+
         $limitClause = $count ? "LIMIT $count" : "";
         //starting point of retrieving rows
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $orders =  $this->pdo->query(
+        $query =
             "SELECT 
                           DISTINCT(o.order_no) as ID,
                           o.status as Status,
@@ -52,12 +136,33 @@ class Order
                      FROM `order` o
                           INNER JOIN customer c on o.customer_id = c.customer_id
                           INNER JOIN orderhasproduct h on o.order_no = h.order_no
-                     WHERE o.status != 'Unpaid'    
+                    
+                     $whereClause
+                     
                      GROUP BY o.order_no, o.created_at
-                     ORDER BY o.created_at DESC $limitClause $pageClause"
+                     ORDER BY o.created_at DESC $limitClause $pageClause";
 
+        $stmt = $this->pdo->prepare($query);
 
-        )->fetchAll(PDO::FETCH_ASSOC);
+        if ($searchTermCustomer !== null) {
+            $stmt->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermOrder !== null) {
+            $stmt->bindValue(":search_term_id", "%" . $searchTermOrder . "%", PDO::PARAM_STR);
+        }
+
+        if(isset($dateTo) && isset($dateFrom)){
+            $stmt->bindValue(":dateFrom", $dateFrom);
+            $stmt->bindValue(":dateTo", $dateTo);
+        }
+
+        try {
+            $stmt->execute();
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
 
         $totalOrders = $this->pdo->query(
             "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
@@ -291,13 +396,13 @@ class Order
 
 
     private function getPreviousStatus(string $status): string
-        {
-            return match ($status) {
-                "Delivery" => "Prepared",
-                "CourierConfirmed" => "Delivery",
-                default => "Paid",
-            };
-        }
+    {
+        return match ($status) {
+            "Delivery" => "Prepared",
+            "CourierConfirmed" => "Delivery",
+            default => "Paid",
+        };
+    }
 
 
     private function validateUpdateOrderStatusBody(array $body): array

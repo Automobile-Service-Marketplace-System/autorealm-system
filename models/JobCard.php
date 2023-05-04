@@ -104,4 +104,132 @@ class JobCard
             "error" => "Invalid job id"
         ];
     }
+
+    public function startJob(int $jobId, array $productIds, array $serviceCodes, array $technicianIds): bool|string
+    {
+        try {
+            $this->pdo->beginTransaction();
+            foreach ($productIds as $productId) {
+                $query = "SELECT quantity FROM product WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare(query: $query);
+                $statement->bindValue(param: ":item_code", value: $productId);
+                $statement->execute();
+                $product = $statement->fetch(mode: PDO::FETCH_ASSOC);
+                if (!$product) {
+                    throw new Exception(message: "Invalid product id");
+                }
+
+                if ($product['quantity'] <= 0) {
+                    throw new Exception(message: "Product out of stock");
+                }
+
+
+                $query = "UPDATE product SET quantity = quantity - 1 WHERE item_code = :item_code";
+                $statement = $this->pdo->prepare(query: $query);
+                $statement->bindValue(param: ":item_code", value: $productId);
+                $statement->execute();
+
+                $query = "INSERT INTO jobcardhasproduct (job_card_id, item_code) VALUES (:job_card_id, :product_id)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":product_id", value: $productId);
+                $statement->execute();
+            }
+
+            foreach ($serviceCodes as $serviceCode) {
+                $query = "INSERT INTO jobcardhasservice (job_card_id, service_code) VALUES (:job_card_id, :service_code)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":service_code", value: $serviceCode);
+                $statement->execute();
+            }
+
+            foreach ($technicianIds as $technicianId) {
+                $query = "INSERT INTO jobcardhastechnician (job_card_id, employee_id) VALUES (:job_card_id, :employee_id)";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":job_card_id", value: $jobId);
+                $statement->bindValue(param: ":employee_id", value: $technicianId);
+                $statement->execute();
+
+
+                $query = "UPDATE technician SET is_available = FALSE WHERE employee_id = :employee_id";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(param: ":employee_id", value: $technicianId);
+                $statement->execute();
+            }
+
+            $query = "UPDATE jobcard SET status = 'in-progress' WHERE job_card_id = :job_card_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $this->pdo->commit();
+            return true;
+        } catch (PDOException|Exception $e) {
+            $this->pdo->rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    public function getAllJobs(int|null $count = null, int|null $page = 1): array
+    {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $jobs =  $this->pdo->query("
+            SELECT
+                job_card_id as 'JobCard ID',
+                concat(c.f_name,' ',c.l_name) as 'Customer Name',
+                concat(e.f_name,' ',e.l_name) as 'Employee Name',
+                vin as 'VIN',
+                start_date_time as 'Start Date Time',
+                end_date_time as 'End Date Time',
+                status as 'Status',
+                mileage as 'Mileage',
+                customer_observation as 'Customer Observation'
+            FROM 
+                jobcard j 
+            INNER JOIN 
+                customer c ON c.customer_id = j.customer_id
+            INNER JOIN 
+                employee e ON e.employee_id = j.employee_id
+            ORDER BY
+                j.job_card_id $limitClause $pageClause"
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalJobs = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM jobcard"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalJobs['total'],
+            "jobCards" => $jobs
+        ];
+
+    }
+
+    // public function createJobCard(): bool | string
+    // {
+    //     try {
+    //         $query = $this->pdo->prepare("INSERT INTO jobcard 
+    //             (
+    //                 start_date_time, customer_observation, mileage, vin, customer_id
+    //             ) 
+    //             VALUES 
+    //             (
+    //                 :start_date_time, :customer_observation, :mileage, :vin, :customer_id
+    //             )"
+    //         );
+
+    //     $statement = $this->pdo->prepare($query);
+    //     $statement->bindValue(":start_date_time", $this->body["start_date_time"]);
+    //     $statement->bindValue(":customer_observation", $this->body["customer_observation"]);
+    //     $statement->bindValue(":mileage", $this->body["mileage"]);
+    //     $statement->bindValue(":vin", $this->body["vin"]);
+    //     $statement->bindValue(":customer_id", $this->body["customer_id"]);
+    //     $statement->execute();
+    //     return true;
+    //     } catch (PDOException $e) {
+    //         echo $e->getMessage();
+    //     }
+    //     return "Internal Server Error";
+    // }
 }

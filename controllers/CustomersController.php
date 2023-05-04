@@ -13,11 +13,14 @@ class CustomersController
 {
     public function getCustomersPage(Request $req, Response $res): string
     {
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
 
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
 
             $customerModel = new Customer();
-            $customers = $customerModel->getCustomers();
+            $customers = $customerModel->getCustomers(count: $limit, page: $page);
 
             $serviceModel = new Service();
             $services = $serviceModel->getServices();
@@ -25,6 +28,9 @@ class CustomersController
             if($req->session->get("user_role") === "office_staff_member"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
                     pageParams:[
+                        "total"=>$customers['total'],
+                        "limit"=>$limit,
+                        "page"=>$page,
                         'customers' => $customers,
                         'services' => $services
                     ],

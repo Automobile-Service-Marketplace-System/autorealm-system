@@ -24,21 +24,19 @@ class OrdersController
             $searchTermOrder = $query["id"] ?? null;
             $orderStatus = isset($query["status"]) ? ($query["status"] == "" ? "all" : $query["status"]) : "all";
             $orderDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
-            $orderPayment = isset($query["payment"]) ? ($query["payment"] == "" ? "all" : $query["payment"]) : "all";
 
 
             $orderModel = new Order();
             $result = $orderModel->getOrders(
-                count: $limit ,
+                count: $limit,
                 page: $page,
                 searchTermCustomer: $searchTermCustomer,
                 searchTermOrder: $searchTermOrder,
-                options:[
+                options: [
                     'status' => $orderStatus,
                     'order_date' => $orderDate,
-                    'order_payment' => $orderPayment,
 
-                ]
+                ],
             );
 
             if ($req->session->get("user_role") === "stock_manager") {

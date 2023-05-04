@@ -81,7 +81,9 @@ if (empty($suggestions)) {
     echo "</div>";
 }
 ?>
-<form action="/jobs/start?id=<?= $jobId ?>" method="post">
+<?php if($isDraft !== "Create inspection report for this job") { ?>
+
+<form action="/jobs/start?id=<?= $jobId ?>" method="post" id="start-job-form">
     <h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Selected products</h2>
     <section class="create-job__products">
         <button class="create-job__products-item create-job__products-item--new" type="button">
@@ -99,12 +101,12 @@ if (empty($suggestions)) {
     </section>
 
 
-    <h2 class='suggestions-heading'><i class="fa-solid fa-user"></i></i>Selected technicians</h2>
+    <h2 class='suggestions-heading'><i class="fa-solid fa-user"></i>Selected technicians</h2>
     <section class="create-job__employees">
     </section>
     <div class="flex items-center justify-end gap-4 my-8">
-        <button class="btn">Start job</button>
+        <button class="btn" type="button" id="start-job-btn">Start job</button>
     </div>
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<?php } ?>
