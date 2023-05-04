@@ -21,12 +21,12 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
 
 $image = $employee->image ? $employee->image : "";
-
+// var_dump($employee->job_role);
 
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
+    <form action="/employees/edit?id=<?= $employee->employee_id ?>&job_role=<?= $employee->job_role ?>" method="post" enctype="multipart/form-data">
         <b>Choose the account type</b>
         <div class="role-input">
             <?php 
@@ -114,7 +114,7 @@ $image = $employee->image ? $employee->image : "";
                             name: "nic",
                             hasError: $hasNICError,
                             error: $hasNICError ? $errors['nic'] : "",
-                            value: $employee->NIC ?? ($body['NIC'] ?? null),
+                            value: $employee->NIC ?? ($body['nic'] ?? null),
                             additionalAttributes: "pattern='^(\d{9}[xXvV]|\d{12})$'"
                         );
                         ?>

@@ -80,14 +80,14 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
                 <div class="form-input">
                     <?php
-                    FormItem::render(
-                        id: "fi",
-                        label: "Full Name with initials",
-                        name: "fi",
-                        hasError: $hasFIError,
-                        error: $hasFIError ? $errors['fi'] : "",
-                        value: $body['fi'] ?? null,
-                    );
+                    // FormItem::render(
+                    //     id: "fi",
+                    //     label: "Full Name with initials",
+                    //     name: "fi",
+                    //     hasError: $hasFIError,
+                    //     error: $hasFIError ? $errors['fi'] : "",
+                    //     value: $body['fi'] ?? null,
+                    // );
 
                     ?>
                 </div>

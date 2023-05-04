@@ -89,14 +89,20 @@ class EmployeeController
 
     public function editEmployee(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
+
             $body = $req->body();
             $query= $req->query();
             $employeeId = $query["id"] ?? null;
+            // var_dump($employeeId);
+            $before_job_role=$query['job_role'] ?? null;
+            // var_dump(($before_job_role));
             if(!$employeeId){
                 return $res->redirect("/employees");
             }
             $employeeModel=new Employee($body);
-            $result=$employeeModel->update((int) $employeeId);
+            // var_dump($body['job_role']);
+            $result=$employeeModel->update((int) $employeeId, $body['job_role'], $before_job_role);
+            // var_dump($result);
             if (is_array($result)) {
                 return $res->render(view: "admin-dashboard-edit-employee", layout: "admin-dashboard", pageParams: [
                     'errors' => $result,

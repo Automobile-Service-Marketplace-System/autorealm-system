@@ -8,7 +8,7 @@ employeeCards.forEach(card => {
         console.log(employeeJobType);
         `<input type="number" value="${employeeID}" name="employee_id" style="display: none" readonly> `
         if(employeeJobType !== "admin"){
-          const url = `/employees/view?employee_id=${employeeID}`;
+          const url = `/employees/view?employee_id=${employeeID}&job_type=${employeeJobType}`;
           location.href = url;
         }
      })
