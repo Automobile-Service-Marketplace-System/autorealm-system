@@ -1,6 +1,7 @@
 import "./dashboard-product-filtering";
 import "./dashboard-order-filtering";
 import "./dashboard-supplier-filtering";
+import "./dashboard-review-filtering";
 
 /**
  * @type {HTMLDivElement | null}

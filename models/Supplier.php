@@ -3,9 +3,8 @@
 namespace app\models;
 
 use app\core\Database;
-use app\utils\DevOnly;
-use PDO;
 use Exception;
+use PDO;
 use PDOException;
 
 class Supplier
@@ -40,25 +39,116 @@ class Supplier
 
     ): array|string
     {
+        $whereClause = null;
+        $conditions = [];
+        $dateFrom = null;
+        $dateTo = null;
+
+//        print_r($options);
+
+        foreach($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                switch($option_key){
+                    case 'status':
+                        switch ($option_value) {
+                            case 'active':
+                                $conditions[] = "s.is_discontinued = FALSE";
+                                break;
+                            case 'discontinued':
+                                $conditions[] = "s.is_discontinued = TRUE";
+                                break;
+                        }
+                        break;
+                    case "supply_date":
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'Today':
+                                $dateFrom = date('Y-m-d 00:00:00');
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Yesterday':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
+                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
+                                break;
+                            case 'Last7':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last30':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last90':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+
+                        }
+                        break;
+                }
+            }
+        }
+
+//        var_dump($dateFrom);
+
+        if(!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        if($searchTermSupplier !== null){
+            $whereClause = $whereClause ? $whereClause . " AND s.name LIKE :search_term_sup" :
+                                            " WHERE s.name LIKE :search_term_sup AND s.is_discontinued = FALSE";
+        }
+
+        if($searchTermMail !== null){
+            $whereClause = $whereClause ? $whereClause . " AND s.email LIKE :search_term_mail" :
+                                            " WHERE s.email LIKE :search_term_mail AND s.is_discontinued = FALSE";
+        }
+
+//       var_dump($whereClause);
+
+
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        $suppliers = $this->pdo->query(
-            "SELECT 
-                
-                s.supplier_id as ID,
-                s.name as Name,
-                s.address as Address,
-                s.sales_manager as 'Sales Manager',
-                s.email as Email,
-                s.company_reg_no as 'Registration No'
-                FROM supplier s 
-                WHERE s.is_discontinued = FALSE $limitClause $pageClause"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        $query = "SELECT   
+                    s.supplier_id as ID,
+                    s.name as Name,
+                    s.address as Address,
+                    s.sales_manager as 'Sales Manager',
+                    s.email as Email,
+                    s.company_reg_no as 'Registration No'
+                    FROM supplier s 
+                    $whereClause
+                    $limitClause $pageClause";
+
+        $stmt = $this->pdo->prepare($query);
+
+        if($searchTermSupplier !== null){
+            $stmt->bindValue(":search_term_sup", "%".$searchTermSupplier."%", PDO::PARAM_STR);
+        }
+
+        if($searchTermMail !== null){
+            $stmt->bindValue(":search_term_mail", "%".$searchTermMail."%", PDO::PARAM_STR);
+        }
+
+        try {
+            $stmt->execute();
+            $suppliers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+
         $supplierList = [];
         foreach ($suppliers as $supplier) {
             $id = $supplier["ID"];
-            $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
+            if(isset($dateFrom) && isset($dateTo)){
+                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id AND date_time BETWEEN '$dateFrom' AND '$dateTo' ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+            }else {
+                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+            }
             if($lastPurchaseReport) {
                 $supplier["Last Purchase Date"] = $lastPurchaseReport["date_time"];
                 $supplier["Last Supply Amount"] = $lastPurchaseReport["amount"];
