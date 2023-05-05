@@ -215,7 +215,7 @@ class JobsController
             $appointmentModel = new Appointment();
             $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
             $foremanModel = new Foreman();
-            $foremanInfo = $foremanModel->getForemanAvailability();
+            $foremanInfo = $foremanModel->getAvailableForemen();
 
             return $res->render(view: "office-staff-dashboard-create-jobcard-page", layout: "office-staff-dashboard",
                 pageParams: [
@@ -224,7 +224,7 @@ class JobsController
                 ],
                 layoutParams: [
                     "title" => "Job Card",
-                    "pageMainHeading" => "Create a JobCard",
+                    "pageMainHeading" => "Create a Job card",
                     'officeStaffId' => $req->session->get('user_id')
                 ]);
         }
@@ -316,8 +316,8 @@ class JobsController
                     "page"=>$page
                 ],  
                 layoutParams: [
-                    'title' => 'JobCards',
-                    'pageMainHeading' => 'JobCards',
+                    'title' => 'Jobs',
+                    'pageMainHeading' => 'Jobs',
                     'officeStaffId' => $req->session->get('user_id')
             ]);
         }

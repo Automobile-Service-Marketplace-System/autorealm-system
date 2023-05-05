@@ -15,6 +15,14 @@ foreach($jobCards['jobCards'][0] as $key=>$value){
 $items = [];
 
 foreach($jobCards['jobCards'] as $jobCard) {
+
+    $status = match ($jobCard["Status"]) {
+        'in-progress' => "In progress",
+        'completed' => "Completed",
+        'finished' => "Finished",
+        default => "New"
+    };
+
     $items[] = [
         "JobCard ID" => $jobCard["JobCard ID"],
         "Customer Name" => $jobCard["Customer Name"],
@@ -22,7 +30,7 @@ foreach($jobCards['jobCards'] as $jobCard) {
         "VIN" => $jobCard["VIN"],
         "Start Date Time" => $jobCard["Start Date Time"],
         "End Date Time" => $jobCard["End Date Time"],
-        "Status" => $jobCard["Status"]
+        "Status" => $status,
     ];
 }
 ?>
@@ -37,7 +45,7 @@ foreach($jobCards['jobCards'] as $jobCard) {
 </div>
 
 <?php
-Table::render(items: $items, columns: $columns, keyColumns: ["JobCard ID","Customer Observation"]);
+Table::render(items: $items, columns: $columns, keyColumns: ["JobCard ID","Status"]);
 ?>
 
 

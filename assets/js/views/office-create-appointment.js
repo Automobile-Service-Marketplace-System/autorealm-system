@@ -162,6 +162,7 @@ createAppointmentButton.forEach(function (btn) {
                             });
 
 
+
        
                             if (result.status === 400) {
                                 createAppointmentForm?.classList.add("create-appointment-form--error");

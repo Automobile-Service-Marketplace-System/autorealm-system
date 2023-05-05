@@ -57,10 +57,10 @@ DocumentHead::createHead(
                     Appointments
                 </span>
             </a>
-            <a href="/jobcards">
-                <i class='fa-solid fa-wrench'></i>      
+            <a href="/job-cards">
+                <i class='fa-solid fa-wrench'></i>
                 <span>
-                    JobCards
+                    Jobs
                 </span>
             </a>
 
@@ -73,14 +73,16 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $officeStaffId,employeeType: 'office_staff', id: 1);
+            EmployeeProfileDropdown::render(employeeId: $officeStaffId, employeeType: 'office_staff', id: 1);
             ?>
         </header>
 
         <div class="employee-dashboard-page">
-            <h1>
-                <?php echo $pageMainHeading; ?>
-            </h1>
+            <?php if (isset($pageMainHeading)) { ?>
+                <h1>
+                    <?php echo $pageMainHeading; ?>
+                </h1>
+            <?php } ?>
             {{content}}
         </div>
     </div>

@@ -27,9 +27,10 @@ class Foreman
         return $stmt->fetchObject();
     }
 
-    public function getForemanAvailability():array{
+    public function getAvailableForemen():array | string {
         try {
             $statement = $this->pdo->query("SELECT
+            f.employee_id as ID,
             concat(f_name, ' ', l_name) as Name,
             is_available as Availability,
             image as Image            

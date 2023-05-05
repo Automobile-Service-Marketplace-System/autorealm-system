@@ -50,8 +50,8 @@ class Appointment
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
                 CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
-                mileage as 'Mileage',
-                remarks as 'Remarks',
+                a.mileage as 'Mileage',
+                a.remarks as 'Remarks',
                 a.date as 'Date',
                 a.time_id as 'Time ID',
                 t.from_time as 'From Time',
@@ -72,7 +72,7 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
         
         $totalAppointments = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM appointment"
+            "SELECT COUNT(*) as total FROM appointment WHERE time_id IS NOT NULL"
         )->fetch(PDO::FETCH_ASSOC);
 
         return [
