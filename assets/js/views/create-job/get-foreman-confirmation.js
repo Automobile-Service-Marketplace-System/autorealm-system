@@ -12,11 +12,61 @@ if (createJobTechniciansContainer) {
      */
     const startJobFormSubmitButton = document.querySelector("form#start-job-form #start-job-btn")
     /**
+     * @type {HTMLButtonElement}
+     */
+    const startJobFinalButton = document.querySelector("button#start-job-final-btn")
+    /**
      * @type {HTMLFormElement}
      */
     const startJobForm = document.querySelector("form#start-job-form")
 
     console.log(startJobFormSubmitButton, startJobForm)
+    startJobForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        try {
+            const url = startJobForm.getAttribute("action")
+            const formData = new FormData(startJobForm)
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            })
+
+            console.log(response)
+            return
+
+            switch (response.status) {
+                case 204:
+                    Notifier.show({
+                        header: "Success",
+                        text: "Job started successfully",
+                        closable: true,
+                        duration: 5000,
+                        type: "success"
+                    })
+                    break;
+                case 400:
+                    const data = await response.json()
+                    Notifier.show({
+                        header: "Error",
+                        text: data.message,
+                        closable: true,
+                        duration: 5000,
+                        type: "danger"
+                    })
+                    break;
+            }
+        } catch (e) {
+            Notifier.show({
+                header: "Error",
+                text: "Something went wrong",
+                closable: true,
+                duration: 5000,
+                type: "danger"
+            })
+        } finally {
+
+        }
+    })
 
     startJobFormSubmitButton.addEventListener('click', () => {
 
@@ -75,54 +125,8 @@ if (createJobTechniciansContainer) {
         )
 
 
-        startJobForm.addEventListener('submit', async (e) => {
-            e.preventDefault()
-            try {
-                const url = startJobForm.getAttribute("action")
-                const formData = new FormData(startJobForm)
-                const response = await fetch(url, {
-                    method: "POST",
-                    body: formData
-                })
-
-                console.log(response)
-
-                switch (response.status) {
-                    case 204:
-                        Notifier.show({
-                            header: "Success",
-                            text: "Job started successfully",
-                            closable: true,
-                            duration: 5000,
-                            type: "success"
-                        })
-                        break;
-                    case 400:
-                        const data = await response.json()
-                        Notifier.show({
-                            header: "Error",
-                            text: data.message,
-                            closable: true,
-                            duration: 5000,
-                            type: "danger"
-                        })
-                        break;
-                }
-            } catch (e) {
-                Notifier.show({
-                    header: "Error",
-                    text: "Something went wrong",
-                    closable: true,
-                    duration: 5000,
-                    type: "danger"
-                })
-            } finally {
-
-            }
-        })
-
         modalContent.querySelector("#start-job-confirmation-modal-yes-btn")?.addEventListener("click", () => {
-            startJobForm.submit()
+            startJobFinalButton.click()
         })
 
         Modal.show({

@@ -93,6 +93,35 @@ class JobsController
         return $res->redirect(path: "/login");
     }
 
+    public function getJobsInProgressPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "foreman") {
+            $query = $req->query();
+
+            $jobCardModel = new JobCard();
+            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["id"]);
+
+            $jobDetails = $jobCardModel->getProductsServicesTechniciansInJob(jobId: $query["id"]);
+            if (is_string($jobDetails)) {
+                return "Internal Server Error";
+            }
+            return $res->render(view: "foreman-dashboard-view-in-progress-job", layout: "foreman-dashboard", pageParams: [
+                'jobId' => $query['id'],
+                'vehicleDetails' => $result,
+                'products' => $jobDetails["products"],
+                'services' => $jobDetails["services"],
+                'technicians' => $jobDetails["technicians"],
+                'all' => $jobDetails["service_status"]['all'],
+                'done' => $jobDetails["service_status"]['done'],
+            ], layoutParams: [
+                'title' => "Job #{$query['id']}",
+                'pageMainHeading' => "Job #{$query['id']}",
+                'foremanId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
 
     public function getCreateInspectionReportPage(Request $req, Response $res): string
     {
@@ -308,7 +337,7 @@ class JobsController
             $productIds = $body["products"] ?? null;
             $serviceCodes = $body["services"] ?? null;
             $technicianIds = $body["technicians"] ?? null;
-            if(!$jobId || !$productIds || !$serviceCodes || !$technicianIds) {
+            if (!$jobId || !$productIds || !$serviceCodes || !$technicianIds) {
                 $res->setStatusCode(code: 400);
                 return $res->json(data: [
                     "success" => false,
@@ -317,7 +346,7 @@ class JobsController
             }
             $jobCardModel = new JobCard();
             $result = $jobCardModel->startJob(jobId: $jobId, productIds: $productIds, serviceCodes: $serviceCodes, technicianIds: $technicianIds);
-            if(is_string($result)) {
+            if (is_string($result)) {
                 $res->setStatusCode(code: 400);
                 return $res->json(data: [
                     "success" => false,

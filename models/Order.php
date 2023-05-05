@@ -427,14 +427,29 @@ class Order
         try {
             $statement =  $this->pdo->prepare(
                 "SELECT 
-                        DATE_FORMAT(o.ordered_date_time, '%Y-%m') AS year_month,
+                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
                         SUM(ohp.quantity * ohp.price_at_order) AS revenue
                         FROM `order` o
                         JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
-                        GROUP BY year_month
-                        ORDER BY year_month;");
+                        GROUP BY ordered_year_month
+                        ORDER BY ordered_year_month;");
             $statement->execute();
-            $result =
+            $revenueData =  $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            // query to get order count grouped by year and month
+            $statement =  $this->pdo->prepare(
+                "SELECT 
+                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
+                        COUNT(o.order_no) AS order_count
+                        FROM `order` o
+                        GROUP BY ordered_year_month
+                        ORDER BY ordered_year_month;");
+            $statement->execute();
+            $orderCountData =  $statement->fetchAll(PDO::FETCH_ASSOC);
+            return [
+                'revenueData' => $revenueData,
+                'orderCountData' => $orderCountData
+            ];
         } catch (PDOException | Exception $e) {
             return "Failed to get order revenue data : " . $e->getMessage();
         }

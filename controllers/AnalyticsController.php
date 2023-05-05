@@ -49,6 +49,17 @@ class AnalyticsController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
             $orderModel = new Order();
             $revenueData = $orderModel->getOrderRevenueData();
+            if(is_string($revenueData)) {
+                $res->setStatusCode(500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            $res->setStatusCode(200);
+            return $res->json([
+                "message" => "Success",
+                "data" => $revenueData
+            ]);
         }
         $res->setStatusCode(401);
         return $res->json([
