@@ -190,7 +190,7 @@ if ($isInternal) {
     $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);
     $app->router->get(path: "/appointments", callback: [AppointmentsController::class, 'getOfficeAppointmentsPage']);
     $app->router->post(path: "/appointments/create", callback: [AppointmentsController::class, 'officeCreateAppointment']);
-    $app->router->get(path: "/create-job-card", callback: [JobsController::class, 'getCreateJobCardPage']);
+    // $app->router->get(path: "/create-job-card", callback: [JobsController::class, 'getCreateJobCardPage']);
     $app->router->post(path: "/create-job-card", callback: [JobsController::class, 'createJobCard']);
     $app->router->get(path: "/invoices/create", callback: [InvoicesController::class, 'getCreateInvoicePage']);
     $app->router->post(path: "/customers/update", callback: [CustomersController::class, 'updateCustomer']);

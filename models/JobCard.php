@@ -182,9 +182,7 @@ class JobCard
                 vin as 'VIN',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
-                status as 'Status',
-                mileage as 'Mileage',
-                customer_observation as 'Customer Observation'
+                status as 'Status'
             FROM 
                 jobcard j 
             INNER JOIN 

@@ -28,4 +28,6 @@ import "./create-job"
 import "./add-models"
 import "./add-brand"
 import "./delete-employee"
+import "./office-create-jobcard"
 import "./analytics"
+

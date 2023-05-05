@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Appointment;
 use app\models\JobCard;
 use app\models\Service;
+use app\models\Foreman;
 
 class AppointmentsController
 {
@@ -115,12 +116,33 @@ class AppointmentsController
                 layoutParams: [
                     "title" => "Appointments",
                     "pageMainHeading" => "Appointments",
-                    'officeStaffId' => $req->session->get('user_id')
+                    'officeStaffId' => $officeUserId
                 ]);
         }
 
         return $res->redirect(path: "/login");
         
+    }
+
+    public function getForemen(Request $req, Response $res) : string {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $foremanModel = new Foreman();
+            $foremen = $foremanModel->getForemanAvailability();
+            
+            if(is_string($foremen)) {
+                $res->setStatusCode(500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            $res->setStatusCode(200);
+            return $res->json($foremen);
+        }
+
+        $res->setStatusCode(401);
+        return $res->json([
+            "message" => "You're unauthorized to perform this action"
+        ]);
     }
 
     /**
