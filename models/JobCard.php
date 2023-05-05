@@ -251,7 +251,7 @@ class JobCard
             $statement->execute();
             $services = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
 
-            $query = "SELECT e.employee_id as ID, CONCAT(e.f_name, ' ', e.l_name) as Name, e.image as Image FROM jobcardhastechnician INNER  JOIN employee e on jobcardhastechnician.employee_id = e.employee_id WHERE job_card_id = :job_card_id";
+            $query = "SELECT e.employee_id as ID, CONCAT(e.f_name, ' ', e.l_name) as Name, e.image as Image, e.contact_no as PhoneNo FROM jobcardhastechnician INNER  JOIN employee e on jobcardhastechnician.employee_id = e.employee_id WHERE job_card_id = :job_card_id";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(param: ":job_card_id", value: $jobId);
             $statement->execute();

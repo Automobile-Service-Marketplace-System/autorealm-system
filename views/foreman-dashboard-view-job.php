@@ -106,6 +106,7 @@ if (empty($suggestions)) {
     </section>
     <div class="flex items-center justify-end gap-4 my-8">
         <button class="btn" type="button" id="start-job-btn">Start job</button>
+        <button style="display: none" id="start-job-final-btn">Submit</button>
     </div>
 </form>
 

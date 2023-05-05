@@ -16,6 +16,7 @@ DocumentHead::createHead(
     css: ["/css/style.css"],
     title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm",
 );
+
 ?>
 
 <body style="overflow: hidden">

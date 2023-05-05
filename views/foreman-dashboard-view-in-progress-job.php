@@ -95,11 +95,11 @@
 
         $name = $technician['Name'];
         $image = $technician['Image'];
+        $phoneNo = $technician['PhoneNo'];
 
         echo "<div class='view-job__technicians-item'>
                     <img src='$image' alt='$name'>
-                    <h4>$name</h4>
-                    <i class='fa-solid fa-pho
+                    <h4 class='flex items-center justify-between gap-4'>$name <a href='tel:$phoneNo'><i class='fa-solid fa-phone'></i></a></h4>
                </div>";
     }
     ?>
