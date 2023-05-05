@@ -7,7 +7,7 @@ $noOfJobs = $vehicles['total'];
 $startNo = ($page - 1) * $limit + 1;
 $endNo = min($startNo + $limit - 1, $noOfJobs);
 
-$columns = ["VIN", "Reg no", "Engine no", "Manufactured Year", "Engine Capacity", "Vehicle Type", "Fuel Type", "Transmission Type", "Model Name", "Brand Name", "Customer ID"];
+$columns = ["VIN", "Reg no", "Engine no", "Manufactured Year", "Engine Capacity", "Vehicle Type", "Fuel Type", "Transmission Type", "Mileage", "Model Name", "Brand Name", "Customer ID"];
 
 $columns[] = "Actions";
 
@@ -24,6 +24,7 @@ foreach ($vehicles['vehicles'] as $vehicle) {
         "Vehicle Type" => $vehicle["Vehicle Type"],
         "Fuel Type" => $vehicle["Fuel Type"],
         "Transmission Type" => $vehicle["Transmission Type"],
+        "MIleage" => $vehicle["Mileage"],
         "Model Name" => $vehicle["Model Name"],
         "Brand Name" => $vehicle["Brand Name"],
         "Customer ID" => $vehicle["Customer ID"],

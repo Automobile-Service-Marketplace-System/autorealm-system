@@ -233,5 +233,35 @@ class Appointment
 
         }
     }
+
+    public function officeUpdateAppointment()
+    {
+        try {
+            $query = "UPDATE 
+                        appointment 
+                    SET
+                        vehicle_reg_no = :vehicle_reg_no, 
+                        mileage = :mileage,
+                        remarks = :remarks,
+                        date = :date,
+                        customer_id = :customer_id,
+                        time_id = :time_id
+                    WHERE 
+                        appointment_id= :appointment_id";
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+                $statement->bindValue(":mileage", $this->body["mileage"]);
+                $statement->bindValue(":remarks", $this->body["remarks"]);
+                $statement->bindValue(":date", $this->body["date"]);
+                $statement->bindValue(":customer_id", $this->body["customer_id"]);
+                $statement->bindValue(":time_id", $this->body["time_id"]);
+                $statement->bindValue(":appointment_id", $this->body["appointment_id"]);
+                $statement->execute();
+                return true;
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return $e->getMessage();
+        }
+    }
 }
 
