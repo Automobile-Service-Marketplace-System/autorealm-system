@@ -1,0 +1,52 @@
+.assign-a-foreman {
+    width: 300px;
+}
+
+.office-create-jobcard-form {
+    position: relative;
+    padding-top: 1rem;
+
+}
+
+.office-create-jobcard-form .modal-close-btn svg {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out
+}
+
+.office-create-jobcard-form .modal-close-btn svg:hover {
+    transform: rotate(180deg);
+}
+
+.office-create-jobcard-form h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.office-create-jobcard-form h2 {
+    padding-top: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.office-create-jobcard-form h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.office-create-jobcard-form .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+.spin-icon {
+    animation: spin 2s linear infinite;
+    font-size: 50px;
+}

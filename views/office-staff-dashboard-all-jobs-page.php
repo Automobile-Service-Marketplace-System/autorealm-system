@@ -19,12 +19,10 @@ foreach($jobCards['jobCards'] as $jobCard) {
         "JobCard ID" => $jobCard["JobCard ID"],
         "Customer Name" => $jobCard["Customer Name"],
         "Employee Name" => $jobCard["Employee Name"],
-        "VIN" => $jobCard["veh"],
+        "VIN" => $jobCard["VIN"],
         "Start Date Time" => $jobCard["Start Date Time"],
         "End Date Time" => $jobCard["End Date Time"],
-        "Status" => $jobCard["Status"],
-        "Mileage" => $jobCard["Mileage"],
-        "Customer Observation" => $jobCard["Customer Observation"]
+        "Status" => $jobCard["Status"]
     ];
 }
 ?>

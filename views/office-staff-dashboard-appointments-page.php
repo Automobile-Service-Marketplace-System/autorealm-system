@@ -25,8 +25,9 @@ if (empty($appointments['appointments'])) {
             "From Time" => $appointment["From Time"],
             "To Time" => $appointment["To Time"],
             "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <a href='/create-job-card?id={$appointment['Appointment ID']}' class='btn btn--rounded btn--info'>
-                            <i class='fa-solid fa-wrench'></i>                            </a>
+                            <button class='btn btn--rounded btn--info office-create-jobcard' data-appointmentID='{$appointment['Appointment ID']}'>
+                            <i class='fa-solid fa-wrench'></i>
+                            </button>                            </a>
                             <button class='btn btn--rounded btn--danger office-update-appointment-btn' data-appointmentID='{$appointment['Appointment ID']}' data-timeSlotID='{$appointment["Time ID"]}' data-customerID='{$appointment["Customer ID"]}'>
                                 <i class='fa-solid fa-pencil'></i>
                             </button>

@@ -3,7 +3,9 @@
 namespace app\models;
 
 use app\core\Database;
+use Exception;
 use PDO;
+use PDOException;
 
 class Foreman
 {
@@ -26,15 +28,19 @@ class Foreman
     }
 
     public function getForemanAvailability():array{
-        return $this->pdo->query(
-            "SELECT
-                concat(f_name, ' ', l_name) as Name,
-                is_available as Availability,
-                image as Image            
+        try {
+            $statement = $this->pdo->query("SELECT
+            concat(f_name, ' ', l_name) as Name,
+            is_available as Availability,
+            image as Image            
             FROM foreman f
             inner join employee e on e.employee_id =f.employee_id"
-            
-        )->fetchAll(PDO::FETCH_ASSOC);
+            );
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception | PDOException $e) {
+            return $e->getMessage();
+        }
     }
 
 }

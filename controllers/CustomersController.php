@@ -61,8 +61,10 @@ class CustomersController
 
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
             $customerModel = new Customer();
-            $customers = $customerModel->getCustomers();
+            $customers = $customerModel->getCustomers(count: $limit, page: $page);
 
             $modelModel = new Model();
             $rawModels = $modelModel->getModels();
