@@ -199,7 +199,7 @@ class AppointmentsController
         if ($result) {
             $res->setStatusCode(code: 201);
             return $res->json([
-                "success" => "Customer updated successfully"
+                "success" => "Appointment created successfully"
             ]);
         }
 
@@ -240,6 +240,33 @@ class AppointmentsController
         }
 
         return $res->redirect(path: "/login");
+    }
+
+    public function officeUpdateAppointment(Request $req, Response $res): string {
+        $body = $req->body();
+        $appointment = new Appointment($body);
+        $result = $appointment->officeUpdateAppointment();
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => $result
+            ]);
+        }
+
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Appointment updated successfully"
+            ]);
+        }
     }
 }
 
