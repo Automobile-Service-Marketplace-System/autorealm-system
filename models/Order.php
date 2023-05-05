@@ -422,5 +422,23 @@ class Order
         return $errors;
     }
 
+    public function getOrderRevenueData() : array | string
+    {
+        try {
+            $statement =  $this->pdo->prepare(
+                "SELECT 
+                        DATE_FORMAT(o.ordered_date_time, '%Y-%m') AS year_month,
+                        SUM(ohp.quantity * ohp.price_at_order) AS revenue
+                        FROM `order` o
+                        JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
+                        GROUP BY year_month
+                        ORDER BY year_month;");
+            $statement->execute();
+            $result =
+        } catch (PDOException | Exception $e) {
+            return "Failed to get order revenue data : " . $e->getMessage();
+        }
+    }
+
 
 }
