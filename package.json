@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^1.52.1",
+    "chartjs-plugin-zoom": "^2.0.1",
     "html5-qrcode": "^2.3.8",
     "qr-scanner": "^1.4.2"
   },

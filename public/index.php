@@ -111,6 +111,8 @@ if ($isInternal) {
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
 
+    $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
+
 // foreman routes
     // $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
     $app->router->get(path: "/foreman-dashboard/profile", callback: [DashboardController::class, 'getForemanDashboardProfile']);
