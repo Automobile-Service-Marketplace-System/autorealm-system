@@ -51,3 +51,9 @@
     font-weight: bold;
 }
 
+
+/*for the filtering*/
+
+.review-filters__dropdown--active {
+    height: 215px !important;
+}

@@ -63,14 +63,8 @@
         height: 560px;
     }
 
-    #rst{
-        margin-top: 3rem;
-        width: 250px;;
-    }
-
-    #sm{
-        margin-top: 3rem;
-        width: 250px;
+    .create-employee-reset-btn{
+        width: 150px;;
     }
     
     .pic{
@@ -87,4 +81,11 @@
     #image-preview-update{
         width: 600px;
         height: 480px;
+    }
+
+    .delete-update-btn{
+        float: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
     }
