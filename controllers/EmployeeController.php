@@ -21,12 +21,12 @@ class EmployeeController
         return $res->redirect(path: "/login");
 
     }
-
+ 
     public function getViewEmployeesPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
             $query = $req->query();
-            $limit = isset($query['limit']) ? (int)$query['limit'] : 4;
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 3;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
             $employeeModel=new Employee();
             $result=$employeeModel->getEmployees(count: $limit, page: $page);

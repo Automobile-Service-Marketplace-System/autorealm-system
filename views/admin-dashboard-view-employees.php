@@ -58,7 +58,7 @@
     }
     ?>
 
-    <div class="pagination-container">
+    <div class="pagination-container view-employee">
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
