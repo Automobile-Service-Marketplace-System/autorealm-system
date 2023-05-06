@@ -4,13 +4,13 @@ import {ServiceSelector} from "../../../components/ServiceSelector";
 /**
  * @type {HTMLTableSectionElement}
  */
-export const serviceTableBody = document.querySelector('.create-invoice__table.create-invoice__table--services tbody')
+export const serviceTableBody = document.querySelector('.create-invoice__table.create-invoice__table--services > tbody')
 /**
  * @type {HTMLInputElement}
  */
-const itemTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--items tfoot input')
+const serviceTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--services tfoot input')
 
-let currentItemRow = 0
+let currentServiceRow = 0
 
 /**
  * @type {number[]}
@@ -21,14 +21,14 @@ let alreadySelectedServices = []
  * @return {HTMLTableRowElement}
  */
 export function getNewServiceRow() {
-    currentItemRow++
+    currentServiceRow++
     const element = htmlToElement(
-        `<tr data-index="${currentItemRow}">
+        `<tr data-index="${currentServiceRow}">
                 <td>
                     <input type="text" placeholder="Service / Labor" name="service_names[]">
                 </td>
                 <td>
-                    <input type="number" placeholder="Cost" name="service_costs[]" min="1">
+                    <input type="number" placeholder="Cost" name="service_costs[]">
                 </td>
                 <td>
                     <input type="number" placeholder="Discount" name="service_discounts[]" min="0" max="100">
@@ -51,8 +51,8 @@ export function getNewServiceRow() {
 export async function handleFocusOfServiceInput(e) {
     const serviceSelector = await new ServiceSelector();
     serviceSelector.addEventListener("onFinish", (services) => {
-        console.log(services)
-        // return addServicesToRow(e, services)
+        // console.log(services)
+        return addServicesToRow(e, services)
     })
 }
 
@@ -68,7 +68,7 @@ function addServicesToRow(e, services) {
      * @type {HTMLTableRowElement}
      */
     let rowElement = e.target.parentElement.parentElement
-    console.log(rowElement)
+    // console.log(rowElement)
 
     // setRowValues(rowElement, services[0]);
     decideNewItemOrExistingItem(services[0], false, rowElement)
@@ -80,14 +80,14 @@ function addServicesToRow(e, services) {
     }
 
     restOfServices.forEach(service => {
-        console.log(service)
+        // console.log(service)
         if (rowElement.nextElementSibling) {
             rowElement = rowElement.nextElementSibling
             // setRowValues(rowElement, service);
             decideNewItemOrExistingItem(service, false, rowElement)
         } else {
-            console.log("creating new row")
-            rowElement = getNewItemRow()
+            // console.log("creating new row")
+            rowElement = getNewServiceRow()
             // setRowValues(rowElement, service, true);
             decideNewItemOrExistingItem(service, true, rowElement)
         }
@@ -102,9 +102,9 @@ function addServicesToRow(e, services) {
  * @param {HTMLTableRowElement | undefined = undefined} rowElement
  */
 function decideNewItemOrExistingItem(service, add = false, rowElement = undefined) {
-    if (alreadySelectedServices.includes(service.ID)) {
-        console.log("already in")
-        rowElement = document.querySelector(`tr[data-serviceid="${service.ID}"]`)
+    if (alreadySelectedServices.includes(service.Code)) {
+        // console.log("already in")
+        rowElement = document.querySelector(`tr[data-serviceid="${service.Code}"]`)
         setRowValues(rowElement, service, add, true)
     } else {
         setRowValues(rowElement, service, add, false)
@@ -120,85 +120,80 @@ function decideNewItemOrExistingItem(service, add = false, rowElement = undefine
  */
 function setRowValues(rowElement, service, add = false, alreadyIn = false) {
 
-    console.log(alreadySelectedServices)
+    // console.log(alreadySelectedServices)
     if (!alreadyIn) {
-
-        rowElement.dataset.serviceid = service.ID.toString()
+        // console.log(service.Code);
+        rowElement.dataset.serviceid = service.Code.toString()
         rowElement.appendChild(
             htmlToElement(
-                `<input name="item_codes[]" value="${service.ID}" style="display: none">`
+                `<input name="service_codes[]" value="${service.Code}" style="display: none">`
             )
         )
 
         // for the first service, we don't need to create a new row or traverse to the next row
         let serviceNameInput = rowElement.querySelector(`input[name="service_names[]"]`)
-        serviceNameInput.value = service.Name
+        serviceNameInput.value = service['Name']
 
+        let serviceCostInput = rowElement.querySelector(`input[name="service_costs[]"]`)
+        serviceCostInput.value = service["Cost"]
 
-        let serviceQuantityInput = rowElement.querySelector(`input[name="service_quantities[]"]`)
-        serviceQuantityInput.value = 1
-
-        let serviceUnitPriceInput = rowElement.querySelector(`input[name="service_unit_prices[]"]`)
-        serviceUnitPriceInput.value = service["Price (LKR)"]
-
-        let servicePercentageInput = rowElement.querySelector(`input[name="service_percentages[]"]`)
+        let servicePercentageInput = rowElement.querySelector(`input[name="service_discounts[]"]`)
         servicePercentageInput.value = 0
 
         let serviceAmountInput = rowElement.querySelector(`input[name="service_amounts[]"]`)
-        serviceAmountInput.value = service["Price (LKR)"]
+        serviceAmountInput.value = service["Cost"]
 
         // if the service quantity is increased, the amount should be increased accordingly
-        serviceQuantityInput.addEventListener('change', () => {
-            // let newAmount = service["Price (LKR)"] * Number(serviceQuantityInput.value)
-            //
-            // // check if discount is applied
-            // const discount = Number(servicePercentageInput.value)
-            // if (discount === 0) {
-            //     newAmount = (newAmount / 100) * (100 - discount)
-            // }
-            //
-            // // show it with two decimal places
-            // serviceAmountInput.value = newAmount.toFixed(2)
-            listenForQuantityAndPercentageChanges(service, {
-                quantityElement: serviceQuantityInput,
-                percentageElement: servicePercentageInput,
-                amountElement: serviceAmountInput
-            })
-        })
+        // serviceQuantityInput.addEventListener('change', () => {
+        //     // let newAmount = service["Price (LKR)"] * Number(serviceQuantityInput.value)
+        //     //
+        //     // // check if discount is applied
+        //     // const discount = Number(servicePercentageInput.value)
+        //     // if (discount === 0) {
+        //     //     newAmount = (newAmount / 100) * (100 - discount)
+        //     // }
+        //     //
+        //     // // show it with two decimal places
+        //     // serviceAmountInput.value = newAmount.toFixed(2)
+        //     listenForPercentageChanges(service, {
+        //         quantityElement: serviceQuantityInput,
+        //         percentageElement: servicePercentageInput,
+        //         amountElement: serviceAmountInput
+        //     })
+        // })
 
         servicePercentageInput.addEventListener('change', () => {
-            // let newAmount = service["Price (LKR)"] * Number(serviceQuantityInput.value)
-            //
+            // let newAmount = service["Cost"] * Number(servicePercentageInput.value)
+            
             // // check if discount is applied
             // const discount = Number(servicePercentageInput.value)
-            // if (discount === 0) {
+            // if (discount != 0) {
             //     newAmount = (newAmount / 100) * (100 - discount)
             // }
-            //
+            
             // // show it with two decimal places
             // serviceAmountInput.value = newAmount.toFixed(2)
-            console.log("percentage changed")
-            listenForQuantityAndPercentageChanges(service, {
-                quantityElement: serviceQuantityInput,
+            // // console.log("percentage changed")
+            listenForPercentageChanges(service, {
                 percentageElement: servicePercentageInput,
                 amountElement: serviceAmountInput
             })
         })
 
         if (add) {
-            itemTableBody.appendChild(rowElement)
+            serviceTableBody.appendChild(rowElement)
         }
 
         calculateItemTotal()
-        alreadySelectedServices.push(service.ID)
+        alreadySelectedServices.push(service.Code)
 
     } else {
         // get the quantity input
-        let serviceQuantityInput = rowElement.querySelector(`input[name="service_quantities[]"]`)
+        // let serviceQuantityInput = rowElement.querySelector(`input[name="service_quantities[]"]`)
         // increase the quantity by 1
-        serviceQuantityInput.value = Number(serviceQuantityInput.value) + 1
+        // serviceQuantityInput.value = Number(serviceQuantityInput.value) + 1
         // trigger the change event to update the amount
-        serviceQuantityInput.dispatchEvent(new InputEvent('change'))
+        // serviceQuantityInput.dispatchEvent(new InputEvent('change'))
     }
 }
 
@@ -207,9 +202,9 @@ function setRowValues(rowElement, service, add = false, alreadyIn = false) {
  * @param {Service} service
  * @param { {quantityElement: HTMLInputElement; percentageElement : HTMLInputElement; amountElement : HTMLInputElement} } elements
  */
-function listenForQuantityAndPercentageChanges(service, {quantityElement, percentageElement,amountElement }) {
+function listenForPercentageChanges(service, {percentageElement,amountElement }) {
 
-    let newAmount = service["Price (LKR)"] * Number(quantityElement.value)
+    let newAmount = service["Cost"]
 
     // check if discount is applied
     const discount = Number(percentageElement.value)
@@ -232,11 +227,11 @@ function calculateItemTotal() {
     itemAmountElements.forEach(element => {
         total += Number(element.value)
     })
-    itemTotalInput.value = total.toFixed(2)
+    serviceTotalInput.value = total.toFixed(2)
 
 
     // trigger the change event to update the grand total
-    itemTotalInput.dispatchEvent(new InputEvent('change'))
+    serviceTotalInput.dispatchEvent(new InputEvent('change'))
 }
 
 /**

@@ -56,17 +56,25 @@
         <thead>
             <tr>
                 <th>Service / Labor</th>
-                <th>Cost</th>
+                <th>Cost (LKR)</th>
                 <th>Discount</th>
-                <th>Amount</th>
+                <th>Amount (LKR)</th>
             </tr>
         </thead>
         <tbody>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Service Total</td>
+                <td>
+                    <input type="number" id="service-total" value="0.00" disabled>
+                </td>
+            </tr>
+        </tfoot>
     </table>
     <button class="create-invoice__new-row-button" id="new-service-row-button">
         <i class="fa-solid fa-plus"></i>
-        Add Item
+        Add Service
     </button>
 </section>
 <!---->
