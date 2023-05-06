@@ -99,6 +99,11 @@ class JobsController
             $query = $req->query();
 
             $jobCardModel = new JobCard();
+            $isInProgressJob  = $jobCardModel->isInProgress(jobId: $query["id"]);
+            if(!$isInProgressJob) {
+                return $res->redirect(path: "/jobs/view?id={$query['id']}");
+            }
+
             $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["id"]);
 
             $jobDetails = $jobCardModel->getProductsServicesTechniciansInJob(jobId: $query["id"]);
@@ -146,8 +151,8 @@ class JobsController
                 "vehicleDetails" => $result,
                 "jobId" => $jobId
             ], layoutParams: [
-                'title' => "Maintenance Inspection report for job #{$query['job_id']}",
-                'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
+                'title' => "Report for job #{$query['job_id']}",
+                'pageMainHeading' => "Report for job #{$query['job_id']}",
                 'foremanId' => $req->session->get("user_id"),
             ]);
         }

@@ -28,10 +28,16 @@ use app\components\FormItem;
         <strong>Customer:</strong>
         <?php echo $vehicleDetails['customer_name'] ?>
     </li>
-    <button id="save-inspection-report-draft" type="button">
-        Save draft
-        <i class="fa-solid fa-floppy-disk"></i>
-    </button>
+    <li id="save-inspection-report-draft">
+        <div class="form-item form-item--checkbox">
+            <label for="enable_auto_save">Auto save is off</label>
+            <input type="checkbox" name="enable_auto_save" id="enable_auto_save">
+        </div>
+        <button  type="button">
+            Save draft
+            <i class="fa-solid fa-floppy-disk"></i>
+        </button>
+    </li>
 </ul>
 
 

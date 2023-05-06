@@ -340,5 +340,17 @@ class JobCard
     //     }
     //     return "Internal Server Error";
     // }
+    public function isInProgress(int $jobId): bool
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT status FROM jobcard WHERE job_card_id = :job_card_id");
+            $statement->bindValue(":job_card_id", $jobId);
+            $statement->execute();
+            $jobStatus = $statement->fetch(PDO::FETCH_ASSOC);
+            return $jobStatus["status"] === "in-progress";
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 

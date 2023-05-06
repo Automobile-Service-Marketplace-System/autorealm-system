@@ -31,11 +31,9 @@ if (createJobTechniciansContainer) {
                 body: formData
             })
 
-            console.log(response)
-            return
-
             switch (response.status) {
                 case 204:
+                    Modal.close("start-job-confirmation-modal")
                     Notifier.show({
                         header: "Success",
                         text: "Job started successfully",
@@ -43,6 +41,9 @@ if (createJobTechniciansContainer) {
                         duration: 5000,
                         type: "success"
                     })
+                    // retrieve id from query string
+                    const jobId = new URLSearchParams(window.location.search).get("id")
+                    location.href = `/jobs/in-progress/view?id=${jobId}`
                     break;
                 case 400:
                     const data = await response.json()

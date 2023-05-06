@@ -4,12 +4,24 @@ import Notifier from "../../components/Notifier";
 /**
  * @type {HTMLButtonElement | null}
  */
-const saveInspectionReportDraftButton = document.querySelector("#save-inspection-report-draft");
+const saveInspectionReportDraftButton = document.querySelector("#save-inspection-report-draft button");
 /**
  * @type {HTMLFormElement}
  */
 const maintenanceInspectionForm = document.querySelector(".maintenance-inspection-form");
 
+/**
+ * @type {HTMLInputElement}
+ */
+const autoSaveCheckbox = document.querySelector("#save-inspection-report-draft input[type=checkbox]")
+/**
+ * @type {HTMLLabelElement}
+ */
+const autoSaveCheckboxLabel = document.querySelector("#save-inspection-report-draft label")
+
+/**
+ * @type {{color: string, value: boolean}}
+ */
 const isDraftBeingCreated = {
     value: false,
     color: "var(--color-white)"
@@ -100,9 +112,17 @@ async function createDraft() {
 
 saveInspectionReportDraftButton?.addEventListener("click", createDraft)
 
-if (saveInspectionReportDraftButton) {
-    saveInspectionReportDraftButton.click()
-    setInterval(() => {
-        saveInspectionReportDraftButton.click()
-    }, 30000)
-}
+
+let autoSaveInterval = null;
+autoSaveCheckbox?.addEventListener("change", async (e) => {
+
+    if (autoSaveCheckbox.checked) {
+        autoSaveInterval = setInterval(async () => {
+            await createDraft()
+        }, 30000)
+        autoSaveCheckboxLabel.textContent = "Auto save is on"
+        return await createDraft()
+    }
+    clearInterval(autoSaveInterval)
+    autoSaveCheckboxLabel.textContent = "Auto save is off"
+})
