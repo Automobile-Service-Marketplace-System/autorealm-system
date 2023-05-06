@@ -71,7 +71,12 @@ export class ProductSelector {
         onFinish: [],
     }
 
-    constructor() {
+
+
+    /**
+     * @return {Promise<ProductSelector>}
+     */
+    constructor(alreadySelected= undefined) {
         return (async () => {
             this.element = this.createElement();
             Modal.show({

@@ -23,31 +23,23 @@
             <tr>
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Unit Price</th>
+                <th>Unit Price (LKR)</th>
                 <th>Discount</th>
-                <th>Amount</th>
+                <th>Amount (LKR)</th>
             </tr>
         </thead>
         <tbody>
+        </tbody>
+        <tfoot>
             <tr>
+                <td colspan="4">Item Total</td>
                 <td>
-                    <input type="text" placeholder="Product name" name="product_name">
-                </td>
-                <td>
-                    <input type="number" placeholder="Quantity">
-                </td>
-                <td>
-                    <input type="number" placeholder="Unit Price" name="product_price">
-                </td>
-                <td>
-                    <input type="number" placeholder="%">
-                </td>
-                <td>
-                    <input type="number" placeholder="Amount">
+                    <input type="number" id="item-total" value="0.00" disabled>
                 </td>
             </tr>
-        </tbody>
+        </tfoot>
     </table>
+<!--    <div class="total-row" id="item-total-row"></div>-->
     <button class="create-invoice__new-row-button" id="new-item-row-button">
         <i class="fa-solid fa-plus"></i>
         Add Item
@@ -70,21 +62,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <input type="text" placeholder="Service / Labor">
-                </td>
-                <td>
-                    <input type="number" placeholder="Cost">
-                </td>
-                <td>
-                    <input type="number" placeholder="Discount">
-                </td>
-                <td>
-                    <input type="number" placeholder="Amount">
-                </td>
-            </tr>
         </tbody>
+    </table>
+    <button class="create-invoice__new-row-button" id="new-service-row-button">
+        <i class="fa-solid fa-plus"></i>
+        Add Item
+    </button>
 </section>
 <!---->
 <!--<div class="invoice-button-set">-->

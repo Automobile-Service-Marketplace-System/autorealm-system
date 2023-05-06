@@ -297,7 +297,8 @@ export class ServiceSelector {
 
 /**
  * @typedef {Object} Service
- * @property {number} Name
+ * @property {string} Name
  * @property {string} Code
  * @property {string} Description
+ * @property {string} Cost
  */

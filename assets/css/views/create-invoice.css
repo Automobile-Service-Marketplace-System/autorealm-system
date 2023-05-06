@@ -44,6 +44,10 @@
     height: 2.5rem;
 }
 
+.create-invoice__table tr td:first-child input {
+    text-align: left;
+}
+
 .create-invoice__table input {
     /* sizes */
     padding-inline: 1rem;
@@ -52,6 +56,20 @@
     /* transition */
     outline: rgba(0, 0, 0, 0) 1px solid;
     transition: all 0.2s ease-in-out;
+    text-align: right;
+}
+
+.create-invoice__table tfoot input {
+    background-color: var(--color-bg-secondary);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+}
+
+
+.create-invoice__table tfoot tr td:first-child {
+    padding-inline: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .create-invoice__new-row-button {
@@ -77,3 +95,8 @@
     width: 100px;
 }
 
+
+.total-row {
+    background-color: red;
+    height: 2.5rem;
+}
