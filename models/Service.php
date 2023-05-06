@@ -22,16 +22,28 @@ class Service
         $this->body = $body;
     }
 
-    public function getServices(): array
+    public function getServices(int|null $count = null, int|null $page = 1): array
     {
-        return $this->pdo->query(
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+        $services =  $this->pdo->query(
             "SELECT 
-                        servicecode as ID,
-                        service_name as Name,
-                        description as Description, 
-                        (price / 100) as Price
-                    FROM service WHERE is_discontinued = FALSE"
+                servicecode as ID,
+                service_name as Name,
+                description as Description, 
+                (price / 100) as Price
+            FROM service WHERE is_discontinued = FALSE $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalServices = $this->pdo->query(
+            "SELECT count(*) as total from service"
+         )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'services' => $services,
+            "total" => $totalServices['total']
+        ];
 
     }
 
