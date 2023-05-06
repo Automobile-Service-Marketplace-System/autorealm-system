@@ -8,6 +8,7 @@ use app\models\Appointment;
 use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
+use JsonException;
 
 class AppointmentsController
 {
@@ -124,10 +125,13 @@ class AppointmentsController
         
     }
 
+    /**
+     * @throws JsonException
+     */
     public function getForemen(Request $req, Response $res) : string {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $foremanModel = new Foreman();
-            $foremen = $foremanModel->getForemanAvailability();
+            $foremen = $foremanModel->getAvailableForemen();
             
             if(is_string($foremen)) {
                 $res->setStatusCode(500);
@@ -146,7 +150,7 @@ class AppointmentsController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getTimeSlots(Request $req, Response $res): string
     {

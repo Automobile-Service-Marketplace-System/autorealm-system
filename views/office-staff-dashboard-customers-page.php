@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @var array $customers
+ * @var int $page
+ * @var int $limit
+ * @var int $total
+ */
 use app\components\Table;
 
 $columns = [];

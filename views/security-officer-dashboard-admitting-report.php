@@ -11,10 +11,10 @@ use app\components\FormTextareaItem;
 
 $hasErrors = isset($errors) && !empty($errors);
 $hasVehicleRegNoError = $hasErrors && isset($errors['vehicle_reg_no']);
-$hasMilageError = $hasErrors && isset($errors['milage"']);
+$hasMileageError = $hasErrors && isset($errors['mileage"']);
 $hasCurrentFuelLevelError = $hasErrors && isset($errors['current_fuel_level']);
 $hasCurrentFuelLevelDescriptionError = $hasErrors && isset($errors['current_fuel_level_description']);
-$hasAdmittingTimeError = $hasErrors && isset($errors['admiting_time']);
+$hasAdmittingTimeError = $hasErrors && isset($errors['admitting_time']);
 $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
 $hasWindshieldError = $hasErrors && isset($errors['windshield']);
 $hasWindshieldDescriptionError = $hasErrors && isset($errors['windshield_description']);
@@ -553,26 +553,26 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 );
 
             FormItem::render(
-                id: "milage",
-                label: "<b><br>Milage</b>",
-                name: "milage",
+                id: "mileage",
+                label: "<b><br>Mileage</b>",
+                name: "mileage",
                 type: "number",
                 hasError:$hasMilageError,
-                error:$hasMilageError ? $errors['milage'] : "",
-                value: $body['milage'] ?? null,
+                error:$hasMilageError ? $errors['mileage'] : "",
+                value: $body['mileage'] ?? null,
             );
         ?>
 
         <div class="item-grid">
         <?php
             FormItem::render(
-                id: "admiting_time",
+                id: "admitting_time",
                 label: "<b><br>Admitting Time</b>",
-                name: "admiting_time",
+                name: "admitting_time",
                 type: "time",
                 hasError:$hasAdmittingTimeError,
-                error:$hasAdmittingTimeError ? $errors['admiting_time'] : "",
-                value: $body['admiting_time'] ?? null,
+                error:$hasAdmittingTimeError ? $errors['admitting_time'] : "",
+                value: $body['admitting_time'] ?? null,
             );
 
             FormItem::render(

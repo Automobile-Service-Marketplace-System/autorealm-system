@@ -29,7 +29,7 @@ class Service
                         servicecode as ID,
                         service_name as Name,
                         description as Description, 
-                        price as Price
+                        (price / 100) as Price
                     FROM service WHERE is_discontinued = FALSE"
         )->fetchAll(PDO::FETCH_ASSOC);
 
@@ -70,7 +70,7 @@ class Service
                         :price, :service_name, :description
                     )";
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":price", $this->body["price"]);
+            $statement->bindValue(":price", $this->body["price"]*100);
             $statement->bindValue(":service_name", $this->body["service_name"]);
             $statement->bindValue(":description", $this->body["description"]);
 
@@ -135,7 +135,7 @@ class Service
         $whereClause = $searchTerm ? " WHERE service_name LIKE :search_term" : "";
 
         try {
-            $query = "SELECT servicecode as Code, service_name as Name, description as Description FROM service 
+            $query = "SELECT servicecode as Code, service_name as Name, description as Description, (price / 100) as Cost FROM service 
                         $whereClause 
                         ORDER BY servicecode $limitClause $pageClause";
 

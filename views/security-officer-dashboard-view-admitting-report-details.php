@@ -422,10 +422,10 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
         );
 
         FormItem::render(
-                id: "milage",
-                label: "<b><br>Milage</b>",
-                name: "milage",
-                value: $admittingReport->milage,
+                id: "mileage",
+                label: "<b><br>Mileage</b>",
+                name: "mileage",
+                value: $admittingReport->mileage,
                 additionalAttributes: "readonly",
             );
     ?>
@@ -433,10 +433,10 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
 <div class="item-grid">
     <?php
         FormItem::render(
-            id: "admiting_time",
+            id: "admitting_time",
             label: "<b><br>Admitting Time</b>",
-            name: "admiting_time",
-            value: $admittingReport->admiting_time,
+            name: "admitting_time",
+            value: $admittingReport->admitting_time,
             additionalAttributes: "readonly",
         );
 

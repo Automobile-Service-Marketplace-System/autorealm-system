@@ -39,7 +39,7 @@ $start_date_time = date('Y-m-d H:i:s');
                         $availabilityClass = $foreman['Availability'] === 1 ? "indicator indicator--success" : "indicator";
                         $availabilityPhrase = $foreman['Availability'] === 1 ? "Available" : "Busy";
                         echo "<div class='foreman-card foreman-card--active'>
-                        <div class='foreman-card__header'>
+                        <div class='foreman-card__info'>
                         <p>
                         $availabilityPhrase
                         </p>

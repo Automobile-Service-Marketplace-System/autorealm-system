@@ -116,14 +116,14 @@ class Admitting
             $errors['current_fuel_level'] = 'You must select the state of  capacity';
         }
 
-        if (trim($this->body['milage']) === "") {
-            $errors['milage'] = "Milage must not be empty";
-        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['milage'])) {
-            $errors['milage'] = "Milage must be a positive";
+        if (trim($this->body['mileage']) === "") {
+            $errors['mileage'] = "Mileage must not be empty";
+        } else if (!preg_match('/^[0-9]*[1-9][0-9]*$/', $this->body['mileage'])) {
+            $errors['mileage'] = "Mileage must be a positive";
         }
 
-        if (strlen($this->body['admiting_time']) == 0) {
-            $errors['admiting_time'] = 'Admitting time must not be empty.';
+        if (strlen($this->body['admitting_time']) == 0) {
+            $errors['admitting_time'] = 'Admitting time must not be empty.';
         }
 
         if (strlen($this->body['departing_time']) == 0) {
@@ -161,26 +161,26 @@ class Admitting
     public function addAdmittingReport(int $id) : array | int{
         $errors = $this->validated_byAdmittingReport();
         if(empty($errors)){
-            $query="insert into admitingreport 
+            $query="insert into admittingreport 
                 (
-                    vehicle_reg_no, milage, current_fuel_level, current_fuel_level_description, admiting_time, departing_time, windshield, windshield_description, 
+                    vehicle_reg_no, mileage, current_fuel_level, current_fuel_level_description, admitting_time, departing_time, windshield, windshield_description, 
                     lights_lf, light_lf_description, lights_rf, light_rf_description, lights_lr, light_lr_description, lights_rr, light_rr_description, toolkit, sparewheel, rim_lf, rim_lf_description, 
                     rim_rf, rim_rf_description, rim_lr, rim_lr_description, rim_rr, rim_rr_description, seat_lf, seat_lf_description, seat_rf, seat_rf_description, seat_rear, seat_rear_description, 
                     carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id, admitting_date
                 )
                 values
                 (
-                    :vehicle_reg_no, :milage, :current_fuel_level,:current_fuel_level_description, :admiting_time, :departing_time, :windshield, :windshield_description, 
+                    :vehicle_reg_no, :mileage, :current_fuel_level,:current_fuel_level_description, :admitting_time, :departing_time, :windshield, :windshield_description, 
                     :lights_lf, :light_lf_description, :lights_rf, :light_rf_description, :lights_lr, :light_lr_description, :lights_rr, :light_rr_description, :toolkit, :sparewheel, :rim_lf, :rim_lf_description,
                     :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, :seat_rf_description, :seat_rear, :seat_rear_description,
                     :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id, :date
                 )";
             $statement=$this->pdo->prepare($query);
             $statement->bindvalue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
-            $statement->bindvalue(":milage", $this->body["milage"]);
+            $statement->bindvalue(":mileage", $this->body["mileage"]);
             $statement->bindvalue(":current_fuel_level", $this->body["current_fuel_level"]);
             $statement->bindvalue(":current_fuel_level_description", $this->body["current_fuel_level_description"]);
-            $statement->bindvalue(":admiting_time", $this->body["admiting_time"]);
+            $statement->bindvalue(":admitting_time", $this->body["admiting_time"]);
             $statement->bindvalue(":departing_time", $this->body["departing_time"]);
             $statement->bindvalue(":windshield", $this->body["windshield"]);
             $statement->bindvalue(":windshield_description", $this->body["windshield_description"]);

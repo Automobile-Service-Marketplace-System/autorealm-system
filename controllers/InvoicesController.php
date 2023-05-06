@@ -46,7 +46,6 @@ class InvoicesController
                 pageParams: [''], 
                 layoutParams: [
                     'title' => 'Generate Invoices',
-                    'pageMainHeading' => 'Generate Invoices',
                     'officeStaffId' => $req->session->get('user_id')
             ]);
         }

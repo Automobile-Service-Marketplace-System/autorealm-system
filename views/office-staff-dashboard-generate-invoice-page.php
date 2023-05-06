@@ -1,76 +1,81 @@
-<div class="generate-invoice-header">
-    <p>
-        <strong>Job Card</strong>
-        #1324
-    </p>
-    <p>
-        <strong>Name</strong>
-        Tharushi Chethana
-    </p>
-    <p>
-        <strong>Reg No.</strong>
-        QL-9904
-    </p>
-    <p>
-        <strong>Vehicle</strong>
-        Toyota GL Supra
-    </p>
-</div>
-
-<div class="invoice-labor">
-    <strong>Labor</strong>
-    <table class="invoice-table">
-        <tr>
-            <td>Full Service and Inspection</td>
-            <td>Rs. 1000</td>
-        </tr>
-        <tr>
-            <td>Body Wash</td>
-            <td>Rs. 500</td>
-        </tr>
-        <tr>
-            <td>Vacum and Interior Cleaning</td>
-            <td>Rs. 300</td>
-        </tr>
-        <tr>
-            <td><button class="btn btn--thin">Add Service <i class="fa-solid fa-plus"></i></button></td>
-            <td><strong>Total Labor: Rs.1800</strong></td>
-        </tr>
-    </table>
-</div>
-
-<div class="invoice-product">
-    <strong>Product</strong>
-    <table class="invoice-table">
-        <tr>
-            <td>Mobil Supra 2000 X1 10W-40</td>
-            <td>Rs. 17558.00</td>
-        </tr>
-        <tr>
-            <td>Air Filter 17220-5AY-H01</td>
-            <td>Rs. 3350.00</td>
-        </tr>
-        <tr>
-            <td>Honda 15490-RTA-003 Oil Filter</td>
-            <td>Rs. 2050.00</td>
-        </tr>
-        <tr>
-            <td><button class="btn btn--thin">Add Product <i class="fa-solid fa-plus"></i></button></td>
-            <td><strong>Total Labor: Rs.22958.00</strong></td>
-        </tr>
-    </table>
-</div>
-
-<div class="invoice-total_amount">
-    <strong>Total Amount: 24,758.00</strong>
-</div>
-
-<div class="invoice-button-set">
-    <button class="btn btn--success btn--square"e>
-        <i class="fa-solid fa-print"></i>
+<section class="create-invoice__header">
+    <button class="flex gap-8">
+        <i class="fa-solid fa-plus"></i>
+        Load details from job card
     </button>
-    <button class="btn btn--warning btn--square">
-        <i class="fa-solid fa-file-pdf"></i>
+    <button class="flex gap-8">
+        <i class="fa-solid fa-plus"></i>
+        Manually enter customer details
     </button>
-    <button class="btn">Print Invoice</button>
-</div>
+</section>
+
+<section class="create-invoice__section">
+    <h2>Items</h2>
+    <table class="create-invoice__table create-invoice__table--items">
+        <colgroup>
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 10.5%;">
+            <col span="1" style="width: 15.5%;">
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 16%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price (LKR)</th>
+                <th>Discount</th>
+                <th>Amount (LKR)</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Item Total</td>
+                <td>
+                    <input type="number" id="item-total" value="0.00" disabled>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+<!--    <div class="total-row" id="item-total-row"></div>-->
+    <button class="create-invoice__new-row-button" id="new-item-row-button">
+        <i class="fa-solid fa-plus"></i>
+        Add Item
+    </button>
+    <h2>Services / Labor</h2>
+    <table class="create-invoice__table create-invoice__table--services">
+        <colgroup>
+            <col span="1" style="width: 60.5%;">
+<!--            <col span="1" style="width: 10.5%;">-->
+            <col span="1" style="width: 15.5%;">
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 16%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Service / Labor</th>
+                <th>Cost</th>
+                <th>Discount</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <button class="create-invoice__new-row-button" id="new-service-row-button">
+        <i class="fa-solid fa-plus"></i>
+        Add Item
+    </button>
+</section>
+<!---->
+<!--<div class="invoice-button-set">-->
+<!--    <button class="btn btn--success btn--square" e>-->
+<!--        <i class="fa-solid fa-print"></i>-->
+<!--    </button>-->
+<!--    <button class="btn btn--warning btn--square">-->
+<!--        <i class="fa-solid fa-file-pdf"></i>-->
+<!--    </button>-->
+<!--    <button class="btn">Print Invoice</button>-->
+<!--</div>-->

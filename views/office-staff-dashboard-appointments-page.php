@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @var array $appointments
+ * @var int $page
+ * @var int $limit
+ * @var int $total
+ */
+
 use app\components\Table;
 
 $noOfJobs = $appointments['total'];
@@ -7,12 +14,14 @@ $startNo = ($page - 1) * $limit + 1;
 $endNo = min($startNo + $limit - 1, $noOfJobs);
 
 $columns = [];
+$items = [];
+
+
 if (empty($appointments['appointments'])) {
-    echo "<p class='no-data'>No Appointments as of now </p>";
+    echo "<p class='no-data'>No Appointments <br> as of now </p>";
 } else {
     $columns = array("Appointment ID","Reg No", "Customer Name", "Mileage (KM)", "Remarks", "Date", "From Time", "To Time", "Actions");
 
-    $items = [];
 
     foreach ($appointments['appointments'] as $appointment) {
         $items[] = [
@@ -39,7 +48,7 @@ if (empty($appointments['appointments'])) {
     }
 }
 ?>
-
+<?php if(!empty($appointments['appointments'])) { ?>
 <div class="product-count-and-actions">
     <div class="product-table-count">
         <p>
@@ -48,11 +57,15 @@ if (empty($appointments['appointments'])) {
         </p>
     </div>
 </div>
+<?php } ?>
 
 <?php
-    Table::render(items: $items, columns: $columns, keyColumns: ["appointment_id", "Actions"]);
+if (!empty($appointments['appointments'])) {
+    Table::render(items: $items, columns: $columns, keyColumns: ["Appointment ID", "Actions"]);
+}
 ?>
 
+<?php if(!empty($appointments['appointments'])) { ?>
 <div class="pagination-container">
     <?php 
         foreach(range(1,ceil($total / $limit)) as $i) {
@@ -61,3 +74,4 @@ if (empty($appointments['appointments'])) {
         }
         ?>
 </div>
+<?php } ?>

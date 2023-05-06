@@ -1,11 +1,11 @@
-.assign-a-foreman {
-    width: 300px;
-}
+/*.assign-a-foreman {*/
+/*    width: 300px;*/
+/*}*/
 
 .office-create-jobcard-form {
     position: relative;
     padding-top: 1rem;
-
+    width: 95vw;
 }
 
 .office-create-jobcard-form .modal-close-btn svg {
@@ -17,25 +17,12 @@
     transform: rotate(180deg);
 }
 
-.office-create-jobcard-form h1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
 .office-create-jobcard-form h2 {
-    padding-top: 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.office-create-jobcard-form h3 {
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 1rem;
 }
 
@@ -43,10 +30,103 @@
     position: absolute;
     top: 0;
     right: 0;
-
 }
 
 .spin-icon {
     animation: spin 2s linear infinite;
     font-size: 50px;
+}
+
+.select-foreman-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 1rem;
+    height: 200px;
+    gap: 1rem;
+    padding: 0.5rem;
+    overflow-y: auto;
+}
+
+.select-foreman-cards .spin-icon {
+    display: none;
+}
+
+.select-foreman-cards--loading {
+    align-items: center;
+    justify-content: center;
+}
+
+.select-foreman-cards--loading .spin-icon {
+    display: block;
+    animation: spin 2s linear infinite;
+    font-size: 50px;
+}
+
+.foreman-card {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: var(--color-bg-primary);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    outline: 2px solid transparent;
+
+}
+
+
+.foreman-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.foreman-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.foreman-card__name {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.foreman-card svg {
+    display: none;
+}
+
+.foreman-card--selected {
+    outline: 2px solid var(--color-success);
+}
+
+.foreman-card--selected svg {
+    display: initial;
+    color: var(--color-success);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+}
+
+
+@media screen and (min-width: 768px) {
+    .office-create-jobcard-form {
+        width: 75vw;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .office-create-jobcard-form {
+        width: 50vw;
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .office-create-jobcard-form {
+        width: 55vw;
+    }
 }
