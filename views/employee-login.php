@@ -12,7 +12,7 @@ use app\components\FormItem;
 
 ?>
 
-<form action="/employee-login" method="post" class="employee-login__form">
+<form action="/login" method="post" class="employee-login__form">
    <h1>Welcome back !</h1>
     <?php
     FormItem::render(

@@ -57,7 +57,7 @@ const carousel = new (class Carousel {
   start() {
     setInterval(() => {
       this.next();
-    }, 25000);
+    }, 5000);
   }
 
   to(id) {

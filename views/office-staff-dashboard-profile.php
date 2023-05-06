@@ -5,9 +5,9 @@
 
 ?>
 
-<div class="customer-profile">
-    <img src="<?php echo $officeStaff->image; ?>" alt="<?php echo $officeStaff->f_name . ' ' . $officeStaff->l_name . '\'s'; ?>">
-    <div class="officestaff-profile__info">
+<div class="employee-profile">
+    <img src="<?php echo $officeStaff->image ?>" alt="<?php echo $officeStaff->f_name . ' ' . $officeStaff->l_name . '\'s'; ?>">
+    <div class="employee-profile__info">
         <p>
             <strong>
                 First name
@@ -44,33 +44,6 @@
         </p>
         <p>
             <strong>
-                NIC
-            </strong>
-            <span>
-                <?php echo $officeStaff->NIC ?>
-            </span>
-
-        </p>
-        <p>
-             <strong>
-                  Birthday
-             </strong>
-             <span>
-                <?php echo $officeStaff->dob ?>
-            </span>
-
-        </p>
-        <p>
-            <strong>
-                Date of appointed
-            </strong>
-            <span>
-                <?php echo $officeStaff->date_of_appointed ?>
-            </span>
-
-        </p>
-        <p>
-            <strong>
                 Address
             </strong>
             <span>
@@ -78,19 +51,8 @@
             </span>
 
         </p>
-        <p>
-             <strong>
-                  Job role
-             </strong>
-             <span>
-                <?php echo $officeStaff->job_role ?>
-            </span>
-
-        </p>
-
-
     </div>
-    <div class="customer-profile__actions">
+    <div class="employee-profile__actions">
         <button class="btn btn--danger" id="edit-customer-password">
             <i class="fa-solid fa-lock"></i>
             Edit password</button>

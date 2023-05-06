@@ -11,6 +11,12 @@
     gap: 1.5rem;
 }
 
+.stock-manager-add-products-form__stock-keeping {
+    display: flex;
+    gap: 1.5rem;
+}
+
+
 .stock-manager-add-products-form__order {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -31,6 +37,7 @@
     font-size: 1.2rem;
     font-weight: lighter;
     margin-bottom: 0.75rem;
+    margin-top: 2rem;
 }
 
 .button-area{
@@ -69,3 +76,4 @@
     grid-column: 1 / 3;
     grid-row: 3 / 5;
 }
+

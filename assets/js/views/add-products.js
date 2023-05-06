@@ -25,7 +25,7 @@ addProductButton?.addEventListener("click", () => {
     const confirmBtn = document.createElement("button")
     actions.appendChild(confirmBtn)
     confirmBtn.innerHTML = "Confirm"
-    confirmBtn.classList.add("btn", "btn--thin", "btn--success")
+    confirmBtn.classList.add("btn", "btn--thin")
     confirmBtn.addEventListener("click", () => {
         addProductForm.submit()
     })

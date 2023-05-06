@@ -27,68 +27,68 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/employee-dashboard/overview">
+            <a href="/admin-dashboard/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/admin-dashboard/employees">
-                <i class="fa-solid fa-box"></i>
+            <a href="/employees">
+                <i class="fa-solid fa-user-tie"></i>
                 <span>
-                    Employee
+                    Employees
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/products">
+                <i class="fa-solid fa-box"></i>
                 <span>
                     Products
                 </span>
             </a>
-            <a href="/employee-dashboard/orders">
+            <a href="/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/suppliers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Suppliers
                 </span>
             </a>
-            <a href="/employee-dashboard/reviews">
+            <a href="/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews
                 </span>
             </a>
-            <a href="/admin-dashboard/services">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/services">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span>
                     Services
                 </span>
             </a>
-            <a href="/employee-dashboard/services/jobs">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/all-jobs">
+                <i class="fa-solid fa-clock"></i>
                 <span>
                     Service/Repair Jobs
                 </span>
             </a>
-            <a href="/employee-dashboard/vehicle-maintenance-reports">
-                <i class="fa-solid fa-money-bill"></i>
-                <span>
-                    Vehicle Maintenance Reports
-                </span>
-            </a>
-            <a href="/office-staff-dashboard/customers">
-                <i class="fa-solid fa-money-bill"></i>
+<!--            <a href="/employee-dashboard/vehicle-maintenance-reports">-->
+<!--                <i class="fa-solid fa-file"></i>-->
+<!--                <span>-->
+<!--                    Vehicle Maintenance Reports-->
+<!--                </span>-->
+<!--            </a>-->
+            <a href="/customers">
+                <i class="fa-solid fa-users"></i>
                 <span>
                     Customers
                 </span>
             </a>            
-            <a href="/office-staff-dashboard/vehicles">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/vehicles">
+                <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
                 </span>
@@ -103,7 +103,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  role: "admin", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType:"admin",  id: 1);
             ?>
         </header>
 

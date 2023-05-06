@@ -1,0 +1,21 @@
+.admitting-report-wrapper {
+    background-color: var(--color-white);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.admitting-card__row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.admitting-report{
+    width:100% !important;
+}

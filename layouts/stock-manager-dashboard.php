@@ -9,8 +9,6 @@ use app\components\EmployeeProfileDropdown;
 use app\utils\DocumentHead;
 
 
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,34 +28,40 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/products">
                 <i class="fa-solid fa-box"></i>
                 <span>
                     Products
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/orders">
+            <a href="/orders">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>
                     Orders
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/suppliers">
+            <a href="/suppliers">
                 <i class="fa-solid fa-users"></i>
                 <span>
                     Suppliers
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/reviews">
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>
                     Reviews
+                </span>
+            </a>
+            <a href="/analytics">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>
+                    Analytics
                 </span>
             </a>
 
@@ -70,7 +74,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType: "stock_manager", role: "Stock manager", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $employeeId, employeeType: "stock_manager", id: 1);
             ?>
         </header>
 

@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\utils\DevOnly;
+
 /**
  * @package app\core
  */
@@ -23,12 +25,12 @@ class Request
      */
     public function path(): string
     {
-        $path = $_SERVER['REQUEST_URI'] ?? "/";
-        $position = strpos($path, "?");
+        $path = $_SERVER['REQUEST_URI'] ?? "/"; //to take the path before ? in URL
+        $position = strpos($path, "?"); //position of the ?
         if ($position === false) {
             return $path;
         }
-        return substr($path, 0, $position);
+        return substr($path, 0, $position); //extract the portion before ?
     }
 
     /**
@@ -54,12 +56,28 @@ class Request
     {
         $body = [];
         foreach ($_POST as $key => $value) {
-            $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $value[$k] = filter_var($v, FILTER_SANITIZE_SPECIAL_CHARS);
+                }
+                $body[$key] = $value;
+            } else {
+                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+
+        // also should check for json body
+        if (empty($body)) {
+            try {
+                $body = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                $body = [];
+            }
         }
         return $body;
     }
 
-    public function cookies() : array
+    public function cookies(): array
     {
         $cookies = [];
         foreach ($_COOKIE as $key => $value) {

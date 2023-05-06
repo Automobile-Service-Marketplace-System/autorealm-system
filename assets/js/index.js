@@ -6,5 +6,7 @@ import "./utils"
 import "./views";
 // import component related logic
 import "./components";
+// import service related logic
+import "./services";
 
 

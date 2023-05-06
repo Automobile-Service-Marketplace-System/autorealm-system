@@ -1,0 +1,154 @@
+.appointments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+
+.appointments-vehicle {
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);
+    background-color: var(--color-white);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.appointments-vehicle h2 {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+
+.appointments-vehicle span {
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+
+.appointment-card {
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);
+    background-color: var(--color-white);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.appointment-card__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.appointment-card__header p:first-child {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+
+.appointment-card__header p:last-child {
+    padding: 0.25rem 1.5rem;
+    border-radius: 100px;
+}
+
+.appointment-card__header p.due:last-child {
+    align-items: flex-end !important;
+    background-color: rgba(var(--danger), 0.3);
+    color: var(--color-danger);
+
+}
+
+.appointment-items {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.appointment-items.appointment-items--active {
+    height: 300px;
+}
+
+
+.appointment-items > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.appointment-items img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.appointment-card__info-date {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+}
+
+.appointment-card__info-date > div {
+    width: 50%;
+}
+
+.appointment-card__info-date h3 {
+    font-weight: bold;
+}
+
+.item-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+
+.product-toggle svg {
+    transition: all 0.2s ease-in-out;
+}
+
+.product-toggle.product-toggle--active svg {
+    transform: rotate(90deg);
+}
+
+
+.item-toggle svg {
+    transition: all 0.2s ease-in-out;
+}
+
+.item-toggle.item-toggle--active svg {
+    transform: rotate(90deg);
+}
+
+
+.appointment-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.appointment-card__footer button {
+    display: flex;
+    align-items: center;
+    color: var(--color-success);
+}
+
+.appointment-card__footer button:last-child {
+    color: var(--color-danger);
+}

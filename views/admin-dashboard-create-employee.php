@@ -22,35 +22,35 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
 
 <main class="create-employee">
-    <form action="/admin-dashboard/employees/add" method="post" enctype="multipart/form-data">
+    <form action="/employees/add" method="post" enctype="multipart/form-data">
         <p>Add a new staff account, these accounts will allow your employees to<br> access their respective dashboards</p>
-        <b>Choose the account type</b>
+        <br><b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
-                <input type="radio" id="security-officer" name="job_role" value="security_officer">
+                <input type="radio" id="security-officer" name="job_role" value="security_officer" required>
                 <label for="security-officer">Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
+                <input type="radio" id="office-staff" name="job_role" value="office_staff_member" required>
                 <label for="office-staff">Office Staff</label>
-            </div>
+            </div> 
             <div class="role-input-item">
-                <input type="radio" id="foreman" name="job_role" value="foreman">
+                <input type="radio" id="foreman" name="job_role" value="foreman" required>
                 <label for="foreman">Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="technician" name="job_role" value="technician">
+                <input type="radio" id="technician" name="job_role" value="technician" required>
                 <label for="technician">Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="stock-manager" name="job_role" value="stock_manager">
+                <input type="radio" id="stock-manager" name="job_role" value="stock_manager" required>
                 <label for="stock-manager">Stock Manager</label>
 
             </div>
         </div>
 
-        <div class="part">
-            <div class="part1">
+        <div class="page-format">
+            <div class="body-part">
                 <div class="form-input">
                     <?php
                     FormItem::render(
@@ -62,7 +62,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         value: $body['f_name'] ?? null,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
-
                     ?>
                 </div>
                 <div class="form-input">
@@ -76,25 +75,24 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         value: $body['l_name'] ?? null,
                         additionalAttributes: "pattern='^[\p{L} ]+$'"
                     );
-
                     ?>
                 </div>
 
                 <div class="form-input">
                     <?php
-                    FormItem::render(
-                        id: "fi",
-                        label: "Full Name with initials",
-                        name: "fi",
-                        hasError: $hasFIError,
-                        error: $hasFIError ? $errors['fi'] : "",
-                        value: $body['fi'] ?? null,
-                    );
+                    // FormItem::render(
+                    //     id: "fi",
+                    //     label: "Full Name with initials",
+                    //     name: "fi",
+                    //     hasError: $hasFIError,
+                    //     error: $hasFIError ? $errors['fi'] : "",
+                    //     value: $body['fi'] ?? null,
+                    // );
 
                     ?>
                 </div>
         
-                <div class="line">
+                <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -109,7 +107,6 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
                         ?>
                     </div>
-
         
                     <div class="form-input-small">
                         <?php
@@ -166,7 +163,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
                     ?>
                 </div>
 
-                <div class="line">
+                <div class="Two-small-input-in-one-line">
                     <div class="form-input-small">
                         <?php
                         FormItem::render(
@@ -194,17 +191,30 @@ $hasImageError = $hasErrors && isset($errors['image']);
                         );
                         ?>
                     </div>
+                </div>
+            
+            </div>
 
-                </div>
-                <button type="reset" id="rst" class="btn1">Reset</button>
+            <div class="form-input">
+                <b>Photo</b>
+                <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                <img id="image-preview">
+                <script>
+                    function loadImage(event) {
+                        var file = event.target.files[0];
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function() {
+                            var imagePreview = document.getElementById('image-preview');
+                            imagePreview.src = reader.result;
+                            };
+                        }
+                </script>
             </div>
-            <div class="part2">
-                <div class="form-input">
-                    <b>Photo</b>
-                    <input type="file" name="image">
-                </div>
-                <button type="submit" id="sm" class="btn">Create Account</button>
-            </div>
+        </div>
+        <div class="flex items-center justify-between my-4 ">
+            <button type="reset" class="btn btn--danger create-employee-reset-btn">Reset</button>
+            <button type="submit" class="btn">Create Account</button>
         </div>
     </form>
 </main>

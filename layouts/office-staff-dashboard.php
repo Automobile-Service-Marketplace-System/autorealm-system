@@ -27,34 +27,40 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/stock-manager-dashboard/overview">
+            <a href="/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/products">
+            <a href="/invoices">
                 <i class="fa-solid fa-file-invoice"></i>
                 <span>
                     Invoices
                 </span>
             </a>
-            <a href="/office-staff-dashboard/customers">
+            <a href="/customers">
                 <i class="fa-solid fa-user"></i>
                 <span>
                     Customers
                 </span>
             </a>
-            <a href="/office-staff-dashboard/vehicles">
+            <a href="/vehicles">
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
                 </span>
             </a>
-            <a href="/stock-manager-dashboard/reviews">
+            <a href="/appointments">
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>
                     Appointments
+                </span>
+            </a>
+            <a href="/job-cards">
+                <i class='fa-solid fa-wrench'></i>
+                <span>
+                    Jobs
                 </span>
             </a>
 
@@ -67,14 +73,16 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $officeStaffId,employeeType: 'office_staff', role: "Office staff", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $officeStaffId, employeeType: 'office_staff', id: 1);
             ?>
         </header>
 
         <div class="employee-dashboard-page">
-            <h1>
-                <?php echo $pageMainHeading; ?>
-            </h1>
+            <?php if (isset($pageMainHeading)) { ?>
+                <h1>
+                    <?php echo $pageMainHeading; ?>
+                </h1>
+            <?php } ?>
             {{content}}
         </div>
     </div>

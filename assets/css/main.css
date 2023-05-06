@@ -21,6 +21,10 @@
 @import "components/tables.css";
 @import "components/notifiers.css";
 @import "components/modals.css";
+@import "components/product-selector.css";
+@import "components/calendar-view.css";
+@import "components/service-selector.css";
+@import "components/filter.css"; 
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
@@ -31,12 +35,14 @@
 @import "views/products-page.css";
 @import "views/services-page.css";
 @import "views/customer-dashboard-profile.css";
+@import "views/customer-dashboard-vehicles.css";
 @import "views/customer-auth.css";
 @import "views/create-employee.css";
 @import "views/employee-login.css";
 @import "views/home.css";
 @import "views/jobs-page.css";
 @import "views/view-job.css";
+@import "views/create-job.css";
 @import "views/office-staff-login.css";
 @import "views/office-staff-add-customer.css";
 @import "views/office-staff-dashboard-get-customer-vehicle.css"; 
@@ -48,9 +54,39 @@
 @import "views/view-suppliers-page.css";
 @import "views/products.css";
 @import "views/office-staff-dashboard-get-vehicle-by-customer.css";
+@import "views/employee-dashboard-profile.css";
+@import "views/cart.css";
+@import "views/office-staff-dashboard-get-appointment-for-customer.css";
+@import "views/office-staff-dashboard-jobcard-page.css";
+@import "views/customer-contact-verification.css";
+@import "views/customer-dashboard-records.css";
+@import "views/customer-dashboard-orders.css";
+@import "views/customer-dashboard-appointments.css";
+@import "views/admin-dashboard-employees.css";
+@import "views/overview.css";
+@import "views/admin-overview.css";
+@import "views/create-admitting-reports.css";
+@import "views/office-staff-dashboard-overview.css";
+@import "views/view-appointment.css";
+@import "views/view-reviews.css";
+@import "views/view-order-details.css";
+@import "views/office-staff-dashboard-generate-invoice-page.css";
+@import "views/cart-checkout.css";
+@import "views/all-jobs.css";
+@import "views/assigned-job.css";
+@import "views/update-service.css";
+@import "views/update-products.css";
+@import "views/update-supplier.css";
+@import "views/restock-products.css";
+@import "views/add-models.css";
+@import "views/office-create-appointment.css";
+@import "views/office-update-appointment.css";
+@import "views/add-brand.css";
+@import "views/view-admitting-reports.css";
+@import "views/office-create-jobcard.css";
+@import "views/create-invoice.css";
 
-
-body {
+body{
   font-family: "Nunito", sans-serif;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);

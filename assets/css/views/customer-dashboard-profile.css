@@ -1,33 +1,72 @@
 .customer-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .customer-profile img {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .customer-profile__info {
-  width: 100%;
-  padding: 2rem;
-  background-color: var(--color-white);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
+    width: 100%;
+    padding: 2rem;
+    background-color: var(--color-white);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .customer-profile__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.customer-profile__info p {
+    display: flex;
+    align-items: center;
+}
+
+.customer-profile__info strong {
+    width: 20%;
+}
+
+
+#update-customer-profile {
+    width: 95vw;
+}
+
+
+@media (min-width: 768px) {
+    #update-customer-profile {
+        width: 60vw;
+    }
+}
+
+@media (min-width: 1024px) {
+    #update-customer-profile {
+        width: 40vw;
+    }
+}
+
+@media (min-width: 1280px) {
+    #update-customer-profile {
+        width: 30vw;
+    }
+}
+
+@media (min-width: 1536px) {
+    #update-customer-profile {
+        width: 20vw;
+    }
 }

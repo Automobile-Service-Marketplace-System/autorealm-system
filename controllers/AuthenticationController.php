@@ -13,6 +13,7 @@ use app\models\Admin;
 use app\models\Employee;
 use app\models\OfficeStaff;
 use app\models\SecurityOfficer;
+use JsonException;
 
 class AuthenticationController
 {
@@ -22,8 +23,9 @@ class AuthenticationController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             return $res->redirect("/dashboard/profile");
         }
-        return $res->render("customer-signup", layoutParams: [
+        return $res->render(view: "customer-signup", layoutParams: [
             "title" => "Register",
+            'customer' => null
         ]);
     }
 
@@ -33,19 +35,87 @@ class AuthenticationController
         $customer = new Customer($body);
         $result = $customer->register();
 
-        if (is_array($result)) {
+        if (is_array($result) && isset($result["errors"])) {
             return $res->render(view: "customer-signup", pageParams: [
                 'errors' => $result,
                 'body' => $body
             ]);
         }
 
-        if ($result) {
-            return $res->redirect("/login?success=1");
+        if (is_array($result) && isset($result["customerId"])) {
+            $req->session->set("is_authenticated", true); // $_SESSION['is_authenticated'] = true;
+            $req->session->set("user_id", $result["customerId"]);
+            $req->session->set("user_role", "customer");
+            return $res->redirect(path: "/register/verify");
         }
 
-        return $res->render("500", "error", [
-            "error" => "Something went wrong. Please try again later."
+        return $result;
+    }
+
+    public function getCustomerContactVerificationPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            return $res->render(view: 'customer-contact-verification', layoutParams: [
+                'title' => 'Verify your email & phone number',
+                'customerId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function sendVerificationCodesAgain(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $query = $req->query();
+            $customerId = $req->session->get("user_id");
+            $customerModel = new Customer();
+            $result = $customerModel->retryVerifying(customerId: $customerId, mode: $query['mode']);
+            if (is_array($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: $result);
+            }
+            if ($result === true) {
+                $res->setStatusCode(code: 200);
+                return $res->json(data: [
+                    'success' => 'Verification codes sent successfully'
+                ]);
+            }
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            'message' => 'Unauthorized'
+        ]);
+    }
+
+
+    /**
+     * @throws JsonException
+     */
+    public function verifyCustomerContactDetails(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $body = $req->body();
+            $query = $req->query();
+            $customerId = $req->session->get("user_id");
+            $customerModel = new Customer();
+            $result = $customerModel->verifyContactDetails(customerId: $customerId, mode: $query['mode'], otp: $body['otp']);
+            if (is_array($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: $result);
+            }
+            if ($result === true) {
+                $res->setStatusCode(code: 200);
+                return $res->json(data: [
+                    'success' => $query["mode"] === 'email' ? 'Email verified successfully' : 'Phone number verified successfully'
+                ]);
+            }
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            'message' => 'Unauthorized'
         ]);
     }
 
@@ -55,10 +125,11 @@ class AuthenticationController
         if ($req->session->get("is_authenticated")) {
             return $res->redirect(path: $query['redirect_url'] ?? "/dashboard/profile");
         }
-        return $res->render(view: "customer-login", layout: "main", pageParams: [
+        return $res->render(view: "customer-login", pageParams: [
             'redirect_url' => $query['redirect_url'] ?? "/dashboard/profile"
         ], layoutParams: [
-            'title' => 'Login'
+            'title' => 'Login',
+            'customer' => null
         ]);
     }
 
@@ -93,7 +164,7 @@ class AuthenticationController
                 ]);
             }
         }
-        return $res->render("500", "error", [
+        return $res->render(view: "500", layout: "error", pageParams: [
             "error" => "Something went wrong. Please try again later."
         ]);
     }
@@ -106,7 +177,7 @@ class AuthenticationController
             return $res->redirect(path: "/");
         }
 
-        return $res->redirect("/");
+        return $res->redirect(path: "/");
     }
 
 
@@ -132,10 +203,10 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
-            return $res->redirect(path: "/office-staff-dashboard/profile");
+            return $res->redirect(path: "/profile");
         }
         {
-            return $res->render("500", "error", [
+            return $res->render(view: "500", layout: "error", pageParams: [
                 "error" => "Something went wrong. Please try again later."
             ]);
         }
@@ -167,10 +238,10 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "stock_manager");
-            return $res->redirect(path: "/stock-manager-dashboard/profile");
+            return $res->redirect(path: "/products");
         }
 
-        return $res->render("500", "error", [
+        return $res->render(view: "500", layout: "error", pageParams: [
             "error" => "Something went wrong. Please try again later."
         ]);
 
@@ -184,7 +255,7 @@ class AuthenticationController
             return $res->redirect(path: "/");
         }
 
-        return $res->redirect("/");
+        return $res->redirect(path: "/");
     }
 
 
@@ -193,15 +264,17 @@ class AuthenticationController
     public function getEmployeeLoginPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
+            //when employees already logged in
             $job_role = $req->session->get("user_role");
+            $path = "";
             if ($job_role === "admin") {
-                $path = "/admin-dashboard/profile";
+                $path = "/admin-dashboard/overview";
             } elseif ($job_role === "foreman") {
-                $path = "/foreman-dashboard/profile";
+                $path = "/jobs";
             } elseif ($job_role === "stock_manager") {
-                $path = "/stock-manager-dashboard/profile";
+                $path = "/products";
             } elseif ($job_role === "office_staff_member") {
-                $path = "/office-staff-dashboard/profile";
+                $path = "/customers";
             } elseif ($job_role === "technician") {
                 $path = "/technician-dashboard/profile";
             } elseif ($job_role === "security_officer") {
@@ -221,8 +294,10 @@ class AuthenticationController
         $employee = new Employee($body);
         $result = $employee->login();
         if (is_array($result)) {
+            // When results are equal to array, It means there are errors.
             return $res->render(view: "employee-login", layout: "employee-auth", pageParams: [
                 'errors' => $result,
+                // Display errors
                 'body' => $body
             ], layoutParams: [
                 'title' => 'Login'
@@ -241,15 +316,15 @@ class AuthenticationController
                 $req->session->set(key: "user_role", value: $result->job_role); // $_SESSION['user_role'] = "employee";
                 $path = "";
                 if ($result->job_role === "admin") {
-                    $path = "/admin-dashboard/profile";
+                    $path = "/employees";
                 } elseif ($result->job_role === "foreman") {
-                    $path = "/foreman-dashboard/profile";
+                    $path = "/jobs";
                 } elseif ($result->job_role === "stock_manager") {
-                    $path = "/stock-manager-dashboard/profile";
+                    $path = "/products";
                 } elseif ($result->job_role === "office_staff_member") {
-                    $path = "/office-staff-dashboard/profile";
+                    $path = "/customers";
                 } elseif ($result->job_role === "technician") {
-                    $path = "/technician-dashboard/profile";
+                    $path = "/assigned-job";
                 } elseif ($result->job_role === "security_officer") {
                     $path = "/security-officer-dashboard/check-appointment";
                 }
@@ -264,7 +339,7 @@ class AuthenticationController
 
         }
 
-        return $res->render("500", "error", [
+        return $res->render(view: "500", layout: "error", pageParams: [
             "error" => "Something went wrong. Please try again later."
         ]);
     }
@@ -274,7 +349,7 @@ class AuthenticationController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") !== "customer") {
             $req->session->destroy();
             $req->session->deletePersistentEmployeeSession($req->session->get("user_id"));
-            return $res->redirect(path: "/employee-login");
+            return $res->redirect(path: "/login");
         }
 
         return $res->redirect(path: $req->path());
@@ -305,11 +380,11 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "admin");
             return $response->redirect(path: "/admin-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render(view: "500", layout: "error", pageParams: [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 
     // Regarding security officer authentication
@@ -339,10 +414,10 @@ class AuthenticationController
             $request->session->set("user_id", $result->employee_id);
             $request->session->set("user_role", "security-officer");
             return $response->redirect(path: "/security-officer-dashboard/profile");
-        } else {
-            return $response->render("500", "error", [
-                "error" => "Something went wrong. Please try again later."
-            ]);
         }
+
+        return $response->render(view: "500", layout: "error", pageParams: [
+            "error" => "Something went wrong. Please try again later."
+        ]);
     }
 }

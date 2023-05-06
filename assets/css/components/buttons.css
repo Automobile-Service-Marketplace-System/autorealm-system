@@ -143,6 +143,88 @@
 
 /* button variations based on shape */
 
+.btn--text {
+    background-color: transparent !important;
+    color: var(--color-primary);
+    /*padding: 0;*/
+    border: none;
+    outline: none;
+    font-weight: bold;
+}
+
+.btn--text.btn--primary {
+    color: var(--color-primary);
+}
+
+.btn--text.btn--success {
+    color: var(--color-success);
+}
+
+.btn--text.btn--info {
+    color: var(--color-info);
+}
+
+.btn--text.btn--warning {
+    color: var(--color-warning);
+}
+
+.btn--text.btn--danger {
+    color: var(--color-danger);
+}
+
+.btn--text.btn--danger:hover {
+    background-color: rgba(var(--danger), 0.1) !important;
+}
+
+.btn--text.btn--light {
+    color: var(--color-light);
+}
+
+.btn--text.btn--dark {
+    color: var(--color-dark);
+}
+
+.btn--text.btn--white {
+    color: var(--color-white);
+}
+
+.btn--text.btn--black {
+    color: var(--color-black);
+}
+
+.btn--text.btn--dark-blue {
+    color: var(--color-dark-blue);
+}
+
+.btn--text.btn--light-blue {
+    color: var(--color-light-blue);
+}
+
+.btn--text:hover {
+    transform: translateY(0);
+    box-shadow: none;
+    background-color: rgba(var(--primary), 0.1) !important;
+}
+
+.btn--text:active {
+    transform: translateY(0);
+}
+
+.btn--text:disabled {
+    color: var(--color-disabled);
+    cursor: not-allowed;
+}
+
+.btn--text:disabled:hover {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn--text:disabled:active {
+    transform: translateY(0);
+}
+
+
 .btn--round {
     aspect-ratio: 1;
     border-radius: 50%;
@@ -157,10 +239,10 @@
     padding: 0.25rem 1rem;
 }
 
-.btn--thin:hover {
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);
-}
+/*.btn--thin:hover {*/
+/*    transform: translateY(-0.1rem);*/
+/*    box-shadow: 0 0.5rem 0.5rem rgba(var(--primary), 0.2);*/
+/*}*/
 
 .btn--thin:active {
     transform: translateY(0.1rem);
@@ -281,5 +363,41 @@
         display: none;
     }
 
+}
 
+#cart-link {
+    position: relative;
+}
+
+#cart-link svg {
+    font-size: 1.1rem;
+}
+
+
+.cart-count {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    background-color: var(--color-info);
+    color: var(--color-white);
+    font-size: 0.8rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    line-height: normal;
+    display: grid;
+    place-items: center;
+}
+
+
+.btn-outlined{
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.btn-outlined--danger{
+     border: 2px solid var(--color-danger) !important;
+    color: var(--color-danger) !important;
 }

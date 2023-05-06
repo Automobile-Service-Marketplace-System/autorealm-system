@@ -1,0 +1,42 @@
+.generate-invoice-header {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  
+}
+
+.invoice-add-service{
+    background-color: rgb(235, 219, 200);
+    border-radius: 10$;
+}
+
+.invoice-labor, .invoice-product{
+    margin-top: 0.5rem;
+    padding: 10px;
+    background-color: var(--color-white);
+    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);
+    border-radius: 5%;
+}
+
+.invoice-button-set{
+    display: flex;
+    justify-content: end;
+    gap: 1.5rem;
+}
+
+.invoice-total_amount{
+    font-size: 30px;
+    font-weight: 700;
+    margin: 1rem;
+    display: flex;
+    justify-content: end;
+
+}
+
+.invoice-button-set svg {
+    font-size: 1.5rem;
+}
+
+.invoice-table {
+    width: 100%;
+    padding: 0.5rem;
+}    

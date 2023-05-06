@@ -1,0 +1,70 @@
+.create-admitting-reports .form-item {
+    width:100% !important;
+    
+}
+
+.create-admitting-reports-button{
+    margin:1cm;
+}
+
+.admitting-images{
+    display: flex;
+    width: 100px;
+    gap: 0.5cm;
+    margin: .5cm;
+}
+
+
+.item-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+
+.add-extra-image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 0.75cm;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+
+.admitting-images img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+#more-image{
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#more-image svg {
+    font-size: 4rem;
+    color: rgba(var(--black), 0.3);
+}
+
+.form-radio{
+    display: flex;
+    gap: 2rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100vw;
+}

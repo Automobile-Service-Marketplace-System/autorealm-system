@@ -16,6 +16,7 @@ DocumentHead::createHead(
     css: ["/css/style.css"],
     title: isset($title) ? "$title - AutoRealm" : "Home - AutoRealm",
 );
+
 ?>
 
 <body style="overflow: hidden">
@@ -32,30 +33,19 @@ DocumentHead::createHead(
                     Overview
                 </span>
             </a>
-            <a href="/foreman-dashboard/jobs">
-                <i class="fa-solid fa-box"></i>
+            <a href="/jobs">
+                <i class="fa-solid fa-clock"></i>
                 <span>
-                    Jobs
+                    Assigned Jobs
                 </span>
             </a>
-            <a href="/foreman-dashboard/orders">
-                <i class="fa-solid fa-money-bill"></i>
+            <a href="/all-jobs">
+                <i class="fa-solid fa-file"></i>
                 <span>
-                    Orders
+                    All Jobs
                 </span>
             </a>
-            <a href="/foreman-dashboard/suppliers">
-                <i class="fa-solid fa-users"></i>
-                <span>
-                    Suppliers
-                </span>
-            </a>
-            <a href="/foreman-dashboard/reviews">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>
-                    Reviews
-                </span>
-            </a>
+
 
         </nav>
     </aside>
@@ -65,7 +55,7 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-bars"></i>
             </button>
             <?php
-            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", role: "Foreman", id: 1);
+            EmployeeProfileDropdown::render(employeeId: $foremanId, employeeType: "foreman", id: 1);
             ?>
         </header>
 

@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
+use PDOException;
 
 class Category
 {
@@ -18,8 +19,14 @@ class Category
     }
 
 
-    public function  getCategories() : array {
-        $stmt = $this->pdo->query("SELECT * FROM category");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getCategories(): array
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT name, category_id FROM category");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+
     }
 }

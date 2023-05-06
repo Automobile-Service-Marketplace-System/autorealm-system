@@ -3,7 +3,10 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
+use PDOException;
+
 
 class Vehicle
 {
@@ -18,33 +21,52 @@ class Vehicle
         $this->body = $registerBody;
     }
 
-    public function getVehicles(): array
+    public function getVehicles(int|null $count = null, int|null $page = 1): array
     {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        return $this->pdo->query("
-            SELECT
-                vin as VIN,
-                reg_no as 'Registration No',
-                engine_no as 'Engine No',
-                manufactured_year as 'Manufactured Year',
-                engine_capacity as 'Engine Capacity',
-                vehicle_type as 'Vehicle Type',
-                fuel_type as 'Fuel Type',
-                transmission_type as 'Transmission Type',
-                m.model_name as 'Model Name',
-                b.brand_name as 'Brand Name',
-                customer_id as 'Customer ID'
-            FROM vehicle v INNER JOIN model m ON m.model_id = v.model_id
-            INNER JOIN brand b ON b.brand_id = v.brand_id"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        try{
+            $statement = $this->pdo->prepare(
+                "SELECT
+                    vin as VIN,
+                    reg_no as 'Registration No',
+                    engine_no as 'Engine No',
+                    manufactured_year as 'Manufactured Year',
+                    engine_capacity as 'Engine Capacity',
+                    vehicle_type as 'Vehicle Type',
+                    fuel_type as 'Fuel Type',
+                    transmission_type as 'Transmission Type',
+                    m.model_name as 'Model Name',
+                    m.model_id as 'Model ID',
+                    b.brand_id as 'Brand ID',
+                    b.brand_name as 'Brand Name',
+                    customer_id as 'Customer ID'
+                FROM 
+                    vehicle v 
+                INNER JOIN model m ON m.model_id = v.model_id
+                INNER JOIN brand b ON b.brand_id = v.brand_id
+                ORDER BY v.vin $limitClause $pageClause");
+            $statement->execute();
+            $vehicles = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            echo $e->getMessage();
+        }
 
+        $totalVehicles = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM vehicle"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "total" => $totalVehicles['total'],
+            "vehicles" => $vehicles
+        ];
     }
 
-    public function getVehicleByID(int $customer_id): array
+    public function getVehiclesByID(int $customer_id): array | string
     {
-
-        return $this->pdo->query(
-            "SELECT
+        try {
+            $statement = $this->pdo->prepare("SELECT
                 vin,
                 reg_no,
                 engine_no,
@@ -61,8 +83,81 @@ class Vehicle
                 INNER JOIN brand b ON b.brand_id = v.brand_id
                 INNER JOIN customer c ON c.customer_id = v.customer_id
             WHERE
-                v.customer_id = $customer_id"
-        )->fetchAll(PDO::FETCH_ASSOC);
+                v.customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customer_id);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if(!$results) {
+                return "No vehicle found";
+            }
+
+            $resultsWithLastService = [];
+
+
+            foreach ($results as $result) {
+//                DevOnly::prettyEcho($result);
+
+                $statement = $this->pdo->prepare("SELECT
+                    mileage,
+                    start_date_time
+                FROM jobcard j
+                WHERE
+                    j.vin = :vin
+                ORDER BY
+                    j.start_date_time DESC
+                LIMIT 1");
+                $statement->bindValue(":vin", $result['vin']);
+                $statement->execute();
+                $lastService = $statement->fetch(PDO::FETCH_ASSOC);
+//                DevOnly::prettyEcho($lastService);
+
+                if($lastService) {
+                    $result['last_service_mileage'] = $lastService['mileage'];
+                    $result['last_service_date'] = $lastService['start_date_time'];
+                } else {
+                    $result['last_service_mileage'] = "No service history";
+                    $result['last_service_date'] = "N/A";
+                }
+
+                $resultsWithLastService[]= $result;
+//
+//                DevOnly::prettyEcho($result);
+            }
+
+//            DevOnly::prettyEcho($resultsWithLastService);
+
+
+            return $resultsWithLastService;
+
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
+
+    }
+
+
+    public function getVehicleNamesByID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT
+                v.reg_no,
+                m.model_name,
+                b.brand_name
+            FROM vehicle v 
+                INNER JOIN model m ON m.model_id = v.model_id
+                INNER JOIN brand b ON b.brand_id = v.brand_id
+            WHERE
+                v.customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customer_id);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
+
     }
 
     public function addVehicle(int $customer_id) 
@@ -107,7 +202,7 @@ class Vehicle
         $errors = [];
 
         if (strlen($this->body['vin']) == 0) {
-            $errors['contact_no'] = 'VIN must not be empty.';
+            $errors['vin'] = 'VIN must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE vin = :vin";
             $statement = $this->pdo->prepare($query);
@@ -123,7 +218,7 @@ class Vehicle
         }
 
         if (strlen($this->body['engine_no']) == 0) {
-            $errors['contact_no'] = 'Engine No must not be empty.';
+            $errors['engine_no'] = 'Engine No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no";
             $statement = $this->pdo->prepare($query);
@@ -139,7 +234,7 @@ class Vehicle
         }
 
         if (strlen($this->body['reg_no']) == 0) {
-            $errors['contact_no'] = 'Registration No must not be empty.';
+            $errors['reg_no'] = 'Registration No must not be empty.';
         } else {
             $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no";
             $statement = $this->pdo->prepare($query);
@@ -155,6 +250,107 @@ class Vehicle
         }
 
         return $errors;
+    }
+
+    private function validateUpdateVehicleBody(): array
+    {
+        $errors = [];
+
+        if (strlen($this->body['vin']) == 0) {
+            $errors['vin'] = 'VIN must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE vin = :vin AND vin != :old_vin";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":vin", $this->body["vin"]);
+            $statement->bindValue(":old_vin", $this->body["old_vin"]);
+            $statement->execute();
+
+            $vehicle = $statement->fetch();
+            if ($vehicle) {
+                $errors['vin'] = 'VIN already in use.';
+            }
+        }
+
+        if (strlen($this->body['engine_no']) == 0) {
+            $errors['engine_no'] = 'Engine No must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE engine_no = :engine_no AND engine_no != :old_engine_no";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":engine_no", $this->body["engine_no"]);
+            $statement->bindValue(":old_engine_no", $this->body["old_engine_no"]);
+
+            $statement->execute();
+            $vehicle = $statement->fetch();
+            
+            if ($vehicle) {
+                $errors['engine_no'] = 'Engine No already in use.';
+            }
+        }
+
+        if (strlen($this->body['reg_no']) == 0) {
+            $errors['reg_no'] = 'Registration No must not be empty.';
+        } else {
+            $query = "SELECT * FROM vehicle WHERE reg_no = :reg_no AND reg_no != :old_reg_no";
+            $statement = $this->pdo->prepare($query);
+            //prepare the query for the database
+            $statement->bindValue(":reg_no", $this->body["reg_no"]);
+            $statement->bindValue(":old_reg_no", $this->body["old_reg_no"]);            
+
+            $statement->execute();
+            $vehicle = $statement->fetch();
+
+            if ($vehicle) {
+                $errors['reg_no'] = 'Registration No already in use.';
+            }
+        }
+
+        return $errors;
+    }
+
+    public function updateVehicle()
+    {
+        $errors = $this->validateUpdateVehicleBody();
+        if (empty($errors)) {
+                        
+            try {
+                $query = "UPDATE vehicle SET
+                vin = :vin, 
+                reg_no = :reg_no, 
+                engine_no = :engine_no, 
+                manufactured_year = :manufactured_year,
+                engine_capacity = :engine_capacity,
+                vehicle_type = :vehicle_type,
+                fuel_type = :fuel_type,
+                transmission_type = :transmission_type,
+                model_id = :model_id,
+                brand_id = :brand_id,
+                customer_id = :customer_id
+                WHERE vin= :old_vin";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(":vin", $this->body["vin"]);
+                $statement->bindValue(":reg_no", $this->body["reg_no"]);
+                $statement->bindValue(":engine_no", $this->body["engine_no"]);
+                $statement->bindValue(":manufactured_year", $this->body["manufactured_year"]);
+                $statement->bindValue(":engine_capacity", $this->body["engine_capacity"]);
+                $statement->bindValue(":vehicle_type", $this->body["vehicle_type"]);
+                $statement->bindValue(":fuel_type", $this->body["fuel_type"]);
+                $statement->bindValue(":transmission_type", $this->body["transmission_type"]);
+                $statement->bindValue(":model_id", $this->body["model_id"]);
+                $statement->bindValue(":brand_id", $this->body["brand_id"]);
+                $statement->bindValue(":customer_id", $this->body["customer_id"]);
+                $statement->bindValue(":old_vin", $this->body["old_vin"]);
+                $statement->execute();
+                return true;
+            } catch (PDOException $e) {
+                return $e->getMessage();
+            }
+
+        } else {
+            return $errors;
+        }
     }
 
 }

@@ -1,0 +1,30 @@
+.update-service-form__items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+#update-service-form {
+    position: relative;
+    padding-top: 1rem;
+}
+
+
+
+#update-service-form .modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.5rem;
+}
+
+
+#update-service-form .modal-close-btn svg {
+    transition: all 0.2s ease-in-out;
+}
+
+
+#update-service-form .modal-close-btn:hover svg {
+    transform: rotate(180deg);
+}

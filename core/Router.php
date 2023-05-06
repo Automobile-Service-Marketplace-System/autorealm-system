@@ -21,27 +21,20 @@ class Router
 
     public function get(string $path, callable|string|array $callback): void
     {
-        // $path = "/"
-        // $callback = [HomeController::class, 'getHomePage']
         $this->routes["get"][$path] = $callback;
-        // routes = {
-        //              "get" :
-        //                    {
-        //                       "/" : [HomeController::class, 'getHomePage']
-        //                    }
-        //  }
-
     }
+
 
     public function post(string $path, callable|string|array $callback): void
     {
         $this->routes["post"][$path] = $callback;
     }
 
+
     public function resolve(): string
     {
-        $path = $this->request->path();
-        $method = $this->request->method();
+        $path = $this->request->path();  //current path
+        $method = $this->request->method(); //current method
         $callback = $this->routes[$method][$path] ?? false;
 
 
@@ -71,7 +64,8 @@ class Router
         }
 
         if ($callback === false) {
-            return "Not found";
+            $this->response->setStatusCode(code: 404);
+            return "Not Found";
         }
         if (is_string($callback)) {
             return $this->response->render($callback);
@@ -79,8 +73,12 @@ class Router
 
         if (is_array($callback)) {
             $callback[0] = new $callback[0]();
-        }
+            return $callback($this->request, $this->response);
 
+        } else if (is_callable($callback)) {
+            return $callback($this->request, $this->response);
+        }
         return $callback($this->request, $this->response);
+            
     }
 }
