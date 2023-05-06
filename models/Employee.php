@@ -134,9 +134,9 @@ class Employee
             $errors['l_name'] = 'Last name must contain only letters.';
         }
 
-        if (trim($this->body['fi']) === '') {
-            $errors['fi'] = 'Full name with initials must not be empty.';
-        }
+        // if (trim($this->body['fi']) === '') {
+        //     $errors['fi'] = 'Full name with initials must not be empty.';
+        // }
 
         if (empty($this->body['dob'])) {
             $errors['dob'] = 'Date of birth must not be empty.';
@@ -235,11 +235,12 @@ class Employee
         return $errors;
     }
 
-    public function getEmployees(): array
+    public function getEmployees(int|null $count = null, int|null $page = 1 ): array
     {
-
-        return $this->pdo->query("
-            SELECT 
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $employees =  $this->pdo->query(
+            "SELECT 
                 employee_id as ID,
                 f_name as 'First Name',
                 l_name as 'Last Name',
@@ -248,7 +249,17 @@ class Employee
                 job_role as JobType,
                 is_active as isActive,
                 image as Image
-            FROM employee where is_Active=1")->fetchAll(PDO::FETCH_ASSOC);
+            FROM employee where is_Active=1 $limitClause $pageClause "
+            )->fetchAll(PDO::FETCH_ASSOC);
+        
+            $totalEmployees = $this->pdo->query(
+                "SELECT count(*) as total FROM employee where is_active = TRUE"
+            )->fetch(PDO::FETCH_ASSOC);
+
+            return [
+                "employees" => $employees,
+                "total" => $totalEmployees['total']
+            ];
 
     }
 
@@ -335,8 +346,6 @@ class Employee
 
     public function update(int $employee_id, string $new_job_role, string $before_job_role): bool|array
     {
-        DevOnly::prettyEcho($this->body);
-        exit();
         $errors = $this->validateUpdateFormBody();
         var_dump($new_job_role);
         var_dump($before_job_role);

@@ -89,3 +89,8 @@
         justify-content: flex-end;
         gap: 1rem;
     }
+
+    .view-employee{
+        align-items: center;
+        justify-content: center;
+    }
