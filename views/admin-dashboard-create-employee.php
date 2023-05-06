@@ -197,7 +197,7 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
             <div class="form-input">
                 <b>Photo</b>
-                <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                <input type="file" name="image" accept="image/*" onchange="loadImage(event)" required>
                 <img id="image-preview">
                 <script>
                     function loadImage(event) {
