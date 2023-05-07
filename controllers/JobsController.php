@@ -238,15 +238,32 @@ class JobsController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
             $body = $req->body();
-            $jobCardModel = new JobCard($body);
-            // $result = $jobCardModel->createJobCard();
+            $jobCard = new JobCard($body);
+            $result = $jobCard->officeCreateJobCard();
 
-            // if ($result) {
-            //     return $res->redirect(path: "/jobs");
-            // }
-    
-            return $res->render(view:"500", layout:"plain", pageParams:[
-                "error" => "Something went wrong. Please try again later.",
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => $result
+                ]);
+            }
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "errors" => $result
+                ]);
+            }
+
+            if ($result) {
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "JobCard created successfully"
+                ]);
+            }
+
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
             ]);
 
         }
