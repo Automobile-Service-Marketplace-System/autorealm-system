@@ -238,7 +238,7 @@ class VehiclesController
             if ($result) {
                 $res->setStatusCode(code: 201);
                 return $res->json([
-                    "success" => "Customer updated successfully"
+                    "success" => "Vehicle updated successfully"
                 ]);
             }
 

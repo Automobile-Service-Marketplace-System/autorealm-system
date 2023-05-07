@@ -27,7 +27,7 @@ foreach($jobCards['jobCards'] as $jobCard) {
         "JobCard ID" => $jobCard["JobCard ID"],
         "Customer Name" => $jobCard["Customer Name"],
         "Employee Name" => $jobCard["Employee Name"],
-        "VIN" => $jobCard["VIN"],
+        "Vehicle Reg No" => $jobCard["Vehicle Reg No"],
         "Start Date Time" => $jobCard["Start Date Time"],
         "End Date Time" => $jobCard["End Date Time"],
         "Status" => $status,

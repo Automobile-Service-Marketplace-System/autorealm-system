@@ -289,7 +289,7 @@ class JobCard
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
                 concat(e.f_name,' ',e.l_name) as 'Employee Name',
-                vin as 'VIN',
+                vehicle_reg_no as 'Vehicle Reg No',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
                 status as 'Status'
@@ -314,31 +314,30 @@ class JobCard
 
     }
 
-    // public function createJobCard(): bool | string
-    // {
-    //     try {
-    //         $query = $this->pdo->prepare("INSERT INTO jobcard 
-    //             (
-    //                 start_date_time, customer_observation, mileage, vin, customer_id
-    //             ) 
-    //             VALUES 
-    //             (
-    //                 :start_date_time, :customer_observation, :mileage, :vin, :customer_id
-    //             )"
-    //         );
+    public function officeCreateJobCard()
+    {
+        try {
+            $query = "  INSERT INTO 
+                            jobcard(
+                                vehicle_reg_no,
+                                customer_id,
+                                employee_id)
+                        VALUES(
+                                :vehicle_reg_no,
+                                :customer_id,
+                                :employee_id)
+                            ";
 
-    //     $statement = $this->pdo->prepare($query);
-    //     $statement->bindValue(":start_date_time", $this->body["start_date_time"]);
-    //     $statement->bindValue(":customer_observation", $this->body["customer_observation"]);
-    //     $statement->bindValue(":mileage", $this->body["mileage"]);
-    //     $statement->bindValue(":vin", $this->body["vin"]);
-    //     $statement->bindValue(":customer_id", $this->body["customer_id"]);
-    //     $statement->execute();
-    //     return true;
-    //     } catch (PDOException $e) {
-    //         echo $e->getMessage();
-    //     }
-    //     return "Internal Server Error";
-    // }
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":customer_id", $this->body["customer_id"]);                       
+            $statement->bindValue(":employee_id", $this->body["foreman_id"]);            
+            $statement-> execute();
+            return true;
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return $e->getMessage();
+        }
+    }
 }
 
