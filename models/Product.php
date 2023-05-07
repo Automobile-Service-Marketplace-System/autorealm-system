@@ -197,6 +197,7 @@ class Product
 
             $totalProducts = $statement->fetch(PDO::FETCH_ASSOC);
 
+
 //
 //            $totalProducts = $this->pdo->query(
 //                "SELECT COUNT(*) as total FROM product $whereClause"
