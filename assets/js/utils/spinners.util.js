@@ -20,8 +20,8 @@ export function setSpinner(element, status, options = undefined) {
         const parent = element.parentElement
         if (parent) {
             if (status) {
+                parent.insertBefore(rotatingIcon, element)
                 element.style.display = "none"
-                parent.append(rotatingIcon)
             } else {
                 element.style.display = "initial"
                 parent.querySelector(

@@ -8,7 +8,7 @@ export const itemTableBody = document.querySelector('.create-invoice__table.crea
 /**
  * @type {HTMLInputElement}
  */
-const itemTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--items tfoot input')
+export const itemTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--items tfoot input')
 
 let currentItemRow = 0
 
@@ -28,7 +28,7 @@ export function getNewItemRow() {
                     <input type="text" placeholder="Product name" name="product_names[]">
                 </td>
                 <td>
-                    <input type="number" placeholder="Quantity" name="product_quantities[]" min="1">
+                    <input type="number" placeholder="Qty" name="product_quantities[]" min="1">
                 </td>
                 <td>
                     <input type="number" placeholder="Unit Price" name="product_unit_prices[]">

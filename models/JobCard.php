@@ -251,24 +251,61 @@ class JobCard
             $statement->execute();
             $services = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
 
+            $all = count($services);
+            $completed = 0;
+            foreach ($services as $service) {
+                if ($service['IsCompleted'] == 1) {
+                    $completed++;
+                }
+            }
+
             $query = "SELECT e.employee_id as ID, CONCAT(e.f_name, ' ', e.l_name) as Name, e.image as Image, e.contact_no as PhoneNo FROM jobcardhastechnician INNER  JOIN employee e on jobcardhastechnician.employee_id = e.employee_id WHERE job_card_id = :job_card_id";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(param: ":job_card_id", value: $jobId);
             $statement->execute();
             $technicians = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
 
-            $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
-            $statement = $this->pdo->prepare(query: $query);
-            $statement->bindValue(param: ":jobId", value: $jobId);
-            $statement->execute();
-            $serviceStatusResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
-            $all = (int)$serviceStatusResult["not_completed_count"] + (int)$serviceStatusResult["completed_count"];
-            $done = (int)$serviceStatusResult["completed_count"];
+//            $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
+//            $statement = $this->pdo->prepare(query: $query);
+//            $statement->bindValue(param: ":jobId", value: $jobId);
+//            $statement->execute();
+//            $serviceStatusResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
+//            $all = (int)$serviceStatusResult["not_completed_count"] + (int)$serviceStatusResult["completed_count"];
+//            $done = (int)$serviceStatusResult["completed_count"];
 
             return [
                 "products" => $products,
                 "services" => $services,
                 "technicians" => $technicians,
+                "service_status" => [
+                    "all" => $all,
+                    "done" => $completed
+                ]
+            ];
+
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getAssignedJobServiceAndVehicleDetails(int $jobId): array|string
+    {
+        try {
+            $query = "SELECT s.servicecode as Code, s.service_name as Name, jobcardhasservice.is_completed as IsCompleted FROM jobcardhasservice INNER  JOIN service s on jobcardhasservice.service_code = s.servicecode WHERE job_card_id = :job_card_id ORDER BY jobcardhasservice.created_at, jobcardhasservice.is_completed DESC";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            $services = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $all = count($services);
+            $done = 0;
+            foreach ($services as $service) {
+                if ($service["IsCompleted"] == 1) {
+                    $done++;
+                }
+            }
+            return [
+                "services" => $services,
                 "service_status" => [
                     "all" => $all,
                     "done" => $done
@@ -302,7 +339,6 @@ class JobCard
             ORDER BY
                 j.job_card_id $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
-
         $totalJobs = $this->pdo->query(
             "SELECT COUNT(*) as total FROM jobcard"
         )->fetch(PDO::FETCH_ASSOC);
@@ -350,6 +386,55 @@ class JobCard
             return $jobStatus["status"] === "in-progress";
         } catch (PDOException $e) {
             return false;
+        }
+    }
+
+    public function getJobIdByTechnicianId(int $technicianId)
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT j.job_card_id FROM jobcardhastechnician jcht INNER JOIN jobcard j on jcht.job_card_id = j.job_card_id WHERE jcht.employee_id = :employee_id AND j.status != 'finished' ORDER BY j.start_date_time DESC LIMIT 1");
+            $statement->bindValue(":employee_id", $technicianId);
+            $statement->execute();
+            $jobCard = $statement->fetch(PDO::FETCH_ASSOC);
+            return $jobCard["job_card_id"] ?? null;
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function changeJobServiceStatus(int $jobId, int $serviceCode, bool $status, int $technicianId): array|string
+    {
+        try {
+            if ($status) {
+                $statement = $this->pdo->prepare("UPDATE jobcardhasservice jhs INNER  JOIN jobcardhastechnician jht on jhs.job_card_id = jht.job_card_id SET jhs.is_completed = TRUE  WHERE jhs.job_card_id = :job_card_id AND jhs.service_code = :service_code AND jht.employee_id = :employee_id");
+            } else {
+                $statement = $this->pdo->prepare("UPDATE jobcardhasservice jhs INNER JOIN jobcardhastechnician jht on jhs.job_card_id = jht.job_card_id SET jhs.is_completed = FALSE WHERE jhs.job_card_id = :job_card_id AND jhs.service_code = :service_code AND jht.employee_id = :employee_id");
+            }
+            $statement->bindValue(":job_card_id", $jobId);
+            $statement->bindValue(":service_code", $serviceCode);
+            $statement->bindValue(":employee_id", $technicianId);
+            $statement->execute();
+
+            $statement = $this->pdo->prepare("SELECT is_completed as total FROM jobcardhasservice WHERE job_card_id = :job_card_id");
+            $statement->bindValue(":job_card_id", $jobId);
+            $statement->execute();
+            $services = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $all = count($services);
+            $done = 0;
+            foreach ($services as $service) {
+                if ($service["total"] == 1) {
+                    $done++;
+                }
+            }
+
+
+            return [
+                "inProgress" => $all - $done,
+                "completed" => $done
+            ];
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
         }
     }
 }

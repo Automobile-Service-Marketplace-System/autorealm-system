@@ -99,7 +99,7 @@ async function createDraft() {
         console.log(e)
         Notifier.show({
             text: "An error occurred while creating draft",
-            type: "error",
+            type: "danger",
             header: "Error",
             closable: true,
             duration: 5000

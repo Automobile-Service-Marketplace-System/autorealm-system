@@ -230,3 +230,14 @@
     width: 100%;
   }
 }
+
+/* in printing mode hide the dropdowns */
+
+@media print {
+  .customer-profile-dropdown__toggle,
+  .customer-profile-dropdown__box,
+  .employee-profile-dropdown__toggle,
+  .employee-profile-dropdown__box {
+    display: none;
+  }
+}
