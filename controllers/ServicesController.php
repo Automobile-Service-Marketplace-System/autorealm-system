@@ -15,12 +15,34 @@ class ServicesController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
 
-            $serviceModel = new Service();
-            $services = $serviceModel->getServices();
+            $query = $req->query();
 
+            //for search
+            $serachTermName = $query['name'] ?? null;
+            $serachTermCode = $query['code'] ?? null;
+            $serviceStatus = isset($query['status']) ? ($query['status'] == "" ? "active" : $query['status']) : "active";
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:5;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+            $serviceModel = new Service();
+
+            $result = $serviceModel->getServices(
+                count: $limit, 
+                page: $page,
+                searchTermName : $serachTermName,
+                searchTermCode : $serachTermCode,
+                options: [
+                    'serviceStatus' => $serviceStatus,
+                ]
+            );
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
-                "services" => $services], layoutParams: [
+                "services" => $result['services'],
+                'total'=> $result['total'],
+                'page' => $page,
+                'limit' => $limit], 
+                layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'Services',
                 'employeeId' => $req->session->get("user_id"),
