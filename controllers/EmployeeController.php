@@ -25,11 +25,30 @@ class EmployeeController
     public function getViewEmployeesPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
+
             $query = $req->query();
-            $limit = isset($query['limit']) ? (int)$query['limit'] : 3;
-            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //for search
+            $searchTermName = $query['name'] ?? null;
+            $searchTermId = $query['id'] ?? null;
+            $employeeRole = isset($query['role']) ? ($query['role'] == "" ? "all" : $query['role']) : "all";
+            $employeeStatus = isset($query['status']) ? ($query['status'] == "" ? "active" : $query['status']) : "active";
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:6;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
             $employeeModel=new Employee();
-            $result=$employeeModel->getEmployees(count: $limit, page: $page);
+
+            $result=$employeeModel->getEmployees(
+                count: $limit,
+                page: $page,
+                searchTermName: $searchTermName,
+                searchTermId: $searchTermId,
+                options: [
+                    'employeeRole' => $employeeRole,
+                    'employeeStatus' => $employeeStatus,
+                ]
+            );
 
             return $res->render(view: "admin-dashboard-view-employees", layout: "admin-dashboard", pageParams:[
                 "employees"=>$result['employees'],

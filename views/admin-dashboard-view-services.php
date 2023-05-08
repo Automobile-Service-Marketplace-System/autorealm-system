@@ -10,6 +10,9 @@
 
 use app\components\Table;
 
+$noOfEmplyees = count($services);
+$startNo = ($page - 1) * $limit + 1;
+$endNo = $startNo + $noOfEmplyees - 1;
 
 $columns = ["Service Code", "Service Name", "Description", "Price","Action" ];
 $items = [];
@@ -44,6 +47,10 @@ foreach ($services as $service) {
 
 </div>
 
+<div class="product-table-count">
+    <p> Showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> services</p>
+</div>
+
 <div class="filters" id="dashboard-product-filters">
     <div class="filters__actions">
         <div class="filters__dropdown-trigger" >
@@ -72,6 +79,7 @@ foreach ($services as $service) {
 
                         </select>
                     </div>
+                </div>
 
             <div class="filter-action-buttons">
                 <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
@@ -81,6 +89,7 @@ foreach ($services as $service) {
     </form>
 
 </div>
+
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
 ?>
