@@ -694,3 +694,11 @@
 .rotating-icon--info {
     color: var(--color-info);
 }
+
+
+
+/*Width utilites*/
+
+.w-full {
+    width: 100% !important;
+}

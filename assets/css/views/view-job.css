@@ -1,14 +1,19 @@
 .job-vehicle-details {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+
 }
 
 .job-actions {
     display: flex;
-    align-items: center;
+
     margin-top: 1rem;
-    gap: 3rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+
 }
 
 
@@ -309,6 +314,7 @@
 }
 
 @media screen and (min-width: 768px) {
+
     .view-job__products {
         grid-template-columns: 1fr 1fr 1fr;
     }
@@ -320,6 +326,22 @@
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
+
+
+@media screen and (min-width: 810px) {
+    .job-vehicle-details {
+        flex-direction: row;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .job-actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+    }
+}
+
 
 @media screen and (min-width: 1024px) {
     .view-job__products {

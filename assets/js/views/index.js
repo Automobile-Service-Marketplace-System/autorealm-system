@@ -31,4 +31,5 @@ import "./delete-employee"
 import "./office-create-jobcard"
 import "./analytics"
 import "./invoicing"
+import "./handle-assigned-job"
 

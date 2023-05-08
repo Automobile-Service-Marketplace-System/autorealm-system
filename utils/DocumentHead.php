@@ -8,6 +8,7 @@ class DocumentHead
      * @param array $css
      * @param array $js
      * @param string $title
+     * @param array $cdnJS
      * @return void
      */
     public static function createHead(array $css=[], array $js=[], string $title="AutoRealm", array $cdnJS=[]): void

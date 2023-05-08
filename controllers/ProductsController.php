@@ -218,6 +218,9 @@ class ProductsController
 
     }
 
+    /**
+     * @throws JsonException
+     */
     public function addSuppliers(Request $req, Response $res): string
     {
         $query = $req->query();
