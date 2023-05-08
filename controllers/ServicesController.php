@@ -15,13 +15,30 @@ class ServicesController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
 
-            //for pagination
             $query = $req->query();
+
+            //for search
+            $serachTermName = $query['name'] ?? null;
+            $serachTermCode = $query['code'] ?? null;
+            // $ServiceName = isset($query['service_name']) ? ($query['service_name'] == "" ? "all" : $query['service_name']) : "all";
+            // $ServiceCode = isset($query['servicecode']) ? ($query['servicecode'] == "" ? "all" :$query['servicecode']) : "all";
+
+            //for pagination
             $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:5;
             $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
             $serviceModel = new Service();
-            $result = $serviceModel->getServices(count: $limit, page: $page);
 
+            $result = $serviceModel->getServices(
+                count: $limit, 
+                page: $page,
+                searchTermName : $serachTermName,
+                searchTermCode : $serachTermCode,
+            );
+
+            if (is_string($result)) {
+                var_dump($result);
+                return "";
+            }
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $result['services'],

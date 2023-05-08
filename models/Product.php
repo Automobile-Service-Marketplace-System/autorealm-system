@@ -36,7 +36,7 @@ class Product
             'quantity_level' => null,
             'status' => 0,
         ],
-        string   $searchTerm = null
+        string $searchTerm = null
     ): array|string
     {
 //        DevOnly::prettyEcho($options);

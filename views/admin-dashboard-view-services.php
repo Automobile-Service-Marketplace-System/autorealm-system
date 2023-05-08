@@ -45,6 +45,33 @@ foreach ($services as $service) {
 
 </div>
 
+<div class="filters" id="dashboard-product-filters">
+    <div class="filters__actions">
+        <div class="filters__dropdown-trigger" >
+            Search
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <form>
+        <div class="filters__dropdown">
+            <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                <input type="text" placeholder="Search Service by Name" id="dashboard-product-search" name="name">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                <input type="text" placeholder="Search Product by Code" id="dashboard-product-search" name="code">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <div class="filter-action-buttons">
+                <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
+                <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+            </div>
+        </div>
+    </form>
+
+</div>
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
 ?>
