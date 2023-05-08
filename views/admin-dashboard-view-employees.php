@@ -1,10 +1,15 @@
 <?php
+use app\utils\DevOnly;
 /**
  * @var array $employees
  * @var int $limit
  * @var int $page
  * @var int $total
  */
+
+$noOfEmplyees = count($employees);
+$startNo = ($page - 1) * $limit + 1;
+$endNo = $startNo + $noOfEmplyees - 1;
 
 ?>
 
@@ -14,6 +19,57 @@
         Add Employee
     </a>
 </div> 
+
+showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
+
+<div class="filters" id="dashboard-product-filters">
+    <div class="filters__actions">
+        <div class="filters__dropdown-trigger" >
+            Search & Filter
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <form>
+        <div class="filters__dropdown">
+            <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                <input type="text" placeholder="Search Employee by Name" id="dashboard-product-search" name="name">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                <input type="text" placeholder="Search Employee by Id" id="dashboard-product-search" name="id">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <p>Filter employee by</p>
+                <div class="filters__dropdown-content">
+                    <div class="form-item form-item--no-label">
+                        <select name="status" id="dashboard-order-status-filter">
+                            <option value="active">Available</option>
+                            <option value="busy">Not Available</option>
+
+                        </select>
+                    </div>
+                    <div class="form-item form-item--no-label">
+                        <select name="role" id="dashboard-order-status-filter">
+                            <option value="all">All</option>
+                            <option value="admin">Admin</option>
+                            <option value="security_officer">Security Officer</option>
+                            <option value="technician">Technician</option>
+                            <option value="foreman">Foreman</option>
+                            <option value="office_staff_member">Office Staff Member</option>
+                            <option value="stock_manager">Stock Manager</option>
+                        </select>
+                    </div>
+                </div>
+
+            <div class="filter-action-buttons">
+                <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
+                <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <div class="employee-container">
     <?php
@@ -49,6 +105,7 @@
                 </div>
                 <div class='employee-card__info'>
                     <img src='{$employee['Image']}'>
+                    <p class='employee-card__id'>Employee ID: {$employee['ID']}</p>
                     <p class='employee-card__name'> {$employee['First Name'][0]}. {$employee['Last Name']}</p>
                     <p class='employee-card__role'>$employeeRole</p>
                     <a class='employee-card__contact' href='tel:{$employee['Contact No']}'>{$employee['Contact No']}</a>
@@ -58,7 +115,7 @@
     }
     ?>
 
-    <div class="pagination-container view-employee">
+    <div class="pagination-container">
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";

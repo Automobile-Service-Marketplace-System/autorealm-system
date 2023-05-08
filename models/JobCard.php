@@ -21,7 +21,7 @@ class JobCard
     {
         try {
 
-////             trying to test db latency
+            ////             trying to test db latency
 //            $currentTime = date("Y-m-d H:i:s");
 //
 //            $statement = $this->pdo->prepare(query: "SELECT job_card_id as id, vin as regNo, status, TIMESTAMPDIFF(MINUTE , start_date_time, end_date_time) as time_collapsed  FROM jobcard  WHERE employee_id = :foremanId");
@@ -218,7 +218,7 @@ class JobCard
             $statement->execute();
             $this->pdo->commit();
             return true;
-        } catch (PDOException|Exception $e) {
+        } catch (PDOException | Exception $e) {
             $this->pdo->rollBack();
             return $e->getMessage();
         }
@@ -265,7 +265,7 @@ class JobCard
             $statement->execute();
             $technicians = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
 
-//            $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
+            //            $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
 //            $statement = $this->pdo->prepare(query: $query);
 //            $statement->bindValue(param: ":jobId", value: $jobId);
 //            $statement->execute();
@@ -283,7 +283,7 @@ class JobCard
                 ]
             ];
 
-        } catch (PDOException|Exception $e) {
+        } catch (PDOException | Exception $e) {
             return $e->getMessage();
         }
     }
@@ -312,7 +312,7 @@ class JobCard
                 ]
             ];
 
-        } catch (PDOException|Exception $e) {
+        } catch (PDOException | Exception $e) {
             return $e->getMessage();
         }
     }
@@ -321,12 +321,12 @@ class JobCard
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $jobs = $this->pdo->query("
-            SELECT
+        $jobs = $this->pdo->query(
+            "SELECT
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
                 concat(e.f_name,' ',e.l_name) as 'Employee Name',
-                vin as 'VIN',
+                vehicle_reg_no as 'Vehicle Reg No',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
                 status as 'Status'
@@ -350,32 +350,32 @@ class JobCard
 
     }
 
-    // public function createJobCard(): bool | string
-    // {
-    //     try {
-    //         $query = $this->pdo->prepare("INSERT INTO jobcard 
-    //             (
-    //                 start_date_time, customer_observation, mileage, vin, customer_id
-    //             ) 
-    //             VALUES 
-    //             (
-    //                 :start_date_time, :customer_observation, :mileage, :vin, :customer_id
-    //             )"
-    //         );
+    public function officeCreateJobCard()
+    {
+        try {
+            $query = "INSERT INTO 
+                            jobcard(
+                                vehicle_reg_no,
+                                customer_id,
+                                employee_id)
+                    VALUES(
+                                :vehicle_reg_no,
+                                :customer_id,
+                                :employee_id)
+                            ";
 
-    //     $statement = $this->pdo->prepare($query);
-    //     $statement->bindValue(":start_date_time", $this->body["start_date_time"]);
-    //     $statement->bindValue(":customer_observation", $this->body["customer_observation"]);
-    //     $statement->bindValue(":mileage", $this->body["mileage"]);
-    //     $statement->bindValue(":vin", $this->body["vin"]);
-    //     $statement->bindValue(":customer_id", $this->body["customer_id"]);
-    //     $statement->execute();
-    //     return true;
-    //     } catch (PDOException $e) {
-    //         echo $e->getMessage();
-    //     }
-    //     return "Internal Server Error";
-    // }
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":customer_id", $this->body["customer_id"]);
+            $statement->bindValue(":employee_id", $this->body["foreman_id"]);
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return $e->getMessage();
+        }
+    }
+
     public function isInProgress(int $jobId): bool
     {
         try {
@@ -397,7 +397,7 @@ class JobCard
             $statement->execute();
             $jobCard = $statement->fetch(PDO::FETCH_ASSOC);
             return $jobCard["job_card_id"] ?? null;
-        } catch (PDOException|Exception $e) {
+        } catch (PDOException | Exception $e) {
             return $e->getMessage();
         }
     }
@@ -433,9 +433,8 @@ class JobCard
                 "inProgress" => $all - $done,
                 "completed" => $done
             ];
-        } catch (PDOException|Exception $e) {
+        } catch (PDOException | Exception $e) {
             return $e->getMessage();
         }
     }
 }
-

@@ -16,7 +16,7 @@ class ReviewController
 
             $query = $req->query();
 //          for pagination
-            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 5;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
 //          for searching

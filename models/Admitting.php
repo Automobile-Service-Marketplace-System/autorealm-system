@@ -31,11 +31,74 @@ class Admitting
         return $stmt->fetchObject();
     }
 
-    public function getAdmittingReports(): array
+    public function getAdmittingReports(
+        int|null $count=null,
+        int|null $page=1,
+        string|null $searchTermRegNo=null,
+        array $options = [
+            'admitting_date' => null,
+        ]
+    ): array|string
     {
 
-        return $this->pdo->query("
-            SELECT 
+        $whereClause = null;
+        $conditions = [];
+        $dateFrom = null;
+        $dateTo = null;
+
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch ($option_key){
+                    case "admitting_date":
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'Today':
+                                $dateFrom = date('Y-m-d', strtotime('today'));
+                                $dateTo = date('Y-m-d', strtotime('today'));
+                                break;
+                            case 'Yesterday':
+                                $dateFrom = date('Y-m-d', strtotime('yesterday'));
+                                $dateTo = date('Y-m-d', strtotime('yesterday'));
+                                break;
+                            case 'Last 7':
+                                $dateFrom = date('Y-m-d', strtotime('-6 days'));
+                                $dateTo = date('Y-m-d', strtotime('today'));
+                                break;
+                            case 'Last 30':
+                                $dateFrom = date('Y-m-d', strtotime('-29 days'));
+                                $dateTo = date('Y-m-d', strtotime('today'));
+                                break;
+                            case 'Last 90 Days':
+                                $dateFrom = date('Y-m-d', strtotime('-89 days'));
+                                $dateTo = date('Y-m-d', strtotime('today'));
+                                break;
+
+                        }
+                        break;
+                }
+            }
+        }
+
+        if (isset($dateFrom) && isset($dateTo)) {
+            $conditions[] = "a.admitting_date BETWEEN :dateFrom AND :dateTo";
+        }
+
+        // var_dump($conditions);
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        if($searchTermRegNo !== null){
+            $whereClause = $whereClause ? $whereClause . " AND a.vehicle_reg_no LIKE :search_term_reg_no" : " WHERE a.vehicle_reg_no LIKE :search_term_reg_no";
+        }
+
+        // var_dump($whereClause);
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+        $quey = "SELECT 
             concat(c.f_name,' ',c.l_name) as Name,
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
@@ -43,9 +106,51 @@ class Admitting
 
             from admitingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
-            left join customer c on v.customer_id=c.customer_id"
+            left join customer c on v.customer_id=c.customer_id $whereClause $limitClause $pageClause ";
 
-            )->fetchAll(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare($quey);
+
+        if($searchTermRegNo !== null){
+            $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+        }
+
+        // var_dump(isset($dateTo));
+        if(isset($dateTo) && isset($dateFrom)){
+            $statement->bindValue(":dateFrom", $dateFrom);
+            $statement->bindValue(":dateTo", $dateTo);
+        }
+
+        try{
+            $statement->execute();
+            $admittingReports = $statement->fetchAll(PDO::FETCH_ASSOC);
+           
+            $statement = $this->pdo->prepare(" SELECT 
+                count(*) as total
+                from admitingreport a
+                left join vehicle v on a.vehicle_reg_no=v.reg_no
+                left join customer c on v.customer_id=c.customer_id $whereClause"
+            );
+
+            if($searchTermRegNo !== null){
+                $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            }
+
+            if(isset($dateTo) && isset($dateFrom)){
+                $statement->bindValue(":dateFrom", $dateFrom);
+                $statement->bindValue(":dateTo", $dateTo);
+            }
+
+            $statement->execute();
+            $totalAdmittingReports = $statement->fetch(PDO::FETCH_ASSOC);
+
+            return [
+                'total' => $totalAdmittingReports['total'],
+                "admittingReports" => $admittingReports
+            ];
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
 
     }
 

@@ -16,7 +16,6 @@ $endNo = min($startNo + $limit - 1, $noOfJobs);
 $columns = [];
 $items = [];
 
-
 if (empty($appointments['appointments'])) {
     echo "<p class='no-data'>No Appointments <br> as of now </p>";
 } else {
@@ -34,7 +33,7 @@ if (empty($appointments['appointments'])) {
             "From Time" => $appointment["From Time"],
             "To Time" => $appointment["To Time"],
             "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
-                            <button class='btn btn--rounded btn--info office-create-jobcard' data-appointmentID='{$appointment['Appointment ID']}'>
+                            <button class='btn btn--rounded btn--info office-create-jobcard' data-customerID='{$appointment["Customer ID"]}'>
                             <i class='fa-solid fa-wrench'></i>
                             </button>                            </a>
                             <button class='btn btn--rounded btn--danger office-update-appointment-btn' data-appointmentID='{$appointment['Appointment ID']}' data-timeSlotID='{$appointment["Time ID"]}' data-customerID='{$appointment["Customer ID"]}'>

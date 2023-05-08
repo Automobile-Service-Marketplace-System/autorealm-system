@@ -22,18 +22,108 @@ class Service
         $this->body = $body;
     }
 
-    public function getServices(): array
+    public function getServices(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermName = null,
+        string $searchTermCode = null,
+        array $options = [
+            'serviceStatus' => null,
+        ]
+        ): array|string
     {
-        return $this->pdo->query(
-            "SELECT 
-                        servicecode as ID,
-                        service_name as Name,
-                        description as Description, 
-                        (price / 100) as Price
-                    FROM service WHERE is_discontinued = FALSE"
-        )->fetchAll(PDO::FETCH_ASSOC);
 
-    }
+        // var_dump($searchTermName);
+        // var_dump($searchTermCode);
+        // var_dump($options);
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch ($option_key){
+                    case 'serviceStatus':
+                        switch ($option_value){
+                            case "active":
+                                $conditions[] = "is_discontinued = FALSE";
+                                break;
+                            case "discontinued":
+                                $conditions[] = "is_discontinued = TRUE";
+                        }
+                    break;
+                }
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        // var_dump($whereClause);
+        
+        if ($searchTermName !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND service_name LIKE :search_term_name" : " WHERE service_name LIKE :search_term_name";
+        }
+
+        if ($searchTermCode !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND servicecode LIKE :search_term_code" : " WHERE servicecode LIKE :search_term_code";
+        }
+        // var_dump($whereClause);
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        
+
+        $query = "SELECT 
+                servicecode as ID,
+                service_name as Name,
+                description as Description, 
+                (price / 100) as Price
+            FROM service $whereClause $limitClause $pageClause";
+
+        $statement = $this->pdo->prepare($query);
+
+        if($searchTermName !== null){
+            $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+        }
+
+        if($searchTermCode !== null){
+            $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
+        }
+
+        try{
+            $statement->execute();
+            $services = $statement->fetchAll(PDO::FETCH_ASSOC);
+            
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM service $whereClause"
+            );
+
+            if($searchTermName !== null){
+                $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermCode !== null){
+                $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalServices = $statement->fetch(mode: PDO::FETCH_ASSOC);
+
+            return [
+                "services" => $services,
+                 "total" => $totalServices['total']
+            ];
+            
+        }
+        catch (PDOException $e) {
+            var_dump("there is an error");
+            return $e->getMessage();
+        }
+
+    } 
+
 
     public function validateRegisterBody(): array
     {
@@ -127,12 +217,13 @@ class Service
         }
     }
 
-    public function getServicesForServiceSelector(int $count, int $page, string|null $searchTerm): array|string
+    public function getServicesForServiceSelector(int|null $count, int|null $page, string|null $searchTerm = null): array|string
     {
-
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
         $whereClause = $searchTerm ? " WHERE service_name LIKE :search_term" : "";
+
+
 
         try {
             $query = "SELECT servicecode as Code, service_name as Name, description as Description, (price / 100) as Cost FROM service 

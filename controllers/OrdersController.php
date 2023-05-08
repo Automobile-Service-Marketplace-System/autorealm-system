@@ -16,7 +16,7 @@ class OrdersController
 
             //for pagination
             $query = $req->query();
-            $limit = isset($query['limit']) ? (int)$query['limit']:8;
+            $limit = isset($query['limit']) ? (int)$query['limit']:25;
             $page = isset($query['page']) ? (int)$query['page']:1;
 
             //for search and filtering
