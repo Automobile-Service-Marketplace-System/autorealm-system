@@ -12,7 +12,6 @@ use app\components\Table;
 
 
 $columns = ["Service Code", "Service Name", "Description", "Price","Action" ];
-
 $items = [];
 foreach ($services as $service) {
     $items[] = [
@@ -48,7 +47,7 @@ foreach ($services as $service) {
 <div class="filters" id="dashboard-product-filters">
     <div class="filters__actions">
         <div class="filters__dropdown-trigger" >
-            Search
+            Search & Filter
             <i class="fa-solid fa-chevron-right"></i>
         </div>
     </div>
@@ -63,6 +62,16 @@ foreach ($services as $service) {
                 <input type="text" placeholder="Search Product by Code" id="dashboard-product-search" name="code">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
+
+            <p>Filter service by</p>
+                <div class="filters__dropdown-content">
+                    <div class="form-item form-item--no-label">
+                        <select name="status" id="dashboard-order-status-filter">
+                            <option value="active">Currently Active</option>
+                            <option value="discontinued">Discontinued</option>
+
+                        </select>
+                    </div>
 
             <div class="filter-action-buttons">
                 <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>

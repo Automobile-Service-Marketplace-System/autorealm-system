@@ -27,20 +27,53 @@ class Service
         int|null $page = 1,
         string $searchTermName = null,
         string $searchTermCode = null,
+        array $options = [
+            'serviceStatus' => null,
+        ]
         ): array|string
     {
-        $whereClause = null;
 
+        // var_dump($searchTermName);
+        // var_dump($searchTermCode);
+        // var_dump($options);
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch ($option_key){
+                    case 'serviceStatus':
+                        switch ($option_value){
+                            case "active":
+                                $conditions[] = "is_discontinued = FALSE";
+                                break;
+                            case "discontinued":
+                                $conditions[] = "is_discontinued = TRUE";
+                        }
+                    break;
+                }
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        // var_dump($whereClause);
+        
         if ($searchTermName !== null) {
-            $whereClause = $whereClause ? $whereClause . " AND service_name LIKE :search_term_name AND is_discontinued=FALSE" : " WHERE service_name LIKE :search_term_name AND is_discontinued = FALSE";
+            $whereClause = $whereClause ? $whereClause . " AND service_name LIKE :search_term_name" : " WHERE service_name LIKE :search_term_name";
         }
 
         if ($searchTermCode !== null) {
-            $whereClause = $whereClause ? $whereClause . " AND servicecode LIKE :search_term_code AND is_discontinued=FALSE" : " WHERE servicecode LIKE :search_term_code AND is_discontinued = FALSE";
+            $whereClause = $whereClause ? $whereClause . " AND servicecode LIKE :search_term_code" : " WHERE servicecode LIKE :search_term_code";
         }
+        // var_dump($whereClause);
 
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        
 
         $query = "SELECT 
                 servicecode as ID,
@@ -51,28 +84,30 @@ class Service
 
         $statement = $this->pdo->prepare($query);
 
-        if($searchTermName != null){
+        if($searchTermName !== null){
             $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
         }
 
-        if($searchTermCode != null){
+        if($searchTermCode !== null){
             $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
         }
 
         try{
             $statement->execute();
             $services = $statement->fetchAll(PDO::FETCH_ASSOC);
+            // var_dump($services);
         }
         catch (PDOException $e) {
+            var_dump("there is an error");
             return $e->getMessage();
         }
 
         $totalServices = $this->pdo->query(
-            "SELECT count(*) as total from service $whereClause"
+            "SELECT count(*) as total from service where is_discontinued = FALSE"
         )->fetch(PDO::FETCH_ASSOC);
 
         return [
-            'services' => $services,
+            "services" => $services,
              "total" => $totalServices['total']
         ];
     } 

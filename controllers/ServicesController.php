@@ -20,8 +20,7 @@ class ServicesController
             //for search
             $serachTermName = $query['name'] ?? null;
             $serachTermCode = $query['code'] ?? null;
-            // $ServiceName = isset($query['service_name']) ? ($query['service_name'] == "" ? "all" : $query['service_name']) : "all";
-            // $ServiceCode = isset($query['servicecode']) ? ($query['servicecode'] == "" ? "all" :$query['servicecode']) : "all";
+            $serviceStatus = isset($query['status']) ? ($query['status'] == "" ? "active" : $query['status']) : "active";
 
             //for pagination
             $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:5;
@@ -33,18 +32,17 @@ class ServicesController
                 page: $page,
                 searchTermName : $serachTermName,
                 searchTermCode : $serachTermCode,
+                options: [
+                    'serviceStatus' => $serviceStatus,
+                ]
             );
-
-            if (is_string($result)) {
-                var_dump($result);
-                return "";
-            }
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $result['services'],
                 'total'=> $result['total'],
                 'page' => $page,
-                'limit' => $limit], layoutParams: [
+                'limit' => $limit], 
+                layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'Services',
                 'employeeId' => $req->session->get("user_id"),
