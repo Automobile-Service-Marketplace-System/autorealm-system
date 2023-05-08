@@ -23,6 +23,39 @@ if(filtersContainer) {
         filterDropdown.classList.toggle('filters__dropdown--active');
     })
 
+//get the form in the filters container and add event listener to the reset type button
+
+    const filterForm = document.querySelector('.filters form');
+    const resetButton = filterForm.querySelector('button[type="reset"]');
+
+    resetButton.addEventListener('click', function(event) {
+
+        // console.log("reset clicked")
+        const textInputs = filterForm.querySelectorAll('input[type="text"]')
+        console.log(textInputs)
+
+        textInputs.forEach((input) => {
+            if(input.value) {
+              // console.log(input.value)
+                input.removeAttribute('value')
+            }
+        })
+
+        //remove selected attribute from all the options in the form
+       const optionElements = filterForm.querySelectorAll('option');
+
+         optionElements.forEach((option) => {
+            if(option.selected) {
+                option.removeAttribute('selected');
+            }
+         })
+
+    });
+
+
+
+
+
 
 }
 
