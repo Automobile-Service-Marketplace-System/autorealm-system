@@ -160,13 +160,41 @@ class Order
         try {
             $stmt->execute();
             $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $totQuery = "SELECT COUNT(*) as total
+                          FROM `order` o
+                      INNER JOIN customer c on o.customer_id = c.customer_id
+                      INNER JOIN orderhasproduct h on o.order_no = h.order_no
+                    
+                     $whereClause
+                     
+                    GROUP BY o.order_no, o.created_at";
+
+            $totStmt = $this->pdo->prepare($totQuery);
+
+            if ($searchTermCustomer !== null) {
+                $totStmt->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermOrder !== null) {
+                $totStmt->bindValue(":search_term_id", "%" . $searchTermOrder . "%", PDO::PARAM_STR);
+            }
+
+            if(isset($dateTo) && isset($dateFrom)){
+                $totStmt->bindValue(":dateFrom", $dateFrom);
+                $totStmt->bindValue(":dateTo", $dateTo);
+            }
+
+            $totStmt->execute();
+            $totalOrders = $totStmt->fetch(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
             return $e->getMessage();
         }
-
-        $totalOrders = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
-        )->fetch(PDO::FETCH_ASSOC);
+//
+//        $totalOrders = $this->pdo->query(
+//            "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
+//        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "orders" => $orders,
