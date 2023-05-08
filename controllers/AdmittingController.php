@@ -28,12 +28,19 @@ class AdmittingController{
             $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 4;
             $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
 
+            //for search
+            $searchTermRegNo = $query['regNo'] ?? null;
+            $AdmittingDate = isset($query['admitting_date']) ? ($query['admitting_date'] == "" ? "all" : $query['admitting_date']) : "all";
+
             $admittingReport=new Admitting();
 
             $results=$admittingReport->getAdmittingReports(
                 count: $limit,
-                page: $page,
-
+                page: $page,    
+                searchTermRegNo: $searchTermRegNo,
+                options: [
+                    'admitting_date' => $AdmittingDate,
+                ]
             );
             
             return $res->render(view: "security-officer-dashboard-view-admitting-reports", layout:"security-officer-dashboard", pageParams:[
