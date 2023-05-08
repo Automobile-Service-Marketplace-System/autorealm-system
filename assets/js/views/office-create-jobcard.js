@@ -92,11 +92,16 @@ createJobCardButton.forEach(function (btn) {
             }
         }
 
-        const customerID = Number(btn.dataset);
-        const foremanAvailability = btn.dataset.foremaninfo;
         const appointmentRow = btn.parentElement.parentElement.parentElement;
+        console.log(btn.dataset);
+
         const appointmentIDElement = appointmentRow.querySelector("td:nth-child(3)");
         const customerName = appointmentIDElement.textContent;
+
+        const vehicleRegElement = appointmentRow.querySelector("td:nth-child(2)");
+        const vehicleRegNo = vehicleRegElement.textContent;
+
+        const customerID = Number(btn.dataset.customerid);
 
         const officeCreateJobCardForm = htmlToElement(`<form method="post" class="office-create-jobcard-form" enctype="multipart/form-data">
         <div class="office-create-jobcard-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
@@ -124,6 +129,10 @@ createJobCardButton.forEach(function (btn) {
             <button style="display: none" type="submit" id="office-create-jobcard-confirm-btn-final-btn">
             </button>
         </div>
+
+        <input style="display: none" name='vehicle_reg_no' id='vehicle_reg_no' value='${vehicleRegNo}'>
+        <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
+        
     </form>`);
 
         officeCreateJobCardForm
@@ -168,7 +177,7 @@ createJobCardButton.forEach(function (btn) {
             }
             const formData = new FormData(e.target);
             try {
-                const result = await fetch("/job-card/create", {
+                const result = await fetch("/create-job-card", {
                     body: formData,
                     method: "POST",
                 });
