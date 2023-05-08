@@ -31,11 +31,16 @@ class Admitting
         return $stmt->fetchObject();
     }
 
-    public function getAdmittingReports(): array
+    public function getAdmittingReports(
+        int|null $count=null,
+        int|null $page=1,
+    ): array|string
     {
 
-        return $this->pdo->query("
-            SELECT 
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+        $quey = "SELECT 
             concat(c.f_name,' ',c.l_name) as Name,
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
@@ -43,9 +48,31 @@ class Admitting
 
             from admitingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
-            left join customer c on v.customer_id=c.customer_id"
+            left join customer c on v.customer_id=c.customer_id $limitClause $pageClause ";
 
-            )->fetchAll(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare($quey);
+
+        try{
+            $statement->execute();
+            $admittingReports = $statement->fetchAll(PDO::FETCH_ASSOC);
+           
+            $statement = $this->pdo->prepare(" SELECT 
+                count(*) as total
+                from admitingreport a
+                left join vehicle v on a.vehicle_reg_no=v.reg_no
+                left join customer c on v.customer_id=c.customer_id");
+
+            $statement->execute();
+            $totalAdmittingReports = $statement->fetch(PDO::FETCH_ASSOC);
+
+            return [
+                'total' => $totalAdmittingReports['total'],
+                "admittingReports" => $admittingReports
+            ];
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
 
     }
 

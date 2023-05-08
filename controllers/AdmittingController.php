@@ -22,11 +22,25 @@ class AdmittingController{
     public function getAdmittingReportsDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
 
+            $query = $req->query();
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 4;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+
             $admittingReport=new Admitting();
-            $admittingReports=$admittingReport->getAdmittingReports();
+
+            $results=$admittingReport->getAdmittingReports(
+                count: $limit,
+                page: $page,
+
+            );
             
             return $res->render(view: "security-officer-dashboard-view-admitting-reports", layout:"security-officer-dashboard", pageParams:[
-                "admittingReports"=>$admittingReports],layoutParams:[
+                "admittingReports"=> $results['admittingReports'],
+                'total' => $results['total'],
+                'limit' => $limit,
+                'page' => $page],layoutParams:[
                 "title"=>"Admitting Reports",
                 "pageMainHeading"=>"Admitting Reports",
                 "employeeId"=>$req->session->get("user_id"),

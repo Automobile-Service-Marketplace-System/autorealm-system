@@ -115,7 +115,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
     }
     ?>
 
-    <div class="pagination-container view-employee">
+    <div class="pagination-container">
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
