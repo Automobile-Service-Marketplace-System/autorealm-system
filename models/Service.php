@@ -95,21 +95,33 @@ class Service
         try{
             $statement->execute();
             $services = $statement->fetchAll(PDO::FETCH_ASSOC);
-            // var_dump($services);
+            
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM service $whereClause"
+            );
+
+            if($searchTermName !== null){
+                $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermCode !== null){
+                $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalServices = $statement->fetch(mode: PDO::FETCH_ASSOC);
+
+            return [
+                "services" => $services,
+                 "total" => $totalServices['total']
+            ];
+            
         }
         catch (PDOException $e) {
             var_dump("there is an error");
             return $e->getMessage();
         }
 
-        $totalServices = $this->pdo->query(
-            "SELECT count(*) as total from service where is_discontinued = FALSE"
-        )->fetch(PDO::FETCH_ASSOC);
-
-        return [
-            "services" => $services,
-             "total" => $totalServices['total']
-        ];
     } 
 
 

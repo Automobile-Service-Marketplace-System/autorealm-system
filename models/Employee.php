@@ -235,12 +235,81 @@ class Employee
         return $errors;
     }
 
-    public function getEmployees(int|null $count = null, int|null $page = 1 ): array
+    public function getEmployees(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermName = null,
+        string $searchTermId = null,
+        array $options =[
+            'employeeStatus' => null,
+            'employeeRole' => null        
+        ]): array|string
     {
+        $whereClause = null;
+        $conditions =[];
+
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch($option_key){
+                    case 'employeeRole':
+                        switch($option_value){
+                            case "all":
+                                // $conditions[] = "job_role = 'admin' OR job_role = 'security_officer' OR job_role = 'office_staff_member' OR job_role = 'foreman' OR job_role = 'technician' OR job_role = 'stock_manager'";
+                                break;
+                            case "admin":
+                                $conditions[] = "job_role = 'admin'";
+                                break;
+                            case "security_officer":
+                                $conditions[] = "job_role = 'security_officer'";
+                                break;
+                            case "office_staff_member":
+                                $conditions[] = "job_role = 'office_staff_member'";
+                                break;
+                            case "foreman":
+                                $conditions[] = "job_role = 'foreman'";
+                                break;
+                            case "technician":
+                                $conditions[] = "job_role = 'technician'";
+                                break;
+                            case "stock_manager":
+                                $conditions[] = "job_role = 'stock_manager'";
+                                break;
+                        }
+                        break;
+
+                    case 'employeeStatus':
+                        switch($option_value){
+                            case "active":
+                                $conditions[] = "is_active = TRUE";
+                                break;
+                            case "busy":
+                                $conditions[] = "is_active = FALSE";
+                                break;
+                        }
+                    break;
+                }
+            }
+        }
+
+        if(!empty($conditions)){
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        if($searchTermName !== null){
+            $whereClause = $whereClause ? $whereClause . " AND f_name LIKE :search_term_name" : " WHERE f_name LIKE :search_term_name";
+        }
+
+        if($searchTermId !== null){
+            $whereClause = $whereClause ? $whereClause . " AND employee_id LIKE :search_term_id" : " WHERE employee_id LIKE :search_term_id";
+        }
+
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $employees =  $this->pdo->query(
-            "SELECT 
+        
+        // var_dump(('Tharushi'));
+        // var_dump($whereClause);
+
+        $query =  "SELECT 
                 employee_id as ID,
                 f_name as 'First Name',
                 l_name as 'Last Name',
@@ -249,17 +318,47 @@ class Employee
                 job_role as JobType,
                 is_active as isActive,
                 image as Image
-            FROM employee where is_Active=1 $limitClause $pageClause "
-            )->fetchAll(PDO::FETCH_ASSOC);
+            FROM employee $whereClause $limitClause $pageClause ";
         
-            $totalEmployees = $this->pdo->query(
-                "SELECT count(*) as total FROM employee where is_active = TRUE"
-            )->fetch(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare($query);
+
+        if($searchTermName !== null){
+            $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+        }
+
+        if($searchTermId !== null){
+            $statement->bindValue(":search_term_id", "%" . $searchTermId . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $employees = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare("
+                SELECT count(*) as total FROM employee $whereClause"
+            );
+
+            if($searchTermName !== null){
+                $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermId !== null){
+                $statement->bindValue(":search_term_id", "%" . $searchTermId . "%", PDO::PARAM_STR);
+            }
+
+            $statement -> execute();
+            $totalEmployees = $statement->fetch(PDO::FETCH_ASSOC);
 
             return [
-                "employees" => $employees,
-                "total" => $totalEmployees['total']
+                "total" => $totalEmployees['total'],
+                "employees" => $employees
             ];
+
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
 
     }
 
