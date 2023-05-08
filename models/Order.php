@@ -161,14 +161,16 @@ class Order
             $stmt->execute();
             $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $totQuery = "SELECT COUNT(*) as total
-                          FROM `order` o
-                      INNER JOIN customer c on o.customer_id = c.customer_id
-                      INNER JOIN orderhasproduct h on o.order_no = h.order_no
+          //totQuery to get the total orders when filter is applied
+
+            $totQuery =
+                "SELECT 
+                          COUNT(DISTINCT(o.order_no)) as total
+                     FROM `order` o
+                          INNER JOIN customer c on o.customer_id = c.customer_id
+                          INNER JOIN orderhasproduct h on o.order_no = h.order_no
                     
-                     $whereClause
-                     
-                    GROUP BY o.order_no, o.created_at";
+                     $whereClause";
 
             $totStmt = $this->pdo->prepare($totQuery);
 

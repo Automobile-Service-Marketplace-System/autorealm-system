@@ -49,7 +49,8 @@ class ProductsController
                     'quantity_level' => $quantityLevel,
                     'status' => $status,
                 ],
-                searchTerm: $searchTerm
+                searchTerm: $searchTerm,
+
             );
 
             if (is_string($result)) {
@@ -68,6 +69,14 @@ class ProductsController
                     'products' => $result['products'],
                     'total' => $result['total'],
 
+                    //passing filter options to pageParams
+                    'searchTerm' => $searchTerm,
+                    'categoryName' => $categoryName,
+                    'brandName' => $brandName,
+                    'productType' => $productType,
+                    'quantityLevel' => $quantityLevel,
+                    'status' => $status,
+
                 ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
@@ -77,7 +86,7 @@ class ProductsController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
-                    "products" => $products,
+                    'products' => $result['products'],
                     "brands" => $brandModel->getBrands(),
 
                     "categories" => $categoryModel->getCategories(),
