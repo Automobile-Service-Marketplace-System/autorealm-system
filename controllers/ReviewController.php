@@ -43,6 +43,11 @@ class ReviewController
                         'total' => $results['total'],
                         'limit' => $limit,
                         'page' => $page,
+
+                        //for search
+                        'searchTermProduct' => $searchTermProduct,
+                        'reviewRating' => $reviewRating,
+                        'reviewDate' => $reviewDate,
                     ],
                     layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
             }
