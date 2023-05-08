@@ -32,6 +32,8 @@ class Reviews
         ]
     ): array|string
     {
+//        var_dump($options);
+
         $whereClause = null;
         $conditions = [];
         $dateFrom = null;
@@ -89,15 +91,16 @@ class Reviews
                         }
                         break;
                 }
-                break;
+
             }
         }
 
+//        var_dump($dateFrom . $dateTo);
         if(isset($dateFrom) && isset($dateTo)){
             $conditions[] = "r.created_at BETWEEN :date_from AND :date_to";
         }
 
-
+//        print_r($conditions);
         if(!empty($conditions)) {
             $whereClause = "WHERE " . implode(" AND ", $conditions);
         }
@@ -105,6 +108,8 @@ class Reviews
         if($searchTermProduct !== null){
             $whereClause = $whereClause ? $whereClause . " AND p.name LIKE :search_term_product" : "WHERE p.name LIKE :search_term_product";
         }
+
+
 
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
@@ -130,17 +135,40 @@ class Reviews
         if(isset($dateFrom) && isset($dateTo)){
             $statement->bindValue(':date_from', $dateFrom);
             $statement->bindValue(':date_to', $dateTo);
+//            var_dump("works fine");
         }
 
         try{
+//            echo $statement->queryString;
             $statement->execute();
             $reviews = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $query = "SELECT COUNT(*) as total FROM review r                  
+                        INNER JOIN product p on r.item_code = p.item_code 
+                        INNER JOIN customer c on r.customer_id = c.customer_id  
+                        $whereClause";
+            $totStatement = $this->pdo->prepare($query);
+
+            if($searchTermProduct !== null){
+                $totStatement->bindValue(':search_term_product', '%' . $searchTermProduct . '%', PDO::PARAM_STR);
+            }
+
+            if(isset($dateFrom) && isset($dateTo)){
+                $totStatement->bindValue(':date_from', $dateFrom);
+                $totStatement->bindValue(':date_to', $dateTo);
+//            var_dump("works fine");
+            }
+            $totStatement->execute();
+            $totalReviews = $totStatement->fetch(PDO::FETCH_ASSOC);
+
+
         }catch (PDOException $e){
             return $e->getMessage();
         }
-        $totalReviews = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM review"
-        )->fetch(PDO::FETCH_ASSOC);
+
+//        $totalReviews = $this->pdo->query(
+//            "SELECT COUNT(*) as total FROM review"
+//        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             'reviews' => $reviews,
