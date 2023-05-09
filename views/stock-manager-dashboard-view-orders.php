@@ -5,12 +5,17 @@
  * @var  int $limit
  * @var  int $page
  * @var  int $total
+ *
+ * @var string $searchTermCustomer
+ * @var string $searchTermOrder
+ * @var string $orderStatus
+ * @var string $orderDate
  */
 //\app\utils\DevOnly::prettyEcho($orders);
 //var_dump($total);
 use app\components\Table;
 
-$columns = ["ID", "Customer Name", "Shipping Address", "Order Date", "Payment Amount (Rs)", "Status", " "];
+$columns = ["ID", "Customer", "Shipping Address", "Order Date", "Payment (Rs)", "Status", " "];
 $items = [];
 
 $noOfOrders = count($orders);
@@ -75,12 +80,12 @@ foreach ($orders as $order) {
                 <div class="order-filter-search-items">
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
                         <input type="text" placeholder="Search Order by Customer Name"
-                               id="dashboard-order-cus-name-search" name="cus">
+                               id="dashboard-order-cus-name-search" name="cus" <?php if($searchTermCustomer) echo "value='$searchTermCustomer'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
 
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id">
+                        <input type="text" placeholder="Search Order by ID" id="dashboard-order-id-search" name="id" <?php if($searchTermOrder) echo "value='$searchTermOrder'"?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
@@ -89,23 +94,23 @@ foreach ($orders as $order) {
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="status" id="dashboard-order-status-filter">
-                            <option value="all">Status</option>
-                            <option value="Not Prepared">Not Prepared</option>
-                            <option value="Prepared">Prepared</option>
-                            <option value="Delivery">Delivery</option>
-                            <option value="CourierConfirmed">Courier Confirmed</option>
-                            <option value="CustomerConfirmed">Customer Confirmed</option>
+                            <option value="all" <?= ($orderStatus=='all')? 'selected': ""?>>Status</option>
+                            <option value="Not Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Not Prepared</option>
+                            <option value="Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Prepared</option>
+                            <option value="Delivery" <?= ($orderStatus=='Delivery')? 'selected': ""?>>Delivery</option>
+                            <option value="CourierConfirmed" <?= ($orderStatus=='CourierConfirmed')? 'selected': ""?>>Courier Confirmed</option>
+                            <option value="CustomerConfirmed" <?= ($orderStatus=='CustomerConfirmed')? 'selected': ""?>>Customer Confirmed</option>
                         </select>
                     </div>
 
                     <div class="form-item form-item--no-label">
                         <select name="date" id="dashboard-order-date-filter">
-                            <option value="all">Date</option>
-                            <option value="Today">Today</option>
-                            <option value="Yesterday">Yesterday</option>
-                            <option value="Last7">Last 7 Days</option>
-                            <option value="Last30">Last 30 Days</option>
-                            <option value="Last90">Last 90 Days</option>
+                            <option value="all" <?= ($orderDate=='all') ? 'selected': ""?>>Date</option>
+                            <option value="Today" <?= ($orderDate=='Today') ? 'selected': ""?>>Today</option>
+                            <option value="Yesterday" <?= ($orderDate=='Yesterday') ? 'selected': ""?>>Yesterday</option>
+                            <option value="Last7" <?= ($orderDate=='Last7') ? 'selected': ""?>>Last 7 Days</option>
+                            <option value="Last30" <?= ($orderDate=='Last30') ? 'selected': ""?>>Last 30 Days</option>
+                            <option value="Last90" <?= ($orderDate=='Last90') ? 'selected': ""?>>Last 90 Days</option>
                         </select>
                     </div>
 
@@ -146,7 +151,7 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
     //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     foreach (range(1, ceil($total / $limit)) as $i) {
         $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-        echo "<a class='dashboard-pagination-item $isActive' href='/orders?page=$i&limit=$limit'>$i</a>";
+        echo "<a class='dashboard-pagination-item $isActive' href='/orders?cus=$searchTermCustomer&id=$searchTermOrder&status=$orderStatus&date=$orderDate&page=$i&limit=$limit'>$i</a>";
     }
     ?>
     <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">

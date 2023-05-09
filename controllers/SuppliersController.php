@@ -45,6 +45,12 @@ class SuppliersController
                         'total' => $result['total'],
                         'limit' => $limit,
                         'page' => $page,
+
+                        //for filters
+                        'searchTermSupplier' => $searchTermSupplier,
+                        'searchTermMail' => $searchTermMail,
+                        'supplierStatus' => $supplierStatus,
+                        'supplyDate' => $supplyDate,
                     ],
                     layoutParams: [
                         'title' => 'Suppliers',
