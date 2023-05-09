@@ -4,6 +4,8 @@
  * @var int $limit
  * @var int $page
  * @var int $total
+ * @var string $searchTermRegNo
+ * @var string $admi
  */
 
 $noOfAdmittingReports = count($admittingReports);
@@ -32,7 +34,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
     <form>
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Admitting Report by Register Number" id="dashboard-product-search" name="regNo">
+                <input type="text" placeholder="Search Admitting Report by Register Number" id="dashboard-product-search" name="regNo" <?php if($searchTermRegNo) echo "value='$searchTermRegNo'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
@@ -40,7 +42,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="admitting_date" id="dashboard-order-date-filter">
-                            <option value="all">Date</option>
+                            <option value="all" <?php if($searchTermRegNo) echo "value='$searchTermRegNo'"; ?>>Date</option>
                             <option value="Today">Today</option>
                             <option value="Yesterday">Yesterday</option>
                             <option value="Last7">Last 7 Days</option>
@@ -48,6 +50,13 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                             <option value="Last90">Last 90 Days</option>
                         </select>
                     </div>
+
+                <div class="form-item form-item--no-label">
+                    <select name="approve" id="dashboard-order-date-filter">
+                        <option value="not_approved">Not Approved</option>
+                        <option value="approved">Approved</option>
+                        <option value="all">All</option>
+                    </select>
                 </div>
 
             <div class="filter-action-buttons">

@@ -32,4 +32,4 @@ import "./office-create-jobcard"
 import "./analytics"
 import "./invoicing"
 import "./handle-assigned-job"
-
+import "./approve-admitting-report"

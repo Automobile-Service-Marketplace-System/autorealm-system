@@ -15,7 +15,7 @@ $hasMileageError = $hasErrors && isset($errors['mileage"']);
 $hasCurrentFuelLevelError = $hasErrors && isset($errors['current_fuel_level']);
 $hasCurrentFuelLevelDescriptionError = $hasErrors && isset($errors['current_fuel_level_description']);
 $hasAdmittingTimeError = $hasErrors && isset($errors['admitting_time']);
-$hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
+// $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
 $hasWindshieldError = $hasErrors && isset($errors['windshield']);
 $hasWindshieldDescriptionError = $hasErrors && isset($errors['windshield_description']);
 $hasLightsLFError = $hasErrors && isset($errors['lights_lf']);
@@ -28,6 +28,7 @@ $hasLightsRRError = $hasErrors && isset($errors['lights_rr']);
 $hasLightRRDescriptionError = $hasErrors && isset($errors['light_rr_description']);
 $hasToolkitError = $hasErrors && isset($errors['toolkit']);
 $hasSparewheelError = $hasErrors && isset($errors['sparewheele']);
+$hasMilageError = $hasErrors && isset($errors['mileage']);
 $hasRimLFError = $hasErrors && isset($errors['rim_lf']);
 $hasRimLFDescriptionError = $hasErrors && isset($errors['rim_lf_description']);
 $hasRimRFError = $hasErrors && isset($errors['rim_rf']);
@@ -552,6 +553,10 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     value: $body['current_fuel_level_description'] ?? null,
                 );
 
+        ?>
+
+        <div class="item-grid">
+        <?php
             FormItem::render(
                 id: "mileage",
                 label: "<b><br>Mileage</b>",
@@ -561,10 +566,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 error:$hasMilageError ? $errors['mileage'] : "",
                 value: $body['mileage'] ?? null,
             );
-        ?>
 
-        <div class="item-grid">
-        <?php
             FormItem::render(
                 id: "admitting_time",
                 label: "<b><br>Admitting Time</b>",
@@ -575,16 +577,6 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 value: $body['admitting_time'] ?? null,
             );
 
-            FormItem::render(
-                id: "departing_time",
-                label: "<b><br>Departing Time</b>",
-                name: "departing_time",
-                type: "time",
-                required: false,
-                hasError:$hasDepartingTimeError,
-                error:$hasDepartingTimeError ? $errors['departing_time'] : "",
-                value: $body['departing_time'] ?? null,
-            );
         ?>
         </div>
   
@@ -606,6 +598,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 label: "<b>Additional Note</b>",
                 name: "additional_note",
                 type: "text",
+                required: "false",
                 hasError:$hasAdditionalNoteError,
                 error:$hasAdditionalNoteError ? $errors['additional_note'] : "",
                 value: $body['additional_note'] ?? null,

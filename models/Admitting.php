@@ -23,7 +23,7 @@ class Admitting
 
     public function getAdmittingReportById(int $report_no): bool|object
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM admitingreport WHERE report_no = :report_no");
+        $stmt = $this->pdo->prepare("SELECT * FROM admittingreport WHERE report_no = :report_no");
         $stmt->execute([
             ":report_no" => $report_no,
 
@@ -37,6 +37,7 @@ class Admitting
         string|null $searchTermRegNo=null,
         array $options = [
             'admitting_date' => null,
+            'approve' => null,
         ]
     ): array|string
     {
@@ -76,6 +77,18 @@ class Admitting
 
                         }
                         break;
+                    case "approve":
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'approved':
+                                $conditions[] = "is_approved = TRUE";
+                                break;
+                            case 'not_approved':
+                                $conditions[] = "is_approved = FALSE";
+                                break;
+                        }
+                        break;
                 }
             }
         }
@@ -104,7 +117,7 @@ class Admitting
             a.admitting_date as Date,
             a.report_no as ID
 
-            from admitingreport a
+            from admittingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
             left join customer c on v.customer_id=c.customer_id $whereClause $limitClause $pageClause ";
 
@@ -126,7 +139,7 @@ class Admitting
            
             $statement = $this->pdo->prepare(" SELECT 
                 count(*) as total
-                from admitingreport a
+                from admittingreport a
                 left join vehicle v on a.vehicle_reg_no=v.reg_no
                 left join customer c on v.customer_id=c.customer_id $whereClause"
             );
@@ -231,9 +244,9 @@ class Admitting
             $errors['admitting_time'] = 'Admitting time must not be empty.';
         }
 
-        if (strlen($this->body['departing_time']) == 0) {
-            $errors['departing_time'] = 'Department time must not be empty.';
-        }
+        // if (strlen($this->body['departing_time']) == 0) {
+        //     $errors['departing_time'] = 'Department time must not be empty.';
+        // }
 
         if (trim($this->body["customer_belongings"] === " ")) {
             $errors['customer_belongings'] = 'Customer belongings must not be empty.';
@@ -268,14 +281,14 @@ class Admitting
         if(empty($errors)){
             $query="insert into admittingreport 
                 (
-                    vehicle_reg_no, mileage, current_fuel_level, current_fuel_level_description, admitting_time, departing_time, windshield, windshield_description, 
+                    vehicle_reg_no, mileage, current_fuel_level, current_fuel_level_description, admitting_time, windshield, windshield_description, 
                     lights_lf, light_lf_description, lights_rf, light_rf_description, lights_lr, light_lr_description, lights_rr, light_rr_description, toolkit, sparewheel, rim_lf, rim_lf_description, 
                     rim_rf, rim_rf_description, rim_lr, rim_lr_description, rim_rr, rim_rr_description, seat_lf, seat_lf_description, seat_rf, seat_rf_description, seat_rear, seat_rear_description, 
                     carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id, admitting_date
                 )
                 values
                 (
-                    :vehicle_reg_no, :mileage, :current_fuel_level,:current_fuel_level_description, :admitting_time, :departing_time, :windshield, :windshield_description, 
+                    :vehicle_reg_no, :mileage, :current_fuel_level,:current_fuel_level_description, :admitting_time, :windshield, :windshield_description, 
                     :lights_lf, :light_lf_description, :lights_rf, :light_rf_description, :lights_lr, :light_lr_description, :lights_rr, :light_rr_description, :toolkit, :sparewheel, :rim_lf, :rim_lf_description,
                     :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, :seat_rf_description, :seat_rear, :seat_rear_description,
                     :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id, :date
@@ -285,8 +298,8 @@ class Admitting
             $statement->bindvalue(":mileage", $this->body["mileage"]);
             $statement->bindvalue(":current_fuel_level", $this->body["current_fuel_level"]);
             $statement->bindvalue(":current_fuel_level_description", $this->body["current_fuel_level_description"]);
-            $statement->bindvalue(":admitting_time", $this->body["admiting_time"]);
-            $statement->bindvalue(":departing_time", $this->body["departing_time"]);
+            $statement->bindvalue(":admitting_time", $this->body["admitting_time"]);
+            // $statement->bindvalue(":departing_time", $this->body["departing_time"]);
             $statement->bindvalue(":windshield", $this->body["windshield"]);
             $statement->bindvalue(":windshield_description", $this->body["windshield_description"]);
             $statement->bindvalue(":lights_lf", $this->body["lights_lf"]);
@@ -330,6 +343,26 @@ class Admitting
         }
         else{
             return $errors;
+        }
+    }
+
+    public function approveReport(int $id){
+        //get current date and time and save it in $departing_time
+        $departing_time = date('H:i:s');
+
+        //update query
+        $query = "UPDATE admittingreport SET departing_time = :departing_time WHERE report_no = :id";
+            $statement=$this->pdo->prepare($query);
+            $statement->bindvalue(":departing_time", date('H:i:s'));
+            $statement->bindvalue(":id", $id);
+        
+        try{           
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        }
+        catch (PDOException $e){
+            var_dump($e->getMessage());
+            return "Error deleting Employee";
         }
     }
 }
