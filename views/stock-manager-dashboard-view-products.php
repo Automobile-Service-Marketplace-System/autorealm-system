@@ -8,6 +8,7 @@
  * @var  int $limit
  * @var  int $page
  * @var  int $total
+ *
  * @var string $searchTerm
  * @var string $categoryName
  * @var string $brandName
