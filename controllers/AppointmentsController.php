@@ -53,7 +53,13 @@ class AppointmentsController
                 "appointments" => $result['appointments'],
                 'total' => $result['total'],
                 'limit' => $limit,
-                'page' => $page], layoutParams: [
+                'page' => $page,
+            
+                //pasing filter options 
+                'searchTermRegNo' => $searchTermRegNo,
+                'searchTermDate' => $searchTermDate
+            
+                ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'employeeId' => $req->session->get("user_id"),

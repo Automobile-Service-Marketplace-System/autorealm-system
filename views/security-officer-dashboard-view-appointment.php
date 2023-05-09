@@ -4,6 +4,8 @@
  * @var int $limit
  * @var int $page
  * @var int $total
+ * @var string $searchTermRegNo
+ * @var string $searchTermDate
  */
 
 //  var_dump($total);
@@ -25,11 +27,11 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> appointments
     <form>
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Employee by Registration Number" id="dashboard-product-search" name="regno">
+                <input type="text" placeholder="Search Employee by Registration Number" id="dashboard-product-search" name="regno" <?php if($searchTermRegNo) echo "value='$searchTermRegNo'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="date" placeholder="Search Employee by date" id="dashboard-product-search" name="date">
+                <input type="date" placeholder="Search Employee by date" id="dashboard-product-search" name="date" <?php if($searchTermDate) echo "value='$searchTermDate'" ;?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
@@ -59,7 +61,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> appointments
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
-                echo "<a class='pagination-item $activePage' href='/security-officer-dashboard/view-appointment?page=$i&limit=$limit'> $i </a>";
+                echo "<a class='pagination-item $activePage' href='/security-officer-dashboard/view-appointment?regno=$searchTermRegNo&date=$searchTermDate&page=$i&limit=$limit'> $i </a>";
             }
         ?>
     </div>

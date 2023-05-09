@@ -169,10 +169,12 @@ class Appointment
 
             $statement->execute();
             $totalAppoinment = $statement->fetch(PDO::FETCH_ASSOC);
-
+            // var_dump($searchTermRegNo);
             return [
                 'total' => $totalAppoinment['total'],
-                'appointments' => $appointments
+                'appointments' => $appointments,
+                'searchTermRegNo' => $searchTermRegNo,
+                'searchTermDate' => $searchTermDate
             ];
         }
         catch(PDOException $e){
