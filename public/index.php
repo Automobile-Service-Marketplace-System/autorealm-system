@@ -219,6 +219,7 @@ if ($isInternal) {
     $app->router->post(path: "/security-officer-dashboard/admitting-reports/add", callback: [AdmittingController::class, 'addAdmittingReportPage']);
     $app->router->get(path: "/security-officer-dashboard/view-admitting-reports", callback: [AdmittingController::class, 'getAdmittingReportsDetails']);
     $app->router->get(path: "/security-officer-dashboard/admitting-reports/view", callback: [AdmittingController::class, 'viewAdmittingReportDetails']);
+    $app->router->post(path: "/security-officer-dashboard/admitting-reports/approve", callback: [AdmittingController::class, 'approveAdmittingReportPage']);
     // $app->router->get(path: "/security-officer-dashboard/view-appointments", callback: [AppointmentsController::class, 'getSecurityAppointments']);
 }
 // run the application
