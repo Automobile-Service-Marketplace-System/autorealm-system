@@ -13,10 +13,8 @@ $noOfJobs = $customers['total'];
 $startNo = ($page - 1) * $limit + 1;
 $endNo = min($startNo + $limit - 1, $noOfJobs);
 
-foreach($customers['customers'][0] as $key=>$value){
-    $columns[] = $key;
-}
-$columns[] = "Actions";
+
+$columns = array("ID", "Full Name", "Contact No", "Address", "Email", "Actions");
 
 $items = [];
 

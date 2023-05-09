@@ -76,7 +76,7 @@ class Vehicle
                 fuel_type,
                 transmission_type,
                 m.model_name,
-                b.brand_name,
+                b.brand_name, 
                 CONCAT(c.f_name, ' ', c.l_name) as full_name
             FROM vehicle v 
                 INNER JOIN model m ON m.model_id = v.model_id
