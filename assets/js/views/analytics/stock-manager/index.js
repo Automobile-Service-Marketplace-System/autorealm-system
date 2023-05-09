@@ -78,6 +78,7 @@ if (orderRevenueCanvas) {
     async function showOrderRevenueChart() {
         try {
             const result = await fetch("/analytics/order-revenue")
+            console.log(result)
             switch (result.status) {
                 case 200:
                     /**

@@ -459,7 +459,16 @@ class JobCard
                             INNER JOIN model m on v.model_id = m.model_id  
                             INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
 
+            DevOnly::prettyEcho("SELECT 
+                        COUNT(*) as total
+                        FROM jobcard j 
+                            INNER JOIN employee e on j.employee_id = e.employee_id 
+                            INNER JOIN vehicle v on j.vin = v.vin 
+                            INNER JOIN brand b on v.brand_id = b.brand_id 
+                            INNER JOIN model m on v.model_id = m.model_id  
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
 
+            exit();
             if ($options['job_date'] !== null && $options['job_date'] !== "") {
                 $statement->bindValue(param: ":job_date", value: $options['job_date']);
             }
@@ -481,7 +490,6 @@ class JobCard
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $total = $result['total'];
 
-            DevOnly::prettyEcho($result);
 
             return [
                 'jobs' => $jobs,

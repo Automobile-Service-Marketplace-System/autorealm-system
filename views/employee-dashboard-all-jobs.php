@@ -142,10 +142,10 @@ if (!$jobsEmpty) { ?>
 
         $hasNextPage = $page < ceil(num: $total / $limit);
         $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-        $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasNextPageHref = $hasNextPage ? "/all-jobs?page=" . ($page + 1) . "&limit=$limit" : "";
         $hasPreviousPage = $page > 1;
         $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-        $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+        $hasPreviousPageHref = $hasPreviousPage ? "/all-jobs?page=" . ($page - 1) . "&limit=$limit" : "";
 
         ?>
         <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
