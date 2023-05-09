@@ -16,7 +16,7 @@ class ReviewController
 
             $query = $req->query();
 //          for pagination
-            $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 5;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
 //          for searching
@@ -43,6 +43,11 @@ class ReviewController
                         'total' => $results['total'],
                         'limit' => $limit,
                         'page' => $page,
+
+                        //for search
+                        'searchTermProduct' => $searchTermProduct,
+                        'reviewRating' => $reviewRating,
+                        'reviewDate' => $reviewDate,
                     ],
                     layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
             }

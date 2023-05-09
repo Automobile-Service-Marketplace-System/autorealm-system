@@ -51,6 +51,7 @@
 .create-invoice__table input {
     /* sizes */
     padding-inline: 1rem;
+    padding-right: 0.2rem;
     height: 2.5rem;
     width: 100%;
     /* transition */
@@ -100,3 +101,63 @@
     background-color: red;
     height: 2.5rem;
 }
+
+/*reduce height of each element and reduce font sizes in printing mode to make it possible to print invoice */
+@media print {
+    .create-invoice__table tr {
+        height: 1.5rem;
+    }
+
+    .create-invoice__table input {
+        height: 1.5rem;
+    }
+
+    .create-invoice__table th {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table td {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table tfoot tr td:first-child {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table tfoot input {
+        font-size: 0.8rem;
+    }
+
+
+    .create-invoice__header {
+        display: none;
+    }
+
+    .create-invoice__section {
+        margin-top: 0;
+    }
+
+
+    .create-invoice__section h2 {
+        font-size: 1rem;
+    }
+
+    .create-invoice__table {
+        margin-top: 0;
+    }
+
+    .create-invoice__new-row-button {
+        display: none;
+    }
+
+    .create-invoice__table tr td:first-child input {
+        text-align: left;
+    }
+
+
+    .invoice-button-set {
+        display: none;
+    }
+
+}
+

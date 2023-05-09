@@ -1,26 +1,81 @@
-.assigned-job {
+.assigned-job-overview {
     display: flex;
+    flex-direction: column;
     align-items: center;
     box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.2);
     border-radius: 0.5rem;
+    background-color: var(--color-bg-secondary);
+    min-height: calc(100vh - 120px);
+    padding: 1rem;
 }
 
-.assigned-job > div {
-    width: 50%;
-    min-height: 80vh;
-    background-color: var(--color-white);
+.assigned-job-empty {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    place-items: center;
 }
 
-.assigned-job__overview {
-    border-radius: 0.5rem 0 0 0.5rem;
+.assigned-job-empty p {
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
 }
 
-.assigned-job__goal {
-    border-radius: 0 0.5rem 0.5rem 0;
+.assigned-job-overview h3 {
+    text-align: left;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-.assigned-job__goal-list {
+.assigned-job-overview__progress-overview {
     display: flex;
     flex-direction: column;
+}
+
+
+.assigned-job-overview__progress-overview p {
+    display: flex;
+    align-items: center;
     gap: 1rem;
+}
+
+
+.assigned-job-overview__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.assigned-job-overview__header > p {
+    display: flex;
+    width: 100%;
+}
+
+.assigned-job-progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 2rem;
+    max-width: 100%;
+    height: 200px;
+    margin-block: 1rem;
+}
+
+.assigned-job-progress-container svg {
+    display: none;
+}
+
+.assigned-job-progress-container canvas {
+    display: initial;
+}
+
+.assigned-job-progress-container--loading svg {
+    display: initial;
+}
+
+.assigned-job-progress-container--loading canvas {
+    display: none;
 }

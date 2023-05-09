@@ -8,7 +8,7 @@ export const serviceTableBody = document.querySelector('.create-invoice__table.c
 /**
  * @type {HTMLInputElement}
  */
-const serviceTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--services tfoot input')
+export const serviceTotalInput = document.querySelector('.create-invoice__table.create-invoice__table--services tfoot input')
 
 let currentServiceRow = 0
 
@@ -120,9 +120,7 @@ function decideNewItemOrExistingItem(service, add = false, rowElement = undefine
  */
 function setRowValues(rowElement, service, add = false, alreadyIn = false) {
 
-    // console.log(alreadySelectedServices)
     if (!alreadyIn) {
-        // console.log(service.Code);
         rowElement.dataset.serviceid = service.Code.toString()
         rowElement.appendChild(
             htmlToElement(
@@ -135,45 +133,15 @@ function setRowValues(rowElement, service, add = false, alreadyIn = false) {
         serviceNameInput.value = service['Name']
 
         let serviceCostInput = rowElement.querySelector(`input[name="service_costs[]"]`)
-        serviceCostInput.value = service["Cost"]
+        serviceCostInput.value = Number(service["Cost"]).toFixed(2)
 
         let servicePercentageInput = rowElement.querySelector(`input[name="service_discounts[]"]`)
         servicePercentageInput.value = 0
 
         let serviceAmountInput = rowElement.querySelector(`input[name="service_amounts[]"]`)
-        serviceAmountInput.value = service["Cost"]
-
-        // if the service quantity is increased, the amount should be increased accordingly
-        // serviceQuantityInput.addEventListener('change', () => {
-        //     // let newAmount = service["Price (LKR)"] * Number(serviceQuantityInput.value)
-        //     //
-        //     // // check if discount is applied
-        //     // const discount = Number(servicePercentageInput.value)
-        //     // if (discount === 0) {
-        //     //     newAmount = (newAmount / 100) * (100 - discount)
-        //     // }
-        //     //
-        //     // // show it with two decimal places
-        //     // serviceAmountInput.value = newAmount.toFixed(2)
-        //     listenForPercentageChanges(service, {
-        //         quantityElement: serviceQuantityInput,
-        //         percentageElement: servicePercentageInput,
-        //         amountElement: serviceAmountInput
-        //     })
-        // })
+        serviceAmountInput.value = Number(service["Cost"]).toFixed(2)
 
         servicePercentageInput.addEventListener('change', () => {
-            // let newAmount = service["Cost"] * Number(servicePercentageInput.value)
-            
-            // // check if discount is applied
-            // const discount = Number(servicePercentageInput.value)
-            // if (discount != 0) {
-            //     newAmount = (newAmount / 100) * (100 - discount)
-            // }
-            
-            // // show it with two decimal places
-            // serviceAmountInput.value = newAmount.toFixed(2)
-            // // console.log("percentage changed")
             listenForPercentageChanges(service, {
                 percentageElement: servicePercentageInput,
                 amountElement: serviceAmountInput
@@ -187,13 +155,6 @@ function setRowValues(rowElement, service, add = false, alreadyIn = false) {
         calculateItemTotal()
         alreadySelectedServices.push(service.Code)
 
-    } else {
-        // get the quantity input
-        // let serviceQuantityInput = rowElement.querySelector(`input[name="service_quantities[]"]`)
-        // increase the quantity by 1
-        // serviceQuantityInput.value = Number(serviceQuantityInput.value) + 1
-        // trigger the change event to update the amount
-        // serviceQuantityInput.dispatchEvent(new InputEvent('change'))
     }
 }
 
@@ -204,7 +165,7 @@ function setRowValues(rowElement, service, add = false, alreadyIn = false) {
  */
 function listenForPercentageChanges(service, {percentageElement,amountElement }) {
 
-    let newAmount = service["Cost"]
+    let newAmount = Number(service["Cost"])
 
     // check if discount is applied
     const discount = Number(percentageElement.value)
@@ -237,7 +198,7 @@ function calculateItemTotal() {
 /**
  * @typedef {Object} Service
  * @property {string} Name
- * @property {string} Code
+ * @property {number} Code
  * @property {string} Description
- * @property {number} Cost
+ * @property {string} Cost
  */

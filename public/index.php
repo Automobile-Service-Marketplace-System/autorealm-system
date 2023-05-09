@@ -112,6 +112,8 @@ if ($isInternal) {
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
 
     $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
+    $app->router->get(path: "/all-jobs/view", callback: [JobsController::class, 'getJobDetailsPage']);
+    $app->router->get(path: "/inspection-reports/view", callback: [JobsController::class, 'getInspectionReportForJobPage']);
 
 // foreman routes
     // $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
@@ -131,6 +133,7 @@ if ($isInternal) {
     // $app->router->get(path: "/technician-dashboard/overview", callback: [DashboardController::class, 'getTechnicianDashboardOverview']);
     $app->router->get(path: "/technician-dashboard/profile", callback: [DashboardController::class, 'getTechnicianDashboardProfile']);
     $app->router->get(path: "/assigned-job", callback: [JobsController::class, 'getAssignedJobOverviewPage']);
+    $app->router->post(path: "/assigned-job/services/set-status", callback: [JobsController::class, 'changeJobServiceStatus']);
 
 // administrator routes
     $app->router->get(path: "/admin-login", callback: [AuthenticationController::class, "getAdminLoginPage"]);

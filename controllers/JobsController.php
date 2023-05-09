@@ -99,6 +99,11 @@ class JobsController
             $query = $req->query();
 
             $jobCardModel = new JobCard();
+            $isInProgressJob = $jobCardModel->isInProgress(jobId: $query["id"]);
+            if (!$isInProgressJob) {
+                return $res->redirect(path: "/jobs/view?id={$query['id']}");
+            }
+
             $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $query["id"]);
 
             $jobDetails = $jobCardModel->getProductsServicesTechniciansInJob(jobId: $query["id"]);
@@ -146,9 +151,62 @@ class JobsController
                 "vehicleDetails" => $result,
                 "jobId" => $jobId
             ], layoutParams: [
-                'title' => "Maintenance Inspection report for job #{$query['job_id']}",
-                'pageMainHeading' => "Maintenance Inspection report for job #{$query['job_id']}",
+                'title' => "Report for job #{$query['job_id']}",
+                'pageMainHeading' => "Report for job #{$query['job_id']}",
                 'foremanId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+
+    public function getInspectionReportForJobPage(Request $req, Response $res) : string {
+        if (
+            $req->session->get("is_authenticated")
+            &&
+            (
+                $req->session->get("user_role") === "foreman"
+                ||
+                $req->session->get("user_role") === "technician"
+                ||
+                $req->session->get("user_role") === "admin"
+            )
+        ) {
+            $query = $req->query();
+            $jobId = $query["job_id"] ?? null;
+            if (!$jobId) {
+                return $res->redirect(path: "all-jobs/view?jobId=$jobId");
+            }
+
+
+            $layout = match($req->session->get("user_role")) {
+                "technician" => "technician-dashboard",
+                "admin" => "admin-dashboard",
+                default => "foreman-dashboard"
+            };
+
+            $userId = $req->session->get("user_id");
+
+
+            $conditionModel = new InspectionCondition();
+            $conditions = $conditionModel->getConditions();
+
+
+            $inspectionReportModel = new MaintenanceInspectionReport();
+            $preparedConditions = $inspectionReportModel->getSavedConditions(body: $conditions, jobId: $jobId);
+//            DevOnly::prettyEcho($result);
+//            $jobCardModel = new JobCard();
+//            $result = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
+
+            return $res->render(view: "employee-dashboard-inspection-report-for-job", layout: $layout, pageParams: [
+                "conditionsOfCategories" => $preparedConditions,
+                "jobId" => $jobId
+            ], layoutParams: [
+                'title' => "Inspection report for job #$jobId",
+                'pageMainHeading' => "Inspection report for job #$jobId",
+                'foremanId' => $userId,
+                'technicianId' => $userId,
+                'employeeId'=>$userId
             ]);
         }
         return $res->redirect(path: "/login");
@@ -307,7 +365,32 @@ class JobsController
     public function getAssignedJobOverviewPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
-            return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+
+            $userId = $req->session->get("user_id");
+            $jobCardModel = new JobCard();
+            $jobId = $jobCardModel->getJobIdByTechnicianId(technicianId: $userId);
+
+            if (!$jobId || is_string($jobId)) {
+                return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+                    'title' => 'Current Job',
+                    'technicianId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            $vehicleDetails = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
+            if (is_string($vehicleDetails)) {
+                return "Internal Server Error";
+            }
+
+            $jobDetails = $jobCardModel->getAssignedJobServiceAndVehicleDetails(jobId: $jobId);
+            if (is_string($jobDetails)) {
+                return "Internal Server Error";
+            }
+            return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", pageParams: [
+                "vehicleDetails" => $vehicleDetails,
+                "jobDetails" => $jobDetails,
+                "jobId" => $jobId,
+            ], layoutParams: [
                 'title' => 'Current Job',
                 'pageMainHeading' => "You are working on, ",
                 'technicianId' => $req->session->get("user_id"),
@@ -316,9 +399,51 @@ class JobsController
         return $res->redirect(path: "/login");
     }
 
-    public function getAllJobsPage(Request $req, Response $res) : string {
 
-        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+    public function getJobDetailsPage(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
+
+            $userId = $req->session->get("user_id");
+            $jobCardModel = new JobCard();
+            $jobId = $jobCardModel->getJobIdByTechnicianId(technicianId: $userId);
+
+            if (!$jobId || is_string($jobId)) {
+                return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+                    'title' => 'Current Job',
+                    'technicianId' => $req->session->get("user_id"),
+                ]);
+            }
+
+            $vehicleDetails = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
+            if (is_string($vehicleDetails)) {
+                return "Internal Server Error";
+            }
+
+            $jobDetails = $jobCardModel->getProductsServicesTechniciansInJob(jobId: $jobId);
+            if (is_string($jobDetails)) {
+                return "Internal Server Error";
+            }
+            return $res->render(view: "employee-dashboard-view-job", layout: "technician-dashboard", pageParams: [
+                "vehicleDetails" => $vehicleDetails,
+//                "jobDetails" => $jobDetails,
+                "products" => $jobDetails['products'],
+                "services" => $jobDetails['services'],
+                "technicians" => $jobDetails['technicians'],
+                "jobId" => $jobId,
+            ], layoutParams: [
+                'title' => "Job #$jobId",
+                'pageMainHeading' => "View job #$jobId",
+                'technicianId' => $req->session->get("user_id"),
+            ]);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function getAllJobsPage(Request $req, Response $res): string
+    {
+
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
@@ -327,16 +452,16 @@ class JobsController
 
             return $res->render(view: "office-staff-dashboard-all-jobs-page", layout: "office-staff-dashboard",
                 pageParams: [
-                    "jobCards"=>$jobCards,
-                    "total"=>$jobCards['total'],
-                    "limit"=>$limit,
-                    "page"=>$page
-                ],  
+                    "jobCards" => $jobCards,
+                    "total" => $jobCards['total'],
+                    "limit" => $limit,
+                    "page" => $page
+                ],
                 layoutParams: [
                     'title' => 'Jobs',
                     'pageMainHeading' => 'Jobs',
                     'officeStaffId' => $req->session->get('user_id')
-            ]);
+                ]);
         }
         return $res->redirect(path: "/login");
     }
@@ -400,6 +525,47 @@ class JobsController
                 "success" => true,
                 "message" => "Available technicians fetched successfully",
                 "data" => $technicians
+            ]);
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json(data: [
+            "success" => false,
+            "message" => "You are not authorized to access this resource"
+        ]);
+    }
+
+
+    /**
+     * @throws \JsonException
+     */
+    public function changeJobServiceStatus(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
+            $body = $req->body();
+            $jobId = $body["jobId"] ?? null;
+            $serviceCode = $body["serviceCode"] ?? null;
+            $status = $body["status"] ?? null;
+            if (!$jobId || !$serviceCode || $status === null) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => "Job ID, Service Code and Status are required"
+                ]);
+            }
+            $jobCardModel = new JobCard();
+            $result = $jobCardModel->changeJobServiceStatus(jobId: $jobId, serviceCode: $serviceCode, status: $status, technicianId: $req->session->get("user_id"));
+            if (is_string($result) || !$result) {
+                $res->setStatusCode(code: 400);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $result
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Job service status changed successfully",
+                "data" => $result
             ]);
         }
         $res->setStatusCode(code: 401);

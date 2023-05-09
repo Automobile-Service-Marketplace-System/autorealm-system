@@ -4,6 +4,10 @@
  * @var  int $limit
  * @var  int $page
  * @var  int $total
+ *
+ * @var string $searchTermProduct
+ * @var string $reviewRating
+ * @var string $reviewDate
  */
 
 use app\utils\DevOnly;
@@ -35,7 +39,7 @@ $endNo = $startNo + $noOfReviews - 1;
             <div class="review-filter-search-items">
                 <div class="form-item form-item--icon-right form-item--no-label filters__search">
                     <input type="text" placeholder="Search Review by Product Name"
-                           id="dashboard-review-product-name-search" name="product">
+                           id="dashboard-review-product-name-search" name="product" <?php if($searchTermProduct) echo "value='$searchTermProduct'"?>>
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </div>
@@ -46,23 +50,23 @@ $endNo = $startNo + $noOfReviews - 1;
 
                 <div class="form-item form-item--no-label">
                     <select name="rating" id="dashboard-review-rating-filter">
-                        <option value="all">Rating</option>
-                        <option value="1star">1 Star ⭐</option>
-                        <option value="2star">2 Star ⭐⭐</option>
-                        <option value="3star">3 Star ⭐⭐⭐</option>
-                        <option value="4star">4 Star ⭐⭐⭐⭐</option>
-                        <option value="5star">5 Star ⭐⭐⭐⭐⭐</option>
+                        <option value="all" <?= ($reviewRating=='all') ? 'selected' : ""?>>Rating</option>
+                        <option value="1star" <?= ($reviewRating=='1star') ? 'selected' : ""?>>1 Star ⭐</option>
+                        <option value="2star" <?= ($reviewRating=='2star') ? 'selected' : ""?>>2 Star ⭐⭐</option>
+                        <option value="3star" <?= ($reviewRating=='3star') ? 'selected' : ""?>>3 Star ⭐⭐⭐</option>
+                        <option value="4star" <?= ($reviewRating=='4star') ? 'selected' : ""?>>4 Star ⭐⭐⭐⭐</option>
+                        <option value="5star" <?= ($reviewRating=='5star') ? 'selected' : ""?>>5 Star ⭐⭐⭐⭐⭐</option>
                     </select>
                 </div>
 
                 <div class="form-item form-item--no-label">
                     <select name="date" id="dashboard-review-date-posted-filter">
-                        <option value="all">Date Posted</option>
-                        <option value="Today">Today</option>
-                        <option value="Yesterday">Yesterday</option>
-                        <option value="Last7">Last 7 Days</option>
-                        <option value="Last30">Last 30 Days</option>
-                        <option value="Last90">Last 90 Days</option>
+                        <option value="all" <?= ($reviewDate=='all') ? 'selected' : ""?>>Date Posted</option>
+                        <option value="Today" <?= ($reviewDate=='Today') ? 'selected' : ""?>>Today</option>
+                        <option value="Yesterday" <?= ($reviewDate=='Yesterday') ? 'selected' : ""?>>Yesterday</option>
+                        <option value="Last7" <?= ($reviewDate=='Last7') ? 'selected' : ""?>>Last 7 Days</option>
+                        <option value="Last30" <?= ($reviewDate=='Last30') ? 'selected' : ""?>>Last 30 Days</option>
+                        <option value="Last90" <?= ($reviewDate=='Last90') ? 'selected' : ""?>>Last 90 Days</option>
                     </select>
                 </div>
 
@@ -139,11 +143,12 @@ $endNo = $startNo + $noOfReviews - 1;
            href="<?= $hasPreviousPageHref ?>">
             <i class="fa-solid fa-chevron-left"></i>
         </a>
+
         <?php
-        //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
         foreach (range(1, ceil($total / $limit)) as $i) {
             $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-            echo "<a class='dashboard-pagination-item $isActive' href='/reviews?page=$i&limit=$limit'>$i</a>";
+            echo "<a class='dashboard-pagination-item $isActive' href='/reviews?product=$searchTermProduct&rating=$reviewRating&date=$reviewDate&page=$i&limit=$limit'>$i</a>";
         }
         ?>
         <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
