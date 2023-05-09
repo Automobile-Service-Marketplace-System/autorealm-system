@@ -16,8 +16,8 @@ class OrdersController
 
             //for pagination
             $query = $req->query();
-            $limit = isset($query['limit']) ? (int)$query['limit']:25;
-            $page = isset($query['page']) ? (int)$query['page']:1;
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 25;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
 
             //for search and filtering
             $searchTermCustomer = $query["cus"] ?? null;
@@ -52,11 +52,11 @@ class OrdersController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "admin-dashboard",
-                    pageParams: [ "orders" => $result['orders'],
+                    pageParams: ["orders" => $result['orders'],
                         'total' => $result['total'],
                         'limit' => $limit,
                         'page' => $page,
-                        ],
+                    ],
                     layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
             }
 

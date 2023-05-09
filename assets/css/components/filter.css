@@ -33,6 +33,7 @@
 
 .filters__dropdown--active {
     height: 200px;
+    overflow-y: auto;
     /*overflow-;*/
     padding: 1rem;
     border: 1px solid rgba(var(--black), 0.2);

@@ -36,26 +36,26 @@
 }
 
 
-.employee-dashboard-page::-webkit-scrollbar {
-    width: 0.5rem;
-}
+/*.employee-dashboard-page::-webkit-scrollbar {*/
+/*    width: 0.5rem;*/
+/*}*/
 
-/* Track */
-.employee-dashboard-page::-webkit-scrollbar-track {
-    background: var(--color-bg-primary);
-}
+/*!* Track *!*/
+/*.employee-dashboard-page::-webkit-scrollbar-track {*/
+/*    background: var(--color-bg-primary);*/
+/*}*/
 
-/* Handle */
-.employee-dashboard-page::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0.5rem;
-    transition: all 0.2s ease-in-out;
-}
+/*!* Handle *!*/
+/*.employee-dashboard-page::-webkit-scrollbar-thumb {*/
+/*    background: rgba(0, 0, 0, 0.2);*/
+/*    border-radius: 0.5rem;*/
+/*    transition: all 0.2s ease-in-out;*/
+/*}*/
 
-/* Handle on hover */
-.employee-dashboard-page::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
-}
+/*!* Handle on hover *!*/
+/*.employee-dashboard-page::-webkit-scrollbar-thumb:hover {*/
+/*    background: rgba(0, 0, 0, 0.3);*/
+/*}*/
 
 .employee-dashboard-container__sidebar nav {
     margin-top: 3rem;
