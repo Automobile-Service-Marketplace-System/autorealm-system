@@ -85,6 +85,7 @@
 @import "views/view-admitting-reports.css";
 @import "views/office-create-jobcard.css";
 @import "views/create-invoice.css";
+@import "views/view-all-jobs.css";
 
 body{
   font-family: "Nunito", sans-serif;

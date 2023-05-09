@@ -35,7 +35,7 @@
     <li>
         <a href="/all-jobs?vehicle=QL 9904">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            View previous jobs for this vehicle
+            View all jobs for this vehicle
         </a>
     </li>
     <li>

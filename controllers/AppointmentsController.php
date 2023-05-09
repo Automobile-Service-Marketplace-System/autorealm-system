@@ -8,6 +8,9 @@ use app\models\Appointment;
 use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
+use app\utils\DevOnly;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use JsonException;
 
 class AppointmentsController
@@ -209,7 +212,27 @@ class AppointmentsController
     public function officeCreateAppointment(Request $req, Response $res): string {
         $body = $req->body();
         $appointment = new Appointment($body);
+
+        var_dump($body);
+
+        $options = new QROptions(
+            [
+                'eccLevel' => QRCode::ECC_L,
+                'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+                'version' => 5,
+            ]
+        );
+
+        $qrcode = (new QRCode($options))->render(json_encode([
+            "date" => "2022-03-07",
+            "timeslot" => "08.00 - 10.30",
+            "registrationNumber" => "QL9904"
+        ]));
+//        echo("<img src='$qrcode'>");
+//        DevOnly::prettyEcho($qrcode);
+//        exit();
         $result = $appointment->officeCreateAppointment();
+
 
         if (is_string($result)) {
             $res->setStatusCode(code: 500);

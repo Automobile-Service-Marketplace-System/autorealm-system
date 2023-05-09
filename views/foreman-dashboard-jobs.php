@@ -69,11 +69,13 @@ use app\components\NewJobCard;
             New Jobs
             <span><?php echo count($jobs['new']) ?></span>
         </h2>
-        <?php
-        foreach ($jobs['new'] as $job) {
-            NewJobCard::render($job);
-        }
-        ?>
+        <div class="jobs-col__container">
+            <?php
+            foreach ($jobs['new'] as $job) {
+                NewJobCard::render($job);
+            }
+            ?>
+        </div>
 
     </section>
     <section class="jobs-col">
@@ -84,11 +86,13 @@ use app\components\NewJobCard;
             In Progress
             <span><?php echo count($jobs['in-progress']) ?></span>
         </h2>
-        <?php
-        foreach ($jobs['in-progress'] as $job) {
-            InProgressJobCard::render($job);
-        }
-        ?>
+        <div class="jobs-col__container">
+            <?php
+            foreach ($jobs['in-progress'] as $job) {
+                InProgressJobCard::render($job);
+            }
+            ?>
+        </div>
     </section>
     <section class="jobs-col">
         <h2 class="jobs-col__heading">
