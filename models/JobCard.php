@@ -10,10 +10,12 @@ use PDOException;
 class JobCard
 {
     private PDO $pdo;
+    private array $body;
 
-    public function __construct()
+    public function __construct(array $body=[])
     {
         $this->pdo = Database::getInstance()->pdo;
+        $this->body = $body;
     }
 
 
@@ -356,16 +358,19 @@ class JobCard
             $query = "INSERT INTO 
                             jobcard(
                                 vehicle_reg_no,
+                                mileage,
                                 customer_id,
                                 employee_id)
                     VALUES(
                                 :vehicle_reg_no,
+                                :mileage,
                                 :customer_id,
                                 :employee_id)
                             ";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
             $statement->bindValue(":employee_id", $this->body["foreman_id"]);
             $statement->execute();

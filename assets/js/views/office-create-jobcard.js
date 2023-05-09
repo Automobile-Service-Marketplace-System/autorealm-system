@@ -93,13 +93,16 @@ createJobCardButton.forEach(function (btn) {
         }
 
         const appointmentRow = btn.parentElement.parentElement.parentElement;
-        console.log(btn.dataset);
+        console.log(appointmentRow);
 
         const appointmentIDElement = appointmentRow.querySelector("td:nth-child(3)");
         const customerName = appointmentIDElement.textContent;
 
         const vehicleRegElement = appointmentRow.querySelector("td:nth-child(2)");
         const vehicleRegNo = vehicleRegElement.textContent;
+
+        const mileageElement = appointmentRow.querySelector("td:nth-child(4)");
+        const mileage = mileageElement.textContent;
 
         const customerID = Number(btn.dataset.customerid);
 
@@ -130,6 +133,7 @@ createJobCardButton.forEach(function (btn) {
             </button>
         </div>
 
+        <input style="display: none" name='mileage' id='mileage' value='${mileage}'>
         <input style="display: none" name='vehicle_reg_no' id='vehicle_reg_no' value='${vehicleRegNo}'>
         <input style="display: none" name='customer_id' id='customer_id' value='${customerID}'>
         
