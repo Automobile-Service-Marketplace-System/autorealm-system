@@ -29,12 +29,37 @@ class AppointmentsController
     public function getAllAppointmentsDetails(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
+
+            $query = $req->query();
+
+            //for search
+            $searchTermRegNo = $query['regno'] ?? null;
+            $searchTermDate = $query['date'] ?? null;
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:2;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+
            $appointmentModel = new Appointment();
-           $appointments = $appointmentModel->getAppointments();
-        //    var_dump($appointments);
+
+           $result = $appointmentModel->getAppointments(
+                count: $limit,
+                page: $page,
+                searchTermRegNo: $searchTermRegNo,
+                searchTermDate: $searchTermDate,
+           );
 
             return $res->render(view: "security-officer-dashboard-view-appointment", layout: "security-officer-dashboard", pageParams: [
-                "appointments" => $appointments], layoutParams: [
+                "appointments" => $result['appointments'],
+                'total' => $result['total'],
+                'limit' => $limit,
+                'page' => $page,
+            
+                //pasing filter options 
+                'searchTermRegNo' => $searchTermRegNo,
+                'searchTermDate' => $searchTermDate
+            
+                ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'employeeId' => $req->session->get("user_id"),

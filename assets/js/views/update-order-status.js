@@ -1,5 +1,5 @@
 import {Modal} from "../components/Modal"
-import {htmlToElement} from "../utils";
+import {htmlToElement, setSpinner} from "../utils";
 import Notifier from "../components/Notifier";
 
 /**
@@ -34,24 +34,24 @@ isCurConfirmedInput?.addEventListener("change", async function () {
 })
 
 
-const rotatingIcon = htmlToElement(`<i class="fa-solid fa-spinner rotating-icon"></i>`)
-
-/**
- * @param {HTMLInputElement} element
- * @param {boolean} status
- */
-function setSpinner(element, status) {
-    const parent = element.parentElement
-    if (status) {
-        element.style.display = "none"
-        parent.append(rotatingIcon)
-    } else {
-        element.style.display = "initial"
-        parent.querySelector(
-            ".rotating-icon"
-        ).remove()
-    }
-}
+// const rotatingIcon = htmlToElement(`<i class="fa-solid fa-spinner rotating-icon"></i>`)
+//
+// /**
+//  * @param {HTMLInputElement} element
+//  * @param {boolean} status
+//  */
+// function setSpinner(element, status) {
+//     const parent = element.parentElement
+//     if (status) {
+//         element.style.display = "none"
+//         parent.append(rotatingIcon)
+//     } else {
+//         element.style.display = "initial"
+//         parent.querySelector(
+//             ".rotating-icon"
+//         ).remove()
+//     }
+// }
 
 
 /**

@@ -21,7 +21,18 @@
 #save-inspection-report-draft {
     position: fixed;
     top: 4rem;
-    right: 3rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-bg-secondary);
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+#save-inspection-report-draft button {
+
     background-color: var(--color-warning);
     color: var(--color-white);
     padding: 0.5rem;
@@ -34,7 +45,7 @@
     font-size: 1rem;
 }
 
-#save-inspection-report-draft svg {
+#save-inspection-report-draft button svg {
     font-size: 1.2rem;
 }
 

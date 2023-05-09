@@ -10,66 +10,71 @@
 </section>
 
 <section class="create-invoice__section">
-    <h2>Items</h2>
+    <h2 class="mt-4">Items</h2>
     <table class="create-invoice__table create-invoice__table--items">
         <colgroup>
-            <col span="1" style="width: 50%;">
-            <col span="1" style="width: 10.5%;">
-            <col span="1" style="width: 15.5%;">
-            <col span="1" style="width: 8%;">
-            <col span="1" style="width: 16%;">
+            <col span="1" style="width: 48%;">
+            <col span="1" style="width: 7%;">
+            <col span="1" style="width: 14%;">
+            <col span="1" style="width: 9%;">
+            <col span="1" style="width: 22%;">
         </colgroup>
         <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Unit Price (LKR)</th>
-                <th>Discount</th>
-                <th>Amount (LKR)</th>
-            </tr>
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>%</th>
+            <th>Amount</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>
         <tfoot>
-            <tr>
-                <td colspan="4">Item Total</td>
-                <td>
-                    <input type="number" id="item-total" value="0.00" disabled>
-                </td>
-            </tr>
+        <tr>
+            <td colspan="4">
+                <label for="item-total">
+                    Item Total (LKR)
+                </label>
+            </td>
+            <td>
+                <input type="number" id="item-total" value="0.00" disabled>
+            </td>
+        </tr>
         </tfoot>
     </table>
-<!--    <div class="total-row" id="item-total-row"></div>-->
+    <!--    <div class="total-row" id="item-total-row"></div>-->
     <button class="create-invoice__new-row-button" id="new-item-row-button">
         <i class="fa-solid fa-plus"></i>
         Add Item
     </button>
-    <h2>Services / Labor</h2>
+    <h2 class="mt-4">Services / Labor</h2>
     <table class="create-invoice__table create-invoice__table--services">
         <colgroup>
-            <col span="1" style="width: 60.5%;">
-<!--            <col span="1" style="width: 10.5%;">-->
-            <col span="1" style="width: 15.5%;">
-            <col span="1" style="width: 8%;">
-            <col span="1" style="width: 16%;">
+            <col span="1" style="width: 48%;">
+            <col span="1" style="width: 21%;">
+            <col span="1" style="width: 9%;">
+            <col span="1" style="width: 22%;">
         </colgroup>
         <thead>
-            <tr>
-                <th>Service / Labor</th>
-                <th>Cost (LKR)</th>
-                <th>Discount</th>
-                <th>Amount (LKR)</th>
-            </tr>
+        <tr>
+            <th>Service / Labor</th>
+            <th>Cost</th>
+            <th>%</th>
+            <th>Amount</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>
         <tfoot>
-            <tr>
-                <td colspan="3">Service Total</td>
-                <td>
-                    <input type="number" id="service-total" value="0.00" disabled>
-                </td>
-            </tr>
+        <tr>
+            <td colspan="3">
+                <label for="service-total">Service Total (LKR)</label>
+            </td>
+            <td>
+                <input type="number" id="service-total" value="0.00" disabled>
+            </td>
+        </tr>
         </tfoot>
     </table>
     <button class="create-invoice__new-row-button" id="new-service-row-button">
@@ -77,13 +82,31 @@
         Add Service
     </button>
 </section>
-<!---->
-<!--<div class="invoice-button-set">-->
-<!--    <button class="btn btn--success btn--square" e>-->
-<!--        <i class="fa-solid fa-print"></i>-->
-<!--    </button>-->
-<!--    <button class="btn btn--warning btn--square">-->
-<!--        <i class="fa-solid fa-file-pdf"></i>-->
-<!--    </button>-->
-<!--    <button class="btn">Print Invoice</button>-->
-<!--</div>-->
+<section class="create-invoice__section">
+    <table class="create-invoice__table">
+        <colgroup>
+            <col span="1" style="width: 78%;">
+            <col span="1" style="width: 22%;">
+        </colgroup>
+        <tfoot>
+        <tr>
+            <td>
+                <label for="grand-total">Grand Total</label>
+            </td>
+            <td>
+                <input type="number" id="grand-total" value="0.00" disabled>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</section>
+
+<div class="invoice-button-set">
+    <button class="btn btn--success btn--square" e>
+        <i class="fa-solid fa-print"></i>
+    </button>
+    <button class="btn btn--warning btn--square">
+        <i class="fa-solid fa-file-pdf"></i>
+    </button>
+    <button class="btn" id="print-invoice">Print Invoice</button>
+</div>

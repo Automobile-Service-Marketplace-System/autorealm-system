@@ -7,14 +7,14 @@
   },
   "author": "Nethsara Sandeepa Elvitigala <nethsarasandeepaelvitigala@gmail.com>",
   "devDependencies": {
-    "chart.js": "^4.2.1",
+    "chart.js": "^4.3.0",
     "chokidar": "^3.5.3",
     "concurrently": "^8.0.1",
     "dotenv": "^16.0.3",
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "rollup-plugin-brotli": "^3.1.0",
     "socket.io": "^4.6.1",
-    "vite": "^4.3.1",
+    "vite": "^4.3.5",
     "vite-plugin-compress": "^2.1.1"
   },
   "scripts": {
