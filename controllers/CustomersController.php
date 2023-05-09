@@ -22,8 +22,8 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers(count: $limit, page: $page);
 
-            $serviceModel = new Service();
-            $services = $serviceModel->getServices();
+//            $serviceModel = new Service();
+//            $services = $serviceModel->getServices();
 
             if($req->session->get("user_role") === "office_staff_member"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
@@ -32,7 +32,7 @@ class CustomersController
                         "limit"=>$limit,
                         "page"=>$page,
                         'customers' => $customers,
-                        'services' => $services
+//                        'services' => $services
                     ],
                     layoutParams:[
                         'title' => 'Customers',
