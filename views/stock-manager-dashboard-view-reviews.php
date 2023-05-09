@@ -133,10 +133,10 @@ $endNo = $startNo + $noOfReviews - 1;
 
         $hasNextPage = $page < ceil(num: $total / $limit);
         $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-        $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasNextPageHref = $hasNextPage ? "/reviews?product=$searchTermProduct&rating=$reviewRating&date=$reviewDate&page=" . ($page + 1) . "&limit=$limit" : "";
         $hasPreviousPage = $page > 1;
         $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-        $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+        $hasPreviousPageHref = $hasPreviousPage ? "/reviews?product=$searchTermProduct&rating=$reviewRating&date=$reviewDate&page=" . ($page - 1) . "&limit=$limit" : "";
 
         ?>
         <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
