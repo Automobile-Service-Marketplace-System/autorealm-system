@@ -53,7 +53,7 @@ class AdmittingController{
             
                 //pasing filter option
                 'searchTermRegNo' => $searchTermRegNo,
-                'admtting_date' => $AdmittingDate,
+                'admitting_date' => $AdmittingDate,
                 'approve' => $AdmittingApprove
                 
                 ],layoutParams:[
@@ -99,11 +99,10 @@ class AdmittingController{
     }
     public function viewAdmittingReportDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
-            $body=$req->body();
+            // $body=$req->body();
             $query=$req->query();
             $admittingReportModel=new Admitting();
             $admittingReport=$admittingReportModel->getAdmittingReportbyId((int)($query["id"]));
-            // var_dump($admittingReport);
             return $res->render(view: "security-officer-dashboard-view-admitting-report-details", layout:"security-officer-dashboard", pageParams:[
                 "admittingReport"=>$admittingReport], 
                 layoutParams:[

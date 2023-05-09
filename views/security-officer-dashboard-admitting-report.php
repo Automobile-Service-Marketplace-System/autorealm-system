@@ -78,6 +78,12 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     <input type="file" accept="image/*" capture="camera" id="image-input" style="display: none">
                 </div>
             </div> -->
+            <div class="admitting-report-add-images">
+                <div class="admitting-report-add-images-container">
+
+                </div>
+                <input type="file" id="admitting-report-add-images__input" accept="image/*" name="image" multiple>
+            </div>
 
         <br><p><b>Light</b></p>
             <p>LF</p>
@@ -692,7 +698,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
             
 
         <div class="flex items-center justify-between mt-4 mb-8">
-            <button type="reset" class="btn btn--danger">Cancel</button>
+            <button class="btn btn--danger" onclick=window.location.href="/security-officer-dashboard/view-admitting-reports">Cancel</button>
             <button type="submit" class="btn">Create</button>
         </div>
     </form>

@@ -4,6 +4,7 @@
  * @var object $admittingReport
  * @var array $errors
  */
+var_dump($admittingReport->is_approved);
 
 use app\components\FormItem;
 use app\components\FormSelectItem;
@@ -541,7 +542,15 @@ use app\components\FormTextareaItem;
 
 <div class="flex items-center justify-between mt-4 mb-8">
     <button type="reset" class="btn btn--danger">Cancel</button>
-    <button type="button" class="btn btn--success" id='admitting-report-approve' data-reportno="<?= $admittingReport->report_no ?>">Approve</button>
+    <?php 
+        if($admittingReport->is_approved === 0){ 
+            echo '<button type="button" class="btn btn--success" id="admitting-report-approve" data-reportno="'.$admittingReport->report_no.'" >Approve</button>';
+        }
+        else{
+            echo '<button type="button" class="btn btn--success" id="admitting-report-approve" data-reportno="'.$admittingReport->report_no.'" disabled>Approve</button>';
+        }
+    ?>
+        
 </div>
 
 </form>

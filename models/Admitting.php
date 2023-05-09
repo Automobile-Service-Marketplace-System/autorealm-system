@@ -62,15 +62,15 @@ class Admitting
                                 $dateFrom = date('Y-m-d', strtotime('yesterday'));
                                 $dateTo = date('Y-m-d', strtotime('yesterday'));
                                 break;
-                            case 'Last 7':
+                            case 'Last7':
                                 $dateFrom = date('Y-m-d', strtotime('-6 days'));
                                 $dateTo = date('Y-m-d', strtotime('today'));
                                 break;
-                            case 'Last 30':
+                            case 'Last30':
                                 $dateFrom = date('Y-m-d', strtotime('-29 days'));
                                 $dateTo = date('Y-m-d', strtotime('today'));
                                 break;
-                            case 'Last 90 Days':
+                            case 'Last90':
                                 $dateFrom = date('Y-m-d', strtotime('-89 days'));
                                 $dateTo = date('Y-m-d', strtotime('today'));
                                 break;
@@ -115,7 +115,9 @@ class Admitting
             concat(c.f_name,' ',c.l_name) as Name,
             a.vehicle_reg_no as RegNo,
             a.admitting_date as Date,
-            a.report_no as ID
+            a.report_no as ID,
+            a.admitting_time as DeptTime,
+            a.is_approved as IsApproved
 
             from admittingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
@@ -158,7 +160,7 @@ class Admitting
 
             return [
                 'total' => $totalAdmittingReports['total'],
-                "admittingReports" => $admittingReports
+                "admittingReports" => $admittingReports,
             ];
         }
         catch(PDOException $e){
@@ -351,9 +353,10 @@ class Admitting
         $departing_time = date('H:i:s');
 
         //update query
-        $query = "UPDATE admittingreport SET departing_time = :departing_time WHERE report_no = :id";
+        $query = "UPDATE admittingreport SET departing_time = :departing_time, is_approved = TRUE WHERE report_no = :id";
             $statement=$this->pdo->prepare($query);
             $statement->bindvalue(":departing_time", date('H:i:s'));
+            // $statement->bindvalue("is")
             $statement->bindvalue(":id", $id);
         
         try{           
