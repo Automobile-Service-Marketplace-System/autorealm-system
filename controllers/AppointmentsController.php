@@ -259,7 +259,7 @@ class AppointmentsController
                 $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
 
                 $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
-                echo "$emailHtmlContent";
+//                echo "$emailHtmlContent";
                 $sendToEmail = $result['email'];
                 $sendToName = $result['name'];
 
