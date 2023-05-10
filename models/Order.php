@@ -457,8 +457,8 @@ class Order
         try {
             $statement = $this->pdo->prepare(
                 "SELECT 
-                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
-                        SUM(ohp.quantity * ohp.price_at_order) AS revenue
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        SUM(ohp.quantity * ohp.price_at_order)/100 AS revenue
                         FROM `order` o
                         JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
                         GROUP BY ordered_year_month
@@ -479,16 +479,16 @@ class Order
 // query to get order count grouped by year and month
             $statement = $this->pdo->prepare(
                 "SELECT 
-                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
-                        COUNT(o.order_no) AS order_count
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        COUNT(o.order_no) AS order_count,
+                        SUM(ohp.quantity) AS tot_quantity
                         FROM `order` o
+                        JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
                         GROUP BY ordered_year_month
                         ORDER BY ordered_year_month;");
             $statement->execute();
             $orderCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return [
-                'orderCountData' => $orderCountData,
-            ];
+            return $orderCountData;
         }
         catch (PDOException|Exception $e) {
             return "Failed to get order quantity data : " . $e->getMessage();
