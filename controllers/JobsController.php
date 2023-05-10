@@ -11,6 +11,7 @@ use app\models\Foreman;
 use app\models\MaintenanceInspectionReport;
 use app\models\Technician;
 use app\utils\DevOnly;
+use Exception;
 
 class JobsController
 {
@@ -160,7 +161,8 @@ class JobsController
     }
 
 
-    public function getInspectionReportForJobPage(Request $req, Response $res) : string {
+    public function getInspectionReportForJobPage(Request $req, Response $res): string
+    {
         if (
             $req->session->get("is_authenticated")
             &&
@@ -179,7 +181,7 @@ class JobsController
             }
 
 
-            $layout = match($req->session->get("user_role")) {
+            $layout = match ($req->session->get("user_role")) {
                 "technician" => "technician-dashboard",
                 "admin" => "admin-dashboard",
                 default => "foreman-dashboard"
@@ -206,7 +208,7 @@ class JobsController
                 'pageMainHeading' => "Inspection report for job #$jobId",
                 'foremanId' => $userId,
                 'technicianId' => $userId,
-                'employeeId'=>$userId
+                'employeeId' => $userId
             ]);
         }
         return $res->redirect(path: "/login");
@@ -329,35 +331,67 @@ class JobsController
 
     }
 
+    /**
+     * @throws Exception
+     */
     public function getListOfJobsPage(Request $req, Response $res): string
     {
         $userRole = $req->session->get("user_role");
-        if (($userRole === "foreman" || $userRole === "admin" || $userRole === "technician") && $req->session->get("is_authenticated")) {
+        if ($req->session->get("is_authenticated") && ($userRole === "foreman" || $userRole === "admin" || $userRole === "technician")) {
 
-            if ($req->session->get("user_role") === "foreman") {
-                return $res->render(view: "foreman-dashboard-all-jobs", layout: "foreman-dashboard", layoutParams: [
-                    'title' => 'All Jobs',
-                    'pageMainHeading' => 'All Jobs',
-                    'foremanId' => $req->session->get("user_id"),
-                ]);
+            $userId = $req->session->get("user_id");
+
+            $query = $req->query();
+            $limit = isset($query['limit']) ? (int)$query['limit'] : 10;
+            $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //for search and filtering
+            $searchTermCustomer = $query["customer_name"] ?? null;
+            $searchTermVehicleRegNo = $query["vehicle_reg_no"] ?? null;
+            $searchTermForemanName = $query["foreman_name"] ?? null;
+            $jobDate = $query["date"] ?? null;
+
+
+            $layout = match ($userRole) {
+                "admin" => "admin-dashboard",
+                "technician" => "technician-dashboard",
+                default => "foreman-dashboard"
+            };
+
+            $jobCarModel = new JobCard();
+            $listOfJobs = $jobCarModel->getAllJobsForForemanTechnicianAndAdmin(
+                count: $limit,
+                page: $page,
+                searchTermCustomer: $searchTermCustomer,
+                searchTermVehicleRegNo: $searchTermVehicleRegNo,
+                searchTermForemanName: $searchTermForemanName,
+                options: [
+                    "job_date" => $jobDate
+                ]
+            );
+
+
+            if (!$listOfJobs || is_string($listOfJobs)) {
+                throw new Exception("Something went wrong");
             }
 
-            if ($req->session->get("user_role") === "technician") {
-                return $res->render(view: "foreman-dashboard-all-jobs", layout: "technician-dashboard", layoutParams: [
-                    'title' => 'All Jobs',
-                    'pageMainHeading' => 'All Jobs',
-                    'technicianId' => $req->session->get("user_id"),
-                ]);
-            }
 
-            if ($req->session->get("user_role") === "admin") {
-                return $res->render(view: "foreman-dashboard-all-jobs", layout: "admin-dashboard", layoutParams: [
-                    'title' => 'All Jobs',
-                    'pageMainHeading' => 'All Jobs',
-                    'employeeId' => $req->session->get("user_id"),
-                ]);
-            }
-
+            return $res->render(view: "employee-dashboard-all-jobs", layout: $layout, pageParams: [
+                'jobs' => $listOfJobs['jobs'],
+                'total' => $listOfJobs['total'],
+                'limit' => $limit,
+                'page' => $page,
+                'searchTermCustomer' => $searchTermCustomer,
+                'searchTermVehicleRegNo' => $searchTermVehicleRegNo,
+                'searchTermForemanName' => $searchTermForemanName,
+                'jobDate' => $jobDate
+            ], layoutParams: [
+                'title' => 'All Jobs',
+                'pageMainHeading' => 'All Jobs',
+                'foremanId' => $userId,
+                'technicianId' => $userId,
+                'employeeId' => $userId
+            ]);
         }
         return $res->redirect(path: "/login");
     }
@@ -405,10 +439,12 @@ class JobsController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "technician") {
 
             $userId = $req->session->get("user_id");
+            $query = $req->query();
             $jobCardModel = new JobCard();
-            $jobId = $jobCardModel->getJobIdByTechnicianId(technicianId: $userId);
+//            $jobId = $jobCardModel->getJobIdByTechnicianId(technicianId: $userId);
+            $jobId = $query['jobId'] ? (int)$query['jobId'] : null;
 
-            if (!$jobId || is_string($jobId)) {
+            if (!$jobId) {
                 return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
                     'title' => 'Current Job',
                     'technicianId' => $req->session->get("user_id"),

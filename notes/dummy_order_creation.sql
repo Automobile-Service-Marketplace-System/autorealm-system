@@ -30,4 +30,5 @@
 #         END WHILE;
 # END//
 # DELIMITER ;
-CALL generate_orders();
+#
+# CALL generate_orders();

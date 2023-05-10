@@ -109,11 +109,28 @@ class Appointment
         return "Internal Server Error";
     }
 
-    public function getAppointments(): array
+    public function getAppointments(
+        int|null $count=null,
+        int|null $page=1,
+        string $searchTermRegNo=null,
+        string $searchTermDate=null,
+    ): array|string
     {
 
-        return $this->pdo->query("
-            SELECT 
+        $whereClause = null;
+
+        if($searchTermRegNo !== null){
+            $whereClause = $whereClause ? $whereClause . " AND a.vehicle_reg_no LIKE :search_term_reg_no" : " WHERE a.vehicle_reg_no LIKE :search_term_reg_no";
+        }
+
+        if($searchTermDate !== null){
+            $whereClause = $whereClause ? $whereClause . " AND t.date LIKE :search_term_date" : "WHERE t.date LIKE :search_term_date";
+        }
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+        $query = " SELECT 
             concat(c.f_name,' ',c.l_name) as Name,
             a.vehicle_reg_no as RegNo,
             t.date as Date,
@@ -121,7 +138,48 @@ class Appointment
             t.to_time as ToTime
             from appointment a
             inner join customer c on a.customer_id=c.customer_id
-            inner join timeslot t on t.time_id=a.time_id")->fetchAll(PDO::FETCH_ASSOC);
+            inner join timeslot t on t.time_id=a.time_id $whereClause $limitClause $pageClause ";
+
+        $statement = $this->pdo->prepare($query);
+
+        if($searchTermRegNo !== null){
+            $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+        }
+
+        if($searchTermDate !== null){
+            $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%", PDO::PARAM_STR);
+        }
+
+        try{
+            $statement->execute();
+            $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare(" SELECT count(*) as total FROM appointment a 
+                inner join customer c on a.customer_id=c.customer_id
+                inner join timeslot t on t.time_id=a.time_id $whereClause"
+            );
+
+            if($searchTermRegNo !== null){
+                $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermDate !== null){
+                $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalAppoinment = $statement->fetch(PDO::FETCH_ASSOC);
+            // var_dump($searchTermRegNo);
+            return [
+                'total' => $totalAppoinment['total'],
+                'appointments' => $appointments,
+                'searchTermRegNo' => $searchTermRegNo,
+                'searchTermDate' => $searchTermDate
+            ];
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
     }
 
     public function getTimeslotsByDate(string $date): string|array
@@ -183,7 +241,7 @@ class Appointment
             var_dump($e->getMessage());
             return $e->getMessage();
         }
-    }
+    } 
   
     /**
      * @return array

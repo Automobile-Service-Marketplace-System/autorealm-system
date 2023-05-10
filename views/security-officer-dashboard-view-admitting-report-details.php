@@ -4,13 +4,14 @@
  * @var object $admittingReport
  * @var array $errors
  */
+var_dump($admittingReport->is_approved);
 
 use app\components\FormItem;
 use app\components\FormSelectItem;
 use app\components\FormTextareaItem;
 
-$hasErrors = isset($errors) && !empty($errors);
-$hasDepartingTimeError = $hasErrors && isset($errors['departing_time']); 
+// $hasErrors = isset($errors) && !empty($errors);
+// $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']); 
 
 ?>
 
@@ -56,7 +57,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "light_lf_description",
                 value: $admittingReport->light_lf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
        
@@ -81,7 +82,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "light_rf_description",
                 value: $admittingReport->light_rf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -106,7 +107,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "light_lr_description",
                 value: $admittingReport->light_lr_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -132,7 +133,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 name: "light_rr_description",
                 type: "text",
                 value: $admittingReport->light_rr_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -158,7 +159,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "seat_lf_description",
                 value: $admittingReport->seat_lf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -183,7 +184,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "seat_rf_description",
                 value: $admittingReport->seat_rf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -208,7 +209,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "seat_rear_description",
                 value: $admittingReport->seat_rear_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -235,7 +236,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "carpet_lf_description",
                 value: $admittingReport->carpet_lf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
             
@@ -261,7 +262,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "carpet_rf_description",
                 value: $admittingReport->carpet_rf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -287,7 +288,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "carpet_rear_description",
                 value: $admittingReport->carpet_rear_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -314,7 +315,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "rim_lf_description",
                 value: $admittingReport->rim_lf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -339,7 +340,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "rim_rf_description",
                 value: $admittingReport->rim_rf_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -364,7 +365,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "rim_lr_description",
                 value: $admittingReport->rim_lr_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
 
@@ -391,11 +392,9 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
                 label: "",
                 name: "rim_rr_description",
                 value: $admittingReport->rim_rr_description,
-                additionalAttributes: "readonly",
+                disabled: "disabled",
             );
         ?>
-
-
 
     <?php
         FormSelectItem::render(
@@ -418,35 +417,28 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
             label: "",
             name: "current_fuel_level_description",
             value: $admittingReport->current_fuel_level_description,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
-
-        FormItem::render(
-                id: "mileage",
-                label: "<b><br>Mileage</b>",
-                name: "mileage",
-                value: $admittingReport->mileage,
-                additionalAttributes: "readonly",
-            );
     ?>
 
 <div class="item-grid">
     <?php
         FormItem::render(
+            id: "mileage",
+            label: "<b><br>Mileage</b>",
+            name: "mileage",
+            value: $admittingReport->mileage,
+            disabled: "disabled",
+        );
+
+        FormItem::render(
             id: "admitting_time",
             label: "<b><br>Admitting Time</b>",
             name: "admitting_time",
             value: $admittingReport->admitting_time,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
 
-        FormItem::render(
-            id: "departing_time",
-            label: "<b><br>Departing Time</b>",
-            name: "departing_time",
-            additionalAttributes: "readonly",
-            value: $body['departing_time'] ?? null,
-        );
     ?>
 </div>
   
@@ -457,7 +449,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
             label: "<b>Customer Belongins</b>",
             name: "customer_belongings",
             value: $admittingReport->customer_belongings,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
 
         FormTextareaItem::render(
@@ -465,7 +457,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
             label: "<b>Additional Note</b>",
             name: "additional_note",
             value: $admittingReport->additional_note,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
 
         FormSelectItem::render(
@@ -488,7 +480,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
             label: "",
             name: "dashboard_description",
             value: $admittingReport->dashboard_description,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
 
         FormSelectItem::render(
@@ -510,7 +502,7 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
             label: "",
             name: "windshield_description",
             value: $admittingReport->windshield_description,
-            additionalAttributes: "readonly",
+            disabled: "disabled",
         );
     ?>
 
@@ -530,6 +522,8 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
         </div>
 </div>
 
+
+
 <br><div class="form-radio">
     <p><b>Sparewheel</b></p>
         <?php
@@ -546,9 +540,17 @@ $hasDepartingTimeError = $hasErrors && isset($errors['departing_time']);
         </div>
 </div>
 
-<!-- <div class="flex items-center justify-between mt-4 mb-8">
+<div class="flex items-center justify-between mt-4 mb-8">
     <button type="reset" class="btn btn--danger">Cancel</button>
-    <button type="submit" class="btn">Create</button>
-</div> -->
+    <?php 
+        if($admittingReport->is_approved === 0){ 
+            echo '<button type="button" class="btn btn--success" id="admitting-report-approve" data-reportno="'.$admittingReport->report_no.'" >Approve</button>';
+        }
+        else{
+            echo '<button type="button" class="btn btn--success" id="admitting-report-approve" data-reportno="'.$admittingReport->report_no.'" disabled>Approve</button>';
+        }
+    ?>
+        
+</div>
 
 </form>

@@ -8,6 +8,9 @@ use app\models\Appointment;
 use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
+use app\utils\DevOnly;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use JsonException;
 
 class AppointmentsController
@@ -29,12 +32,37 @@ class AppointmentsController
     public function getAllAppointmentsDetails(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
+
+            $query = $req->query();
+
+            //for search
+            $searchTermRegNo = $query['regno'] ?? null;
+            $searchTermDate = $query['date'] ?? null;
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:2;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+
            $appointmentModel = new Appointment();
-           $appointments = $appointmentModel->getAppointments();
-        //    var_dump($appointments);
+
+           $result = $appointmentModel->getAppointments(
+                count: $limit,
+                page: $page,
+                searchTermRegNo: $searchTermRegNo,
+                searchTermDate: $searchTermDate,
+           );
 
             return $res->render(view: "security-officer-dashboard-view-appointment", layout: "security-officer-dashboard", pageParams: [
-                "appointments" => $appointments], layoutParams: [
+                "appointments" => $result['appointments'],
+                'total' => $result['total'],
+                'limit' => $limit,
+                'page' => $page,
+            
+                //pasing filter options 
+                'searchTermRegNo' => $searchTermRegNo,
+                'searchTermDate' => $searchTermDate
+            
+                ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'employeeId' => $req->session->get("user_id"),
@@ -184,7 +212,27 @@ class AppointmentsController
     public function officeCreateAppointment(Request $req, Response $res): string {
         $body = $req->body();
         $appointment = new Appointment($body);
+
+        var_dump($body);
+
+        $options = new QROptions(
+            [
+                'eccLevel' => QRCode::ECC_L,
+                'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+                'version' => 5,
+            ]
+        );
+
+        $qrcode = (new QRCode($options))->render(json_encode([
+            "date" => "2022-03-07",
+            "timeslot" => "08.00 - 10.30",
+            "registrationNumber" => "QL9904"
+        ]));
+//        echo("<img src='$qrcode'>");
+//        DevOnly::prettyEcho($qrcode);
+//        exit();
         $result = $appointment->officeCreateAppointment();
+
 
         if (is_string($result)) {
             $res->setStatusCode(code: 500);

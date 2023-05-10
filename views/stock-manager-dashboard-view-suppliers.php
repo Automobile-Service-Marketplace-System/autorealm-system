@@ -147,10 +147,10 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
     $hasNextPage = $page < ceil(num: $total / $limit);
     $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasNextPageHref = $hasNextPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page + 1) . "&limit=$limit" : "";
     $hasPreviousPage = $page > 1;
     $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+    $hasPreviousPageHref = $hasPreviousPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page - 1) . "&limit=$limit" : "";
 
     ?>
     <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
@@ -158,7 +158,7 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
         <i class="fa-solid fa-chevron-left"></i>
     </a>
     <?php
-    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
     foreach (range(1, ceil($total / $limit)) as $i) {
         $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
         echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=$i&limit=$limit'>$i</a>";

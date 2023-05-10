@@ -137,10 +137,10 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
 
     $hasNextPage = $page < ceil(num: $total / $limit);
     $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasNextPageHref = $hasNextPage ? "/orders?cus=$searchTermCustomer&id=$searchTermOrder&status=$orderStatus&date=$orderDate&page=" . ($page + 1) . "&limit=$limit" : "";
     $hasPreviousPage = $page > 1;
     $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+    $hasPreviousPageHref = $hasPreviousPage ? "/orders?cus=$searchTermCustomer&id=$searchTermOrder&status=$orderStatus&date=$orderDate&page=" . ($page - 1) . "&limit=$limit" : "";
 
     ?>
     <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"

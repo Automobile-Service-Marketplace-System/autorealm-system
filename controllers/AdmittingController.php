@@ -31,6 +31,7 @@ class AdmittingController{
             //for search
             $searchTermRegNo = $query['regNo'] ?? null;
             $AdmittingDate = isset($query['admitting_date']) ? ($query['admitting_date'] == "" ? "all" : $query['admitting_date']) : "all";
+            $AdmittingApprove = isset($query['approve']) ? ($query['approve'] == "" ? "not_approved" : $query['approve']) : "not_approved";
 
             $admittingReport=new Admitting();
 
@@ -40,6 +41,7 @@ class AdmittingController{
                 searchTermRegNo: $searchTermRegNo,
                 options: [
                     'admitting_date' => $AdmittingDate,
+                    'approve' => $AdmittingApprove,
                 ]
             );
             
@@ -47,7 +49,14 @@ class AdmittingController{
                 "admittingReports"=> $results['admittingReports'],
                 'total' => $results['total'],
                 'limit' => $limit,
-                'page' => $page],layoutParams:[
+                'page' => $page,
+            
+                //pasing filter option
+                'searchTermRegNo' => $searchTermRegNo,
+                'admitting_date' => $AdmittingDate,
+                'approve' => $AdmittingApprove
+                
+                ],layoutParams:[
                 "title"=>"Admitting Reports",
                 "pageMainHeading"=>"Admitting Reports",
                 "employeeId"=>$req->session->get("user_id"),
@@ -56,13 +65,44 @@ class AdmittingController{
         return $res->redirect(path:"/login");
     }
 
+    public function approveAdmittingReportPage(Request $req, Response $res):string{
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "security_officer") {
+            $body=$req->body();
+            var_dump($body['report_no']);
+            if (empty($body['report_no'])) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "message" => "Bad Request"
+                ]);
+            }
+
+            $ID = $body['report_no'];
+            $admittingModel = new Admitting();
+            $result = $admittingModel->approveReport($ID);
+
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+            if ($result) {
+                $res->setStatusCode(code: 204);
+                return $res->json([
+                    "message" => "Employee deleted successfully"
+                ]);
+            }
+        }
+
+        return $res->redirect(path: "/login");
+    }
     public function viewAdmittingReportDetails(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
-            $body=$req->body();
+            // $body=$req->body();
             $query=$req->query();
             $admittingReportModel=new Admitting();
             $admittingReport=$admittingReportModel->getAdmittingReportbyId((int)($query["id"]));
-            // var_dump($admittingReport);
             return $res->render(view: "security-officer-dashboard-view-admitting-report-details", layout:"security-officer-dashboard", pageParams:[
                 "admittingReport"=>$admittingReport], 
                 layoutParams:[

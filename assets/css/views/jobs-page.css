@@ -13,18 +13,34 @@
     gap: 1rem;
     position: relative;
     margin-top: 1rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*background-color: teal;*/
+}
+
+.jobs-col__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 3rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .jobs-col__heading {
     position: absolute;
     top: 0.5rem;
-    left: 0%;
+    left: 70%;
     width: 100%;
-    /*transform: translateX(-50%);*/
+    transform: translateX(-50%);
     text-align: center;
     display: flex;
     align-items: center;
     gap: 1rem;
+    background-color: var(--color-bg-primary);
     /*justify-content: space-evenly;*/
 }
 

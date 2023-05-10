@@ -33,11 +33,7 @@ class CustomersController
                         "page"=>$page,
                         'customers' => $customers,
                         // 'services' => $services
-                    ],
                     layoutParams:[
-                        'title' => 'Customers',
-                        'pageMainHeading' => 'Customers',
-                        'officeStaffId' => $req->session->get('user_id'),
                     ]);
             }
 

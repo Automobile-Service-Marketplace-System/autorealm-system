@@ -5,6 +5,19 @@
     margin-top: 1rem;
 }
 
+.appointments-container--empty {
+    height: calc(100vh - 300px);
+    align-items: center;
+    justify-content: center;
+}
+
+
+.appointments-container--empty p {
+    font-size: 3rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
 
 .appointments-vehicle {
     display: flex;

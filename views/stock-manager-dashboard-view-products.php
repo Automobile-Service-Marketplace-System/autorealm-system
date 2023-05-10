@@ -8,6 +8,7 @@
  * @var  int $limit
  * @var  int $page
  * @var  int $total
+ *
  * @var string $searchTerm
  * @var string $categoryName
  * @var string $brandName
@@ -178,10 +179,10 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
     $hasNextPage = $page < ceil(num: $total / $limit);
     $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-    $hasNextPageHref = $hasNextPage ? "/products?page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasNextPageHref = $hasNextPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page + 1) . "&limit=$limit" : "";
     $hasPreviousPage = $page > 1;
     $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-    $hasPreviousPageHref = $hasPreviousPage ? "/products?page=" . ($page - 1) . "&limit=$limit" : "";
+    $hasPreviousPageHref = $hasPreviousPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page - 1) . "&limit=$limit" : "";
 
     ?>
     <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
