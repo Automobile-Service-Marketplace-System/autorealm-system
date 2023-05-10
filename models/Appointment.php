@@ -236,7 +236,25 @@ class Appointment
             $statement->bindValue(":customer_id", $this->body["customerID"]);                       
             $statement->bindValue(":time_id", $this->body["timeslot"]);            
             $statement-> execute();
-            return true;
+
+            $statement = $this->pdo->prepare("SELECT CONCAT(from_time, ' - ', to_time) as timeslot FROM timeslot WHERE time_id = :time_id");
+            $statement->bindValue(":time_id", $this->body["timeslot"]);
+            $statement->execute();
+            $timeslot =  $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
+
+
+            $statement = $this->pdo->prepare("SELECT email, CONCAT(f_name, ' ', l_name) as name from customer WHERE customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $this->body["customerID"]);
+            $statement->execute();
+            $result =  $statement->fetch(PDO::FETCH_ASSOC);
+            $email = $result['email'];
+            $name =  $result['name'];
+
+            return [
+                "timeslot" => $timeslot,
+                "email" => $email,
+                "name" => $name
+            ];
         } catch (PDOException $e) {
             var_dump($e->getMessage());
             return $e->getMessage();
