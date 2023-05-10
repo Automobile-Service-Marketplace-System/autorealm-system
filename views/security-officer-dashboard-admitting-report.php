@@ -70,20 +70,12 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
             );
         ?>
 
-            <!-- <div class="images">
-                <br><img src="/images/placeholders/vehicle1.png">
-                <img src="/images/placeholders/vehicle2.png">
-                <div id="more-image">
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" accept="image/*" capture="camera" id="image-input" style="display: none">
-                </div>
-            </div> -->
-            <div class="admitting-report-add-images">
-                <div class="admitting-report-add-images-container">
-
-                </div>
-                <input type="file" id="admitting-report-add-images__input" accept="image/*" name="image" multiple>
+        <div class="admitting-report-add-images">
+            <p><b>Photos of vehicles: </b></p>
+            <input type="file" id="admitting-report-add-images__input" class='mt-4' accept="image/*" name="image[]" multiple required>
+            <div class="admitting-report-add-images-container  mt-4">
             </div>
+        </div>
 
         <br><p><b>Light</b></p>
             <p>LF</p>
@@ -559,10 +551,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     value: $body['current_fuel_level_description'] ?? null,
                 );
 
-        ?>
 
-        <div class="item-grid">
-        <?php
             FormItem::render(
                 id: "mileage",
                 label: "<b><br>Mileage</b>",
@@ -583,11 +572,6 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 value: $body['admitting_time'] ?? null,
             );
 
-        ?>
-        </div>
-  
-
-        <?php
             FormTextareaItem::render(
                 id: "customer_belongings",
                 label: "<b>Customer Belongins</b>",

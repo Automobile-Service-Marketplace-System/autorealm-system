@@ -138,7 +138,7 @@ class Appointment
             t.to_time as ToTime
             from appointment a
             inner join customer c on a.customer_id=c.customer_id
-            inner join timeslot t on t.time_id=a.time_id $whereClause $limitClause $pageClause ";
+            inner join timeslot t on t.time_id=a.time_id $whereClause order by a.appointment_id $limitClause $pageClause ";
 
         $statement = $this->pdo->prepare($query);
 
