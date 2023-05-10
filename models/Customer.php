@@ -274,7 +274,7 @@ class Customer
                 address as Address,
                 email as Email
             FROM customer
-            ORDER BY customer_id $limitClause $pageClause")->fetchAll(PDO::FETCH_ASSOC);
+            ORDER BY customer_id DESC $limitClause $pageClause")->fetchAll(PDO::FETCH_ASSOC);
 
         $totalCustomers = $this->pdo->query(
             "SELECT COUNT(*) as total FROM customer"
