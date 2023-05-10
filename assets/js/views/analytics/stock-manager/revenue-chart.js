@@ -2,22 +2,28 @@ import {
     Chart,
     PieController,
     LineController,
+    DoughnutController,
     ArcElement,
     LineElement,
     CategoryScale,
     LinearScale,
     PointElement,
-    Tooltip, Legend, Filler,
+    Tooltip,
+    Legend,
+    Filler,
+    Colors
 } from 'chart.js';
 
 
 import Zoom, {resetZoom} from 'chartjs-plugin-zoom';
 
 import Notifier from "../../../components/Notifier";
+// import {colorSchemes} from "chartjs-plugin-colorschemes";
 
 Chart.register(
     PieController,
     LineController,
+    DoughnutController,
     ArcElement,
     PointElement,
     LineElement,
@@ -26,7 +32,9 @@ Chart.register(
     Tooltip,
     Legend,
     Filler,
-    Zoom
+    Zoom,
+    Colors,
+
 )
 
 
@@ -101,6 +109,7 @@ if (orderRevenueCanvas) {
                             }]
                         },
                         options: {
+                            responsive: true,
                             plugins: {
                                 zoom: {
                                     zoom: {
@@ -207,6 +216,7 @@ if (orderQuantityCanvas) {
                                 }]
                         },
                         options: {
+                            responsive: true,
                             plugins: {
                                 zoom: {
                                     zoom: {

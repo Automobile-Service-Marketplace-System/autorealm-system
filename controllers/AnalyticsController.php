@@ -41,6 +41,7 @@ class AnalyticsController
         return $res->redirect(path: "/login");
     }
 
+
     /**
      * @throws JsonException
      */
@@ -49,7 +50,7 @@ class AnalyticsController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
             $orderModel = new Order();
             $revenueData = $orderModel->getOrderRevenueData();
-            if(is_string($revenueData)) {
+            if (is_string($revenueData)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -76,7 +77,7 @@ class AnalyticsController
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
             $orderModel = new Order();
             $quantityData = $orderModel->getOrderQuantityData();
-            if(is_string($quantityData)) {
+            if (is_string($quantityData)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -97,4 +98,32 @@ class AnalyticsController
 
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function getProductQuantityDetails(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+            $orderModel = new Order();
+            $quantityData = $orderModel->getProductQuantityData();
+
+            if (is_string($quantityData)) {
+                $res->setStatusCode(500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);
+            }
+
+            $res->setStatusCode(200);
+
+            return $res->json([
+                "message" => "Success",
+                "data" => $quantityData
+            ]);
+        }
+        $res->setStatusCode(401);
+        return $res->json([
+            "message" => "Unauthorized"
+        ]);
+    }
 }

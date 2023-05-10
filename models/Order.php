@@ -495,5 +495,28 @@ class Order
         }
     }
 
+    public function getProductQuantityData(): array|string
+    {
+        try {
+            //query to get product count grouped by item_code
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        p.name as product_name,
+                        SUM(ohp.quantity) AS tot_quantity
+                        FROM orderhasproduct ohp
+                        JOIN product p ON ohp.item_code = p.item_code
+                        GROUP BY p.item_code;");
+
+            $statement->execute();
+            $productCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $productCountData;
+        }
+        catch (PDOException|Exception $e) {
+            return "Failed to get product quantity data : " . $e->getMessage();
+        }
+
+
+    }
+
 
 }
