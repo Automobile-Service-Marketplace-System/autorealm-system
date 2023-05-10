@@ -9,8 +9,13 @@ use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
 use app\utils\DevOnly;
+use app\utils\EmailClient;
+use app\utils\EmailTemplates;
+use app\utils\FSUploader;
+use app\utils\S3Uploader;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
+use Exception;
 use JsonException;
 
 class AppointmentsController
@@ -40,29 +45,29 @@ class AppointmentsController
             $searchTermDate = $query['date'] ?? null;
 
             //for pagination
-            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:2;
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 2;
             $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
 
-           $appointmentModel = new Appointment();
+            $appointmentModel = new Appointment();
 
-           $result = $appointmentModel->getAppointments(
+            $result = $appointmentModel->getAppointments(
                 count: $limit,
                 page: $page,
                 searchTermRegNo: $searchTermRegNo,
                 searchTermDate: $searchTermDate,
-           );
+            );
 
             return $res->render(view: "security-officer-dashboard-view-appointment", layout: "security-officer-dashboard", pageParams: [
                 "appointments" => $result['appointments'],
                 'total' => $result['total'],
                 'limit' => $limit,
                 'page' => $page,
-            
+
                 //pasing filter options 
                 'searchTermRegNo' => $searchTermRegNo,
                 'searchTermDate' => $searchTermDate
-            
-                ], layoutParams: [
+
+            ], layoutParams: [
                 "title" => 'Appointments',
                 'pageMainHeading' => 'Appointments',
                 'employeeId' => $req->session->get("user_id"),
@@ -83,11 +88,11 @@ class AppointmentsController
                     "appointments" => $appointments,
                 ],
                 layoutParams: [
-                "title" => 'My Appointments',
-                'pageMainHeading' => 'My Appointments',
-                'customerId' => $customerId,
+                    "title" => 'My Appointments',
+                    'pageMainHeading' => 'My Appointments',
+                    'customerId' => $customerId,
 
-            ]);
+                ]);
         }
         return $res->redirect(path: "/login");
     }
@@ -138,9 +143,9 @@ class AppointmentsController
             return $res->render(view: "office-staff-dashboard-appointments-page", layout: "office-staff-dashboard",
                 pageParams: [
                     "appointments" => $appointments,
-                    "total"=>$appointments['total'],
-                    "limit"=>$limit,
-                    "page"=>$page
+                    "total" => $appointments['total'],
+                    "limit" => $limit,
+                    "page" => $page
                 ],
                 layoutParams: [
                     "title" => "Appointments",
@@ -150,18 +155,19 @@ class AppointmentsController
         }
 
         return $res->redirect(path: "/login");
-        
+
     }
 
     /**
      * @throws JsonException
      */
-    public function getForemen(Request $req, Response $res) : string {
+    public function getForemen(Request $req, Response $res): string
+    {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $foremanModel = new Foreman();
             $foremen = $foremanModel->getAvailableForemen();
-            
-            if(is_string($foremen)) {
+
+            if (is_string($foremen)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -193,7 +199,7 @@ class AppointmentsController
                 ]);
             }
             $result = $appointmentModel->getTimeslotsByDate(date: $date);
-            if(is_string($result)) {
+            if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json(data: [
                     "message" => $result
@@ -209,25 +215,17 @@ class AppointmentsController
         ]);
     }
 
-    public function officeCreateAppointment(Request $req, Response $res): string {
+    /**
+     * @throws JsonException
+     */
+    public function officeCreateAppointment(Request $req, Response $res): string
+    {
         $body = $req->body();
         $appointment = new Appointment($body);
 
-        var_dump($body);
+//        var_dump($body);
 
-        $options = new QROptions(
-            [
-                'eccLevel' => QRCode::ECC_L,
-                'outputType' => QRCode::OUTPUT_MARKUP_SVG,
-                'version' => 5,
-            ]
-        );
 
-        $qrcode = (new QRCode($options))->render(json_encode([
-            "date" => "2022-03-07",
-            "timeslot" => "08.00 - 10.30",
-            "registrationNumber" => "QL9904"
-        ]));
 //        echo("<img src='$qrcode'>");
 //        DevOnly::prettyEcho($qrcode);
 //        exit();
@@ -242,13 +240,42 @@ class AppointmentsController
         }
 
         if (is_array($result)) {
-            $res->setStatusCode(code: 400);
-            return $res->json([
-                "errors" => $result
-            ]);
-        }
+            $options = new QROptions(
+                [
+                    'eccLevel' => QRCode::ECC_L,
+                    'outputType' => QRCode::OUTPUT_IMAGE_JPG,
+                    'version' => 5,
+                ]
+            );
 
-        if ($result) {
+            $qrcode = (new QRCode($options))->render(json_encode([
+                "date" => $body['date'],
+                "timeslot" => $result['timeslot'],
+                "registrationNumber" => $body["vehicle_reg_no"]
+            ]));
+
+            try {
+
+                $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
+
+                $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
+//                echo "$emailHtmlContent";
+                $sendToEmail = $result['email'];
+                $sendToName = $result['name'];
+
+                EmailClient::sendEmail(
+                    receiverEmail: $sendToEmail,
+                    receiverName: $sendToName,
+                    subject: "Appointment Confirmation",
+                    htmlContent: $emailHtmlContent,
+                    templateLess: true
+                );
+
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+
+
             $res->setStatusCode(code: 201);
             return $res->json([
                 "success" => "Appointment created successfully"
@@ -260,20 +287,20 @@ class AppointmentsController
         ]);
     }
 
-    public function officeDeleteAppointment(Request $req, Response $res):string
+    public function officeDeleteAppointment(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member")) {
 
-            $body= $req->body();
-            if(empty($body['appointment_id'])){
+            $body = $req->body();
+            if (empty($body['appointment_id'])) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
-                    "message"=> "Bad Request"
+                    "message" => "Bad Request"
                 ]);
             }
-            $appointment_id=$body['appointment_id'];
-            $appointmentModel=new Appointment();
-            $result=$appointmentModel->deleteAppointmentById(id: $appointment_id);
+            $appointment_id = $body['appointment_id'];
+            $appointmentModel = new Appointment();
+            $result = $appointmentModel->deleteAppointmentById(id: $appointment_id);
 
 
             if (is_string($result)) {
@@ -294,7 +321,8 @@ class AppointmentsController
         return $res->redirect(path: "/login");
     }
 
-    public function officeUpdateAppointment(Request $req, Response $res): string {
+    public function officeUpdateAppointment(Request $req, Response $res): string
+    {
         $body = $req->body();
         $appointment = new Appointment($body);
         $result = $appointment->officeUpdateAppointment();
