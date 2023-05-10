@@ -35,7 +35,9 @@
     "guzzlehttp/guzzle": "^7.5",
     "stripe/stripe-php": "^10.7",
     "notifylk/notify-php": "*@dev",
-    "chillerlan/php-qrcode": "^4.3"
+    "chillerlan/php-qrcode": "^4.3",
+    "aws/aws-sdk-php": "^3.263",
+    "ext-fileinfo": "*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"

@@ -6,10 +6,12 @@
 
 <div class="qrcode-result-wrapper">
     <div id="qrcode-result" style="display: none">
-        <p><strong>Appointment Date</strong>11/10/2022</p>
-        <p><strong>Time Slot</strong>3.00-4.30pm</p>
-        <p><strong>Register Number</strong>BCM 4576</p>
-        <input type="submit" value="Approve and create report" id="btn" class="btn" onclick="window.location.href='https://dashboard.autorealm.lk/security-officer-dashboard/admitting-reports/add';">
+        <p><strong>Appointment Date</strong></p>
+        <p><strong>Time Slot</strong></p>
+        <p><strong>Register Number</strong></p>
+        <a id="btn" class="btn">
+            Approve and create report
+        </a>
     </div>
 </div>
 
