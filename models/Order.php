@@ -465,11 +465,9 @@ class Order
                         ORDER BY ordered_year_month;");
             $statement->execute();
             $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
-            var_dump($revenueData);
+//            var_dump($revenueData);
 
-            return [
-                'revenueData' => $revenueData,
-            ];
+            return $revenueData;
         } catch (PDOException|Exception $e) {
             return "Failed to get order revenue data : " . $e->getMessage();
         }

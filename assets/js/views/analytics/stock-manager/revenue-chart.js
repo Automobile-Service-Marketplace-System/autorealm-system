@@ -1,132 +1,128 @@
-// import {Chart} from "chart.js";
-// import {resetZoom} from "chartjs-plugin-zoom";
-// import Notifier from "../../../components/Notifier";
-//
-//
-// /**
-//  * @type {HTMLCanvasElement | null}
-//  */
-// const orderRevenueCanvas = document.querySelector("#order-revenue-canvas");
-// /**
-//  * @type {HTMLButtonElement}
-//  */
-// const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-chart");
-//
-// // if (chart) {
-// //     new Chart(chart, {
-// //         type: 'pie',
-// //         data: {
-// //             labels: [
-// //                 'Red',
-// //                 'Blue',
-// //                 'Yellow'
-// //             ],
-// //             datasets: [{
-// //                 label: 'My First Dataset',
-// //                 data: [300, 50, 100],
-// //                 backgroundColor: [
-// //                     'rgb(255, 99, 132)',
-// //                     'rgb(54, 162, 235)',
-// //                     'rgb(255, 205, 86)'
-// //                 ],
-// //                 hoverOffset: 4
-// //             }, {
-// //                 label: 'My Second Dataset',
-// //                 data: [30, 500, 100],
-// //                 backgroundColor: [
-// //                     'rgb(255, 99, 132)',
-// //                     'rgb(54, 162, 235)',
-// //                     'rgb(255, 205, 86)'
-// //                 ],
-// //                 hoverOffset: 4
-// //             }]
-// //         }
-// //
-// //     });
-// // }
-//
-// /**
-//  * @type {Chart | null}
-//  */
-// let revenueChart = null
-//
-// if (orderRevenueCanvas) {
-//
-//     async function showOrderRevenueChart() {
-//         try {
-//             const result = await fetch("/analytics/order-revenue")
-//             switch (result.status) {
-//                 case 200:
-//                     /**
-//                      * @type {{data: {ordered_year_month: string, revenue: string}[]}}
-//                      */
-//                     const data = await result.json()
-//                     console.log(data)
-//                     const {data: {revenueData}} = data
-//
-//                     const yearMonthLabels = revenueData.map((item) => {
-//                         return item.ordered_year_month;
-//                     })
-//
-//                     const revenues = revenueData.map((item) => {
-//                         return Number(item.revenue) / 100;
-//                     })
-// ?
-//
-//                     console.log(revenues);
-//
-//
-//                     revenueChart = new Chart(orderRevenueCanvas, {
-//                         type: 'line',
-//                         data: {
-//                             labels: yearMonthLabels,
-//                             datasets: [{
-//                                 label: 'Revenue per month',
-//                                 data: revenues,
-//                                 fill: true,
-//                                 borderColor: 'rgb(75, 192, 192)',
-//                                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
-//                                 tension: 0.1
-//                             }]
-//                         },
-//                         options: {
-//                             plugins: {
-//                                 zoom: {
-//                                     zoom: {
-//                                         wheel: {
-//                                             enabled: true,
-//                                         },
-//                                         pinch: {
-//                                             enabled: true
-//                                         },
-//                                         mode: 'x',
-//                                     }
-//                                 }
-//                             }
-//                         }
-//                     })
-//
-//                     resetRevenueChartZoomBtn?.addEventListener("click", () => {
-//                         resetZoom(revenueChart)
-//                     })
-//
-//                     break
-//                 case 500:
-//                     const error = await result.json()
-//                     throw new Error(error.message)
-//             }
-//         } catch (e) {
-//             console.log(e)
-//             Notifier.show({
-//                 text: e.message,
-//                 header: "Error",
-//                 duration: 30000,
-//                 closable: false,
-//                 type: "danger"
-//             })
-//         }
-//     }
-//
-//     window.addEventListener("load", showOrderRevenueChart)
-//
-// }
+import {
+    Chart,
+    PieController,
+    LineController,
+    ArcElement,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Tooltip, Legend, Filler,
+} from 'chart.js';
+
+
+import Zoom, {resetZoom} from 'chartjs-plugin-zoom';
+
+import Notifier from "../../../components/Notifier";
+
+Chart.register(
+    PieController,
+    LineController,
+    ArcElement,
+    PointElement,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    Filler,
+    Zoom
+)
+/**
+ * @type {HTMLCanvasElement | null}
+ */
+const orderRevenueCanvas = document.querySelector("#order-revenue-canvas");
+/**
+ * @type {HTMLButtonElement}
+ */
+const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-chart");
+
+
+/**
+ * @type {Chart | null}
+ */
+let revenueChart = null
+
+if (orderRevenueCanvas) {
+
+    async function showOrderRevenueChart() {
+        try {
+            const result = await fetch("/analytics/order-revenue")
+            // console.log(result)
+            switch (result.status){
+                case 200:
+
+                    /**
+                     *
+                     * @type {{data:{ordered_year_month:string, revenue:number}[]}}
+                     */
+                    const resData = await result.json()
+                    // console.log(resData)
+
+                    const yearMonthLabels = resData.data.map(
+                        item => item.ordered_year_month
+                    )
+
+                    const revenues = resData.data.map(
+                        item => item.revenue
+                    )
+
+                    // console.log(yearMonthLabels)
+                    // console.log(revenues)
+
+                    const revenueChart = new Chart(orderRevenueCanvas, {
+                        type: 'line',
+                        data: {
+                            labels: yearMonthLabels,
+                            datasets: [{
+                                label: 'Revenue',
+                                data: revenues,
+                                fill: true,
+                                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                                borderColor: 'rgba(0, 123, 255, 1)',
+                                tension: 0.2,
+                                borderWidth: 0.5,
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                zoom: {
+                                    zoom: {
+                                        wheel: {
+                                            enabled: true,
+                                        },
+                                        pinch: {
+                                            enabled: true
+                                        },
+                                        mode: 'x',
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    resetRevenueChartZoomBtn?.addEventListener("click", () => {
+                        resetZoom(revenueChart);
+                    })
+
+                    break;
+
+                case 500:
+                    const error = await result.json()
+                    throw new Error(error.message)
+            }
+        } catch (e) {
+            console.log(e)
+            Notifier.show({
+                text: e.message,
+                header: "Error",
+                duration: 30000,
+                closable: false,
+                type: "danger"
+            })
+        }
+    }
+
+    window.addEventListener("load", showOrderRevenueChart)
+
+}
