@@ -2,22 +2,28 @@ import {
     Chart,
     PieController,
     LineController,
+    DoughnutController,
     ArcElement,
     LineElement,
     CategoryScale,
     LinearScale,
     PointElement,
-    Tooltip, Legend, Filler,
+    Tooltip,
+    Legend,
+    Filler,
+    Colors
 } from 'chart.js';
 
 
 import Zoom, {resetZoom} from 'chartjs-plugin-zoom';
 
 import Notifier from "../../../components/Notifier";
+// import {colorSchemes} from "chartjs-plugin-colorschemes";
 
 Chart.register(
     PieController,
     LineController,
+    DoughnutController,
     ArcElement,
     PointElement,
     LineElement,
@@ -26,8 +32,13 @@ Chart.register(
     Tooltip,
     Legend,
     Filler,
-    Zoom
+    Zoom,
+    Colors,
+
 )
+
+
+const revenueQuantityContainer = document.querySelector("#order-revenue-quantity-chart__container");
 /**
  * @type {HTMLCanvasElement | null}
  */
@@ -42,7 +53,7 @@ const orderQuantityCanvas = document.querySelector("#order-quantity-canvas");
 /**
  * @type {HTMLButtonElement}
  */
-const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-chart");
+const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
 
 
 /**
@@ -55,14 +66,13 @@ let revenueChart = null
 let quantityChart = null
 
 
-
 if (orderRevenueCanvas) {
 
     async function showOrderRevenueChart() {
         try {
             const result = await fetch("/analytics/order-revenue")
             // console.log(result)
-            switch (result.status){
+            switch (result.status) {
                 case 200:
 
                     /**
@@ -94,11 +104,12 @@ if (orderRevenueCanvas) {
                                 radius: 2,
                                 backgroundColor: 'rgba(0, 123, 255, 0.5)',
                                 borderColor: 'rgba(0, 123, 255, 1)',
-                                tension: 0.2,
+                                tension: 0.1,
                                 borderWidth: 0.5,
                             }]
                         },
                         options: {
+                            responsive: true,
                             plugins: {
                                 zoom: {
                                     zoom: {
@@ -111,6 +122,15 @@ if (orderRevenueCanvas) {
                                         mode: 'x',
                                     }
                                 }
+                            },
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        maxTicksLimit: 10, // Set the maximum number of x-axis labels to display
+                                    }
+                                },
+
+
                             }
                         }
                     });
@@ -141,13 +161,13 @@ if (orderRevenueCanvas) {
 
 }
 
-if(orderQuantityCanvas){
+if (orderQuantityCanvas) {
 
     async function showOrderQuantityChart() {
-        try{
+        try {
             const result = await fetch("/analytics/order-quantity");
 
-            switch (result.status){
+            switch (result.status) {
                 case 200:
                     /**
                      *
@@ -191,11 +211,12 @@ if(orderQuantityCanvas){
                                     radius: 2,
                                     backgroundColor: 'rgba(255, 193, 7, 0.5)',
                                     borderColor: 'rgba(255, 193, 7, 1)',
-                                    tension: 0.2,
+                                    tension: 0.1,
                                     borderWidth: 0.5,
                                 }]
                         },
                         options: {
+                            responsive: true,
                             plugins: {
                                 zoom: {
                                     zoom: {
@@ -208,12 +229,31 @@ if(orderQuantityCanvas){
                                         mode: 'x',
                                     }
                                 }
+                            },
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        maxTicksLimit: 10, // Set the maximum number of x-axis labels to display
+                                    }
+                                },
+
+
                             }
+
                         }
                     });
+
+                    resetRevenueChartZoomBtn?.addEventListener("click", () => {
+                        resetZoom(quantityChart);
+                    })
+
+                    break;
+
+                case 500:
+                    const error = await result.json()
+                    throw new Error(error.message)
             }
-        }
-       catch (e){
+        } catch (e) {
             console.log(e)
             Notifier.show({
                 text: e.message,
@@ -224,6 +264,7 @@ if(orderQuantityCanvas){
             });
         }
     }
+
     window.addEventListener("load", showOrderQuantityChart)
 
 }

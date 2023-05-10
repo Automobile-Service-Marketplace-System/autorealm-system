@@ -1,0 +1,112 @@
+.order-revenue-quantity-chart__container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.order-revenue-quantity-chart-wrapper__header__title{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgba(var(--dark), 1);
+    margin-top: 1rem;
+}
+
+.analytic-revenue-details{
+    display: flex;
+
+}
+
+.analytic-quantity-details{
+    display: flex;
+
+}
+
+.analytic-card{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    margin-left: 2rem;
+
+}
+
+.analytic-card-details{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.analytic-card__item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.analytic-card__item__title{
+    font-weight: 800;
+    color: rgba(var(--dark), 1);
+}
+
+.analytic-card__item__row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+}
+
+.analytic-card__item__value{
+    text-align: right;
+}
+
+.revenue-chart{
+    width: 75%;
+    padding: 1rem;
+}
+.quantity-chart{
+    width: 75%;
+    padding: 1rem;
+
+}
+
+#order-revenue-canvas{
+    height: 400px !important;
+}
+
+#order-quantity-canvas{
+    height: 400px !important;
+}
+
+
+/*for the pie chart*/
+
+.product-quantity-analytic-container{
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+
+#product-quantity-analytic-details{
+    margin-top: 2rem;
+}
+
+.product-quantity-analytic-details-container{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+}
+
+.ordered-product-quantity-chart{
+    width :50% !important;
+}
+
+
+
+/*.order-revenue-quantity-chart__header{*/
+/*    background-color: #e53030;*/
+/*}*/

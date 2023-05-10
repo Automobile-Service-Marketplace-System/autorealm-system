@@ -1,4 +1,4 @@
 import "./revenue-chart";
-import "./order-quantity-chart";
+import "./product-chart";
 
 

@@ -50,6 +50,13 @@ if(filtersContainer) {
             }
          })
 
+        const dateInputs = filterForm.querySelectorAll('input[type="date"]')
+        dateInputs.forEach((input) => {
+            if(input.value) {
+                input.removeAttribute('value')
+            }
+        })
+
     });
 
 
