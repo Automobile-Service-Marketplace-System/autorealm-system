@@ -86,6 +86,7 @@
 @import "views/office-create-jobcard.css";
 @import "views/create-invoice.css";
 @import "views/view-all-jobs.css";
+@import "views/view-product.css";
 @import "views/stockmanager-analytics.css";
 
 body{

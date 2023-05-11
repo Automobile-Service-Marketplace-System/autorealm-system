@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Admin;
 use app\models\Customer;
 use app\models\Product;
+use app\models\Reviews;
 
 class SiteController
 {
@@ -122,6 +123,55 @@ class SiteController
             "is_authenticated" => false,
         ], layoutParams: [
             'title' => 'Our Services',
+            'customerId' => null,
+        ]);
+    }
+
+    public function getViewProductPage(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $itemCode = $query['id'];
+        $productModel = new Product();
+        $product = $productModel->getProductByItemCode(itemCode: $itemCode);
+        if (is_string($product)) {
+            return "Internal Server Error";
+        }
+        $relatedProducts = $productModel->getRelatedProducts(categoryId: $product['CategoryId'], itemCode: $itemCode);
+        if (is_string($relatedProducts)) {
+            $relatedProducts = null;
+        }
+
+
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+            $customerId = $req->session->get("user_id");
+
+
+            $reviewModel = new Reviews();
+
+            $existingReview = $reviewModel->getReview(customerId: $customerId, itemCode: $itemCode);
+            $alreadyReviewed = (bool)$existingReview;
+
+            return $res->render(view: "site-view-one-product", pageParams: [
+                'relatedProducts' => $relatedProducts,
+                'product' => $product,
+                "is_authenticated" => $req->session->get("is_authenticated"),
+                'alreadyReviewed' => $alreadyReviewed,
+                'customerId' => $customerId,
+            ], layoutParams: [
+                'customerId' => $customerId,
+                'title' => $product ? $product['Name'] : 'Product not found',
+            ]);
+
+        }
+
+        return $res->render(view: "site-view-one-product", pageParams: [
+            'relatedProducts' => $relatedProducts,
+            'product' => $product,
+            "is_authenticated" => false,
+            'alreadyReviewed' => false,
+            'customerId' => null,
+        ], layoutParams: [
+            'title' => $product ? $product['Name'] : 'Product not found',
             'customerId' => null,
         ]);
     }
