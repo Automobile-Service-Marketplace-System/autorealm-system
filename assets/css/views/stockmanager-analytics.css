@@ -1,3 +1,38 @@
+/*Analytic filter*/
+.analytic-filter-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.analytic-filter-date-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+}
+.analytic-filter-date{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.analytic-filter-actions{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+
+/*order revenue charts*/
+
+
 .order-revenue-quantity-chart__header{
     margin-left: 3rem;
     margin-top: 1rem;
@@ -127,9 +162,10 @@
 }
 
 .ordered-product-quantity-chart{
-    width :50% !important;
+    width :40% !important;
     padding-bottom: 1rem;
     padding-top: 3rem;
+    margin-right: 3rem;
 }
 
 .ordered-products-details{

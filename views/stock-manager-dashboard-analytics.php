@@ -1,5 +1,28 @@
-<div class="order-revenue-quantity-chart">
+<form>
+    <div class="analytic-filter-wrapper" id="analytic-filter-wrapper">
+        <!--    add date range from date and to date-->
 
+        <div class="analytic-filter-date-container">
+            <div class="analytic-filter-date form-item">
+                <label for="from-date">From</label>
+                <input type="date" id="analytic-from-date" class="analytic-filter-date-range__item__input" value="">
+            </div>
+            <div class="analytic-filter-date form-item">
+                <label for="to-date">To</label>
+                <input type="date" id="analytic-to-date" class="analytic-filter-date-range__item__input" value="">
+            </div>
+        </div>
+
+        <div class="analytic-filter-actions">
+            <button class="btn btn--thin btn--danger" id="analytic-filter-reset" type="reset">Reset</button>
+            <button class="btn btn--thin" id="analytic-filter-apply" type="button">Apply</button>
+        </div>
+
+    </div>
+</form>
+
+
+<div class="order-revenue-quantity-chart">
 
     <div class="order-revenue-quantity-chart__container" id="order-revenue-quantity-chart__container">
 
