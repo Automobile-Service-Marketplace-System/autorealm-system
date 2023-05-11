@@ -79,13 +79,13 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                 <a class='admitting-report-wrapper' href='/security-officer-dashboard/admitting-reports/view?id={$admittingReport['ID']}' >
                 <p class='admitting_card__name'><b>Name: </b>{$admittingReport['Name']}</p>
                 <p class='admitting_card__regno'><b>Registration Number: </b>{$admittingReport['RegNo']}</p>
-                <p class='admitting_card__date'><b>Admitting Date: </b>{$admittingReport['Date']}</p>
-                <p class='admitting_card__departing'><b>Departing Time: </b>{$admittingReport['DeptTime']}</p>";
+                <p class='admitting_card__date'><b>Admitting Date: </b>{$admittingReport['Date']}</p>";
                 if($admittingReport['IsApproved']!==1){
                     echo "<p class='admitting_card__isapproved'><b>Status: </b><span style='color: red;'>Not Approved</span></p>";
                 }
                 else{
-                    echo "<p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span>Approved</p>";
+                    echo "<p class='admitting_card__departing'><b>Departing Time: </b>{$admittingReport['DeptTime']}</p>
+                        <p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span>Approved</p>";
                 }
                 echo "</a>";
             }
@@ -94,13 +94,13 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                 <a class='admitting-report-wrapper' href='/security-officer-dashboard/admitting-reports/view?id={$admittingReport['ID']}' >
                 <p class='admitting_card__name''><b>Name: </b><span style='color: gray;'>N/A</span></p>
                 <p class='admitting_card__regno'><b>Registration Number: </b> {$admittingReport['RegNo']}</p>
-                <p class='admitting_card__date'><b>Admitting Date: </b> {$admittingReport['Date']}</p>
-                <p class='admitting_card__departing'><b>Departing Time: </b>{$admittingReport['DeptTime']}</p>";
+                <p class='admitting_card__date'><b>Admitting Date: </b> {$admittingReport['Date']}</p>";
                 if($admittingReport['IsApproved']!==1){
                     echo "<p class='admitting_card__isapproved'><b>Status: </b><span style='color: red;'>Not Approved</span></p>";
                 }
                 else{
-                    echo "<p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span></p>";
+                    echo "<p class='admitting_card__departing'><b>Departing Time: </b>{$admittingReport['DeptTime']}</p>
+                    <p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span></p>";
                 }
                 echo "</a>";
             }
