@@ -53,7 +53,12 @@ const orderQuantityCanvas = document.querySelector("#order-quantity-canvas");
 /**
  * @type {HTMLButtonElement}
  */
-const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
+const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-value-chart");
+
+/**
+ * @type {HTMLButtonElement}
+ */
+const resetRevenueQuantityZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
 
 
 /**
@@ -243,7 +248,7 @@ if (orderQuantityCanvas) {
                         }
                     });
 
-                    resetRevenueChartZoomBtn?.addEventListener("click", () => {
+                    resetRevenueQuantityZoomBtn?.addEventListener("click", () => {
                         resetZoom(quantityChart);
                     })
 
