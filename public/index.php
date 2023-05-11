@@ -56,6 +56,12 @@ if (!$isInternal) {
 
     $app->router->get(path: "/", callback: [SiteController::class, 'getHomePage']);
     $app->router->get(path: "/products", callback: [SiteController::class, 'getProductsPage']);
+    $app->router->get(path: "/products/view", callback: [SiteController::class, 'getViewProductPage']);
+
+    $app->router->post(path: "/reviews", callback: [ReviewController::class, 'createReview']);
+    $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsForProductPage']);
+    $app->router->post(path: "/reviews/delete", callback: [ReviewController::class, 'deleteReview']);
+
     $app->router->get(path: "/services", callback: [SiteController::class, 'getServicesPage']);
 // customer's routes
     $app->router->get(path: "/register", callback: [AuthenticationController::class, 'getCustomerSignupForm']);
