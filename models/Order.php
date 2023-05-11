@@ -108,6 +108,8 @@ class Order
             $whereClause = "WHERE " . implode(" AND ", $conditions);
         }
 
+
+//        DevOnly::prettyEcho($conditions);
 //        DevOnly::prettyEcho($whereClause);
 
         if ($searchTermCustomer !== null) {
