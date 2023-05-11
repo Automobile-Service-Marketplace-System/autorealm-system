@@ -83,4 +83,18 @@ class FSUploader extends Uploader
 
         throw new RuntimeException("You cannot upload files of this type!");
     }
+
+
+    public static function saveDataURLFile(string $dataURL, string $innerDir = "", string $ext = "png") : string {
+        $dataURL = explode(",", $dataURL);
+        $dataURL = $dataURL[1];
+        $dataURL = base64_decode($dataURL);
+        $fileNameNew = uniqid(prefix: true, more_entropy: true) . ".$ext";
+        $fileDestination = Application::$rootDir . "/public/uploads" . "/" . $innerDir . "/" . $fileNameNew;
+        if (!file_exists(filename: Application::$rootDir . "/public/uploads" . "/" . $innerDir) && !mkdir($concurrentDirectory = Application::$rootDir . "/public/uploads" . "/" . $innerDir, 0777, true) && !is_dir($concurrentDirectory)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+        }
+        file_put_contents($fileDestination, $dataURL);
+        return "/uploads/" . $innerDir . "/" . $fileNameNew;
+    }
 }

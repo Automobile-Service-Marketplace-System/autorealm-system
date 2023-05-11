@@ -121,7 +121,7 @@ class Admitting
 
             from admittingreport a
             left join vehicle v on a.vehicle_reg_no=v.reg_no
-            left join customer c on v.customer_id=c.customer_id $whereClause $limitClause $pageClause ";
+            left join customer c on v.customer_id=c.customer_id $whereClause order by report_no DESC $limitClause $pageClause ";
 
         $statement = $this->pdo->prepare($quey);
 
@@ -174,6 +174,10 @@ class Admitting
 
         if(trim($this->body["vehicle_reg_no"] === " ")){
             $errors['vehicle_reg_no'] = 'Registraion number must not be empty';
+        }
+
+        if(empty($this->body['image'])) {
+            $errors['image'] = 'Please select an image to upload';
         }
 
         if ($this->body['lights_lf'] !== 'good' && $this->body['lights_lf'] !== 'scratched' && $this->body['lights_lf'] !== 'cracked' && $this->body['lights_lf'] !== 'damaged' && $this->body['lights_lf'] !== 'not working') {
@@ -281,19 +285,28 @@ class Admitting
     public function addAdmittingReport(int $id) : array | int{
         $errors = $this->validated_byAdmittingReport();
         if(empty($errors)){
+            try {
+                $imageUrls = FSUploader::upload(innerDir: "admittingreport/multiple-images", multiple: true);
+                // var_dump(json_encode($imageUrls));
+                // exit; 
+
+            } catch (Exception $e) {
+                $errors["image"] = $e->getMessage();
+            }
+
             $query="insert into admittingreport 
                 (
                     vehicle_reg_no, mileage, current_fuel_level, current_fuel_level_description, admitting_time, windshield, windshield_description, 
                     lights_lf, light_lf_description, lights_rf, light_rf_description, lights_lr, light_lr_description, lights_rr, light_rr_description, toolkit, sparewheel, rim_lf, rim_lf_description, 
                     rim_rf, rim_rf_description, rim_lr, rim_lr_description, rim_rr, rim_rr_description, seat_lf, seat_lf_description, seat_rf, seat_rf_description, seat_rear, seat_rear_description, 
-                    carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id, admitting_date
+                    carpet_lf, carpet_lf_description, carpet_rf, carpet_rf_description, carpet_rear, carpet_rear_description, dashboard, dashboard_description, customer_belongings, additional_note, employee_id, admitting_date, image
                 )
                 values
                 (
                     :vehicle_reg_no, :mileage, :current_fuel_level,:current_fuel_level_description, :admitting_time, :windshield, :windshield_description, 
                     :lights_lf, :light_lf_description, :lights_rf, :light_rf_description, :lights_lr, :light_lr_description, :lights_rr, :light_rr_description, :toolkit, :sparewheel, :rim_lf, :rim_lf_description,
                     :rim_rf, :rim_rf_description, :rim_lr, :rim_lr_description, :rim_rr, :rim_rr_description, :seat_lf, :seat_lf_description, :seat_rf, :seat_rf_description, :seat_rear, :seat_rear_description,
-                    :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id, :date
+                    :carpet_lf, :carpet_lf_description, :carpet_rf, :carpet_rf_description, :carpet_rear, :carpet_rear_description, :dashboard, :dashboard_description, :customer_belongings, :additional_note, :id, :date, :image
                 )";
             $statement=$this->pdo->prepare($query);
             $statement->bindvalue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
@@ -340,6 +353,8 @@ class Admitting
             $statement->bindvalue(":additional_note", $this->body["additional_note"]);
             $statement->bindvalue(":id", $id);
             $statement->bindvalue(":date", date('Y-m-d'));
+            $statement->bindvalue(":image", json_encode($imageUrls ?? []));
+            
             $statement->execute();
             return $this->pdo->lastInsertId();
         }

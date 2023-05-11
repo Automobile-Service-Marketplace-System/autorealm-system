@@ -4,6 +4,12 @@ import Notifier from "../components/Notifier";
 const openCameraBtn = document.querySelector("#open-camera-btn");
 const imageInput = document.querySelector("#image-input");
 const resultContainer = document.querySelector("#qrcode-result");
+
+/**
+ * @type {HTMLAnchorElement | null}
+ */
+const createAdmittingReportLink = resultContainer?.querySelector("a")
+
 const qrCodeDate = document.querySelector("#qrcode-result p:first-child");
 const qrCodeTime = document.querySelector("#qrcode-result p:nth-child(2)");
 const qrCodeRegisterNo = document.querySelector("#qrcode-result p:nth-child(3)");
@@ -34,6 +40,7 @@ if (reader && qrCodeDate && qrCodeRegisterNo && qrCodeTime && resultContainer) {
             qrCodeDate.innerHTML = `<strong>Appointment Date</strong><span>${appointmentObject['date']}</span>`;
             qrCodeTime.innerHTML = `<strong>Time Slot</strong><span>${appointmentObject['timeslot']}</span>`;
             qrCodeRegisterNo.innerHTML = `<strong>Register Number</strong><span>${appointmentObject['registrationNumber']}</span>`;
+            createAdmittingReportLink?.setAttribute("href", `https://dashboard.autorealm.lk/security-officer-dashboard/admitting-reports/add?reg_no=${appointmentObject['registrationNumber']}`)
             resultContainer.style.display = "flex";
 
             Notifier.show({
