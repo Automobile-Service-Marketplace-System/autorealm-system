@@ -34,11 +34,11 @@ Chart.register(
     Filler,
     Zoom,
     Colors,
-
 )
 
 
-const revenueQuantityContainer = document.querySelector("#order-revenue-quantity-chart__container");
+const analyticFilterContainer = document.querySelector("#analytic-filter-wrapper");
+
 /**
  * @type {HTMLCanvasElement | null}
  */
@@ -53,7 +53,12 @@ const orderQuantityCanvas = document.querySelector("#order-quantity-canvas");
 /**
  * @type {HTMLButtonElement}
  */
-const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
+const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-value-chart");
+
+/**
+ * @type {HTMLButtonElement}
+ */
+const resetRevenueQuantityZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
 
 
 /**
@@ -66,6 +71,31 @@ let revenueChart = null
 let quantityChart = null
 
 
+//get today's date and get the date from and to from the analytic filter
+if (analyticFilterContainer) {
+    window.addEventListener("load", function () {
+        const today = new Date().toISOString().split('T')[0];
+
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+        const now = new Date();
+        const threeMonthsBeforeRaw = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+        const threeMonthsBefore = threeMonthsBeforeRaw.toISOString().split('T')[0];
+
+        // console.log(today)
+        const fromDate = document.getElementById("analytic-from-date");
+        fromDate.setAttribute('max', yesterday);
+        fromDate.value = threeMonthsBefore;
+
+        const toDate = document.getElementById("analytic-to-date");
+        toDate.setAttribute('max', today);
+        toDate.value = today;
+
+    })
+}
+
+
+// generating order revenue chart
 if (orderRevenueCanvas) {
 
     async function showOrderRevenueChart() {
@@ -157,6 +187,7 @@ if (orderRevenueCanvas) {
         }
     }
 
+    //call when page is loading
     window.addEventListener("load", showOrderRevenueChart)
 
 }
@@ -243,7 +274,7 @@ if (orderQuantityCanvas) {
                         }
                     });
 
-                    resetRevenueChartZoomBtn?.addEventListener("click", () => {
+                    resetRevenueQuantityZoomBtn?.addEventListener("click", () => {
                         resetZoom(quantityChart);
                     })
 
@@ -267,4 +298,80 @@ if (orderQuantityCanvas) {
 
     window.addEventListener("load", showOrderQuantityChart)
 
+}
+
+
+// to get the product quantity chart
+
+/**
+ * @type {HTMLCanvasElement | null}
+ */
+const productQuantityChartCanvas = document.querySelector("#ordered-products-quantity-canvas");
+
+/**
+ * @type {Chart | null}
+ */
+let productQuantityChart = null
+
+if (productQuantityChartCanvas) {
+
+    async function showProductQuantityChart() {
+        try {
+
+            const result = await fetch("/analytics/product-quantity")
+
+            switch (result.status) {
+                case 200:
+                    /**
+                     * @type {{data:{product_name:string, tot_quantity:number}[]}}
+                     */
+                    const resData = await result.json()
+                    // console.log(resData)
+
+                    const productNames = resData.data.map(
+                        item => item.product_name
+                    )
+
+                    const quantities = resData.data.map(
+                        item => item.tot_quantity
+                    )
+
+                    const productQuantityChart = new Chart(productQuantityChartCanvas, {
+                        type: "doughnut",
+                        data: {
+                            labels: productNames,
+                            datasets: [{
+                                label: "Product Quantity",
+                                data: quantities,
+
+                                hoverOffset: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                            },
+                        },
+
+                    });
+
+            }
+
+        } catch (e) {
+            console.log(e)
+            Notifier.show({
+                text: e.message,
+                header: "Error",
+                duration: 30000,
+                closable: false,
+                type: "danger"
+            })
+        }
+    }
+
+
+    window.addEventListener("load", showProductQuantityChart)
 }

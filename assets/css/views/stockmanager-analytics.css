@@ -1,14 +1,63 @@
+/*Analytic filter*/
+.analytic-filter-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.analytic-filter-date-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+}
+.analytic-filter-date{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.analytic-filter-actions{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+
+/*order revenue charts*/
+
+
+.order-revenue-quantity-chart__header{
+    margin-left: 3rem;
+    margin-top: 1rem;
+}
+
 .order-revenue-quantity-chart__container{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.revenue-chart-wrapper{
+    margin-bottom: 2rem ;
+}
+
+.quantity-chart-wrapper{
+    margin-bottom: 2rem ;
 }
 
 .order-revenue-quantity-chart-wrapper__header__title{
     font-size: 1.5rem;
     font-weight: 500;
     color: rgba(var(--dark), 1);
-    margin-top: 1rem;
+    /*margin-top: 1rem;*/
 }
 
 .analytic-revenue-details{
@@ -79,14 +128,24 @@
     height: 400px !important;
 }
 
+.order-revenue-reset-btn{
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+#reset-revenue-quantity-chart{
+
+}
+
 
 /*for the pie chart*/
 
 .product-quantity-analytic-container{
-    margin-top: 3.5rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: row;
-    gap: 2rem;
+    justify-content: space-between;
 }
 
 
@@ -98,11 +157,19 @@
     width: 40%;
     display: flex;
     flex-direction: column;
-    margin-right: 2rem;
+    margin-right: 1rem;
+    margin-left: 3rem;
 }
 
 .ordered-product-quantity-chart{
-    width :50% !important;
+    width :40% !important;
+    padding-bottom: 1rem;
+    padding-top: 3rem;
+    margin-right: 3rem;
+}
+
+.ordered-products-details{
+    margin-bottom: 2rem;
 }
 
 
