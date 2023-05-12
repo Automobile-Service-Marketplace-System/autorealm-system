@@ -38,19 +38,18 @@ const addVehicleForm =
             
       </div><div class='form-item '>
             <label for='manufactured_year'>Manufactured Year.<sup>*</sup></label>
-            <input type='date' name='manufactured_year' id='manufactured_year' placeholder='' required  value=''   >
-            
+            <select name='manufactured_year' id='manufactured_year' placeholder='' required>
+            </select>
+
       </div><div class='form-item '>
             <label for='brand'>Brand.<sup>*</sup></label>
             <select  name='brand' id='brand'  required > 
           
             </select>
             
-      </div><div class='form-item '>
-            <label for='model_year'>Model Year.<sup>*</sup></label>
-            <input type='date' name='model_year' id='model_year' placeholder='' required  value=''   >
-            
-      </div><div class='form-item '>
+      </div>
+     
+      <div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
                 <option value='Bike' selected>Bike</option><option value='Car' >Car</option><option value='Jeep' >Jeep</option><option value='Van' >Van</option><option value='Lorry' >Lorry</option><option value='Bus' >Bus</option><option value='Other'>Other</option>
@@ -197,6 +196,20 @@ addVehicleButton?.addEventListener("click", () => {
 
   const brandSelectElement = addVehicleForm.querySelector("#brand");
   brandSelectElement.innerHTML = brandOptions;
+
+  const years = []
+  const maxYear = new Date().getFullYear()
+
+  for (let index = maxYear; index >= 1900; index--) {
+    years.push(index)
+  }
+
+  const modelYearOptions = years.map(y => {
+    return `<option value="${y}">${y}</option>`
+  })
+
+  const manufacturedYearSelectElement = addVehicleForm.querySelector("#manufactured_year");
+  manufacturedYearSelectElement.innerHTML = modelYearOptions;
 
   Modal.show({
     content: addVehicleForm,

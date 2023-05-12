@@ -142,13 +142,12 @@ class JobCard
         if ($statement->rowCount() > 0) {
             $vin = $statement->fetch(mode: PDO::FETCH_ASSOC)['vin'];
             $query = "SELECT 
-                            CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(my.year), ' Edition') as vehicle_name, 
+                            CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(v.manufactured_year), ' Edition') as vehicle_name, 
                             v.reg_no as reg_no, 
                             CONCAT(c.f_name, ' ', c.l_name) as customer_name
                           FROM vehicle v 
                               LEFT JOIN brand b ON v.brand_id = b.brand_id 
                               LEFT JOIN model m ON v.model_id = m.model_id 
-                              INNER JOIN modelyear my on m.model_id = my.model_id 
                               INNER  JOIN customer c on v.customer_id = c.customer_id 
                           WHERE v.vin = :vin";
             $statement = $this->pdo->prepare($query);
