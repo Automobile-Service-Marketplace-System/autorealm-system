@@ -68,7 +68,7 @@ class Appointment
             ON 
                 t.time_id = a.time_id
             ORDER BY
-                a.appointment_id $limitClause $pageClause"
+                a.appointment_id DESC $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
         
         $totalAppointments = $this->pdo->query(

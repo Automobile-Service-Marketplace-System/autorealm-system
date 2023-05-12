@@ -328,7 +328,7 @@ class JobCard
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
                 concat(e.f_name,' ',e.l_name) as 'Employee Name',
-                vehicle_reg_no as 'Vehicle Reg No',
+                v.reg_no as 'Vehicle Reg No',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
                 status as 'Status'
@@ -338,8 +338,10 @@ class JobCard
                 customer c ON c.customer_id = j.customer_id
             INNER JOIN 
                 employee e ON e.employee_id = j.employee_id
+            INNER JOIN 
+                vehicle v ON j.vin = v.vin
             ORDER BY
-                j.job_card_id $limitClause $pageClause"
+                j.job_card_id DESC $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
         $totalJobs = $this->pdo->query(
             "SELECT COUNT(*) as total FROM jobcard"

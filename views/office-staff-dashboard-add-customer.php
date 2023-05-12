@@ -23,6 +23,11 @@ $hasVINError = $hasErrors && isset($errors['vin']);
 $hasRegNoError = $hasErrors && isset($errors['reg_no']);
 $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 
+$years = [];
+for ($i=date('Y'); $i >= 1900 ; $i--) { 
+    $years[] = $i;
+};
+
 ?>
 
 
@@ -148,15 +153,25 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
                 // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
-            FormItem::render(
+            // FormItem::render(
+            //     id: "manufactured_year",
+            //     label: "Manufactured Year",
+            //     name: "manufactured_year",
+            //     type: "date",
+            //     // hasError: $hasFNameError,
+            //     // error: $hasFNameError ? $errors['manufactured_year'] : "",
+            //     value: $body['manufactured_year'] ?? null,
+            //     // additionalAttributes: "pattern='^[\p{L} ]+$'"
+            // );
+
+            FormSelectItem::render(
                 id: "manufactured_year",
                 label: "Manufactured Year",
                 name: "manufactured_year",
-                type: "date",
                 // hasError: $hasFNameError,
-                // error: $hasFNameError ? $errors['manufactured_year'] : "",
-                value: $body['manufactured_year'] ?? null,
-                // additionalAttributes: "pattern='^[\p{L} ]+$'"
+                // error: $hasFNameError ? $errors['brand'] : "",
+                value: "1",
+                options: $years
             );
 
             FormSelectItem::render(
@@ -167,17 +182,6 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
                 // error: $hasFNameError ? $errors['brand'] : "",
                 value: "1",
                 options: $brands
-            );
-
-            FormItem::render(
-                id: "model_year",
-                label: "Model Year",
-                name: "model_year",
-                type: "date",
-                // hasError: $hasFNameError,
-                // error: $hasFNameError ? $errors['model_year'] : "",
-                value: $body['model_year'] ?? null,
-                // additionalAttributes: "pattern='^[\p{L} ]+$'"
             );
 
 
