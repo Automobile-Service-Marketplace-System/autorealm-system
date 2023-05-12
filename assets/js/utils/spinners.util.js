@@ -3,7 +3,7 @@ import {htmlToElement} from "./index";
 const rotatingIcon = htmlToElement(`<i class="fa-solid fa-spinner rotating-icon"></i>`)
 
 /**
- * @param {HTMLInputElement | SVGSVGElement} element
+ * @param {HTMLElement|SVGSVGElement} element
  * @param {boolean} status
  * @param {{ color?: string} | undefined } options
  */
