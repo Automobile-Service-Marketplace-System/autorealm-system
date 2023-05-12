@@ -115,6 +115,7 @@ if ($isInternal) {
     $app->router->get(path: "/services/for-selector", callback: [ServicesController::class, 'getServiceSelectorServices']);
     $app->router->get(path: "/jobs/for-selector", callback: [JobsController::class, 'getJobSelectorJobs']);
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
+
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
     $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
     $app->router->get(path: '/analytics/invoice-revenue', callback: [AnalyticsController::class, 'getInvoiceRevenue']);
