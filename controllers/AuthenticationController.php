@@ -56,7 +56,7 @@ class AuthenticationController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             return $res->render(view: 'customer-contact-verification', layoutParams: [
-                'title' => 'Verify your email & phone number',
+                'title' => 'Verify your email address',
                 'customerId' => $req->session->get("user_id"),
             ]);
         }

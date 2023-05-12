@@ -4,15 +4,15 @@ import Notifier from "./Notifier";
 
 
 // noinspection ExceptionCaughtLocallyJS
-export class ServiceSelector {
+export class JobSelector {
 
     /**
-     * service selector element
+     * job selector element
      * @type {HTMLDivElement | null}
      */
     element = null
 
-    url = "/services/for-selector"
+    url = "/jobs/for-selector"
 
 
     limit = 8;
@@ -27,7 +27,10 @@ export class ServiceSelector {
      * @type {{q: null| string; page:number; limit: number}}
      */
     selectedFiltersRaw = {
-        q: null,
+        customer_name: null,
+        foreman_name: null,
+        vehicle_reg_no: null,
+        job_date: null,
         page: 1,
         limit: 8
     }
@@ -36,16 +39,17 @@ export class ServiceSelector {
     selectedFilters = new Proxy(this.selectedFiltersRaw, {
         set: async (target, key, value) => {
             target[key] = value
-            await this.loadServices();
+            // console.log(this.selectedFiltersRaw)
+            await this.loadJobs();
             return true
         }
     })
 
 
     /**
-     * @type {Service[]}
+     * @type {number | null}
      */
-    selectedServices = []
+    selectedJob = null;
 
 
     listeners = {
@@ -58,7 +62,7 @@ export class ServiceSelector {
             Modal.show({
                 closable: false,
                 content: this.element,
-                key: "ServiceSelector"
+                key: "JobSelector"
             });
             await this.initialLoad();
             this.listenForFilterChanges();
@@ -73,35 +77,44 @@ export class ServiceSelector {
     createElement() {
         return htmlToElement(
             `
-    <div class="service-selector service-selector--loading">
-        <i class="fa fa-spinner service-selector__spinner"></i>
-        <div class="service-selector__body">
-            <div class="service-selector__header">
-                <h3>Select a service</h3>
+    <div class="job-selector job-selector--loading">
+        <i class="fa fa-spinner job-selector__spinner"></i>
+        <div class="job-selector__body">
+            <div class="job-selector__header">
+                <h3>Select a job</h3>
                 <div class="flex items-center gap-4">
                     <button class="btn btn--danger btn--thin modal-close-btn">
                         <i class="fa fa-xmark"></i>
                         Cancel
                     </button>
-                    <button class="btn btn--thin service-selector__finish">
+                    <button class="btn btn--thin job-selector__finish">
                         <i class="fa fa-check"></i>
                         Confirm
                     </button>
                 </div> 
             </div>
-            <div class="service-selector__filters">
-                <div class='form-item '>
-                    <input type='search' name='q' id='search' placeholder='Search with name'>
+            <div class="job-selector__filters">
+                <div class='form-item'>
+                    <input type='search' name='customer_name' id='customer_name' placeholder='Search with customer name'>
+                </div>
+                <div class='form-item'>
+                    <input type='search' name='foreman_name' id='foreman_name' placeholder='Search with foreman name'>
+                </div>
+                <div class='form-item'>
+                    <input type='search' name='vehicle_reg_no' id='vehicle_reg_no' placeholder='Search with vehical reg no'>
+                </div>
+                <div class="form-item">
+                    <input type="date" name="job_date" id="job_date" placeholder="Start date">
                 </div>
             </div>
-            <p class="service-selector__result-indicator">
-                Showing <span id="service-selector__show-count"></span> of <span id="service-selector__total-count"></span> results
+            <p class="job-selector__result-indicator">
+                Showing <span id="job-selector__show-count"></span> of <span id="job-selector__total-count"></span> results
             </p>
-            <div class="service-selector__gallery service-selector__gallery--loading">
-                <i class="fa fa-spinner service-selector__spinner"></i>
-                <p class="service-selector__empty-message">
+            <div class="job-selector__gallery job-selector__gallery--loading">
+                <i class="fa fa-spinner job-selector__spinner"></i>
+                <p class="job-selector__empty-message">
                     <i class="fa fa-search"></i>
-                    No services found
+                    No jobs found
                 </p>
             </div>
             <div class="pagination-container pagination-container--select">
@@ -112,32 +125,48 @@ export class ServiceSelector {
     }
 
     async initialLoad() {
-        await this.loadServices();
-        this.element.classList.remove("service-selector--loading")
+        await this.loadJobs();
+        this.element.classList.remove("job-selector--loading")
     }
 
 
     listenForFilterChanges() {
-        const searchInput = this.element.querySelector("input[type='search']")
+        /**
+         * @type {NodeListOf<HTMLInputElement>}
+         */
+        const searchInputs = this.element.querySelectorAll("input[type='search']")
 
-        searchInput?.addEventListener("input", () => {
-            if (this.searchTimeout) {
-                clearTimeout(this.searchTimeout)
-            }
-            this.searchTimeout = setTimeout(() => {
-                const value = searchInput.value;
-                if (value === "") {
-                    this.selectedFilters.q = null;
-                } else {
-                    this.selectedFilters.q = value;
+        searchInputs.forEach(searchInput => {
+            searchInput?.addEventListener("input", () => {
+                if (this.searchTimeout) {
+                    clearTimeout(this.searchTimeout)
                 }
+                this.searchTimeout = setTimeout(() => {
+                    const value = searchInput.value;
+                    if (value === "") {
+                        this.selectedFilters[searchInput.id] = null;
+                    } else {
+                        this.selectedFilters[searchInput.id] = value;
+                    }
 
-            }, 500)
-
+                }, 500)
+            })
         })
+
+        const dateInput = this.element.querySelector("input[type='date']")
+        dateInput?.addEventListener("change", () => {
+                const value = dateInput.value;
+                if (value === "") {
+                    this.selectedFilters[dateInput.id] = null;
+                } else {
+                    this.selectedFilters[dateInput.id] = value;
+                }
+            }
+        )
+
     }
 
-    async loadServices() {
+    async loadJobs() {
         try {
             this.setLoading(true)
             const url = this.url;
@@ -155,14 +184,15 @@ export class ServiceSelector {
             switch (result.status) {
                 case 200:
                     /**
-                     * @type {{ total:number;limit: number;page: number;services: Service[]}}
+                     * @type {{ total:number;limit: number;page: number;jobs: JobCard[]}}
                      */
                     let response = await result.json();
+                    console.log(response)
                     this.limit = response.limit;
                     this.page = response.page;
                     this.total = response.total;
-                    const services = response.services
-                    this.showServices(services)
+                    const jobs = response.jobs
+                    this.showJobs(jobs)
                     break;
                 case 500:
                     const error = await result.json();
@@ -183,55 +213,55 @@ export class ServiceSelector {
     }
 
 
-
     /**
-     * @param {Service[]} services
+     * @param {JobCard[]} jobs
      */
-    showServices(services) {
+    showJobs(jobs) {
         /**
          * @type {HTMLDivElement}
          */
 
 
-        const serviceSelectorGallery = this.element.querySelector(".service-selector__gallery")
-        while (serviceSelectorGallery.firstChild) {
-            serviceSelectorGallery.removeChild(serviceSelectorGallery.firstChild)
+        const jobSelectorGallery = this.element.querySelector(".job-selector__gallery")
+        while (jobSelectorGallery.firstChild) {
+            jobSelectorGallery.removeChild(jobSelectorGallery.firstChild)
         }
 
-        serviceSelectorGallery.innerHTML = `
-                <i class="fa fa-spinner service-selector__spinner"></i>
-                <p class="service-selector__empty-message">
+        jobSelectorGallery.innerHTML = `
+                <i class="fa fa-spinner job-selector__spinner"></i>
+                <p class="job-selector__empty-message">
                     <i class="fa fa-search"></i>
-                    No services found
+                    No jobs found
                 </p>
         `;
-        services.forEach(service => {
-            const isAlreadySelected = this.selectedServices.find((p) => p.Code === service.Code)
-            const serviceEl = htmlToElement(
+        jobs.forEach(job => {
+            const isAlreadySelected = this.selectedJob === job.job_card_id;
+            const jobEl = htmlToElement(
                 `
-                    <div class="service-selector__gallery-item ${isAlreadySelected ? 'service-selector__gallery-item--selected' : ''}">
-                        <h4>${service.Name}</h4>
-                        <p  style="font-size: 0.8rem;">${service.Description}</p>
+                    <div class="job-selector__gallery-item ${isAlreadySelected ? 'job-selector__gallery-item--selected' : ''}">
+                        <h4>${job.reg_no}</h4>
+                        <p  style="font-size: 0.8rem;"><strong>Customer</strong> ${job.customer_name}</p>
+                        <p  style="font-size: 0.8rem;"><strong>Started on</strong> ${job.start_date_time.split(" ")[0]}</p>
                         <i class="fa-solid fa-circle-check"></i>
                     </div>
                     `
             )
-            serviceEl.addEventListener('click', () => {
-                if (serviceEl.classList.contains("service-selector__gallery-item--selected")) {
-                    serviceEl.classList.remove("service-selector__gallery-item--selected")
-                    this.selectedServices.splice(this.selectedServices.indexOf(service), 1)
+            jobEl.addEventListener('click', () => {
+                if (jobEl.classList.contains("job-selector__gallery-item--selected")) {
+                    jobEl.classList.remove("job-selector__gallery-item--selected")
+                    this.selectedJob = null;
                 } else {
-                    serviceEl.classList.add("service-selector__gallery-item--selected")
-                    this.selectedServices.push(service)
+                    jobEl.classList.add("job-selector__gallery-item--selected")
+                    this.selectedJob = job.job_card_id;
                 }
             })
-            serviceSelectorGallery.appendChild(serviceEl)
+            jobSelectorGallery.appendChild(jobEl)
         })
 
-        if(services.length > 0) {
-            serviceSelectorGallery.classList.remove("service-selector__gallery--empty")
+        if (jobs.length > 0) {
+            jobSelectorGallery.classList.remove("job-selector__gallery--empty")
         } else {
-            serviceSelectorGallery.classList.add("service-selector__gallery--empty")
+            jobSelectorGallery.classList.add("job-selector__gallery--empty")
         }
 
         const paginationContainer = this.element.querySelector(".pagination-container")
@@ -245,10 +275,10 @@ export class ServiceSelector {
             paginationContainer.appendChild(button)
         }
 
-        const serviceSelectorShowCount = this.element.querySelector("#service-selector__show-count")
-        serviceSelectorShowCount.innerHTML = `${services.length}`
-        const serviceSelectorTotalCount = this.element.querySelector("#service-selector__total-count")
-        serviceSelectorTotalCount.innerHTML = `${this.total}`
+        const jobSelectorShowCount = this.element.querySelector("#job-selector__show-count")
+        jobSelectorShowCount.innerHTML = `${jobs.length}`
+        const jobSelectorTotalCount = this.element.querySelector("#job-selector__total-count")
+        jobSelectorTotalCount.innerHTML = `${this.total}`
     }
 
 
@@ -256,31 +286,31 @@ export class ServiceSelector {
      * @param {boolean} status
      */
     setLoading(status) {
-        const serviceSelectorGallery = this.element.querySelector(".service-selector__gallery")
+        const jobSelectorGallery = this.element.querySelector(".job-selector__gallery")
         if (status) {
-            serviceSelectorGallery.classList.add("service-selector__gallery--loading")
+            jobSelectorGallery.classList.add("job-selector__gallery--loading")
         } else {
-            serviceSelectorGallery.classList.remove("service-selector__gallery--loading")
+            jobSelectorGallery.classList.remove("job-selector__gallery--loading")
         }
     }
 
 
     attachListeners() {
-        this.element.querySelector(".service-selector__finish").addEventListener("click", () => {
+        this.element.querySelector(".job-selector__finish").addEventListener("click", () => {
             this.finish()
         })
     }
 
     finish() {
         this.listeners.onFinish.forEach((callback) => {
-            callback(this.selectedServices)
+            callback(this.selectedJob)
         })
 
         this.destroy()
     }
 
     destroy() {
-        Modal.close("ServiceSelector")
+        Modal.close("JobSelector")
     }
 
 
@@ -294,9 +324,10 @@ export class ServiceSelector {
 }
 
 /**
- * @typedef {Object} Job
- * @property {string} Name
- * @property {string} Code
- * @property {string} Description
- * @property {string} Cost
+ * @typedef {Object} JobCard
+ * @property {number} job_card_id
+ * @property {string} reg_no
+ * @property {string} start_date_time
+ * @property {string} end_date_time
+ * @property {string} customer_name
  */

@@ -1,9 +1,9 @@
 <section class="create-invoice__header">
-    <button class="flex gap-8">
+    <button class="flex gap-8" id="load-from-job-btn">
         <i class="fa-solid fa-plus"></i>
         Load details from job card
     </button>
-    <button class="flex gap-8">
+    <button class="flex gap-8" id="manually-add-customer-details-btn">
         <i class="fa-solid fa-plus"></i>
         Manually enter customer details
     </button>
