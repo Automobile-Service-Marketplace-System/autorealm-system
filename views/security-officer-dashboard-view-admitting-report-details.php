@@ -4,7 +4,7 @@
  * @var object $admittingReport
  * @var array $errors
  */
-var_dump($admittingReport->is_approved);
+// var_dump($admittingReport->image);
 
 use app\components\FormItem;
 use app\components\FormSelectItem;
@@ -25,15 +25,19 @@ use app\components\FormTextareaItem;
         value:$admittingReport->vehicle_reg_no,
         additionalAttributes:"readonly"
     );
+
 ?>
-            <!-- <div class="images">
-                <br><img src="/images/placeholders/vehicle1.png">
-                <img src="/images/placeholders/vehicle2.png">
-                <div id="more-image">
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" accept="image/*" capture="camera" id="image-input" style="display: none">
-                </div>
-            </div> -->
+        <div class="admitting-report-add-images">
+            <p><b>Photos of vehicles: </b></p>
+            <?php $images=json_decode($admittingReport->image); ?>
+            <div class="admitting-report-add-images-container">
+                <?php
+                    foreach($images as $image){
+                        echo "<img src=$image>";
+                    }
+                ?>
+            </div>
+        </div>
 
 <br><p><b>Light</b></p>
         <?php
