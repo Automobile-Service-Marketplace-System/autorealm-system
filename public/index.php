@@ -123,6 +123,7 @@ if ($isInternal) {
     $app->router->get(path: '/analytics/product-quantity', callback: [AnalyticsController::class, 'getProductQuantityDetails']);
     $app->router->get(path: "/all-jobs/view", callback: [JobsController::class, 'getJobDetailsPage']);
     $app->router->get(path: "/inspection-reports/view", callback: [JobsController::class, 'getInspectionReportForJobPage']);
+    $app->router->get(path: "/jobs/customer-info", callback: [JobsController::class, 'getCustomerDetailsForJob']);
 
 // foreman routes
     // $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);

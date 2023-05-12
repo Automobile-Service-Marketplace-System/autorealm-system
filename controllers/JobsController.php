@@ -662,4 +662,38 @@ class JobsController
             'jobDate' => $jobDate
         ]);
     }
+
+    /**
+     * @throws \JsonException
+     */
+    public function getCustomerDetailsForJob(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $jobId = $query["job_id"] ?? null;
+
+        if (!$jobId) {
+            $res->setStatusCode(code: 400);
+            return $res->json(data: [
+                "success" => false,
+                "message" => "Job ID is required"
+            ]);
+        }
+
+        $jobCardModel = new JobCard();
+        $customerDetails = $jobCardModel->getCustomerInfoByJobCardId(jobId: $jobId);
+
+        if (is_string($customerDetails) || !$customerDetails) {
+            $res->setStatusCode(code: 500);
+            return $res->json(data: [
+                "success" => false,
+                "message" => $customerDetails
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json(data: [
+            "message" => "Customer details fetched successfully",
+            "data" => $customerDetails
+        ]);
+    }
 }
