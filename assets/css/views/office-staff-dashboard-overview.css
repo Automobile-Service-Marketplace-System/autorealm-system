@@ -1,5 +1,64 @@
-.generate-pdf{
+.office-overview-wrapper, .office-overview-foremen-details{
     display: flex;
-    justify-content: end;
-    margin-right: 5%;
+    justify-content: space-between;
+}
+
+.office-overview-card{
+    width: 30%;
+    height: 10rem;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
+    align-items: center;
+}
+
+.office-overview-card span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.office-overview-card p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+.office-overview-foreman-chart {
+    margin-top: 3rem;
+    height: 20rem;
+    width: 65%;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
+}
+
+.office-overview-foremen-analytics {
+    margin-top: 3rem;
+    height: 20rem;
+    width: 30%;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.25rem 2rem rgba(var(--dark), 0.1);
+}
+
+.office-overview-foremen-analytics h3{
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.office-overview-foremen-analytics p{
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+#foremen-status-canvas {
+    width: 100%;
 }

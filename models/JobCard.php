@@ -593,4 +593,22 @@ class JobCard
             return $e->getMessage();
         }
     }
+
+    public function getTotalOngoingJobs(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM jobcard where status != 'finished'");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function getWeeklyJobStatus(): array
+    {
+        $stmt = $this->pdo->prepare("SELECT status, COUNT(*) AS count 
+            FROM jobcard 
+            WHERE start_date_time >= DATE_SUB(NOW(), INTERVAL 1 WEEK) 
+            GROUP BY status;
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
 }
