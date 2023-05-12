@@ -14,7 +14,7 @@
         </div>
 
         <div class="analytic-filter-actions">
-            <button class="btn btn--thin btn--danger" id="analytic-filter-reset" type="reset">Reset</button>
+            <button class="btn btn--thin btn--danger" id="analytic-filter-reset" type="button">Reset</button>
             <button class="btn btn--thin" id="analytic-filter-apply" type="button">Apply</button>
         </div>
 
@@ -66,14 +66,14 @@
                                 </div>
                                 <span class="analytic-card__item__value" id="highest-rev-value">
                                 0
-                            </span>
+                                </span>
                             </div>
 
                             <div class="analytic-card__item__row">
                                 <div class="analytic-card__item__subtitle">
                                     Date :
                                 </div>
-                                <span class="analytic-card__item__value" id="highest-rev-date">
+                                <span class="analytic-card__item__value" id="highest-rev-month">
                                 0
                             </span>
                             </div>
@@ -134,25 +134,34 @@
                     </h2>
 
                     <div class="analytic-card-details">
-                        <div class="analytic-card__item">
+                        <div class="analytic-card__item__row">
                             <div class="analytic-card__item__title">
-                                Total Products Sold
+                                Products Sold
                             </div>
                             <span class="analytic-card__item__value" id="total-sales-quantity">
                             0
-                        </span>
+                            </span>
+                        </div>
+
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__title">
+                               Total Orders
+                            </div>
+                            <span class="analytic-card__item__value" id="total-orders-quantity">
+                            0
+                            </span>
                         </div>
 
                         <div class="analytic-card__item">
                             <div class="analytic-card__item__title">
-                                Highest Order Per Day
+                                Highest Orders on a Day
                             </div>
 
                             <div class="analytic-card__item__row">
                                 <div class="analytic-card__item__subtitle">
                                     Value :
                                 </div>
-                                <span class="analytic-card__item__value" id="highest-orders-per-day">
+                                <span class="analytic-card__item__value" id="highest-orders-on-day">
                                 0
                             </span>
                             </div>
@@ -170,22 +179,22 @@
 
                         <div class="analytic-card__item">
                             <div class="analytic-card__item__title">
-                                Highest Quantity Per Order
+                                Average per Day
                             </div>
                             <div class="analytic-card__item__row">
                                 <div class="analytic-card__item__subtitle">
-                                    Value :
+                                    Orders :
                                 </div>
-                                <span class="analytic-card__item__value" id="highest-order-per-day">
+                                <span class="analytic-card__item__value" id="avg-order-per-day">
                                 0
                             </span>
                             </div>
 
                             <div class="analytic-card__item__row">
                                 <div class="analytic-card__item__subtitle">
-                                    Date :
+                                    Products Sold :
                                 </div>
-                                <span class="analytic-card__item__value" id="lowest-order-date">
+                                <span class="analytic-card__item__value" id="avg-product-per-day">
                                 0
                             </span>
                             </div>
@@ -225,61 +234,74 @@
                 </h2>
 
                 <div class="analytic-card-details">
+
                     <div class="analytic-card__item">
                         <div class="analytic-card__item__title">
-                            Total Revenue
+                            Highest Selling Product
                         </div>
-                        <span class="analytic-card__item__value" id="total-revenue">
-                            0
-                        </span>
+
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__subtitle">
+                                Name :
+                            </div>
+                            <span class="analytic-card__item__value" id="highest-prod-name">
+                                0
+                            </span>
+                        </div>
+
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__subtitle">
+                                Quantity :
+                            </div>
+                            <span class="analytic-card__item__value" id="highest-prod-qty">
+                                0
+                            </span>
+                        </div>
+
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__subtitle">
+                                Revenue :
+                            </div>
+                            <span class="analytic-card__item__value" id="highest-prod-rev">
+                                0
+                            </span>
+                        </div>
+
                     </div>
-                    <div class="analytic-card__item">
-                        <div class="analytic-card__item__title">
-                            Highest Revenue
-                        </div>
-
-                        <div class="analytic-card__item__row">
-                            <div class="analytic-card__item__subtitle">
-                                Value :
-                            </div>
-                            <span class="analytic-card__item__value" id="highest-rev-value">
-                                0
-                            </span>
-                        </div>
-
-                        <div class="analytic-card__item__row">
-                            <div class="analytic-card__item__subtitle">
-                                Date :
-                            </div>
-                            <span class="analytic-card__item__value" id="highest-rev-date">
-                                0
-                            </span>
-                        </div>
-
-                    </div>
 
 
                     <div class="analytic-card__item">
                         <div class="analytic-card__item__title">
-                            Lowest Revenue
+                            Lowest Selling Product
                         </div>
+
                         <div class="analytic-card__item__row">
                             <div class="analytic-card__item__subtitle">
-                                Value :
+                                Name :
                             </div>
-                            <span class="analytic-card__item__value" id="lowest-rev-value">
+                            <span class="analytic-card__item__value" id="lowest-prod-name">
                                 0
                             </span>
                         </div>
 
                         <div class="analytic-card__item__row">
                             <div class="analytic-card__item__subtitle">
-                                Date :
+                                Quantity :
                             </div>
-                            <span class="analytic-card__item__value" id="lowest-rev-date">
+                            <span class="analytic-card__item__value" id="lowest-prod-qty">
                                 0
                             </span>
                         </div>
+
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__subtitle">
+                                Revenue :
+                            </div>
+                            <span class="analytic-card__item__value" id="lowest-prod-rev">
+                                0
+                            </span>
+                        </div>
+
                     </div>
 
                     <div class="analytic-card__item">

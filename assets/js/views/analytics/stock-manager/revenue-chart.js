@@ -134,10 +134,33 @@ if (analyticFilterContainer) {
 
     })
 
+    resetDateFilterBtn.addEventListener("click", () => {
+        const today = new Date().toISOString().split('T')[0];
 
-// generating order revenue chart
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+        const now = new Date();
+        const threeMonthsBeforeRaw = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+        const threeMonthsBefore = threeMonthsBeforeRaw.toISOString().split('T')[0];
+
+        // console.log(today)
+        const fromDate = document.getElementById("analytic-from-date");
+        fromDate.setAttribute('max', yesterday);
+        fromDate.value = threeMonthsBefore;
+
+        const toDate = document.getElementById("analytic-to-date");
+        toDate.setAttribute('max', today);
+        toDate.value = today;
+
+        showOrderRevenueChart(threeMonthsBefore, today);
+        showOrderQuantityChart(threeMonthsBefore, today);
+        showProductQuantityChart(threeMonthsBefore, today);
 
 
+    })
+
+
+    //get revenue details and show the chart
     async function showOrderRevenueChart(fromDateFinal, toDateFinal) {
         try {
             // console.log(fromDateFinal)
@@ -158,9 +181,65 @@ if (analyticFilterContainer) {
 
                     const revenues = resData.data.map(item => item.revenue)
 
+                    // console.log(resData.data)
                     // console.log(yearMonthLabels)
                     // console.log(revenues)
-                    if(revenueChart){
+
+                    //to get the total sum
+                    let revSum = 0;
+                    revenues.forEach(function (value) {
+                        //convert the string into number
+                        value = Number(value)
+                        revSum += value
+                    })
+                    const totRevElement = document.getElementById("total-revenue")
+                    totRevElement.innerHTML = "Rs " + revSum.toLocaleString()
+
+
+                    //to get the maximum order revenue and the month
+                    let maxRevenue = -Infinity; // Start with a very low value
+                    let maxOrderedYearMonth;
+
+                    // Iterate over the data array
+                    resData.data.forEach(function (item) {
+                        // Convert the revenue to a number
+                        const revenue = parseFloat(item.revenue);
+
+                        // Check if the current revenue is higher than the maximum
+                        if (revenue >= maxRevenue) {
+                            maxRevenue = revenue;
+                            maxOrderedYearMonth = item.ordered_year_month;
+                        }
+                    });
+
+                    const maxRevValue = document.getElementById("highest-rev-value");
+                    maxRevValue.innerHTML = "Rs " + maxRevenue.toLocaleString();
+                    const maxRevMonth = document.getElementById("highest-rev-month");
+                    maxRevMonth.innerHTML = maxOrderedYearMonth
+
+                    // to get the minimum order revenue and month
+                    let minRevenue = Infinity; // Start with a very high value
+                    let minOrderedYearMonth;
+
+                    resData.data.forEach(function (item) {
+                        // Convert the revenue to a number
+                        const revenue = parseFloat(item.revenue);
+
+                        // Check if the current revenue is lower than the minimum
+                        if (revenue <= minRevenue) {
+                            minRevenue = revenue;
+                            minOrderedYearMonth = item.ordered_year_month;
+                        }
+                    })
+
+                    const minRevValue = document.getElementById("lowest-rev-value");
+                    minRevValue.innerHTML = "Rs " + minRevenue.toLocaleString();
+                    const minRevMonth = document.getElementById("lowest-rev-date");
+                    minRevMonth.innerHTML = minOrderedYearMonth;
+
+
+                    //making of the revenue chart
+                    if (revenueChart) {
                         revenueChart.destroy()
                     }
                     revenueChart = new Chart(orderRevenueCanvas, {
@@ -198,6 +277,7 @@ if (analyticFilterContainer) {
                         }
                     });
 
+                    //reset when zoom
                     resetRevenueChartZoomBtn?.addEventListener("click", () => {
                         resetZoom(revenueChart);
                     })
@@ -221,19 +301,19 @@ if (analyticFilterContainer) {
 
     }
 
-
+    //get product quantity details and show the chart
     async function showOrderQuantityChart(fromDateFinal, toDateFinal) {
         try {
-            const result = await fetch(`/analytics/order-quantity?from=${fromDateFinal}&to=${toDateFinal}`);
+            const result = await fetch(
+                `/analytics/order-quantity?from=${fromDateFinal}&to=${toDateFinal}`
+            );
 
             switch (result.status) {
                 case 200:
-                    /**
-                     *
-                     * @type {{data:{ordered_year_month:string, revenue:number}[]}}
-                     */
+
                     const resData = await result.json()
                     // console.log(resData)
+
 
                     const yearMonthsLabels = resData.data.map(item => item.ordered_year_month)
                     const orderCount = resData.data.map(item => item.order_count)
@@ -242,7 +322,66 @@ if (analyticFilterContainer) {
                     // console.log(yearMonthsLabels)
                     // console.log(orderCount)
                     // console.log(quantityCount)
-                    if(quantityChart){
+
+                    //count total products sell
+                    let totProdCount = 0;
+                    quantityCount.forEach(function (value) {
+                        //convert the string into number
+                        value = Number(value)
+                        totProdCount += value
+                    })
+
+                    const totProductElement = document.getElementById("total-sales-quantity");
+                    totProductElement.innerHTML = totProdCount
+
+                    //count total orders
+                    let totOrderCount = 0;
+                    orderCount.forEach(function (value){
+                        value = Number(value)
+                        totOrderCount += value
+                    })
+                    const totOrderElement = document.getElementById("total-orders-quantity");
+                    totOrderElement.innerHTML = totOrderCount
+
+                    // to get the maximum order quantity per day
+                    let maxQuantity = -Infinity;
+                    let maxOrderedYearMonth;
+
+                    resData.data.forEach(function (item) {
+                        const totQuantity = parseFloat(item.order_count);
+
+                        if (totQuantity >= maxQuantity) {
+                            maxQuantity = totQuantity;
+                            maxOrderedYearMonth = item.ordered_year_month;
+                        }
+                    })
+                    const maxQuantityValue = document.getElementById("highest-orders-on-day");
+                    maxQuantityValue.innerHTML = maxQuantity
+                    const maxQuantityMonth = document.getElementById("highest-order-date");
+                    maxQuantityMonth.innerHTML = maxOrderedYearMonth
+
+                   // to get the average orders per day
+                    const avgOrder = totOrderCount / yearMonthsLabels.length; //to get the day count
+                    const avgOrderValue = document.getElementById("avg-order-per-day");
+                    avgOrderValue.innerHTML =  Math.ceil(avgOrder)
+
+                    // to get the average product quantity per day
+                    const avgQuantity = totProdCount / yearMonthsLabels.length; //to get the day count
+                    const avgQuantityValue = document.getElementById("avg-product-per-day");
+                    avgQuantityValue.innerHTML =  Math.ceil(avgQuantity)
+
+
+
+
+
+
+
+
+
+
+
+
+                    if (quantityChart) {
                         quantityChart.destroy()
                     }
                     quantityChart = new Chart(orderQuantityCanvas, {
@@ -312,8 +451,6 @@ if (analyticFilterContainer) {
 
 
 // to get the product quantity chart
-
-
     async function showProductQuantityChart(fromDateFinal, toDateFinal) {
         try {
 
@@ -321,17 +458,59 @@ if (analyticFilterContainer) {
 
             switch (result.status) {
                 case 200:
-                    /**
-                     * @type {{data:{product_name:string, tot_quantity:number}[]}}
-                     */
+
                     const resData = await result.json()
-                    // console.log(resData)
+                    console.log(resData)
 
                     const productNames = resData.data.map(item => item.product_name)
 
                     const quantities = resData.data.map(item => item.tot_quantity)
 
-                    if(productQuantityChart){
+                    //get the highest sold product
+                    let maxProdQty = -Infinity;
+                    let maxQtyProductName;
+                    let maxQtyProductRev;
+
+                    resData.data.forEach(function (item) {
+                        const totQuantity = parseFloat(item.tot_quantity);
+
+                        if (totQuantity >= maxProdQty) {
+                            maxProdQty = totQuantity;
+                            maxQtyProductName = item.product_name;
+                            maxQtyProductRev = item.prod_rev;
+                        }
+                    })
+                    const maxQtyProductNameElement = document.getElementById("highest-prod-name");
+                    maxQtyProductNameElement.innerHTML = maxQtyProductName
+                    const maxQtyProductQtyElement = document.getElementById("highest-prod-qty");
+                    maxQtyProductQtyElement.innerHTML = maxProdQty
+                    const maxQtyProductRevElement = document.getElementById("highest-prod-rev");
+                    maxQtyProductRevElement.innerHTML = "Rs :  " + Number(maxQtyProductRev)
+
+
+                    let minProdQty = Infinity;
+                    let minQtyProductName;
+                    let minQtyProductRev;
+
+                    resData.data.forEach(function (item) {
+                        const totQuantity = parseFloat(item.tot_quantity);
+
+                        if (totQuantity <= minProdQty) {
+                            minProdQty = totQuantity;
+                            minQtyProductName = item.product_name;
+                            minQtyProductRev = item.prod_rev;
+                        }
+                    })
+                    const minQtyProductNameElement = document.getElementById("lowest-prod-name");
+                    minQtyProductNameElement.innerHTML = minQtyProductName
+                    const minQtyProductQtyElement = document.getElementById("lowest-prod-qty");
+                    minQtyProductQtyElement.innerHTML = minProdQty
+                    const minQtyProductRevElement = document.getElementById("lowest-prod-rev");
+                    minQtyProductRevElement.innerHTML = "Rs :  " + Number(minQtyProductRev)
+
+
+
+                    if (productQuantityChart) {
                         productQuantityChart.destroy()
                     }
                     productQuantityChart = new Chart(productQuantityChartCanvas, {
@@ -360,6 +539,7 @@ if (analyticFilterContainer) {
             })
         }
     }
+
 
 }
 // window.addEventListener("load", showProductQuantityChart(fromDateFinal, toDateFinal));

@@ -106,10 +106,10 @@ class AnalyticsController
 //            var_dump($toDate);
 
             $orderModel = new Order();
-            $revenueData = $orderModel->getOrderRevenueData(
+            $result = $orderModel->getOrderRevenueData(
                 from: $fromDate, to: $toDate
             );
-            if (is_string($revenueData)) {
+            if (is_string($result)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -118,7 +118,7 @@ class AnalyticsController
             $res->setStatusCode(200);
             return $res->json([
                 "message" => "Success",
-                "data" => $revenueData
+                "data" => $result['revenueData'],
             ]);
         }
         $res->setStatusCode(401);

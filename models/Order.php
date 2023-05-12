@@ -475,7 +475,10 @@ class Order
             $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
 //            var_dump($revenueData);
 
-            return $revenueData;
+
+            return [
+                'revenueData' => $revenueData
+            ];
         } catch (PDOException|Exception $e) {
             return "Failed to get order revenue data : " . $e->getMessage();
         }
@@ -504,8 +507,7 @@ class Order
             $statement->execute();
             $orderCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $orderCountData;
-        }
-        catch (PDOException|Exception $e) {
+        } catch (PDOException|Exception $e) {
             return "Failed to get order quantity data : " . $e->getMessage();
         }
     }
@@ -520,7 +522,8 @@ class Order
             $statement = $this->pdo->prepare(
                 "SELECT 
                         p.name as product_name,
-                        SUM(ohp.quantity) AS tot_quantity
+                        SUM(ohp.quantity) AS tot_quantity,
+                        SUM(ohp.price_at_order)/100 AS prod_rev
                         FROM orderhasproduct ohp
                         JOIN product p ON ohp.item_code = p.item_code
                         JOIN `order` o ON ohp.order_no = o.order_no
@@ -529,13 +532,12 @@ class Order
                         GROUP BY p.item_code;");
 
             $statement->bindValue(":from", $from);
-            $statement->bindValue(":to",$to);
+            $statement->bindValue(":to", $to);
 
             $statement->execute();
             $productCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $productCountData;
-        }
-        catch (PDOException|Exception $e) {
+        } catch (PDOException|Exception $e) {
             return "Failed to get product quantity data : " . $e->getMessage();
         }
 
