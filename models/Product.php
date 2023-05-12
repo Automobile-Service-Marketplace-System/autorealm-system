@@ -236,12 +236,116 @@ class Product
 
     }
 
-    public function getProductsForHomePage(int|null $count = null, int|null $page = 1): array
+
+    public function getProductsForHomePage(
+        int|null $count = null,
+        int|null $page = 1,
+        string   $searchTerm = null,
+        int|null $minPrice = null,
+        int|null $maxPrice = null,
+        array    $options = [
+            'category_name' => null,
+            'brand_name' => null,
+            'product_type' => null,
+            'status' => null,
+            'availability' => null
+        ]
+    ): array|string
     {
+//        DevOnly::prettyEcho($minPrice, $maxPrice);
+//        DevOnly::prettyEcho($options);
+//        DevOnly::prettyEcho($searchTerm);
+//        DevOnly::prettyEcho($count);
+//        DevOnly::prettyEcho($page);
+//        exit();
+//
+//        var_dump($options);
+//        var_dump($searchTerm);
+//        var_dump($minPrice);
+//        var_dump($maxPrice);
+//
+//        exit();
+
+        DevOnly::prettyEcho($options);
+//        exit();
+
+        $whereClause = "";
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+
+                switch ($option_key) {
+                    case "category_name":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "c.name LIKE :category_name";
+                                $options['category_name'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "c.name = :category_name";
+                                break;
+                        }
+                        break;
+                    case "brand_name":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "b.brand_name LIKE :brand_name";
+                                $options['brand_name'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "b.brand_name = :brand_name";
+                                break;
+                        }
+                        break;
+                    case "product_type":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "p.product_type LIKE :product_type";
+                                $options['product_type'] = "%";
+                                break;
+                            default:
+                                $conditions[] = "p.product_type = :product_type";
+                                break;
+                        }
+                        break;
+                    case "status":
+                        $conditions[] = "p.is_discontinued = FALSE";
+                        break;
+                    case "availability":
+                        $conditions[] = "p.quantity > 0";
+                        break;
+                }
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = " WHERE " . implode(" AND ", $conditions);
+        }
+
+        if ($searchTerm !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.name LIKE :search_term" : " WHERE p.name LIKE :search_term AND p.is_discontinued = FALSE";
+        }
+
+        if ($minPrice !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.price >= :min_price" : " WHERE p.price >= :min_price AND p.is_discontinued = FALSE";
+        }
+
+        if ($maxPrice !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND p.price <= :max_price" : " WHERE p.price <= :max_price AND p.is_discontinued = FALSE";
+        }
+
+//        var_dump($whereClause);
+
+
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $products = $this->pdo->query(
-            "SELECT 
+
+        DevOnly::prettyEcho($whereClause);
+//        exit();
+
+
+        $query = "SELECT 
                         p.item_code as ID, 
                         p.name as Name, 
                         c.name as Category,
@@ -253,17 +357,97 @@ class Product
 
                     FROM product p 
                         
-                        INNER JOIN model m on p.model_id = m.model_id 
-                        INNER JOIN brand b on p.brand_id = b.brand_id 
-                        INNER JOIN category c on p.category_id = c.category_id
+                    INNER JOIN model m on p.model_id = m.model_id 
+                    INNER JOIN brand b on p.brand_id = b.brand_id 
+                    INNER JOIN category c on p.category_id = c.category_id
             
-                    WHERE  p.quantity > 0 ORDER BY p.item_code $limitClause $pageClause"
+                    $whereClause
+                    ORDER BY p.name 
+                    $limitClause $pageClause";
 
-        )->fetchAll(PDO::FETCH_ASSOC);
+        var_dump($query);
 
-        $totalProducts = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
-        )->fetch(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare($query);
+
+        $firstThirdOptions = array_slice($options, 0, 3);
+        DevOnly::prettyEcho($firstThirdOptions);
+
+        foreach ($firstThirdOptions as $option_key => $option_value) {
+            if ($option_value !== null) {
+                $statement->bindValue(":$option_key", $option_value);
+            }
+        }
+
+        DevOnly::prettyEcho("Got here");
+//        exit();
+
+        if ($searchTerm !== null) {
+            $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+        }
+
+        if ($minPrice !== null) {
+            DevOnly::prettyEcho("min price is $minPrice");
+            $statement->bindValue(":min_price", $minPrice);
+        }
+
+        if ($maxPrice !== null) {
+            DevOnly::prettyEcho("max price is $maxPrice");
+            $statement->bindValue(":max_price", $maxPrice);
+        }
+
+        DevOnly::prettyEcho("Got here");
+
+
+        try {
+            $statement->execute();
+            $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+            DevOnly::prettyEcho($products);
+//            exit();
+//
+            $query2 = "SELECT
+                       COUNT(*) as total
+
+                        FROM product p
+    
+                        INNER JOIN model m on p.model_id = m.model_id
+                        INNER JOIN brand b on p.brand_id = b.brand_id
+                        INNER JOIN category c on p.category_id = c.category_id
+    
+                        $whereClause";
+
+            $totStatement = $this->pdo->prepare($query2);
+
+            foreach ($firstThirdOptions as $option_key => $option_value) {
+                if ($option_value !== null) {
+                    $totStatement->bindValue(":$option_key", $option_value);
+                }
+            }
+
+            if ($searchTerm !== null) {
+                $totStatement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            if ($minPrice !== null) {
+                $totStatement->bindValue(":min_price", $minPrice);
+            }
+
+            if ($maxPrice !== null) {
+                $totStatement->bindValue(":max_price", $maxPrice);
+            }
+
+            $totStatement->execute();
+
+            $totalProducts = $totStatement->fetch(PDO::FETCH_ASSOC);
+
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+
+//        $totalProducts = $this->pdo->query(
+//            "SELECT COUNT(*) as total FROM product WHERE quantity > 0"
+//        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "products" => $products,

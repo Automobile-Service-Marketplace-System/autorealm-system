@@ -150,3 +150,30 @@
 .product-filters__dropdown--active {
    height: 280px !important;
 }
+
+
+
+/***** for the filters in site**/
+
+.site-price-range{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.site-price-range-input{
+    width: 200px;
+
+}
+
+.site-price-range input::placeholder{
+    text-align: center;
+
+}
+
+.product-availability{
+    text-align: right;
+    align-items: center;
+}
