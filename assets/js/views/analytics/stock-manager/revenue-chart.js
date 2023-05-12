@@ -134,8 +134,34 @@ if (analyticFilterContainer) {
 
     })
 
+    resetDateFilterBtn.addEventListener("click", () => {
+        const today = new Date().toISOString().split('T')[0];
+
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+        const now = new Date();
+        const threeMonthsBeforeRaw = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+        const threeMonthsBefore = threeMonthsBeforeRaw.toISOString().split('T')[0];
+
+        // console.log(today)
+        const fromDate = document.getElementById("analytic-from-date");
+        fromDate.setAttribute('max', yesterday);
+        fromDate.value = threeMonthsBefore;
+
+        const toDate = document.getElementById("analytic-to-date");
+        toDate.setAttribute('max', today);
+        toDate.value = today;
+
+        showOrderRevenueChart(threeMonthsBefore, today);
+        showOrderQuantityChart(threeMonthsBefore, today);
+        showProductQuantityChart(threeMonthsBefore, today);
+
+
+    })
+
 
 // generating order revenue chart
+
 
 
     async function showOrderRevenueChart(fromDateFinal, toDateFinal) {
@@ -158,8 +184,63 @@ if (analyticFilterContainer) {
 
                     const revenues = resData.data.map(item => item.revenue)
 
+                    // console.log(resData.data)
                     // console.log(yearMonthLabels)
                     // console.log(revenues)
+
+                    //to get the total sum
+                    let revSum = 0;
+                    revenues.forEach(function(value){
+                        //convert the string into number
+                        value = Number(value)
+                        revSum += value
+                    })
+                    const totRevElement = document.getElementById("total-revenue")
+                    totRevElement.innerHTML = "Rs " + revSum.toLocaleString()
+
+
+                    //to get the maximum order revenue and the month
+                    let maxRevenue = -Infinity; // Start with a very low value
+                    let maxOrderedYearMonth;
+
+                    // Iterate over the data array
+                    resData.data.forEach(function(item) {
+                        // Convert the revenue to a number
+                        const revenue = parseFloat(item.revenue);
+
+                        // Check if the current revenue is higher than the maximum
+                        if (revenue > maxRevenue) {
+                            maxRevenue = revenue;
+                            maxOrderedYearMonth = item.ordered_year_month;
+                        }
+                    });
+
+                    const maxRevValue = document.getElementById("highest-rev-value");
+                    maxRevValue.innerHTML = "Rs " + maxRevenue.toLocaleString();
+                    const maxRevMonth = document.getElementById("highest-rev-month");
+                    maxRevMonth.innerHTML = maxOrderedYearMonth
+
+                    // to get the minimum order revenue and month
+                    let minRevenue = Infinity; // Start with a very high value
+                    let minOrderedYearMonth;
+
+                    resData.data.forEach(function(item) {
+                        // Convert the revenue to a number
+                        const revenue = parseFloat(item.revenue);
+
+                        // Check if the current revenue is lower than the minimum
+                        if (revenue < minRevenue) {
+                            minRevenue = revenue;
+                            minOrderedYearMonth = item.ordered_year_month;
+                        }
+                    })
+
+                    const minRevValue = document.getElementById("lowest-rev-value");
+                    minRevValue.innerHTML = "Rs " + minRevenue.toLocaleString();
+                    const minRevMonth = document.getElementById("lowest-rev-date");
+                    minRevMonth.innerHTML = minOrderedYearMonth;
+
+
                     if(revenueChart){
                         revenueChart.destroy()
                     }
@@ -360,6 +441,7 @@ if (analyticFilterContainer) {
             })
         }
     }
+
 
 }
 // window.addEventListener("load", showProductQuantityChart(fromDateFinal, toDateFinal));

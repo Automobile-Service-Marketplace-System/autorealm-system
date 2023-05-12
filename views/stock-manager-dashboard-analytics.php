@@ -14,7 +14,7 @@
         </div>
 
         <div class="analytic-filter-actions">
-            <button class="btn btn--thin btn--danger" id="analytic-filter-reset" type="reset">Reset</button>
+            <button class="btn btn--thin btn--danger" id="analytic-filter-reset" type="button">Reset</button>
             <button class="btn btn--thin" id="analytic-filter-apply" type="button">Apply</button>
         </div>
 
@@ -66,14 +66,14 @@
                                 </div>
                                 <span class="analytic-card__item__value" id="highest-rev-value">
                                 0
-                            </span>
+                                </span>
                             </div>
 
                             <div class="analytic-card__item__row">
                                 <div class="analytic-card__item__subtitle">
                                     Date :
                                 </div>
-                                <span class="analytic-card__item__value" id="highest-rev-date">
+                                <span class="analytic-card__item__value" id="highest-rev-month">
                                 0
                             </span>
                             </div>
