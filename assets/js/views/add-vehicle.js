@@ -37,19 +37,18 @@ const addVehicleForm =
             
       </div><div class='form-item '>
             <label for='manufactured_year'>Manufactured Year.<sup>*</sup></label>
-            <input type='date' name='manufactured_year' id='manufactured_year' placeholder='' required  value=''   >
-            
+            <select name='manufactured_year' id='manufactured_year' placeholder='' required>
+            </select>
+
       </div><div class='form-item '>
             <label for='brand'>Brand.<sup>*</sup></label>
             <select  name='brand' id='brand'  required > 
-                <option value='2' >Caltex</option><option value='5' >Fairbay</option><option value='3' >Honda</option><option value='8' >Mitsubishi</option><option value='1' selected>Mobil</option><option value='7' >Suzuki</option><option value='6' >Teyes</option><option value='4' >Toyota</option>
+          
             </select>
             
-      </div><div class='form-item '>
-            <label for='model_year'>Model Year.<sup>*</sup></label>
-            <input type='date' name='model_year' id='model_year' placeholder='' required  value=''   >
-            
-      </div><div class='form-item '>
+      </div>
+     
+      <div class='form-item '>
             <label for='vehicle_type'>Vehicle Type.<sup>*</sup></label>
             <select  name='vehicle_type' id='vehicle_type'  required > 
                 <option value='Bike' selected>Bike</option><option value='Car' >Car</option><option value='Jeep' >Jeep</option><option value='Van' >Van</option><option value='Lorry' >Lorry</option><option value='Bus' >Bus</option><option value='Other'>Other</option>
@@ -62,7 +61,7 @@ const addVehicleForm =
       </div><div class='form-item '>
             <label for='model'>Model.<sup>*</sup></label>
             <select  name='model' id='model'  required > 
-                <option value='1' selected>10w-30</option><option value='2' >15w-40</option><option value='3' >A-898</option><option value='4' >A-280</option><option value='5' >A-196</option><option value='6' >KSP-90</option><option value='9' >BP-0222</option><option value='10' >YZZE1</option><option value='11' >LK-111539</option><option value='12' >X1</option><option value='13' >CIVIC EX</option><option value='14' >Corolla</option><option value='15' >Gixxer</option><option value='16' >Lancer</option>
+             
             </select>
             
       </div><div class='form-item '>
@@ -168,6 +167,49 @@ addVehicleForm?.addEventListener("reset", (e) => {
 });
 
 addVehicleButton?.addEventListener("click", () => {
+  /**
+   * @type {Array<{model_id: number, is_product_model: 0|1, is_vehicle_model: 0|1, model_name: string}>}
+   */
+  const models = JSON.parse(localStorage.getItem("models") || "[]");
+
+  const modelOptions = models
+    .filter((m) => m.is_vehicle_model === 1)
+    .map(function (mod) {
+      return `<option value="${mod.model_id}">${mod.model_name}</option>`;
+    })
+    .join("");
+
+  /**
+   * @type {Array<{brand_id: number, is_product_brand: 0|1, is_vehicle_brand: 0|1, brand_name: string}>}
+   */
+  const brands = JSON.parse(localStorage.getItem("brands") || "[]");
+  const brandOptions = brands
+    .filter((b) => b.is_vehicle_brand === 1)
+    .map(function (brand) {
+      return `<option value = "${brand.brand_id}">${brand.brand_name}</option> `;
+    })
+    .join("");
+
+  const modelSelectElement = addVehicleForm.querySelector("#model");
+  modelSelectElement.innerHTML = modelOptions;
+
+  const brandSelectElement = addVehicleForm.querySelector("#brand");
+  brandSelectElement.innerHTML = brandOptions;
+
+  const years = []
+  const maxYear = new Date().getFullYear()
+
+  for (let index = maxYear; index >= 1900; index--) {
+    years.push(index)
+  }
+
+  const modelYearOptions = years.map(y => {
+    return `<option value="${y}">${y}</option>`
+  })
+
+  const manufacturedYearSelectElement = addVehicleForm.querySelector("#manufactured_year");
+  manufacturedYearSelectElement.innerHTML = modelYearOptions;
+
   Modal.show({
     content: addVehicleForm,
     closable: false,

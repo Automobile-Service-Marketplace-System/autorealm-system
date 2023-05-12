@@ -96,7 +96,11 @@ class VehiclesController
             $customer = $customerModel->getCustomerByID((int)$query["id"]);
 
             return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
-                pageParams: ["vehicles" => $vehicles, 'customer' => $customer],
+                pageParams: [
+                    "vehicles" => $vehicles, 
+                    'customer' => $customer,  
+                    'brands' => $brands,
+                    'models' => $models],
                 layoutParams: [
                     'title' => 'Vehicles',
                     'pageMainHeading' => 'Vehicles',
@@ -164,14 +168,14 @@ class VehiclesController
             $vehicles = $vehicleModel->getVehiclesByID((int)$query["id"]);
 
             $modelModel = new Model();
-            $rawModels = $modelModel->getModels();
+            $rawModels = $modelModel->getVehicleModels();
             $models = [];
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
 
             $modelBrand = new Brand();
-            $rawBrands = $modelBrand->getBrands();
+            $rawBrands = $modelBrand->getVehicleBrands();
             $brands = [];
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
