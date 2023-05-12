@@ -8,6 +8,9 @@
     </button>
     <button class="flex gap-8" id="manually-add-customer-details-btn">
         <i class="fa-solid fa-plus"></i>
+        <span id="manually-add-customer-details-btn__cancel">
+        <i class="fa-solid fa-xmark cancel-icon"></i>
+        </span>
         Manually enter customer details
     </button>
 </section>

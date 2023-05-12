@@ -1,65 +1,22 @@
 import {JobSelector} from "../../components/JobSelector"
 import Notifier from "../../components/Notifier";
-
-/**
- * @type {HTMLButtonElement}
- */
-const loadFromJobBtn = document.querySelector("#load-from-job-btn")
+import {
+    customerName,
+    customerNameInput,
+    customerEmailInput,
+    customerAddressInput,
+    customerPhoneInput,
+    customerAddress,
+    customerEmail,
+    customerPhone,
+    loadFromJobBtn
+} from "./customer-detail-elements";
 
 if (loadFromJobBtn) {
-
-
-    /**
-     * @type {HTMLParagraphElement}
-     */
-    const customerName = document.querySelector("#customer-name")
-    /**
-     * @type {HTMLInputElement}
-     */
-    const customerNameInput = document.querySelector("#customer_name")
-    /**
-     * @type {HTMLParagraphElement}
-     */
-    const customerAddress = document.querySelector("#customer-address")
-    /**
-     * @type {HTMLInputElement}
-     */
-    const customerAddressInput = document.querySelector("#customer_address")
-    /**
-     * @type {HTMLParagraphElement}
-     */
-    const customerPhone = document.querySelector("#customer-phone")
-    /**
-     * @type {HTMLInputElement}
-     * @type {Element}
-     */
-    const customerPhoneInput = document.querySelector("#customer_phone")
-    /**
-     * @type {HTMLParagraphElement}
-     */
-    const customerEmail = document.querySelector("#customer-email")
-    /**
-     * @type {Element}
-     */
-    const customerEmailInput = document.querySelector("#customer_email")
-
     loadFromJobBtn.addEventListener('click', async () => {
 
         if (loadFromJobBtn.classList.contains("load-from-job-btn--selected")) {
-
-            loadFromJobBtn.classList.remove('load-from-job-btn--selected')
-
-            customerName.textContent = ''
-            customerNameInput.value = ''
-
-            customerAddress.textContent = ''
-            customerAddressInput.value = ''
-
-            customerPhone.textContent = ''
-            customerPhoneInput.value = ''
-
-            customerEmail.textContent = ''
-            customerEmailInput.value = ''
+            resetCustomerInfo()
         } else {
 
             const jobSelector = await new JobSelector();
@@ -125,12 +82,21 @@ if (loadFromJobBtn) {
             return null
         }
     }
-}
 
-/**
- * @typedef {Object} CustomerInformation
- * @property {string} address
- * @property {string} contactNo
- * @property {string} customerName
- * @property {string} email
- */
+    function resetCustomerInfo() {
+
+        loadFromJobBtn.classList.remove('load-from-job-btn--selected')
+
+        customerName.textContent = 'N/A'
+        customerNameInput.value = ''
+
+        customerAddress.textContent = 'N/A'
+        customerAddressInput.value = ''
+
+        customerPhone.textContent = 'N/A'
+        customerPhoneInput.value = ''
+
+        customerEmail.textContent = 'N/A'
+        customerEmailInput.value = ''
+    }
+}
