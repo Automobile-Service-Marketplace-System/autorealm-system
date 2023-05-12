@@ -34,7 +34,7 @@ class Invoice
                 job_card_id as 'JobCard ID'
             FROM 
                 invoice
-            ORDER BY invoice_no $limitClause $pageClause"
+            ORDER BY invoice_no DESC $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
 
         $totalInvoices = $this->pdo->query(
