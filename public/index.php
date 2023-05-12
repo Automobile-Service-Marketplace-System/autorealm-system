@@ -210,7 +210,7 @@ if ($isInternal) {
     $app->router->get(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
     $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
     $app->router->get(path: "/foremen", callback: [AppointmentsController::class, 'getForemen']);
-    $app->router->get(path: "/office-staff/overview", callback: [OverviewController::class, 'getOfficeStaffOverviewPage']);
+    // $app->router->get(path: "/office-staff/overview", callback: [OverviewController::class, 'getOfficeStaffOverviewPage']);
     
 //    $app
 

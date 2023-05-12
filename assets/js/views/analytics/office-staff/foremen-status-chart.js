@@ -1,5 +1,3 @@
-import Chart from "chart.js";
-
 var ctx = document.getElementById("foremen-status-canvas").getContext("2d");
 
 var chart = new Chart(ctx, {

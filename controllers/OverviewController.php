@@ -86,8 +86,6 @@ class OverviewController
 
     public function getOfficeStaffOverviewPage(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-
             $customer = new Customer();
             $totalCustomers = $customer->getTotalCustomers();
             // var_dump($totalCustomers);
@@ -111,7 +109,5 @@ class OverviewController
                 "pageMainHeading" => "Overview",
                 "officeStaffId" => $req->session->get("user_id"),
             ]);
-        }
-        return $res->redirect(path: "/login");
     }
 }
