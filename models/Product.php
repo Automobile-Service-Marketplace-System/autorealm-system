@@ -26,6 +26,29 @@ class Product
         $this->body = $body;
     }
 
+//     public function getSummaryDetails():array|string{
+//         try {
+//             $statement = $this->pdo->prepare(
+//                 "SELECT 
+//                         DATE(p.date_time) AS Date,
+//                         spr.unit_price AS UnitPrice,
+//                         ihp.price_at_invoice AS PriceInvoice,
+//                         ohp.price_at_order AS PriceOrder
+//                         FROM `product` p
+//                         JOIN orderhasproduct ohp ON p.item_code = ohp.item_code
+//                         JOIN invoice_has_product ihp ON ihp.item_code = p.item_code
+//                         JOIN stockpurchasereport spr ON p.item_code = spr.item_code
+//                         GROUP BY ordered_year_month
+//                         ORDER BY ordered_year_month;");
+//             $statement->execute();
+//             $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
+// //            var_dump($revenueData);
+
+//             return $revenueData;
+//         } catch (PDOException|Exception $e) {
+//             return "Failed to get order revenue data : " . $e->getMessage();
+//         }
+//     }
     public function getProducts(
         int|null $count = null,
         int|null $page = 1,
@@ -698,4 +721,5 @@ class Product
             return $e->getMessage();
         }
     }
+
 }

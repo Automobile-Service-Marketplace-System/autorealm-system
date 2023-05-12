@@ -1,0 +1,12 @@
+.admin-analytics__container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;  
+}
+
+.admin-analytics__container__title{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgba(var(--dark), 1);
+    margin-top: 1rem;
+}
