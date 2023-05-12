@@ -507,21 +507,27 @@ class JobCard
     public function officeCreateJobCard(): bool|string
     {
         try {
+
+            $statement = $this->pdo->prepare("SELECT vin from vehicle WHERE reg_no = :vehicle_reg_no");
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->execute();
+            $vin = $statement->fetch()['vin'];
+
             $query = "INSERT INTO 
                             jobcard(
-                                vehicle_reg_no,
+                                vin,
                                 mileage,
                                 customer_id,
                                 employee_id)
                     VALUES(
-                                :vehicle_reg_no,
+                                :vin,
                                 :mileage,
                                 :customer_id,
                                 :employee_id)
                             ";
 
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":vin", $vin);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
             $statement->bindValue(":employee_id", $this->body["foreman_id"]);
