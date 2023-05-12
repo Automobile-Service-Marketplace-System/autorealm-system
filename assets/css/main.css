@@ -88,6 +88,7 @@
 @import "views/view-all-jobs.css";
 @import "views/view-product.css";
 @import "views/stockmanager-analytics.css";
+@import "views/admin-analytics.css";
 
 body{
   font-family: "Nunito", sans-serif;
