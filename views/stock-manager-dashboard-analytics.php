@@ -41,7 +41,7 @@
                     <canvas id="order-revenue-canvas"></canvas>
                 </div>
 
-                <div class="analytic-card order-details-card" id="analytic-revenue-card">
+                <div class="analytic-card" id="analytic-revenue-card">
                     <h2 class="item-summery-title order-details-title-under">
                         Revenue Details Summery
                     </h2>
@@ -128,7 +128,7 @@
                     <canvas id="order-quantity-canvas">=</canvas>
                 </div>
 
-                <div class="analytic-card order-details-card" id="analytic-quantity-card">
+                <div class="analytic-card" id="analytic-quantity-card">
                     <h2 class="item-summery-title order-details-title-under">
                         Quantity Details Summery
                     </h2>
@@ -219,7 +219,7 @@
                 </h2>
 
             </div>
-            <div class="order-details-card" id="product-quantity-analytic-details">
+            <div id="product-quantity-analytic-details">
                 <h2 class="item-summery-title order-details-title-under">
                     Revenue Details Summery
                 </h2>

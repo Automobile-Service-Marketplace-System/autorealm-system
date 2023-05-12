@@ -20,25 +20,12 @@ import Zoom, {resetZoom} from 'chartjs-plugin-zoom';
 import Notifier from "../../../components/Notifier";
 // import {colorSchemes} from "chartjs-plugin-colorschemes";
 
-Chart.register(
-    PieController,
-    LineController,
-    DoughnutController,
-    ArcElement,
-    PointElement,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    Tooltip,
-    Legend,
-    Filler,
-    Zoom,
-    Colors,
-)
+Chart.register(PieController, LineController, DoughnutController, ArcElement, PointElement, LineElement, CategoryScale, LinearScale, Tooltip, Legend, Filler, Zoom, Colors,)
 
-
+//containers
 const analyticFilterContainer = document.querySelector("#analytic-filter-wrapper");
 
+// canvases
 /**
  * @type {HTMLCanvasElement | null}
  */
@@ -49,7 +36,13 @@ const orderRevenueCanvas = document.querySelector("#order-revenue-canvas");
  */
 const orderQuantityCanvas = document.querySelector("#order-quantity-canvas");
 
+/**
+ * @type {HTMLCanvasElement | null}
+ */
+const productQuantityChartCanvas = document.querySelector("#ordered-products-quantity-canvas");
 
+
+// buttons
 /**
  * @type {HTMLButtonElement}
  */
@@ -60,20 +53,40 @@ const resetRevenueChartZoomBtn = document.querySelector("#reset-revenue-value-ch
  */
 const resetRevenueQuantityZoomBtn = document.querySelector("#reset-revenue-quantity-chart");
 
+/**
+ * @type {HTMLButtonElement}
+ */
+const applyDateFilterBtn = document.querySelector("#analytic-filter-apply");
 
+/**
+ * @type {HTMLButtonElement}
+ */
+const resetDateFilterBtn = document.querySelector("#analytic-filter-reset");
+
+
+// charts
 /**
  * @type {Chart | null}
  */
 let revenueChart = null
+
 /**
  * @type {Chart | null}
  */
 let quantityChart = null
 
+/**
+ * @type {Chart | null}
+ */
+let productQuantityChart = null
+
+
+let fromDateFinal = null;
+let toDateFinal = null;
 
 //get today's date and get the date from and to from the analytic filter
 if (analyticFilterContainer) {
-    window.addEventListener("load", function () {
+    window.addEventListener("load", async function () {
         const today = new Date().toISOString().split('T')[0];
 
         const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
@@ -91,16 +104,45 @@ if (analyticFilterContainer) {
         toDate.setAttribute('max', today);
         toDate.value = today;
 
+        // console.log(applyDateFilterBtn)
+
+        fromDateFinal = fromDate.value
+        toDateFinal = toDate.value
+
+        // console.log(fromDateFinal)
+        // console.log(toDateFinal)
+
+        await showOrderRevenueChart(fromDateFinal, toDateFinal);
+        await showOrderQuantityChart(fromDateFinal, toDateFinal);
+        await showProductQuantityChart(fromDateFinal, toDateFinal);
+
+
     })
-}
+
+
+    applyDateFilterBtn.addEventListener("click", () => {
+        fromDateFinal = document.getElementById("analytic-from-date").value;
+        toDateFinal = document.getElementById("analytic-to-date").value;
+
+        console.log(fromDateFinal)
+        console.log(toDateFinal)
+
+        showOrderRevenueChart(fromDateFinal, toDateFinal);
+        showOrderQuantityChart(fromDateFinal, toDateFinal);
+        showProductQuantityChart(fromDateFinal, toDateFinal);
+
+
+    })
 
 
 // generating order revenue chart
-if (orderRevenueCanvas) {
 
-    async function showOrderRevenueChart() {
+
+    async function showOrderRevenueChart(fromDateFinal, toDateFinal) {
         try {
-            const result = await fetch("/analytics/order-revenue")
+            // console.log(fromDateFinal)
+            // console.log(toDateFinal)
+            const result = await fetch(`/analytics/order-revenue?from=${fromDateFinal}&to=${toDateFinal}`)
             // console.log(result)
             switch (result.status) {
                 case 200:
@@ -112,22 +154,18 @@ if (orderRevenueCanvas) {
                     const resData = await result.json()
                     // console.log(resData)
 
-                    const yearMonthLabels = resData.data.map(
-                        item => item.ordered_year_month
-                    )
+                    const yearMonthLabels = resData.data.map(item => item.ordered_year_month)
 
-                    const revenues = resData.data.map(
-                        item => item.revenue
-                    )
+                    const revenues = resData.data.map(item => item.revenue)
 
                     // console.log(yearMonthLabels)
                     // console.log(revenues)
-
-                    const revenueChart = new Chart(orderRevenueCanvas, {
-                        type: 'line',
-                        data: {
-                            labels: yearMonthLabels,
-                            datasets: [{
+                    if(revenueChart){
+                        revenueChart.destroy()
+                    }
+                    revenueChart = new Chart(orderRevenueCanvas, {
+                        type: 'line', data: {
+                            labels: yearMonthLabels, datasets: [{
                                 label: 'Revenue',
                                 data: revenues,
                                 fill: true,
@@ -137,23 +175,18 @@ if (orderRevenueCanvas) {
                                 tension: 0.1,
                                 borderWidth: 0.5,
                             }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
+                        }, options: {
+                            responsive: true, plugins: {
                                 zoom: {
                                     zoom: {
                                         wheel: {
                                             enabled: true,
-                                        },
-                                        pinch: {
+                                        }, pinch: {
                                             enabled: true
-                                        },
-                                        mode: 'x',
+                                        }, mode: 'x',
                                     }
                                 }
-                            },
-                            scales: {
+                            }, scales: {
                                 x: {
                                     ticks: {
                                         maxTicksLimit: 10, // Set the maximum number of x-axis labels to display
@@ -178,25 +211,20 @@ if (orderRevenueCanvas) {
         } catch (e) {
             console.log(e)
             Notifier.show({
-                text: e.message,
-                header: "Error",
-                duration: 30000,
-                closable: false,
-                type: "danger"
+                text: e.message, header: "Error", duration: 30000, closable: false, type: "danger"
             })
         }
+
+
+        // window.addEventListener("load", showOrderRevenueChart(fromDateFinal, toDateFinal));
+
+
     }
 
-    //call when page is loading
-    window.addEventListener("load", showOrderRevenueChart)
 
-}
-
-if (orderQuantityCanvas) {
-
-    async function showOrderQuantityChart() {
+    async function showOrderQuantityChart(fromDateFinal, toDateFinal) {
         try {
-            const result = await fetch("/analytics/order-quantity");
+            const result = await fetch(`/analytics/order-quantity?from=${fromDateFinal}&to=${toDateFinal}`);
 
             switch (result.status) {
                 case 200:
@@ -207,25 +235,19 @@ if (orderQuantityCanvas) {
                     const resData = await result.json()
                     // console.log(resData)
 
-                    const yearMonthsLabels = resData.data.map(
-                        item => item.ordered_year_month
-                    )
-                    const orderCount = resData.data.map(
-                        item => item.order_count
-                    )
-                    const quantityCount = resData.data.map(
-                        item => item.tot_quantity
-                    )
+                    const yearMonthsLabels = resData.data.map(item => item.ordered_year_month)
+                    const orderCount = resData.data.map(item => item.order_count)
+                    const quantityCount = resData.data.map(item => item.tot_quantity)
 
                     // console.log(yearMonthsLabels)
                     // console.log(orderCount)
                     // console.log(quantityCount)
-
-                    const quantityChart = new Chart(orderQuantityCanvas, {
-                        type: 'line',
-                        data: {
-                            labels: yearMonthsLabels,
-                            datasets: [{
+                    if(quantityChart){
+                        quantityChart.destroy()
+                    }
+                    quantityChart = new Chart(orderQuantityCanvas, {
+                        type: 'line', data: {
+                            labels: yearMonthsLabels, datasets: [{
                                 label: 'Order Count',
                                 data: orderCount,
                                 fill: true,
@@ -234,34 +256,28 @@ if (orderQuantityCanvas) {
                                 borderColor: 'rgb(255,0,0)',
                                 tension: 0.2,
                                 borderWidth: 0.5,
-                            },
-                                {
-                                    label: 'Quantity Count',
-                                    data: quantityCount,
-                                    fill: true,
-                                    radius: 2,
-                                    backgroundColor: 'rgba(255, 193, 7, 0.5)',
-                                    borderColor: 'rgba(255, 193, 7, 1)',
-                                    tension: 0.1,
-                                    borderWidth: 0.5,
-                                }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
+                            }, {
+                                label: 'Quantity Count',
+                                data: quantityCount,
+                                fill: true,
+                                radius: 2,
+                                backgroundColor: 'rgba(255, 193, 7, 0.5)',
+                                borderColor: 'rgba(255, 193, 7, 1)',
+                                tension: 0.1,
+                                borderWidth: 0.5,
+                            }]
+                        }, options: {
+                            responsive: true, plugins: {
                                 zoom: {
                                     zoom: {
                                         wheel: {
                                             enabled: true,
-                                        },
-                                        pinch: {
+                                        }, pinch: {
                                             enabled: true
-                                        },
-                                        mode: 'x',
+                                        }, mode: 'x',
                                     }
                                 }
-                            },
-                            scales: {
+                            }, scales: {
                                 x: {
                                     ticks: {
                                         maxTicksLimit: 10, // Set the maximum number of x-axis labels to display
@@ -287,38 +303,21 @@ if (orderQuantityCanvas) {
         } catch (e) {
             console.log(e)
             Notifier.show({
-                text: e.message,
-                header: "Error",
-                duration: 30000,
-                closable: false,
-                type: "danger"
+                text: e.message, header: "Error", duration: 30000, closable: false, type: "danger"
             });
         }
     }
 
-    window.addEventListener("load", showOrderQuantityChart)
-
-}
+// window.addEventListener("load", showOrderQuantityChart(fromDateFinal, toDateFinal)  );
 
 
 // to get the product quantity chart
 
-/**
- * @type {HTMLCanvasElement | null}
- */
-const productQuantityChartCanvas = document.querySelector("#ordered-products-quantity-canvas");
 
-/**
- * @type {Chart | null}
- */
-let productQuantityChart = null
-
-if (productQuantityChartCanvas) {
-
-    async function showProductQuantityChart() {
+    async function showProductQuantityChart(fromDateFinal, toDateFinal) {
         try {
 
-            const result = await fetch("/analytics/product-quantity")
+            const result = await fetch(`/analytics/product-quantity?from=${fromDateFinal}&to=${toDateFinal}`)
 
             switch (result.status) {
                 case 200:
@@ -328,28 +327,22 @@ if (productQuantityChartCanvas) {
                     const resData = await result.json()
                     // console.log(resData)
 
-                    const productNames = resData.data.map(
-                        item => item.product_name
-                    )
+                    const productNames = resData.data.map(item => item.product_name)
 
-                    const quantities = resData.data.map(
-                        item => item.tot_quantity
-                    )
+                    const quantities = resData.data.map(item => item.tot_quantity)
 
-                    const productQuantityChart = new Chart(productQuantityChartCanvas, {
-                        type: "doughnut",
-                        data: {
-                            labels: productNames,
-                            datasets: [{
-                                label: "Product Quantity",
-                                data: quantities,
+                    if(productQuantityChart){
+                        productQuantityChart.destroy()
+                    }
+                    productQuantityChart = new Chart(productQuantityChartCanvas, {
+                        type: "doughnut", data: {
+                            labels: productNames, datasets: [{
+                                label: "Product Quantity", data: quantities,
 
                                 hoverOffset: 5
                             }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
+                        }, options: {
+                            responsive: true, plugins: {
                                 legend: {
                                     position: 'top',
                                 },
@@ -363,15 +356,13 @@ if (productQuantityChartCanvas) {
         } catch (e) {
             console.log(e)
             Notifier.show({
-                text: e.message,
-                header: "Error",
-                duration: 30000,
-                closable: false,
-                type: "danger"
+                text: e.message, header: "Error", duration: 30000, closable: false, type: "danger"
             })
         }
     }
 
-
-    window.addEventListener("load", showProductQuantityChart)
 }
+// window.addEventListener("load", showProductQuantityChart(fromDateFinal, toDateFinal));
+
+
+
