@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Invoice;
 use app\models\Order;
+use app\models\Product;
 use JsonException;
 
 class AnalyticsController
@@ -45,6 +47,52 @@ class AnalyticsController
     /**
      * @throws JsonException
      */
+
+    public function getInvoiceRevenue(Request $req, Response $res):string{
+        if($req->session->get("user_role") === "admin"){
+            $invoiceModel = new Invoice();
+            // var_dump($invoiceModel);
+            $revenueData = $invoiceModel -> getInvoiceRevenueData();
+            if(is_string($revenueData)){
+                $res->setStatusCode(500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);               
+            }
+            $res->setStatusCode(200);
+            return $res->json([
+                "message" => "Success",
+                "data" => $revenueData
+            ]);
+        }
+        $res->setStatusCode(401);
+        return $res->json([
+            "message" => "Unauthorized"
+        ]);
+    }
+
+    // public function getSummaryDetails(Request $req, Response $res):string{
+    //     if($req->session->get("is_authenticated") && ($req->session->get("user_role")==="admin")){
+    //         $productModel = new Product();
+    //         $summaryDetails = $productModel->getSummaryDetails();
+    //         if (is_string($summaryDetails)) {
+    //             $res->setStatusCode(500);
+    //             return $res->json([
+    //                 "message" => "Internal Server Error"
+    //             ]);
+    //         }
+    //         $res->setStatusCode(200);
+    //         return $res->json([
+    //             "message" => "Success",
+    //             "data" => $summaryDetails
+    //         ]);
+    //     }
+    //     $res->setStatusCode(401);
+    //     return $res->json([
+    //         "message" => "Unauthorized"
+    //     ]);
+    // }
+
     public function getOrderRevenue(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {

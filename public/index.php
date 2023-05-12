@@ -55,6 +55,7 @@ $app = new Application(dirname(__DIR__));
 if (!$isInternal) {
 
     $app->router->get(path: "/", callback: [SiteController::class, 'getHomePage']);
+
     $app->router->get(path: "/products", callback: [SiteController::class, 'getProductsPage']);
     $app->router->get(path: "/products/view", callback: [SiteController::class, 'getViewProductPage']);
 
@@ -116,6 +117,8 @@ if ($isInternal) {
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
     $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
+    $app->router->get(path: '/analytics/invoice-revenue', callback: [AnalyticsController::class, 'getInvoiceRevenue']);
+    // $app->router->get(path: '/analytics/summary-table', callback: [AnalyticsController::class, 'getSummaryDetails']);
     $app->router->get(path: '/analytics/order-quantity', callback: [AnalyticsController::class, 'getOrderQuantityDetails']);
     $app->router->get(path: '/analytics/product-quantity', callback: [AnalyticsController::class, 'getProductQuantityDetails']);
     $app->router->get(path: "/all-jobs/view", callback: [JobsController::class, 'getJobDetailsPage']);
@@ -211,6 +214,7 @@ if ($isInternal) {
     $app->router->get(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
     $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
     $app->router->get(path: "/foremen", callback: [AppointmentsController::class, 'getForemen']);
+    
 //    $app
 
     

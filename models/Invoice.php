@@ -4,6 +4,8 @@ namespace app\models;
 
 use app\core\Database;
 use PDO;
+use PDOException;
+use Exception;
 
 class Invoice
 {
@@ -15,6 +17,7 @@ class Invoice
         $this->pdo = Database::getInstance()->pdo;
         $this->body = $registerBody;
     }
+
 
     public function getInvoices(int|null $count = null, int|null $page = 1): array
     {
@@ -31,7 +34,7 @@ class Invoice
                 job_card_id as 'JobCard ID'
             FROM 
                 invoice
-            ORDER BY invoice_no $limitClause $pageClause"
+            ORDER BY invoice_no DESC $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
 
         $totalInvoices = $this->pdo->query(
@@ -42,5 +45,26 @@ class Invoice
             "total" => $totalInvoices['total'],
             "invoices" => $invoices
         ];
+    }
+
+    public function getInvoiceRevenueData(): array|string
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        DATE_FORMAT(i.created_at, '%Y-%m-%d') AS Date,
+                        SUM(ihp.quantity * ihp.price_at_invoice)/100 AS InvoiceRevenue
+                        FROM `invoice` i
+                        JOIN invoice_has_product ihp ON i.invoice_no = ihp.invoice_no
+                        GROUP BY Date
+                        ORDER BY Date;");
+            $statement->execute();
+            $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
+//            var_dump($revenueData);
+
+            return $revenueData;
+        } catch (PDOException|Exception $e) {
+            return "Failed to get order revenue data : " . $e->getMessage();
+        }
     }
 }

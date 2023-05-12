@@ -29,6 +29,16 @@ class Brand
         }
     }
 
+    public function getVehicleBrands(): array
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT brand_name, brand_id, is_product_brand, is_vehicle_brand FROM brand WHERE is_vehicle_brand = 1");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
     public function addBrand(): bool|array|string
     {
         $errors = $this->validateBrandName();

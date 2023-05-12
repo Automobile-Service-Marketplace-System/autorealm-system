@@ -42,7 +42,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin-bottom: 1rem;
-    height: 200px;
+    height: 320px;
     gap: 1rem;
     padding: 0.5rem;
     overflow-y: auto;
