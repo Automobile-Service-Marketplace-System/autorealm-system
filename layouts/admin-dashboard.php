@@ -27,7 +27,7 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/admin-dashboard/overview">
+            <a href="/overview">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span>
                     Overview
@@ -91,6 +91,12 @@ DocumentHead::createHead(
                 <i class="fa-solid fa-car"></i>
                 <span>
                     Vehicles
+                </span>
+            </a>
+                <a href="/analytics">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>
+                    Analytics
                 </span>
             </a>
 
