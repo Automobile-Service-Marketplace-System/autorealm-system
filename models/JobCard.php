@@ -327,7 +327,7 @@ class JobCard
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
                 concat(e.f_name,' ',e.l_name) as 'Employee Name',
-                vehicle_reg_no as 'Vehicle Reg No',
+                v.reg_no as 'Vehicle Reg No',
                 start_date_time as 'Start Date Time',
                 end_date_time as 'End Date Time',
                 status as 'Status'
@@ -337,6 +337,8 @@ class JobCard
                 customer c ON c.customer_id = j.customer_id
             INNER JOIN 
                 employee e ON e.employee_id = j.employee_id
+            INNER JOIN
+                vehicle v ON v.vin = j.vin
             ORDER BY
                 j.job_card_id $limitClause $pageClause"
         )->fetchAll(PDO::FETCH_ASSOC);
@@ -352,6 +354,7 @@ class JobCard
     }
 
     public function getAllJobsForForemanTechnicianAndAdmin(
+
         int|null $count = null,
         int|null $page = 1,
         string   $searchTermCustomer = null,
@@ -457,18 +460,8 @@ class JobCard
                             INNER JOIN vehicle v on j.vin = v.vin 
                             INNER JOIN brand b on v.brand_id = b.brand_id 
                             INNER JOIN model m on v.model_id = m.model_id  
-                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause");
 
-            DevOnly::prettyEcho("SELECT 
-                        COUNT(*) as total
-                        FROM jobcard j 
-                            INNER JOIN employee e on j.employee_id = e.employee_id 
-                            INNER JOIN vehicle v on j.vin = v.vin 
-                            INNER JOIN brand b on v.brand_id = b.brand_id 
-                            INNER JOIN model m on v.model_id = m.model_id  
-                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
-
-            exit();
             if ($options['job_date'] !== null && $options['job_date'] !== "") {
                 $statement->bindValue(param: ":job_date", value: $options['job_date']);
             }
@@ -585,6 +578,131 @@ class JobCard
                 "completed" => $done
             ];
         } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getJobDetailsForSelector(
+        int|null $count = null,
+        int|null $page = 1,
+        string   $searchTermCustomer = null,
+        string   $searchTermVehicleRegNo = null,
+        string   $searchTermForemanName = null,
+        array    $options = [
+            'job_date' => null,
+        ]
+    ): bool|array|string
+    {
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                switch ($option_key) {
+                    case "job_date":
+                        if ($option_value !== "") {
+                            $conditions[] = "DATE(j.start_date_time) = DATE(:job_date)";
+                        }
+                        break;
+                }
+            }
+        }
+
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_customer_name" : "WHERE CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_customer_name";
+        }
+
+        if ($searchTermVehicleRegNo !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND v.reg_no LIKE :search_term_vehicle_reg_no" : "WHERE v.reg_no LIKE :search_term_vehicle_reg_no";
+        }
+
+        if ($searchTermForemanName !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name" : "WHERE CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name";
+        }
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        j.job_card_id, v.reg_no, 
+                        j.start_date_time, 
+                        j.end_date_time,
+                        CONCAT(LEFT(c.f_name, 1), '. ', c.l_name) as customer_name 
+                        FROM jobcard j 
+                            INNER JOIN employee e on j.employee_id = e.employee_id 
+                            INNER JOIN vehicle v on j.vin = v.vin 
+                            INNER JOIN brand b on v.brand_id = b.brand_id 
+                            INNER JOIN model m on v.model_id = m.model_id  
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause AND j.status = 'finished' $limitClause $pageClause");
+
+            if ($options['job_date'] !== null && $options['job_date'] !== "" ) {
+                $statement->bindValue(param: ":job_date", value: $options['job_date']);
+            }
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(param: ":search_term_customer_name", value: "%" . $searchTermCustomer . "%");
+            }
+
+            if ($searchTermForemanName !== null) {
+                $statement->bindValue(param: ":search_term_foreman_name", value: "%" . $searchTermForemanName . "%");
+            }
+
+            if ($searchTermVehicleRegNo !== null) {
+                $statement->bindValue(param: ":search_term_vehicle_reg_no", value: "%" . $searchTermVehicleRegNo . "%");
+            }
+
+            $statement->execute();
+            $rawJobs = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            // get total results
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        COUNT(*) as total
+                        FROM jobcard j 
+                            INNER JOIN employee e on j.employee_id = e.employee_id 
+                            INNER JOIN vehicle v on j.vin = v.vin 
+                            INNER JOIN brand b on v.brand_id = b.brand_id 
+                            INNER JOIN model m on v.model_id = m.model_id  
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause AND j.status = 'finished'");
+
+            if ($options['job_date'] !== null && $options['job_date'] !== "") {
+                $statement->bindValue(param: ":job_date", value: $options['job_date']);
+            }
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(param: ":search_term_customer_name", value: "%" . $searchTermCustomer . "%");
+            }
+
+            if ($searchTermForemanName !== null) {
+                $statement->bindValue(param: ":search_term_foreman_name", value: "%" . $searchTermForemanName . "%");
+            }
+
+            if ($searchTermVehicleRegNo !== null) {
+                $statement->bindValue(param: ":search_term_vehicle_reg_no", value: "%" . $searchTermVehicleRegNo . "%");
+            }
+
+
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $total = $result['total'];
+
+
+            return [
+                'jobs' => $rawJobs,
+                'total' => $total
+            ];
+        } catch (PDOException|Exception $e) {
+            DevOnly::prettyEcho($e->getMessage());
             return $e->getMessage();
         }
     }

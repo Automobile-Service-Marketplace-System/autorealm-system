@@ -105,24 +105,19 @@ if ($isInternal) {
         return $res->render(view: "temp", layout: "plain");
     });
 
-// definitive employ/ee routes
+// definitive employee routes
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getEmployeeLoginPage']);
     $app->router->post(path: "/login", callback: [AuthenticationController::class, 'loginEmployee']);
     $app->router->post(path: "/logout", callback: [AuthenticationController::class, 'logoutEmployee']);
-
-
     $app->router->get(path: "/products/categories-brands-models", callback: [ProductsController::class, 'getCategoriesBrandsModels']);
     $app->router->get(path: "/products/for-selector", callback: [ProductsController::class, 'getProductSelectorProducts']);
     $app->router->get(path: "/services/for-selector", callback: [ServicesController::class, 'getServiceSelectorServices']);
+    $app->router->get(path: "/jobs/for-selector", callback: [JobsController::class, 'getJobSelectorJobs']);
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
-
-
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
     $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
     $app->router->get(path: '/analytics/order-quantity', callback: [AnalyticsController::class, 'getOrderQuantityDetails']);
     $app->router->get(path: '/analytics/product-quantity', callback: [AnalyticsController::class, 'getProductQuantityDetails']);
-
-
     $app->router->get(path: "/all-jobs/view", callback: [JobsController::class, 'getJobDetailsPage']);
     $app->router->get(path: "/inspection-reports/view", callback: [JobsController::class, 'getInspectionReportForJobPage']);
 

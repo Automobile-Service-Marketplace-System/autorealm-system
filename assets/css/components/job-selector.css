@@ -1,0 +1,235 @@
+.job-selector {
+    width: 95vw;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--color-bg-secondary);
+    height: 500px;
+}
+
+.job-selector--loading {
+    display: grid;
+    place-items: center;
+    height: 500px;
+    background-color: rgba(var(--bg-secondary), 0.1);
+}
+
+/* Managing header */
+.job-selector__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+
+.job-selector .job-selector__spinner {
+    display: none;
+    font-size: 4rem;
+}
+
+
+.job-selector--loading .job-selector__body {
+    display: none;
+}
+
+.job-selector--loading .job-selector__spinner {
+    display: initial;
+    animation: spin 1s linear infinite;
+}
+
+
+/*.job-selector__header > button > svg {*/
+/*    transition: all 0.3s ease-in-out;*/
+/*}*/
+
+
+/*.job-selector__header > button > svg:hover {*/
+/*    transform: rotate(180deg);*/
+/*}*/
+
+
+.job-selector__header button {
+    font-size: 1rem;
+}
+
+
+.job-selector__filters {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.job-selector__filters > .form-item > input {
+    padding-inline: 0 !important;
+}
+
+.job-selector__filters > .form-item > input::placeholder {
+    transform: translateX(0.5rem);
+}
+
+.job-selector__result-indicator {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+
+.job-selector__gallery {
+    height: 300px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.job-selector__gallery .job-selector__spinner {
+    display: none;
+}
+
+.job-selector__gallery .job-selector__empty-message {
+    display: none;
+}
+
+.job-selector__gallery--loading, .job-selector__gallery--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.job-selector__gallery--loading .job-selector__spinner {
+    display: initial;
+    animation: spin 1s linear infinite;
+}
+
+
+.job-selector__gallery--empty .job-selector__empty-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.job-selector__empty-message svg {
+    font-size: 4rem;
+}
+
+.job-selector__gallery--loading .job-selector__gallery-item {
+    display: none;
+}
+
+
+.job-selector__gallery-item {
+    background-color: var(--color-bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(var(--dark), 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    height: 130px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.job-selector__gallery-item svg {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.job-selector__gallery-item--selected {
+    outline: 2px solid var(--color-success);
+}
+
+.job-selector__gallery-item--selected svg {
+    /*display: initial;*/
+    opacity: 1;
+    font-size: 1.5rem;
+    background-color: #fff;
+    color: var(--color-success);
+}
+
+.job-selector__gallery-item h4 {
+    font-weight: bold;
+    margin-block: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.job-selector__gallery-item img {
+    height: 150px;
+    width: 150px;
+    /*object-fit: cover;*/
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+
+.pagination-container--select {
+    margin-block: 0 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+@media screen and (min-width: 500px) {
+    .job-selector__filters {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (min-width: 768px) {
+    .job-selector {
+        width: 90vw;
+    }
+
+    .job-selector__filters {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+
+    .job-selector__gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media (min-width: 992px) {
+    .job-selector {
+        width: 80vw;
+    }
+
+    .job-selector__gallery {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .job-selector {
+        width: 860px;
+    }
+
+    .job-selector__filters {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+@media (min-width: 1200px) {
+    .job-selector {
+        width: 860px;
+    }
+}

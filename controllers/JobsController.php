@@ -6,8 +6,9 @@ use app\core\Request;
 use app\core\Response;
 use app\models\JobCard;
 use app\models\InspectionCondition;
-use app\models\Appointment;
-use app\models\Foreman;
+
+//use app\models\Appointment;
+//use app\models\Foreman;
 use app\models\MaintenanceInspectionReport;
 use app\models\Technician;
 use app\utils\DevOnly;
@@ -268,30 +269,30 @@ class JobsController
         return $res->redirect(path: "/login");
     }
 
-    public function getCreateJobCardPage(Request $req, Response $res): string
-    {
-        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            $query = $req->query();
-            $appointmentModel = new Appointment();
-            $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
-            $foremanModel = new Foreman();
-            $foremanInfo = $foremanModel->getAvailableForemen();
-
-            return $res->render(view: "office-staff-dashboard-create-jobcard-page", layout: "office-staff-dashboard",
-                pageParams: [
-                    "appointmentInfo" => $appointmentInfo,
-                    "foremanAvailability" => $foremanInfo
-                ],
-                layoutParams: [
-                    "title" => "Job Card",
-                    "pageMainHeading" => "Create a Job card",
-                    'officeStaffId' => $req->session->get('user_id')
-                ]);
-        }
-
-        return $res->redirect(path: "/login");
-
-    }
+//    public function getCreateJobCardPage(Request $req, Response $res): string
+//    {
+//        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+//            $query = $req->query();
+//            $appointmentModel = new Appointment();
+//            $appointmentInfo = $appointmentModel->getAppointmentInfo((int)$query["id"]);
+//            $foremanModel = new Foreman();
+//            $foremanInfo = $foremanModel->getAvailableForemen();
+//
+//            return $res->render(view: "office-staff-dashboard-create-jobcard-page", layout: "office-staff-dashboard",
+//                pageParams: [
+//                    "appointmentInfo" => $appointmentInfo,
+//                    "foremanAvailability" => $foremanInfo
+//                ],
+//                layoutParams: [
+//                    "title" => "Job Card",
+//                    "pageMainHeading" => "Create a Job card",
+//                    'officeStaffId' => $req->session->get('user_id')
+//                ]);
+//        }
+//
+//        return $res->redirect(path: "/login");
+//
+//    }
 
     public function createJobCard(Request $req, Response $res): string
     {
@@ -608,6 +609,57 @@ class JobsController
         return $res->json(data: [
             "success" => false,
             "message" => "You are not authorized to access this resource"
+        ]);
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function getJobSelectorJobs(Request $req, Response $res): string
+    {
+
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 10;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+        //for search and filtering
+        $searchTermCustomer = $query["customer_name"] ?? null;
+        $searchTermVehicleRegNo = $query["vehicle_reg_no"] ?? null;
+        $searchTermForemanName = $query["foreman_name"] ?? null;
+        $jobDate = $query["job_date"] ?? null;
+
+        $jobCarModel = new JobCard();
+        $listOfJobs = $jobCarModel->getJobDetailsForSelector(
+            count: $limit,
+            page: $page,
+            searchTermCustomer: $searchTermCustomer,
+            searchTermVehicleRegNo: $searchTermVehicleRegNo,
+            searchTermForemanName: $searchTermForemanName,
+            options: [
+                "job_date" => $jobDate
+            ]
+        );
+
+
+        if (!$listOfJobs || is_string($listOfJobs)) {
+            $res->setStatusCode(code: 500);
+            return $res->json(data: [
+                "success" => false,
+                "message" => $listOfJobs
+            ]);
+        }
+
+
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            'jobs' => $listOfJobs['jobs'],
+            'total' => $listOfJobs['total'],
+            'limit' => $limit,
+            'page' => $page,
+            'searchTermCustomer' => $searchTermCustomer,
+            'searchTermVehicleRegNo' => $searchTermVehicleRegNo,
+            'searchTermForemanName' => $searchTermForemanName,
+            'jobDate' => $jobDate
         ]);
     }
 }

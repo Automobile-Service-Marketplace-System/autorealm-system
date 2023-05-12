@@ -24,6 +24,7 @@
 @import "components/product-selector.css";
 @import "components/calendar-view.css";
 @import "components/service-selector.css";
+@import "components/job-selector.css";
 @import "components/filter.css"; 
 
 /* importing css files for layouts */
