@@ -7,12 +7,78 @@
 }
 
 .create-invoice__header > button {
-    padding: 2rem 4rem;
+    padding: 1rem 2rem;
     width: 50%;
     background-color: var(--color-bg-secondary);
+    box-shadow: 0 0.5rem 1rem rgba(var(--color-primary), 0.1);
     border-radius: 0.5rem;
+    position: relative;
+    transition: all 0.2s ease-in-out;
 }
 
+
+.create-invoice__header > button:hover {
+    transform: translate(0, -0.1rem);
+    box-shadow: 0 1rem 2rem rgba(var(--color-primary), 0.2);
+}
+
+.create-invoice__header > button.load-from-job-btn--selected:hover {
+    transform: translate(0, -0rem);
+    /*box-shadow: 0 1rem 2rem rgba(var(--color-primary), 0.2);*/
+}
+
+
+#load-from-job-btn #load-from-job-btn__cancel {
+    display: none;
+}
+
+#load-from-job-btn.load-from-job-btn--selected #load-from-job-btn__cancel {
+    display: block;
+    background-color: var(--color-danger);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    right: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#load-from-job-btn__cancel:hover {
+    transform: rotate(90deg);
+}
+
+#load-from-job-btn.load-from-job-btn--selected .cancel-icon {
+    display: initial;
+    color: #fff;
+}
+
+.create-invoice__customer-info {
+
+}
+
+.create-invoice__customer-info h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.create-invoice__customer-info > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.create-invoice__customer-info > div p {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.create-invoice__customer-info > div input {
+    display: none;
+}
 
 .create-invoice__section {
 }

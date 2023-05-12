@@ -1,12 +1,41 @@
 <section class="create-invoice__header">
     <button class="flex gap-8" id="load-from-job-btn">
         <i class="fa-solid fa-plus"></i>
+        <span id="load-from-job-btn__cancel">
+        <i class="fa-solid fa-xmark cancel-icon"></i>
+        </span>
         Load details from job card
     </button>
     <button class="flex gap-8" id="manually-add-customer-details-btn">
         <i class="fa-solid fa-plus"></i>
         Manually enter customer details
     </button>
+</section>
+
+<section class="create-invoice__customer-info">
+    <h2>Client / Customer</h2>
+    <div class="mt-4">
+        <div class="flex items-center">
+            <label style="width: 20%" for="customer_name">Name</label>
+            <p id="customer-name">N/A</p>
+            <input name="customer_name" id="customer_name">
+        </div>
+        <div class="flex items-center">
+            <label style="width: 20%" for="customer_address">Address</label>
+            <p id="customer-address">N/A</p>
+            <input name="customer_address" id="customer_address">
+        </div>
+        <div class="flex items-center">
+            <label style="width: 20%" for="customer_phone">Phone</label>
+            <p id="customer-phone">N/A</p>
+            <input name="customer_phone" id="customer_phone">
+        </div>
+        <div class="flex items-center">
+            <label style="width: 20%" for="customer_email">Email</label>
+            <p id="customer-email">N/A</p>
+            <input name="customer_email" id="customer_email">
+        </div>
+    </div>
 </section>
 
 <section class="create-invoice__section">
