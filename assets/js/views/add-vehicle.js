@@ -7,7 +7,7 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer");
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-console.log(brands);
+console.log(localStorage);
 
 const addVehicleForm =
   htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
@@ -43,7 +43,7 @@ const addVehicleForm =
       </div><div class='form-item '>
             <label for='brand'>Brand.<sup>*</sup></label>
             <select  name='brand' id='brand'  required > 
-                <option value='2' >Caltex</option><option value='5' >Fairbay</option><option value='3' >Honda</option><option value='8' >Mitsubishi</option><option value='1' selected>Mobil</option><option value='7' >Suzuki</option><option value='6' >Teyes</option><option value='4' >Toyota</option>
+          
             </select>
             
       </div><div class='form-item '>
@@ -63,7 +63,7 @@ const addVehicleForm =
       </div><div class='form-item '>
             <label for='model'>Model.<sup>*</sup></label>
             <select  name='model' id='model'  required > 
-                <option value='1' selected>10w-30</option><option value='2' >15w-40</option><option value='3' >A-898</option><option value='4' >A-280</option><option value='5' >A-196</option><option value='6' >KSP-90</option><option value='9' >BP-0222</option><option value='10' >YZZE1</option><option value='11' >LK-111539</option><option value='12' >X1</option><option value='13' >CIVIC EX</option><option value='14' >Corolla</option><option value='15' >Gixxer</option><option value='16' >Lancer</option>
+             
             </select>
             
       </div><div class='form-item '>
@@ -169,6 +169,35 @@ addVehicleForm?.addEventListener("reset", (e) => {
 });
 
 addVehicleButton?.addEventListener("click", () => {
+  /**
+   * @type {Array<{model_id: number, is_product_model: 0|1, is_vehicle_model: 0|1, model_name: string}>}
+   */
+  const models = JSON.parse(localStorage.getItem("models") || "[]");
+
+  const modelOptions = models
+    .filter((m) => m.is_vehicle_model === 1)
+    .map(function (mod) {
+      return `<option value="${mod.model_id}">${mod.model_name}</option>`;
+    })
+    .join("");
+
+  /**
+   * @type {Array<{brand_id: number, is_product_brand: 0|1, is_vehicle_brand: 0|1, brand_name: string}>}
+   */
+  const brands = JSON.parse(localStorage.getItem("brands") || "[]");
+  const brandOptions = brands
+    .filter((b) => b.is_vehicle_brand === 1)
+    .map(function (brand) {
+      return `<option value = "${brand.brand_id}">${brand.brand_name}</option> `;
+    })
+    .join("");
+
+  const modelSelectElement = addVehicleForm.querySelector("#model");
+  modelSelectElement.innerHTML = modelOptions;
+
+  const brandSelectElement = addVehicleForm.querySelector("#brand");
+  brandSelectElement.innerHTML = brandOptions;
+
   Modal.show({
     content: addVehicleForm,
     closable: false,

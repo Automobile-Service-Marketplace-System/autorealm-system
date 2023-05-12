@@ -8,8 +8,6 @@
  * @var array $brands
  */
 
-// var_dump($vehicles);
-
 if(isset($error)) {
     echo "<p class='error'>$error</p>";
     return;
@@ -68,11 +66,7 @@ if(isset($error)) {
     ?>
 </div>
 
-<?php
-// var_dump(brands);
-?>
-
-<!-- <script>
+<script>
     <?php
     try {
         $brandsString = json_encode($brands, JSON_THROW_ON_ERROR);
@@ -88,7 +82,4 @@ if(isset($error)) {
     ?>
     const brands = <?= $brandsString ?>;
     const models = <?= $modelsString ?>;
-    localStorage.setItem("brands", JSON.stringify(brands));
-    localStorage.setItem("models", JSON.stringify(models));
-
-</script> -->
+</script>
