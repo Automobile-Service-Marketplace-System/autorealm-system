@@ -26,7 +26,7 @@ use app\components\ProductCard;
 
 <div class="filters" id="site-product-filters">
     <div class="filters__actions">
-        <div class="filters__dropdown-trigger" >
+        <div class="filters__dropdown-trigger">
             Search & Filter
             <i class="fa-solid fa-chevron-right"></i>
         </div>
@@ -40,10 +40,51 @@ use app\components\ProductCard;
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
-            <p >Filter products by</p>
+            <p>Filter products by</p>
             <div class="filters__dropdown-content">
+
+                <div class="site-price-range form-item">
+                    <div class="site-price-range-input  form-item">
+                        <input type="number" placeholder="Min" name="min" min=0 >
+                    </div>
+                    <p>
+                        <span>Price</span>
+                    </p>
+
+                    <div class="site-price-range-input  form-item">
+                        <input type="number" placeholder="Max" name="max" min=0>
+                    </div>
+                </div>
+
+
+                <!---->
+                <!--                <div class="stock-radio-group">-->
+                <!--                    <div class="form-item--radio">-->
+                <!--                        <label for="stock_type">In Stock</label>-->
+                <!--                        <input type="radio" name="model_type" value="vehicle">-->
+                <!--                    </div>-->
+                <!--                    <div class="form-item--radio">-->
+                <!--                        <label for="stock_type">Out of Stock</label>-->
+                <!--                        <input type="radio" name="model_type" value="product" checked>-->
+                <!--                    </div>-->
+                <!---->
+                <!--                </div>-->
+
+                <div class="product-availability">
+<!--                    <p>Product Availability : </p>-->
+                </div>
+
                 <div class="form-item">
-                    <input list="categories" name="category_name" id="category-filter"
+<!--                    <select name="availability" id="product-stock_availability-filter">-->
+<!--                        <option value="instock" selected>In Stock</option>-->
+<!--                        <option value="outstock">Out of Stock</option>-->
+<!--                        <option value="both">Both</option>-->
+<!--                    </select>-->
+
+                </div>
+
+                <div class="form-item">
+                    <input list="categories" name="category" id="category-filter"
                            placeholder="Category">
                     <datalist id="categories">
                         <option data-value="all" value="all" selected>All Categories</option>
@@ -57,7 +98,7 @@ use app\components\ProductCard;
                 </div>
 
                 <div class="form-item">
-                    <input list="brands" name="brand_name" id="brand-filter"
+                    <input list="brands" name="brand" id="brand-filter"
                            placeholder="Brand">
                     <datalist id="brands">
                         <option data-value="all" value="all" selected>All Brands</option>
@@ -69,29 +110,13 @@ use app\components\ProductCard;
                 </div>
 
                 <div class="form-item">
-                    <select name="product_type" id="type-filter" class="product-filter--select">
+                    <select name="type" id="type-filter" class="product-filter--select">
                         <option value="all">All Types</option>
-                        <option value="spare part" >Spare Part</option>
-                        <option value="accessory" >Accessory</option>
+                        <option value="spare part">Spare Part</option>
+                        <option value="accessory">Accessory</option>
                     </select>
                 </div>
 
-
-                <div class="form-item">
-                    <select name="quantity" id="quantity-filter" class="product-filter--select ">
-                        <option value="all">All Quantities</option>
-                        <option value="low">🔴 Low Quantity</option>
-                        <option value="medium">🟡 Medium Quantity</option>
-                        <option value="high">🟢 High Quantity</option>
-                    </select>
-                </div>
-
-                <div class="form-item">
-                    <select name="status" id="status-filter" class="product-filter--select ">
-                        <option value="active">Currently active products</option>
-                        <option value="discontinued">Discontinued products</option>
-                    </select>
-                </div>
 
             </div>
             <div class="filter-action-buttons">
@@ -118,7 +143,7 @@ use app\components\ProductCard;
 
 <div class="pagination-container">
     <?php
-//    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     foreach (range(1, ceil($total / $limit)) as $i) {
         $isActive = $i === (float)$page ? "pagination-item--active" : "";
         echo "<a class='pagination-item $isActive' href='/products?page=$i&limit=$limit'>$i</a>";
