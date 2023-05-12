@@ -17,15 +17,13 @@ let currentItemRow = 0
  */
 let alreadySelectedProducts = []
 
-/**
- * @return {HTMLTableRowElement}
- */
-export function getNewItemRow() {
+
+function getNewItemRowWithoutEventListener() {
     currentItemRow++
-    const element = htmlToElement(
+    return htmlToElement(
         `<tr data-index="${currentItemRow}">
                 <td>
-                    <input type="text" placeholder="Product name" name="product_names[]">
+                    <input type="text" placeholder="Product name" name="product_names[]" readonly>
                 </td>
                 <td>
                     <input type="number" placeholder="Qty" name="product_quantities[]" min="1">
@@ -37,10 +35,19 @@ export function getNewItemRow() {
                     <input type="number" placeholder="%" name="product_percentages[]" min="0" max="100">
                 </td>
                 <td>
-                    <input type="number" placeholder="Amount" name="product_amounts[]">
+                    <input type="number" placeholder="Amount" name="product_amounts[]" readonly>
                 </td>
             </tr>`
     )
+}
+
+
+/**
+ * @return {HTMLTableRowElement}
+ */
+export function getNewItemRow() {
+    currentItemRow++
+    const element = getNewItemRowWithoutEventListener()
     const productInput = element.querySelector('input[name="product_names[]"]')
     productInput.addEventListener('focus', handleFocusOfProductInput)
     return element
@@ -202,6 +209,13 @@ function setRowValues(rowElement, product, add = false, alreadyIn = false) {
         // trigger the change event to update the amount
         productQuantityInput.dispatchEvent(new InputEvent('change'))
     }
+
+    // remove the focus event listener on rowElements product name input
+    /**
+     * @type {HTMLInputElement}
+     */
+    const productInput = rowElement.querySelector('input[name="product_names[]"]')
+    productInput.removeEventListener('focus', handleFocusOfProductInput)
 }
 
 
@@ -209,7 +223,7 @@ function setRowValues(rowElement, product, add = false, alreadyIn = false) {
  * @param {Product} product
  * @param { {quantityElement: HTMLInputElement; percentageElement : HTMLInputElement; amountElement : HTMLInputElement} } elements
  */
-function listenForQuantityAndPercentageChanges(product, {quantityElement, percentageElement,amountElement }) {
+function listenForQuantityAndPercentageChanges(product, {quantityElement, percentageElement, amountElement}) {
 
     let newAmount = product["Price (LKR)"] * Number(quantityElement.value)
 
@@ -239,6 +253,61 @@ function calculateItemTotal() {
 
     // trigger the change event to update the grand total
     itemTotalInput.dispatchEvent(new InputEvent('change'))
+}
+
+/**
+ * @param {Array<Product>} products
+ */
+export function addProductsFromJob(products) {
+    if (products.length === 0) return
+
+    /**
+     * @type {HTMLTableRowElement}
+     */
+    let rowElement = getNewItemRowWithoutEventListener()
+
+    // setRowValues(rowElement, products[0]);
+    decideNewItemOrExistingItem(products[0], true, rowElement)
+
+
+    let restOfProducts = products.slice(1)
+    if (restOfProducts.length === 0) {
+        return
+    }
+
+    restOfProducts.forEach(product => {
+        console.log(product)
+        if (rowElement.nextElementSibling) {
+            rowElement = rowElement.nextElementSibling
+            // setRowValues(rowElement, product);
+            decideNewItemOrExistingItem(product, false, rowElement)
+        } else {
+            console.log("creating new row")
+            rowElement = getNewItemRowWithoutEventListener()
+            // setRowValues(rowElement, product, true);
+            decideNewItemOrExistingItem(product, true, rowElement)
+        }
+    })
+
+    // make all number inputs readonly
+    let numberInputs = itemTableBody.querySelectorAll(`input[name="product_quantities[]"], input[name="product_unit_prices[]"]`)
+    numberInputs.forEach(input => {
+        input.readOnly = true
+    })
+}
+
+export function removeAllItems() {
+    let itemRows = itemTableBody.querySelectorAll('tr')
+    itemRows.forEach(row => {
+        // setting all the number inputs to 0 and trigger the change event
+        let numberInputs = row.querySelectorAll(`input[name="product_quantities[]"], input[name="product_unit_prices[]"]`)
+        numberInputs.forEach(input => {
+            input.value = 0
+            input.dispatchEvent(new InputEvent('change'))
+        })
+        row.remove()
+    })
+    alreadySelectedProducts = []
 }
 
 

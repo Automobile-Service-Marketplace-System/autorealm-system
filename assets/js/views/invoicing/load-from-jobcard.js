@@ -11,6 +11,10 @@ import {
     customerPhone,
     loadFromJobBtn
 } from "./customer-detail-elements";
+import {addProductsFromJob, addNewItemRowButton, removeAllItems} from "./handle-product-section";
+
+
+let prevAddNewRowItemButtonInnerHTML = addNewItemRowButton.innerHTML
 
 if (loadFromJobBtn) {
     loadFromJobBtn.addEventListener('click', async () => {
@@ -25,6 +29,7 @@ if (loadFromJobBtn) {
                 const customerInfo = await getCustomerInfo(jobId)
                 if (customerInfo) {
 
+                    await loadJobProducts(jobId)
                     loadFromJobBtn.classList.add('load-from-job-btn--selected')
 
                     customerName.textContent = customerInfo.customerName
@@ -85,7 +90,10 @@ if (loadFromJobBtn) {
 
     function resetCustomerInfo() {
 
+        removeAllItems()
         loadFromJobBtn.classList.remove('load-from-job-btn--selected')
+        addNewItemRowButton.disabled = false
+        addNewItemRowButton.innerHTML = prevAddNewRowItemButtonInnerHTML
 
         customerName.textContent = 'N/A'
         customerNameInput.value = ''
@@ -98,5 +106,49 @@ if (loadFromJobBtn) {
 
         customerEmail.textContent = 'N/A'
         customerEmailInput.value = ''
+    }
+
+
+    /**
+     * @param {number} jobId
+     * @return {Promise<void>}
+     */
+    async function loadJobProducts(jobId) {
+        try {
+            const result = await fetch(`/jobs/product-info?job_id=${jobId}`)
+            switch (result.status) {
+                case 200:
+                    /**
+                     * @type {{products: Array<Product>|false}}
+                     */
+                    const data = await result.json()
+
+                    const {products} = data
+                    console.log(products)
+                    if (products) {
+                        addProductsFromJob(products)
+                        addNewItemRowButton.disabled = true
+                        addNewItemRowButton.innerHTML = '<i class="fas fa-lock"></i> Locked when loading from job card, create a separate invoice to add more items'
+                    }
+                    break
+                case 400:
+                    const error = await result.json()
+                    console.log(error)
+                    break
+                case 500:
+                    const error500 = await result.json()
+                    console.log(error500)
+                    break
+            }
+        } catch (e) {
+            Notifier.show({
+                text: e.message,
+                type: 'danger',
+                header: 'Error',
+                duration: 3000,
+                closable: true
+            })
+            return null
+        }
     }
 }
