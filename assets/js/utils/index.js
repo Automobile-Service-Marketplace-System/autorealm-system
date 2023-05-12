@@ -1,5 +1,5 @@
 export * from "./spinners.util";
-
+export * from "./scolling.util";
 /**
  *
  * @param {string} template

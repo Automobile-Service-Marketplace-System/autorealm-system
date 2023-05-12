@@ -36,7 +36,7 @@ class Product
             'quantity_level' => null,
             'status' => 0,
         ],
-        string $searchTerm = null
+        string   $searchTerm = null
     ): array|string
     {
 //        DevOnly::prettyEcho($options);
@@ -639,5 +639,63 @@ class Product
 
 
         return $errors;
+    }
+
+    public function getProductByItemCode(int $itemCode)
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                            p.item_code as ID,
+                            p.name as Name, 
+                            b.brand_name as Brand,
+                            p.description as Description,
+                            ROUND(p.price/100, 2) as Price,
+                            p.image as Image,
+                            c.name as Category,
+                            c.category_id as CategoryId,
+                            p.quantity as Quantity
+                        FROM product p 
+                            INNER JOIN category c on p.category_id = c.category_id 
+                            INNER JOIN brand b on p.brand_id = b.brand_id 
+                            INNER JOIN model m on p.model_id = m.model_id
+                            INNER JOIN category ca on p.category_id = ca.category_id
+                        WHERE p.item_code = :item_code
+                            "
+            );
+            $statement->bindValue(":item_code", $itemCode);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getRelatedProducts(int $categoryId, int $itemCode): bool|array|string
+    {
+        try {
+            $statement = "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity,
+                        p.image as Image
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id 
+                    WHERE p.category_id = :category_id AND p.item_code != :item_code LIMIT 4";
+            $statement = $this->pdo->prepare($statement);
+            $statement->bindValue(":category_id", $categoryId);
+            $statement->bindValue(":item_code", $itemCode);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

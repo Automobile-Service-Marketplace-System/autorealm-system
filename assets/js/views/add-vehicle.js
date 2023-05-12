@@ -7,7 +7,6 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer");
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-console.log(localStorage);
 
 const addVehicleForm =
   htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">

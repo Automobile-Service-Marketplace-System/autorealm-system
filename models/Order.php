@@ -457,19 +457,17 @@ class Order
         try {
             $statement = $this->pdo->prepare(
                 "SELECT 
-                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
-                        SUM(ohp.quantity * ohp.price_at_order) AS revenue
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        SUM(ohp.quantity * ohp.price_at_order)/100 AS revenue
                         FROM `order` o
                         JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
                         GROUP BY ordered_year_month
                         ORDER BY ordered_year_month;");
             $statement->execute();
             $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
-            var_dump($revenueData);
+//            var_dump($revenueData);
 
-            return [
-                'revenueData' => $revenueData,
-            ];
+            return $revenueData;
         } catch (PDOException|Exception $e) {
             return "Failed to get order revenue data : " . $e->getMessage();
         }
@@ -481,20 +479,43 @@ class Order
 // query to get order count grouped by year and month
             $statement = $this->pdo->prepare(
                 "SELECT 
-                        DATE_FORMAT(o.ordered_date_time, '%Y-%m-%d') AS ordered_year_month,
-                        COUNT(o.order_no) AS order_count
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        COUNT(o.order_no) AS order_count,
+                        SUM(ohp.quantity) AS tot_quantity
                         FROM `order` o
+                        JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
                         GROUP BY ordered_year_month
                         ORDER BY ordered_year_month;");
             $statement->execute();
             $orderCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return [
-                'orderCountData' => $orderCountData,
-            ];
+            return $orderCountData;
         }
         catch (PDOException|Exception $e) {
             return "Failed to get order quantity data : " . $e->getMessage();
         }
+    }
+
+    public function getProductQuantityData(): array|string
+    {
+        try {
+            //query to get product count grouped by item_code
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        p.name as product_name,
+                        SUM(ohp.quantity) AS tot_quantity
+                        FROM orderhasproduct ohp
+                        JOIN product p ON ohp.item_code = p.item_code
+                        GROUP BY p.item_code;");
+
+            $statement->execute();
+            $productCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $productCountData;
+        }
+        catch (PDOException|Exception $e) {
+            return "Failed to get product quantity data : " . $e->getMessage();
+        }
+
+
     }
 
 

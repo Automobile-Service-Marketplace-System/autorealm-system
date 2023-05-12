@@ -572,5 +572,13 @@ class Customer
             return $errors;
         }
     }
+
+    public function getTotalCustomers(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+    
 }
 

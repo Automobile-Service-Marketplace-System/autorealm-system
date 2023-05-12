@@ -5,6 +5,7 @@ namespace app\models;
 use app\core\Database;
 use PDO;
 use PDOException;
+use app\utils\DevOnly;
 
 class Vehicle
 {
@@ -92,14 +93,15 @@ class Vehicle
             $resultsWithLastService = [];
 
             foreach ($results as $result) {
-//                DevOnly::prettyEcho($result);
+
+            //    DevOnly::prettyEcho($result);
 
                 $statement = $this->pdo->prepare("SELECT
                     mileage,
                     start_date_time
                 FROM jobcard j
                 WHERE
-                    j.vehicle_reg_no = :vin
+                    j.vin = :vin
                 ORDER BY
                     j.start_date_time DESC
                 LIMIT 1");

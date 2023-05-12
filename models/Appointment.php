@@ -138,7 +138,7 @@ class Appointment
             t.to_time as ToTime
             from appointment a
             inner join customer c on a.customer_id=c.customer_id
-            inner join timeslot t on t.time_id=a.time_id $whereClause $limitClause $pageClause ";
+            inner join timeslot t on t.time_id=a.time_id $whereClause order by a.appointment_id $limitClause $pageClause ";
 
         $statement = $this->pdo->prepare($query);
 
@@ -236,7 +236,25 @@ class Appointment
             $statement->bindValue(":customer_id", $this->body["customerID"]);                       
             $statement->bindValue(":time_id", $this->body["timeslot"]);            
             $statement-> execute();
-            return true;
+
+            $statement = $this->pdo->prepare("SELECT CONCAT(from_time, ' - ', to_time) as timeslot FROM timeslot WHERE time_id = :time_id");
+            $statement->bindValue(":time_id", $this->body["timeslot"]);
+            $statement->execute();
+            $timeslot =  $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
+
+
+            $statement = $this->pdo->prepare("SELECT email, CONCAT(f_name, ' ', l_name) as name from customer WHERE customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $this->body["customerID"]);
+            $statement->execute();
+            $result =  $statement->fetch(PDO::FETCH_ASSOC);
+            $email = $result['email'];
+            $name =  $result['name'];
+
+            return [
+                "timeslot" => $timeslot,
+                "email" => $email,
+                "name" => $name
+            ];
         } catch (PDOException $e) {
             var_dump($e->getMessage());
             return $e->getMessage();
@@ -320,6 +338,13 @@ class Appointment
             var_dump($e->getMessage());
             return $e->getMessage();
         }
+    }
+
+    public function getTotalAppointments(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointment WHERE date = CURDATE()");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 }
 

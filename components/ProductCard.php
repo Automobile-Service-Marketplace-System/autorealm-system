@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use app\utils\DevOnly;
 use JsonException;
 
 class ProductCard
