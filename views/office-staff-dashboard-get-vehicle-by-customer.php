@@ -4,9 +4,9 @@
  * @var array $vehicles
  * @var object $customer
  * @var string | null $error
+ * @var array $models
+ * @var array $brands
  */
-
-// var_dump($vehicles);
 
 if(isset($error)) {
     echo "<p class='error'>$error</p>";
@@ -18,7 +18,7 @@ if(isset($error)) {
 <div class="add-vehicle-for-customer">
     <div class="customer-details">
         <strong class='customer-title'>
-            Customer Name:
+            Customer Name: 
         </strong>
         <?php echo "{$customer->f_name} {$customer->l_name}" ?>
     </div>
@@ -65,3 +65,21 @@ if(isset($error)) {
     }
     ?>
 </div>
+
+<script>
+    <?php
+    try {
+        $brandsString = json_encode($brands, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        $brandsString = "[]";
+    }
+
+    try {
+        $modelsString = json_encode($models, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        $modelsString = "[]";
+    }
+    ?>
+    const brands = <?= $brandsString ?>;
+    const models = <?= $modelsString ?>;
+</script>

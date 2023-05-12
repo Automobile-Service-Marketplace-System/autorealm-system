@@ -30,6 +30,17 @@ class Model
         }
     }
 
+    public function getVehicleModels(): array
+    {
+        try {
+
+            $stmt = $this->pdo->query("SELECT brand_id, model_id, is_product_model, is_vehicle_model, model_name FROM model WHERE is_vehicle_model = 1");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
      public function addModel() : bool|array|string
      {
         $errors = $this->validateModelName();

@@ -22,8 +22,8 @@ class CustomersController
             $customerModel = new Customer();
             $customers = $customerModel->getCustomers(count: $limit, page: $page);
 
-//            $serviceModel = new Service();
-//            $services = $serviceModel->getServices();
+            // $serviceModel = new Service();
+            // $services = $serviceModel->getServices();
 
             if($req->session->get("user_role") === "office_staff_member"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"office-staff-dashboard",
@@ -31,13 +31,13 @@ class CustomersController
                         "total"=>$customers['total'],
                         "limit"=>$limit,
                         "page"=>$page,
-                        'customers' => $customers,
-//                        'services' => $services
+                        'customers' => $customers
+                        // 'services' => $services
                     ],
                     layoutParams:[
                         'title' => 'Customers',
                         'pageMainHeading' => 'Customers',
-                        'officeStaffId' => $req->session->get('user_id'),
+                        'officeStaffId' => $req->session->get("user_id")
                     ]);
             }
 
@@ -67,14 +67,14 @@ class CustomersController
             $customers = $customerModel->getCustomers(count: $limit, page: $page);
 
             $modelModel = new Model();
-            $rawModels = $modelModel->getModels();
+            $rawModels = $modelModel->getVehicleModels();
             $models = [];
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
 
             $modelBrand = new Brand();
-            $rawBrands = $modelBrand->getBrands();
+            $rawBrands = $modelBrand->getVehicleBrands();
             $brands = [];
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
@@ -103,14 +103,14 @@ class CustomersController
         if (is_array($result)) {
 
             $modelModel = new Model();
-            $rawModels = $modelModel->getModels();
+            $rawModels = $modelModel->getVehicleModels();
             $models = [];
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
     
             $modelBrand = new Brand();
-            $rawBrands = $modelBrand->getBrands();
+            $rawBrands = $modelBrand->getVehicleBrands();
             $brands = [];
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];

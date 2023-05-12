@@ -35,10 +35,7 @@ if (empty($appointments['appointments'])) {
             "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
                             <button class='btn btn--rounded btn--info office-create-jobcard' data-customerID='{$appointment["Customer ID"]}'>
                             <i class='fa-solid fa-wrench'></i>
-                            </button>                            </a>
-                            <button class='btn btn--rounded btn--danger office-update-appointment-btn' data-appointmentID='{$appointment['Appointment ID']}' data-timeSlotID='{$appointment["Time ID"]}' data-customerID='{$appointment["Customer ID"]}'>
-                                <i class='fa-solid fa-pencil'></i>
-                            </button>
+                            </button>                     
                             <button class='btn btn--rounded btn--danger office-delete-appointment-btn' data-appointmentID='{$appointment['Appointment ID']}'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>

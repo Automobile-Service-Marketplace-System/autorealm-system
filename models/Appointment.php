@@ -339,5 +339,12 @@ class Appointment
             return $e->getMessage();
         }
     }
+
+    public function getTotalAppointments(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointment WHERE date = CURDATE()");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
 }
 

@@ -4,6 +4,9 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Customer;
+use app\models\Appointment;
+use app\models\JobCard;
 
 class OverviewController
 {
@@ -23,7 +26,8 @@ class OverviewController
         return $res->redirect(path: "/login");
     }
 
-    private function getStockManagerOverviewPage(Request $req, Response $res) : string {
+    private function getStockManagerOverviewPage(Request $req, Response $res): string
+    {
         return $res->render(view: 'stock-manager-dashboard-overview', layout: 'stock-manager-dashboard', layoutParams: [
             'title' => 'Overview',
             'pageMainHeading' => 'Overview',
@@ -32,22 +36,22 @@ class OverviewController
     }
 
 
-    private function getForemanOverviewPage(Request $req, Response $res) : string {
-
+    private function getForemanOverviewPage(Request $req, Response $res): string
+    {
     }
 
-    private function getOfficeStaffOverviewPage(Request $req, Response $res) : string {
+    // private function getOfficeStaffOverviewPage(Request $req, Response $res) : string {
 
+    // }
+
+    private function getTechnicianOverviewPage(Request $req, Response $res): string
+    {
     }
 
-    private function getTechnicianOverviewPage(Request $req, Response $res) : string {
-
+    private function getSecurityOfficerOverviewPage(Request $req, Response $res): string
+    {
     }
-
-    private function getSecurityOfficerOverviewPage(Request $req, Response $res) : string {
-
-    }
-
+  
     private function getAdminOverviewPage(Request $req, Response $res) : string {
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="admin"){
             return $res->render(view:"admin-dashboard-overview", layout:"admin-dashboard",layoutParams:[
@@ -56,34 +60,60 @@ class OverviewController
                "employeeId"=>$req->session->get("user_id"),
            ]);           
         }
-
     }
 
-    private function getCustomerOverviewPage(Request $req, Response $res) : string {
-
+    private function getCustomerOverviewPage(Request $req, Response $res): string
+    {
     }
-//    public function getStockManagerOverviewPage(Request $req, Response $res):string{
-//
-//    public function getOfficeStaffOverviewPage(Request $req, Response $res):string{
-//        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="office_staff_member"){
-//            return $res->render(view:"office-staff-dashboard-overview", layout:"office-staff-dashboard",layoutParams:[
-//                "title"=>"Overview",
-//                "pageMainHeading"=>"Overview",
-//                "officeStaffId"=>$req->session->get("user_id"),
-//            ]);
-//        }
-//        return $res->redirect(path:"/login");
-//    }
-//
-//
-//    public function getCustomerOverviewPage(Request $req, Response $res):string{
-//        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="customer"){
-//            return $res->render(view:"customer-dashboard-overview", layout:"customer-dashboard",layoutParams:[
-//                "title"=>"Overview",
-//                "pageMainHeading"=>"Your account at a glance",
-//                "customerId"=>$req->session->get("user_id"),
-//            ]);
-//        }
-//        return $res->redirect(path:"/login");
-//    }
+    //    public function getStockManagerOverviewPage(Request $req, Response $res):string{
+    //
+    //    public function getOfficeStaffOverviewPage(Request $req, Response $res):string{
+    //        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="office_staff_member"){
+    //            return $res->render(view:"office-staff-dashboard-overview", layout:"office-staff-dashboard",layoutParams:[
+    //                "title"=>"Overview",
+    //                "pageMainHeading"=>"Overview",
+    //                "officeStaffId"=>$req->session->get("user_id"),
+    //            ]);
+    //        }
+    //        return $res->redirect(path:"/login");
+    //    }
+    //
+    //
+    //    public function getCustomerOverviewPage(Request $req, Response $res):string{
+    //        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="customer"){
+    //            return $res->render(view:"customer-dashboard-overview", layout:"customer-dashboard",layoutParams:[
+    //                "title"=>"Overview",
+    //                "pageMainHeading"=>"Your account at a glance",
+    //                "customerId"=>$req->session->get("user_id"),
+    //            ]);
+    //        }
+    //        return $res->redirect(path:"/login");
+    //    }
+
+    public function getOfficeStaffOverviewPage(Request $req, Response $res): string
+    {
+            $customer = new Customer();
+            $totalCustomers = $customer->getTotalCustomers();
+            // var_dump($totalCustomers);
+
+            $appointment = new Appointment();
+            $totalAppointments = $appointment->getTotalAppointments();
+
+            $jobCard = new JobCard();
+            $totalOngoingJobs = $jobCard->getTotalOngoingJobs();
+            $weeklyJobStatus = $jobCard->getWeeklyJobStatus();
+
+            return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", 
+            pageParams: [
+                "customerCount" => $totalCustomers,
+                "appointmentCount" => $totalAppointments,
+                "ongoingJobsCount" => $totalOngoingJobs,
+                "weeklyJobStatus" => $weeklyJobStatus,
+            ],
+            layoutParams: [
+                "title" => "Overview",
+                "pageMainHeading" => "Overview",
+                "officeStaffId" => $req->session->get("user_id"),
+            ]);
+    }
 }

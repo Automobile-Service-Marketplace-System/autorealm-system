@@ -1,4 +1,4 @@
-import {htmlToElement} from "../utils";
+import {disableScrollOnBody, enableScrollOnBody, htmlToElement} from "../utils";
 
 
 class ModalElement {
@@ -20,6 +20,11 @@ class ModalElement {
     key;
 
     /**
+     * @type {string | undefined}
+     */
+    previousScrollMode;
+
+    /**
      * @param {{ content: string|HTMLElement, closable: boolean, key: string   }} options
      */
     constructor({closable, content, key}) {
@@ -38,6 +43,7 @@ class ModalElement {
         this.modalEl = document.createElement("div");
         this.modalEl.classList.add("modal");
     }
+
 
     /**
      *
@@ -73,6 +79,11 @@ class ModalElement {
         document.body.appendChild(this.overlayEl);
         this.modalEl.classList.add("modal-open");
         this.overlayEl.classList.add("overlay-open");
+        // get current scroll mode of the body
+        this.previousScrollMode = document.body.style.overflow;
+        // disable scroll
+        // document.body.style.overflow = "hidden";
+        disableScrollOnBody();
     }
 
     /**
@@ -110,6 +121,9 @@ class ModalElement {
             }, 200);
 
             Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
+            // restore previous scroll mode
+            // document.body.style.overflow = this.previousScrollMode;
+            enableScrollOnBody(this.previousScrollMode)
         }
     }
 }

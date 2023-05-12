@@ -3,10 +3,9 @@
 namespace app\models;
 
 use app\core\Database;
-use app\utils\DevOnly;
 use PDO;
 use PDOException;
-
+use app\utils\DevOnly;
 
 class Vehicle
 {
@@ -21,12 +20,12 @@ class Vehicle
         $this->body = $registerBody;
     }
 
-    public function getVehicles(int|null $count = null, int|null $page = 1): array
+    public function getVehicles(int | null $count = null, int | null $page = 1): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        try{
+        try {
             $statement = $this->pdo->prepare(
                 "SELECT
                     vin as VIN,
@@ -42,14 +41,14 @@ class Vehicle
                     b.brand_id as 'Brand ID',
                     b.brand_name as 'Brand Name',
                     customer_id as 'Customer ID'
-                FROM 
-                    vehicle v 
+                FROM
+                    vehicle v
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
                 ORDER BY v.vin $limitClause $pageClause");
             $statement->execute();
             $vehicles = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
@@ -59,7 +58,7 @@ class Vehicle
 
         return [
             "total" => $totalVehicles['total'],
-            "vehicles" => $vehicles
+            "vehicles" => $vehicles,
         ];
     }
 
@@ -78,7 +77,7 @@ class Vehicle
                 m.model_name,
                 b.brand_name,
                 CONCAT(c.f_name, ' ', c.l_name) as full_name
-            FROM vehicle v 
+            FROM vehicle v
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
                 INNER JOIN customer c ON c.customer_id = v.customer_id
@@ -87,15 +86,15 @@ class Vehicle
             $statement->bindValue(":customer_id", $customer_id);
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            if(!$results) {
+            if (!$results) {
                 return "No vehicle found";
             }
 
             $resultsWithLastService = [];
 
-
             foreach ($results as $result) {
-//                DevOnly::prettyEcho($result);
+
+            //    DevOnly::prettyEcho($result);
 
                 $statement = $this->pdo->prepare("SELECT
                     mileage,
@@ -111,7 +110,7 @@ class Vehicle
                 $lastService = $statement->fetch(PDO::FETCH_ASSOC);
 //                DevOnly::prettyEcho($lastService);
 
-                if($lastService) {
+                if ($lastService) {
                     $result['last_service_mileage'] = $lastService['mileage'];
                     $result['last_service_date'] = $lastService['start_date_time'];
                 } else {
@@ -119,16 +118,14 @@ class Vehicle
                     $result['last_service_date'] = "N/A";
                 }
 
-                $resultsWithLastService[]= $result;
+                $resultsWithLastService[] = $result;
 //
 //                DevOnly::prettyEcho($result);
             }
 
 //            DevOnly::prettyEcho($resultsWithLastService);
 
-
             return $resultsWithLastService;
-
 
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -137,7 +134,6 @@ class Vehicle
 
     }
 
-
     public function getVehicleNamesByID(int $customer_id): array | string
     {
         try {
@@ -145,7 +141,7 @@ class Vehicle
                 v.reg_no,
                 m.model_name,
                 b.brand_name
-            FROM vehicle v 
+            FROM vehicle v
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
             WHERE
@@ -160,16 +156,16 @@ class Vehicle
 
     }
 
-    public function addVehicle(int $customer_id) 
+    public function addVehicle(int $customer_id)
     {
         $errors = $this->validateRegisterBody();
 
         if (empty($errors)) {
-            $query = "INSERT INTO vehicle 
+            $query = "INSERT INTO vehicle
                 (
                     vin, reg_no, engine_no, manufactured_year, engine_capacity, vehicle_type, fuel_type, transmission_type, customer_id, model_id, brand_id
-                ) 
-                VALUES 
+                )
+                VALUES
                 (
                     :vin, :reg_no, :engine_no, :manufactured_year, :engine_capacity, :vehicle_type, :fuel_type, :transmission_type, :customer_id, :model, :brand
                 )";
@@ -283,7 +279,7 @@ class Vehicle
 
             $statement->execute();
             $vehicle = $statement->fetch();
-            
+
             if ($vehicle) {
                 $errors['engine_no'] = 'Engine No already in use.';
             }
@@ -296,7 +292,7 @@ class Vehicle
             $statement = $this->pdo->prepare($query);
             //prepare the query for the database
             $statement->bindValue(":reg_no", $this->body["reg_no"]);
-            $statement->bindValue(":old_reg_no", $this->body["old_reg_no"]);            
+            $statement->bindValue(":old_reg_no", $this->body["old_reg_no"]);
 
             $statement->execute();
             $vehicle = $statement->fetch();
@@ -313,12 +309,12 @@ class Vehicle
     {
         $errors = $this->validateUpdateVehicleBody();
         if (empty($errors)) {
-                        
+
             try {
                 $query = "UPDATE vehicle SET
-                vin = :vin, 
-                reg_no = :reg_no, 
-                engine_no = :engine_no, 
+                vin = :vin,
+                reg_no = :reg_no,
+                engine_no = :engine_no,
                 manufactured_year = :manufactured_year,
                 engine_capacity = :engine_capacity,
                 vehicle_type = :vehicle_type,

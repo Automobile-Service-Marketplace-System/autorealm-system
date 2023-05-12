@@ -11,10 +11,12 @@ use PDOException;
 class JobCard
 {
     private PDO $pdo;
+    private array $body;
 
-    public function __construct()
+    public function __construct(array $body=[])
     {
         $this->pdo = Database::getInstance()->pdo;
+        $this->body = $body;
     }
 
 
@@ -140,13 +142,12 @@ class JobCard
         if ($statement->rowCount() > 0) {
             $vin = $statement->fetch(mode: PDO::FETCH_ASSOC)['vin'];
             $query = "SELECT 
-                            CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(my.year), ' Edition') as vehicle_name, 
+                            CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(v.manufactured_year), ' Edition') as vehicle_name, 
                             v.reg_no as reg_no, 
                             CONCAT(c.f_name, ' ', c.l_name) as customer_name
                           FROM vehicle v 
                               LEFT JOIN brand b ON v.brand_id = b.brand_id 
                               LEFT JOIN model m ON v.model_id = m.model_id 
-                              INNER JOIN modelyear my on m.model_id = my.model_id 
                               INNER  JOIN customer c on v.customer_id = c.customer_id 
                           WHERE v.vin = :vin";
             $statement = $this->pdo->prepare($query);
@@ -507,16 +508,19 @@ class JobCard
             $query = "INSERT INTO 
                             jobcard(
                                 vehicle_reg_no,
+                                mileage,
                                 customer_id,
                                 employee_id)
                     VALUES(
                                 :vehicle_reg_no,
+                                :mileage,
                                 :customer_id,
                                 :employee_id)
                             ";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
             $statement->bindValue(":employee_id", $this->body["foreman_id"]);
             $statement->execute();
@@ -587,5 +591,23 @@ class JobCard
         } catch (PDOException|Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function getTotalOngoingJobs(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM jobcard where status != 'finished'");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function getWeeklyJobStatus(): array
+    {
+        $stmt = $this->pdo->prepare("SELECT status, COUNT(*) AS count 
+            FROM jobcard 
+            WHERE start_date_time >= DATE_SUB(NOW(), INTERVAL 1 WEEK) 
+            GROUP BY status;
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 }
