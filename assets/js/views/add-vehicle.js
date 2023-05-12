@@ -1,13 +1,15 @@
-import {Modal} from "../components/Modal"
-import {htmlToElement} from "../utils";
+import { Modal } from "../components/Modal";
+import { htmlToElement } from "../utils";
 import Notifier from "../components/Notifier";
 
-const addVehicleButton = document.querySelector("#add-vehicle-for-customer")
+const addVehicleButton = document.querySelector("#add-vehicle-for-customer");
 
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
+
+const addVehicleForm =
+  htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
 
 <div class="add-vehicle-form_title" style="margin-top: -1rem">
     <h1 class="office-staff-add-customer-form__vehicle__title">
@@ -87,85 +89,88 @@ const addVehicleForm = htmlToElement(`<form action="/vehicles/add/by-customer?id
     </button>
     <button style="display: none" type="submit" id="add-vehicle-final-btn"></button>
 </div>
-</form>`)
+</form>`);
 
-
-addVehicleForm?.querySelector("#add-vehicle-modal-btn")?.addEventListener("click", (e) => {
-
-    const template =  `<div>
+addVehicleForm
+  ?.querySelector("#add-vehicle-modal-btn")
+  ?.addEventListener("click", (e) => {
+    const template = `<div>
                         <h3>Are you sure you want to add this vehicle?</h3>
                         <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem;margin-top: 1rem">
                             <button class="btn btn--thin btn--danger modal-close-btn">Cancel</button>                        
                             <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
                         </div>
-                        </div>`
+                        </div>`;
     const element = htmlToElement(template);
-    element.querySelector("#add-vehicle-confirm-btn").addEventListener('click', () => {
-        const submitBtn = addVehicleForm?.querySelector("#add-vehicle-final-btn");
+    element
+      .querySelector("#add-vehicle-confirm-btn")
+      .addEventListener("click", () => {
+        const submitBtn = addVehicleForm?.querySelector(
+          "#add-vehicle-final-btn"
+        );
         submitBtn?.click();
-    })
+      });
 
     Modal.show({
-        content: element,
-        key: "Add vehicle confirmation",
-        closable: true,
-    })
-})
+      content: element,
+      key: "Add vehicle confirmation",
+      closable: true,
+    });
+  });
 
-
-addVehicleForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    try {
-        const result = await fetch(`/vehicles/add/by-customer?id=${params.id}`, {
-            body: formData,
-            method: 'POST'
-        })
-        if(result.status === 400) {
-            const resultBody = await result.json()
-            for (const inputName in resultBody.errors) {
-                const inputWrapper = addVehicleForm.querySelector(`#${inputName}`).parentElement
-                inputWrapper.classList.add('form-item--error')
-                const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
-                inputWrapper.appendChild(errorElement)
-            }
-        }
-         else if (result.status === 201) {
-
-            // add success message to url search params
-            window.location.search = new URLSearchParams({
-                ...params,
-                success: 'Vehicle added successfully'
-            }).toString()
-            location.reload()
-        }
-    } catch (e) {
-        Notifier.show({
-            closable: true,
-            header: 'Error',
-            type: 'danger',
-            text: e.message
-        })
+addVehicleForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  try {
+    const result = await fetch(`/vehicles/add/by-customer?id=${params.id}`, {
+      body: formData,
+      method: "POST",
+    });
+    if (result.status === 400) {
+      const resultBody = await result.json();
+      for (const inputName in resultBody.errors) {
+        const inputWrapper = addVehicleForm.querySelector(
+          `#${inputName}`
+        ).parentElement;
+        inputWrapper.classList.add("form-item--error");
+        const errorElement = htmlToElement(
+          `<small>${resultBody.errors[inputName]}</small>`
+        );
+        inputWrapper.appendChild(errorElement);
+      }
+    } else if (result.status === 201) {
+      // add success message to url search params
+      window.location.search = new URLSearchParams({
+        ...params,
+        success: "Vehicle added successfully",
+      }).toString();
+      location.reload();
     }
-})
+  } catch (e) {
+    Notifier.show({
+      closable: true,
+      header: "Error",
+      type: "danger",
+      text: e.message,
+    });
+  }
+});
 
-addVehicleForm?.addEventListener('reset', (e) => {
-    const formItems = addVehicleForm.querySelectorAll('.form-item')
-    formItems.forEach(item => {
-        item.classList.remove('form-item--error')
-        const errorElement = item.querySelector('small')
-        if (errorElement) {
-            item.removeChild(errorElement)
-        }
-    })
-})
+addVehicleForm?.addEventListener("reset", (e) => {
+  const formItems = addVehicleForm.querySelectorAll(".form-item");
+  formItems.forEach((item) => {
+    item.classList.remove("form-item--error");
+    const errorElement = item.querySelector("small");
+    if (errorElement) {
+      item.removeChild(errorElement);
+    }
+  });
+});
 
 addVehicleButton?.addEventListener("click", () => {
-    Modal.show({
-        content: addVehicleForm,
-        closable: false,
-        key: "addVehicleForm"
-    })
-})
-
-
+  Modal.show({
+    content: addVehicleForm,
+    closable: false,
+    key: "addVehicleForm",
+  });
+});
