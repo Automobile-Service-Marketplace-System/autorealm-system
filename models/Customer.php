@@ -57,6 +57,7 @@ class Customer
             }
             if (empty($errors)) {
                 try {
+                    $this->pdo->beginTransaction();
                     $customerCreateQuery = "INSERT INTO customer 
                     (
                         f_name, l_name, contact_no, address, email, password, image
@@ -80,12 +81,12 @@ class Customer
 
                     $customerId = $this->pdo->lastInsertId();
 
-                    $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id, mobile_otp, email_otp) VALUE (:customer_id, :mobile_otp, :email_otp)";
+                    $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id,  email_otp) VALUE (:customer_id,  :email_otp)";
                     $emailOtp = (string)random_int(100000, 999999);
-                    $mobileOtp = (string)random_int(100000, 999999);
+//                    $mobileOtp = (string)random_int(100000, 999999);
                     $statement = $this->pdo->prepare($customerVerificationCodesQuery);
                     $statement->bindValue(":customer_id", $customerId);
-                    $statement->bindValue(":mobile_otp", $mobileOtp);
+//                    $statement->bindValue(":mobile_otp", $mobileOtp);
                     $statement->bindValue(":email_otp", $emailOtp);
 
                     $statement->execute();
@@ -98,9 +99,12 @@ class Customer
                         ]
                     );
 
-                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
+                    $this->pdo->commit();
+
+//                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
                     return ["customerId" => $customerId];
-                } catch (Exception $e) {
+                } catch (PDOException | Exception $e) {
+                    $this->pdo->rollBack();
                     return $e->getMessage();
                 }
             } else {
@@ -163,6 +167,9 @@ class Customer
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function registerWithVehicle(): bool|array|string
     {
         $errors = $this->validateRegisterWithVehicleBody();
@@ -174,6 +181,7 @@ class Customer
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
+                $this->pdo->beginTransaction();
                 //for customer table
                 $query = "INSERT INTO customer 
                     (
@@ -200,6 +208,18 @@ class Customer
                     return false;
                 }
 
+                $customerId = $this->pdo->lastInsertId();
+
+                $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id,  email_otp) VALUE (:customer_id,  :email_otp)";
+                $emailOtp = (string)random_int(100000, 999999);
+//                    $mobileOtp = (string)random_int(100000, 999999);
+                $statement = $this->pdo->prepare($customerVerificationCodesQuery);
+                $statement->bindValue(":customer_id", $customerId);
+//                    $statement->bindValue(":mobile_otp", $mobileOtp);
+                $statement->bindValue(":email_otp", $emailOtp);
+
+                $statement->execute();
+
                 //for vehicle table
                 $query = "INSERT INTO vehicle 
                     (
@@ -224,8 +244,10 @@ class Customer
                 $statement->bindValue(":brand", $this->body["brand"]);
                 try {
                     $statement->execute();
+                    $this->pdo->commit();
                     return true;
                 } catch (PDOException $e) {
+                    $this->pdo->rollBack();
                     return $e->getMessage();
                 }
             } else {
