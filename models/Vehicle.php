@@ -34,7 +34,6 @@ class Vehicle
         $whereClause = null;
         $conditions = null;
         
-        var_dump($vehicleType); 
 
         if ($vehicleType !== null) {
             switch ($vehicleType) {
