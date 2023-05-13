@@ -30,7 +30,7 @@
     font-weight: bolder;
 }
 
-.office-overview-foreman-chart {
+.office-overview-foremen {
     margin-top: 1.5rem;
     height: 25rem;
     width: 65.7%;
@@ -51,7 +51,7 @@
 }
 
 .office-overview-foremen-analytics h3{
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-weight: bolder;
 }
 
@@ -62,4 +62,16 @@
 
 #foremen-status-canvas {
     width: 100%;
+}
+
+.office-overview-foremen p{
+    font-size: 1.7rem;
+    font-weight: bolder;
+    margin-bottom: 0.5rem;
+}
+
+.office-overview-foremen span{
+    font-size: 1.2rem;
+    margin-top: 2rem;
+
 }

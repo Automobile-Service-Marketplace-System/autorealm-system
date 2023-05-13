@@ -8,6 +8,7 @@
  * @var array $brands
  */
 
+//if there is a error print the error and return
 if(isset($error)) {
     echo "<p class='error'>$error</p>";
     return;
@@ -15,6 +16,7 @@ if(isset($error)) {
 
 ?>
 
+<!-- add new vehicle button -->
 <div class="add-vehicle-for-customer">
     <div class="customer-details">
         <strong class='customer-title'>
@@ -25,6 +27,7 @@ if(isset($error)) {
     <button id="add-vehicle-for-customer" class="btn">Add vehicle</button>
 </div>
 
+<!-- vehicle card for each vehicle -->
 <div class='vehicle-card-container'>
     <?php
     if(empty($vehicles)) {
@@ -50,15 +53,6 @@ if(isset($error)) {
                         <li><span>Transmission: </span>{$vehicle['transmission_type']}</li>
                     </ul>
                 </div>
-                <div class='vehicle-card__service-info'>
-                    <div>
-                        <p><span>Last Service Mileage:</span> 268635 KM</p>
-                        <p><span>Last Service Date:</span> 12/12/2020</p>
-                    </div>
-                    <a class='btn btn--danger' href='/dashboard/services?vehicle_id=123'>
-                        View service history
-                    </a>
-                </div>
             </div>
         ";
         }
@@ -66,6 +60,7 @@ if(isset($error)) {
     ?>
 </div>
 
+<!-- set local storage for brands and models -->
 <script>
     <?php
     try {

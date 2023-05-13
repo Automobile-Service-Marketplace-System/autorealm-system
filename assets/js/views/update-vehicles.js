@@ -23,25 +23,25 @@ updateCustomerButton.forEach(function (btn) {
     const vehicleEnginetNoElement = vehicleRow.querySelector("td:nth-child(3)");
     const EngineNo = vehicleEnginetNoElement.textContent;
 
-    const vehicleManuYRElement = vehicleRow.querySelector("td:nth-child(4)");
+    const vehicleManuYRElement = vehicleRow.querySelector("td:nth-child(5)");
     const ManufacturedYear = vehicleManuYRElement.textContent;
 
     const vehicleEngineCapacityElement =
-      vehicleRow.querySelector("td:nth-child(5)");
+      vehicleRow.querySelector("td:nth-child(6)");
     const EngineCapacity = vehicleEngineCapacityElement.textContent;
 
     const vehicleVehicleTypeElement =
-      vehicleRow.querySelector("td:nth-child(6)");
+      vehicleRow.querySelector("td:nth-child(7)");
     const VehicleType = vehicleVehicleTypeElement.textContent;
 
-    const vehicleFuelTypeElement = vehicleRow.querySelector("td:nth-child(7)");
+    const vehicleFuelTypeElement = vehicleRow.querySelector("td:nth-child(8)");
     const FuelType = vehicleFuelTypeElement.textContent;
 
     const vehicleTransmissionTypeElement =
-      vehicleRow.querySelector("td:nth-child(8)");
+      vehicleRow.querySelector("td:nth-child(9)");
     const TransmissionType = vehicleTransmissionTypeElement.textContent;
 
-    const vehicleModelElement = vehicleRow.querySelector("td:nth-child(9)");
+    const vehicleModelElement = vehicleRow.querySelector("td:nth-child(10)");
     const model = vehicleModelElement.textContent;
 
     const modelId = Number(btn.dataset.modelid);
@@ -75,9 +75,7 @@ updateCustomerButton.forEach(function (btn) {
       })
       .join("");
 
-    const vehicleCustomerIDElement =
-      vehicleRow.querySelector("td:nth-child(11)");
-    const CustomerID = vehicleCustomerIDElement.textContent;
+    const CustomerID = btn.dataset.customerid;
 
     const updateVehicleForm = htmlToElement(`<form id="update-vehicle-details">
         <div class="modal-header">

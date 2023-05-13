@@ -359,19 +359,15 @@ class Product
         }
 
 
-//        exit();
-
         if ($searchTerm !== null) {
             $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
         }
 
         if ($minPrice !== null) {
-            DevOnly::prettyEcho("min price is $minPrice");
             $statement->bindValue(":min_price", $minPrice);
         }
 
         if ($maxPrice !== null) {
-            DevOnly::prettyEcho("max price is $maxPrice");
             $statement->bindValue(":max_price", $maxPrice);
         }
 
@@ -379,9 +375,7 @@ class Product
         try {
             $statement->execute();
             $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-            DevOnly::prettyEcho($products);
-//            exit();
-//
+
             $query2 = "SELECT
                        COUNT(*) as total
 

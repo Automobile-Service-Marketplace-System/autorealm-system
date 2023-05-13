@@ -115,6 +115,7 @@ if ($isInternal) {
     $app->router->get(path: "/services/for-selector", callback: [ServicesController::class, 'getServiceSelectorServices']);
     $app->router->get(path: "/jobs/for-selector", callback: [JobsController::class, 'getJobSelectorJobs']);
     $app->router->get(path: "/overview", callback: [OverviewController::class, 'getOverviewPage']);
+
     $app->router->get(path: "/analytics", callback: [AnalyticsController::class, 'getAnalyticsPage']);
     $app->router->get(path: '/analytics/order-revenue', callback: [AnalyticsController::class, 'getOrderRevenue']);
     $app->router->get(path: '/analytics/invoice-revenue', callback: [AnalyticsController::class, 'getInvoiceRevenue']);
@@ -164,6 +165,9 @@ if ($isInternal) {
     $app->router->post(path: "/services/add", callback: [ServicesController::class, 'AddServices']); //add the service to the database
     $app->router->post(path: "/services/update", callback: [ServicesController::class, 'UpdateServices']);
     $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
+    $app->router->get(path: "/overview/employee-count" , callback: [EmployeeController::class, 'getEmployeeCountData']);
+    $app->router->get(path: "/overview/customer-count" , callback: [OverviewController::class, 'getCustomerCount']);
+    // $app->router->get(path: "/overview/foreman-jobs" , callback: [OverviewController::class, 'getForemanJobs']);    
     // $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 
 // stock manager routes
