@@ -32,6 +32,20 @@ class Employee
         return $stmt->fetchObject();
     }
 
+    public function getForemanJobsData():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            COUNT(*) AS count, status FROM jobcard 
+            WHERE start_date_time BETWEEN DATE_FORMAT(CURRENT_DATE, '%Y-%m-01') 
+            AND CURRENT_DATE GROUP BY status ORDER BY count DESC;");
+            $statement->execute();
+            $foremanJobs = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $foremanJobs;
+        }
+        catch(PDOException|Exception $e){
+            return "Failed to get data : " . $e->getMessage();
+        }
+    }
 
     public function getEmployeeCount():array|string{
         try{

@@ -21,8 +21,8 @@ class EmployeeController
         return $res->redirect(path: "/login");
 
     }
- 
 
+ 
     public function getEmployeeCountData(Request $req, Response $res):string{
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
             $employeeModel = new Employee;

@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
 use app\models\Appointment;
+use app\models\Employee;
 use app\models\JobCard;
 
 class OverviewController
@@ -52,13 +53,25 @@ class OverviewController
     {
     }
   
-    private function getAdminOverviewPage(Request $req, Response $res) : string {
+    private function getAdminOverviewPage(Request $req, Response $res) : string|array {
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="admin"){
-            return $res->render(view:"admin-dashboard-overview", layout:"admin-dashboard",layoutParams:[
-               "title"=>"Overview",
-               "pageMainHeading"=>"Overview",
-               "employeeId"=>$req->session->get("user_id"),
-           ]);           
+            $foremamodel = new Employee;
+            $foremanJobs = $foremamodel -> getForemanJobsData();
+            // $customermodel = new Customer;
+            // $customerCount = $customermodel -> getCustomerCountData();
+            if ($foremanJobs) {
+                return $res->render(view: "admin-dashboard-overview", layout: "admin-dashboard", pageParams: [
+                    'foremanJobs' => $foremanJobs,
+                    // 'customerCount' => $customerCount 
+                    ], layoutParams: [
+                    "title"=>"Overview",
+                    "pageMainHeading"=>"Overview",
+                    "employeeId"=>$req->session->get("user_id"),
+                ]);
+            }
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
+            ]);
         }
     }
 
