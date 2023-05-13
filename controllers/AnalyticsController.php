@@ -177,12 +177,12 @@ class AnalyticsController
             $toDate = $query['to'];
 
             $orderModel = new Order();
-            $quantityData = $orderModel->getProductQuantityData(
+            $result = $orderModel->getProductQuantityData(
                 from: $fromDate,
                 to: $toDate
             );
 
-            if (is_string($quantityData)) {
+            if (is_string($result)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -193,7 +193,8 @@ class AnalyticsController
 
             return $res->json([
                 "message" => "Success",
-                "data" => $quantityData
+                "data" => $result['productCountData'],
+                "notSold" => $result['notSoldProducts']
             ]);
         }
         $res->setStatusCode(401);

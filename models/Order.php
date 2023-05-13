@@ -536,7 +536,28 @@ class Order
 
             $statement->execute();
             $productCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $productCountData;
+
+            //to get item_codes that are not in orderhasproduct table in a given range
+            $statement2 = $this->pdo->prepare("
+                SELECT item_code, name
+                FROM product
+                WHERE item_code NOT IN (
+                    SELECT ohp.item_code
+                    FROM orderhasproduct ohp
+                    INNER JOIN  `order` o ON  o.order_no = ohp.order_no
+                    WHERE o.created_at BETWEEN :from AND :to)
+            ");
+            $statement2->bindValue(":from", $from);
+            $statement2->bindValue(":to", $to);
+
+            $statement2->execute();
+            $notSoldProducts = $statement2->fetchAll(PDO::FETCH_ASSOC);
+
+
+            return [
+                'productCountData' => $productCountData,
+                'notSoldProducts' => $notSoldProducts
+            ];
         } catch (PDOException|Exception $e) {
             return "Failed to get product quantity data : " . $e->getMessage();
         }

@@ -82,7 +82,7 @@
     flex-direction: column;
     margin-left: 1.5rem;
     margin-top: 1rem;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .analytic-card__item{
@@ -95,6 +95,11 @@
 .analytic-card__item__title{
     font-weight: 800;
     color: rgba(var(--dark), 1);
+}
+.analytic-card__item__subtitle__list{
+    font-weight: 600;
+    color: rgba(var(--dark), 1);
+
 }
 
 .analytic-card__item__row{
@@ -160,10 +165,14 @@
 }
 
 .ordered-product-quantity-chart{
-    width :40% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width :50% !important;
     padding-bottom: 1rem;
     padding-top: 3rem;
-    margin-right: 3rem;
+    margin-right: 2rem;
+    margin-left: 2rem;
 }
 
 .ordered-products-details{

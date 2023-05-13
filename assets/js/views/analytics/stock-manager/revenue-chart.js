@@ -1,3 +1,5 @@
+import {htmlToElement} from "../../../utils";
+
 import {
     Chart,
     PieController,
@@ -460,7 +462,8 @@ if (analyticFilterContainer) {
                 case 200:
 
                     const resData = await result.json()
-                    console.log(resData)
+
+                    console.log(resData.notSold)
 
                     const productNames = resData.data.map(item => item.product_name)
 
@@ -508,6 +511,25 @@ if (analyticFilterContainer) {
                     const minQtyProductRevElement = document.getElementById("lowest-prod-rev");
                     minQtyProductRevElement.innerHTML = "Rs :  " + Number(minQtyProductRev)
 
+
+                    //to display not sold product list
+
+
+                    const notSoldProductList = document.getElementById("not-sold-product-list");
+
+                    resData.notSold.forEach(function (item) {
+                        const template = htmlToElement(`
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__value">
+                                ${item.item_code}
+                            </div>
+                            <div class="analytic-card__item__value">
+                                ${item.name}
+                            </div>
+                        </div>
+                        `)
+                        notSoldProductList.appendChild(template)
+                    })
 
 
                     if (productQuantityChart) {
