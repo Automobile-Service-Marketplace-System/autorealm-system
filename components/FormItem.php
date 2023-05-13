@@ -33,7 +33,7 @@ class FormItem
     {
         $errorClass = $hasError ? "form-item--error" : "";
         $errorElement = $hasError ? "<small>$error</small>" : "";
-        $requiredIndicator = $required ? "<sup>*</sup>" : "";
+        $requiredIndicator = $required ? ($label != "" ? "<sup>*</sup>" : ""): "";
         $additionalAttributes = $additionalAttributes ?? "";
 
         echo "<div class='form-item $errorClass'>

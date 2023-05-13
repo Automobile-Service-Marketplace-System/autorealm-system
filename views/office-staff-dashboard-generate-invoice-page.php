@@ -1,5 +1,6 @@
-<form>
+<form action="/invoices/create" method="post">
 
+    <input type="text" name="job_id" id="job_id" style="display: none">
     <section class="create-invoice__header">
         <button type="button" class="flex gap-8" id="load-from-job-btn">
             <i class="fa-solid fa-plus"></i>
@@ -136,12 +137,13 @@
     </section>
 
     <div class="invoice-button-set">
-        <button type="button" class="btn btn--success btn--square" e>
+        <button type="button" class="btn btn--success btn--square" >
             <i class="fa-solid fa-print"></i>
         </button>
         <button type="button" class="btn btn--warning btn--square">
             <i class="fa-solid fa-file-pdf"></i>
         </button>
         <button type="button" class="btn" id="print-invoice">Print Invoice</button>
+        <button type="submit">Submit</button>
     </div>
 </form>

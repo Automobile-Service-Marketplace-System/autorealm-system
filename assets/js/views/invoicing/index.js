@@ -11,4 +11,12 @@ if (printInvoiceButton) {
     printInvoiceButton.addEventListener('click', () => {
         window.print()
     })
+
+
+    // // if tab is going to be closed, warn the user
+    // window.addEventListener('beforeunload', (e) => {
+    //     e.preventDefault()
+    //     // ask the user if they want to leave
+    //     e.returnValue = ''
+    // })
 }

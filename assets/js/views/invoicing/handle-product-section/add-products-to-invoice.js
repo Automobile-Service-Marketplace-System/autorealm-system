@@ -29,7 +29,7 @@ function getNewItemRowWithoutEventListener() {
                     <input type="number" placeholder="Qty" name="product_quantities[]" min="1">
                 </td>
                 <td>
-                    <input type="number" placeholder="Unit Price" name="product_unit_prices[]">
+                    <input type="number" placeholder="Unit Price" name="product_unit_prices[]" readonly>
                 </td>
                 <td>
                     <input type="number" placeholder="%" name="product_percentages[]" min="0" max="100">
@@ -271,9 +271,8 @@ export function addProductsFromJob(products) {
 
 
     let restOfProducts = products.slice(1)
-    if (restOfProducts.length === 0) {
-        return
-    }
+    if (restOfProducts.length === 0) return
+
 
     restOfProducts.forEach(product => {
         console.log(product)

@@ -9,15 +9,32 @@ import {
     customerAddress,
     customerEmail,
     customerPhone,
-    loadFromJobBtn
+    loadFromJobBtn, manuallyAddCustomerDetailsBtn
 } from "./customer-detail-elements";
 import {addProductsFromJob, addNewItemRowButton, removeAllItems} from "./handle-product-section";
+import {addServicesFromJob, addNewServiceRowButton, removeAllServices} from "./handle-service-section"
 
+/**
+ * @type {HTMLInputElement}
+ */
+const jobIdInput = document.querySelector('#job_id')
 
-let prevAddNewRowItemButtonInnerHTML = addNewItemRowButton.innerHTML
-
+if (addNewItemRowButton && addNewServiceRowButton) {
+    let prevAddNewRowItemButtonInnerHTML = addNewItemRowButton.innerHTML
+    let prevAddNewRowServiceButtonInnerHTML = addNewServiceRowButton.innerHTML
+}
 if (loadFromJobBtn) {
     loadFromJobBtn.addEventListener('click', async () => {
+        if (manuallyAddCustomerDetailsBtn.classList.contains("manually-add-customer-details--selected")) {
+            Notifier.show({
+                closable: true,
+                duration: 5000,
+                header: 'Warning',
+                text: 'Please remove the manually added customer details',
+                type: 'warning'
+            })
+            return
+        }
 
         if (loadFromJobBtn.classList.contains("load-from-job-btn--selected")) {
             resetCustomerInfo()
@@ -29,7 +46,9 @@ if (loadFromJobBtn) {
                 const customerInfo = await getCustomerInfo(jobId)
                 if (customerInfo) {
 
-                    await loadJobProducts(jobId)
+                    jobIdInput.value = jobId
+
+                    await Promise.all([loadJobProducts(jobId), loadJobServices(jobId)])
                     loadFromJobBtn.classList.add('load-from-job-btn--selected')
 
                     customerName.textContent = customerInfo.customerName
@@ -90,10 +109,15 @@ if (loadFromJobBtn) {
 
     function resetCustomerInfo() {
 
+        jobIdInput.value = ''
         removeAllItems()
+        removeAllServices()
         loadFromJobBtn.classList.remove('load-from-job-btn--selected')
         addNewItemRowButton.disabled = false
         addNewItemRowButton.innerHTML = prevAddNewRowItemButtonInnerHTML
+
+        addNewServiceRowButton.disabled = false
+        addNewServiceRowButton.innerHTML = prevAddNewRowServiceButtonInnerHTML
 
         customerName.textContent = 'N/A'
         customerNameInput.value = ''
@@ -129,6 +153,49 @@ if (loadFromJobBtn) {
                         addProductsFromJob(products)
                         addNewItemRowButton.disabled = true
                         addNewItemRowButton.innerHTML = '<i class="fas fa-lock"></i> Locked when loading from job card, create a separate invoice to add more items'
+                    }
+                    break
+                case 400:
+                    const error = await result.json()
+                    console.log(error)
+                    break
+                case 500:
+                    const error500 = await result.json()
+                    console.log(error500)
+                    break
+            }
+        } catch (e) {
+            Notifier.show({
+                text: e.message,
+                type: 'danger',
+                header: 'Error',
+                duration: 3000,
+                closable: true
+            })
+            return null
+        }
+    }
+
+    /**
+     * @param {number} jobId
+     * @return {Promise<void>}
+     */
+    async function loadJobServices(jobId) {
+        try {
+            const result = await fetch(`/jobs/service-info?job_id=${jobId}`)
+            switch (result.status) {
+                case 200:
+                    /**
+                     * @type {{services: Array<Service>|false}}
+                     */
+                    const data = await result.json()
+
+                    const {services} = data
+                    console.log(services)
+                    if (services) {
+                        addServicesFromJob(services)
+                        addNewServiceRowButton.disabled = true
+                        addNewServiceRowButton.innerHTML = '<i class="fas fa-lock"></i> Locked when loading from job card, create a separate invoice to add more services'
                     }
                     break
                 case 400:

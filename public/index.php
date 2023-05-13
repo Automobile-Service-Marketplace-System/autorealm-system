@@ -211,6 +211,7 @@ if ($isInternal) {
     // $app->router->get(path: "/create-job-card", callback: [JobsController::class, 'getCreateJobCardPage']);
     $app->router->post(path: "/create-job-card", callback: [JobsController::class, 'createJobCard']);
     $app->router->get(path: "/invoices/create", callback: [InvoicesController::class, 'getCreateInvoicePage']);
+    $app->router->post(path: "/invoices/create", callback: [InvoicesController::class, 'createInvoice']);
     $app->router->post(path: "/customers/update", callback: [CustomersController::class, 'updateCustomer']);
     $app->router->post(path: "/vehicles/update", callback: [VehiclesController::class, 'updateVehicle']);
     $app->router->get(path: "/job-cards", callback: [JobsController::class, 'getAllJobsPage']);
