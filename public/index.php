@@ -162,6 +162,9 @@ if ($isInternal) {
     $app->router->post(path: "/services/add", callback: [ServicesController::class, 'AddServices']); //add the service to the database
     $app->router->post(path: "/services/update", callback: [ServicesController::class, 'UpdateServices']);
     $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
+    $app->router->get(path: "/overview/employee-count" , callback: [EmployeeController::class, 'getEmployeeCountData']);
+    $app->router->get(path: "/overview/customer-count" , callback: [OverviewController::class, 'getCustomerCount']);
+    // $app->router->get(path: "/overview/foreman-jobs" , callback: [OverviewController::class, 'getForemanJobs']);    
     // $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 
 // stock manager routes

@@ -529,7 +529,6 @@ if (analyticFilterContainer) {
                         },
 
                     });
-
             }
 
         } catch (e) {
