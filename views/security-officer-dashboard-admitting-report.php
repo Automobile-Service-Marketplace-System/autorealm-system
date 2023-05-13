@@ -3,6 +3,7 @@
 /**
  * @var array $errors
  * @var array $body
+ * @var string $reg_no
  */
 
 use app\components\FormItem;
@@ -66,7 +67,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 type: "text",
                 hasError: $hasVehicleRegNoError,
                 error: $hasVehicleRegNoError ? $errors['vehicle_reg_no'] : "",
-                value: $body['vehicle_reg_no'] ?? null,
+                value: $reg_no,
             );
         ?>
 
