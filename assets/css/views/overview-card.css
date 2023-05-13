@@ -1,0 +1,23 @@
+.overview{
+    width:100% !important;
+}
+
+.overview-card-wrapper{
+    background-color: var(--color-white);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* margin-bottom: 2rem;  */
+    /* margin: 0 0 2rem 0; */
+}
+
+.admin-overview__container__title{
+    font-size:1rem;
+    font-weight: 500;
+    color: rgba(var(--dark), 1);
+    margin-top: .75rem;
+}

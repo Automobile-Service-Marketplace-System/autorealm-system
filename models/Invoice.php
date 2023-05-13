@@ -64,7 +64,7 @@ class Invoice
 
             return $revenueData;
         } catch (PDOException|Exception $e) {
-            return "Failed to get order revenue data : " . $e->getMessage();
+            return "Failed to get invoice revenue data : " . $e->getMessage();
         }
     }
 }

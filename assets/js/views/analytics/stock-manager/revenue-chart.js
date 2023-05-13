@@ -357,7 +357,6 @@ if (productQuantityChartCanvas) {
                         },
 
                     });
-
             }
 
         } catch (e) {

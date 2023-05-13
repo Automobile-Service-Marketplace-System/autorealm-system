@@ -32,6 +32,22 @@ class Employee
         return $stmt->fetchObject();
     }
 
+
+    public function getEmployeeCount():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            count(*) as count,
+            job_role as JobRole
+            from employee group by job_role;");
+            $statement->execute();
+            $employeeCount = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $employeeCount;
+        }
+        catch(PDOException|Exception $e) {
+            return "Failed to get data : " . $e->getMessage();
+        }
+    }
+
     public function register(): bool|array
     {
         $errors = $this->validateRegisterBody();

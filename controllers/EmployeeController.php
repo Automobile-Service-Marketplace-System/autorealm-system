@@ -22,6 +22,29 @@ class EmployeeController
 
     }
  
+
+    public function getEmployeeCountData(Request $req, Response $res):string{
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {
+            $employeeModel = new Employee;
+            $employeeCount = $employeeModel -> getEmployeeCount();
+            if(is_string($employeeCount)){
+                $res->setStatusCode(500);
+                return $res->json([
+                    "message" => "Internal Server Error"
+                ]);               
+            }
+            $res->setStatusCode(200);
+            return $res->json([
+                "message" => "Success",
+                "data" => $employeeCount
+            ]);
+        }
+        $res->setStatusCode(401);
+        return $res->json([
+            "message" => "Unauthorized"
+        ]);
+    }
+
     public function getViewEmployeesPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin" ) {

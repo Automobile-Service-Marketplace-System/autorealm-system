@@ -49,7 +49,7 @@ class AnalyticsController
      */
 
     public function getInvoiceRevenue(Request $req, Response $res):string{
-        if($req->session->get("user_role") === "admin"){
+        if($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin"){
             $invoiceModel = new Invoice();
             // var_dump($invoiceModel);
             $revenueData = $invoiceModel -> getInvoiceRevenueData();
