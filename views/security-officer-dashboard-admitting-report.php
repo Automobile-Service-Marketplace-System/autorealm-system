@@ -78,8 +78,11 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
             </div>
         </div>
 
+        <div class="create-admitting-reports__section">
         <br><p><b>Light</b></p>
-            <p>LF</p>
+            <div class="create-admitting-reports__topic">
+                <p>LF</p>
+            </div>
                 <?php 
                     FormSelectItem::render(
                         id: "light_lf",
@@ -109,6 +112,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['light_lf_description'] ?? null,
                     );
                 ?>
+        </div>
 
             <p>RF</p>         
                 <?php 
