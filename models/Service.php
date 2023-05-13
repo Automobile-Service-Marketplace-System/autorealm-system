@@ -258,4 +258,22 @@ class Service
         }
     }
 
+    public function getServicesForJobSelector(int $jobId)
+    {
+
+        try {
+            $query = "SELECT servicecode as Code, service_name as Name, description as Description, (price / 100) as Cost FROM service 
+                        INNER JOIN jobcardhasservice j on service.servicecode = j.service_code
+                        WHERE j.job_card_id = :jobId
+                        ORDER BY servicecode";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":jobId", $jobId);
+            $statement->execute();
+            return $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

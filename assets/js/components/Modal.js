@@ -109,15 +109,17 @@ class ModalElement {
             this.overlayEl.classList.add("overlay-close");
 
             setTimeout(() => {
-                this.modalEl.style.display = "none";
-                this.overlayEl.style.display = "none";
-                this.modalEl.classList.remove("modal-close");
-                this.overlayEl.classList.remove("overlay-close");
+                if (this.modalEl && this.overlayEl) {
+                    this.modalEl.style.display = "none";
+                    this.overlayEl.style.display = "none";
+                    this.modalEl.classList.remove("modal-close");
+                    this.overlayEl.classList.remove("overlay-close");
 
-                this.modalEl.remove();
-                this.overlayEl.remove();
-                this.modalEl = undefined;
-                this.overlayEl = undefined;
+                    this.modalEl.remove();
+                    this.overlayEl.remove();
+                    this.modalEl = undefined;
+                    this.overlayEl = undefined;
+                }
             }, 200);
 
             Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
@@ -154,6 +156,7 @@ export class Modal {
             Modal.activeModals = Modal.activeModals.filter(modal => modal.key !== key);
         }
     }
+
 
 }
 
