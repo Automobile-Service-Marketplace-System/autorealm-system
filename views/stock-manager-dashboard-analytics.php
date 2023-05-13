@@ -308,6 +308,17 @@
                         <div class="analytic-card__item__title">
                             Products with no sales
                         </div>
+                        <div class="analytic-card__item__row">
+                            <div class="analytic-card__item__subtitle__list">
+                                Code
+                            </div>
+                            <div class="analytic-card__item__subtitle__list">
+                                Name
+                            </div>
+                        </div>
+                        <div class="no-sell-product-list" id="not-sold-product-list">
+
+                        </div>
 
                     </div>
                 </div>
