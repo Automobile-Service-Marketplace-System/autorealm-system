@@ -270,7 +270,7 @@ export class CalendarView {
         dateElements.forEach(dateEl => {
             if (!dateEl.classList.contains('calendar-view__date--disabled') && !dateEl.classList.contains('calendar-view__date--restricted')) {
                 dateEl.addEventListener("click", () => {
-                    this.selectedDate = new Date(this.year, this.month - 1, parseInt(dateEl.innerText))
+                    this.selectedDate = new Date(this.year, this.month - 1, parseInt(dateEl.innerText) + 1)
                     this.element.querySelectorAll(".calendar-view__date").forEach(dateEl => {
                         dateEl.classList.remove("calendar-view__date--selected")
                     })

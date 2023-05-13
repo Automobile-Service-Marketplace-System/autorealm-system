@@ -3,9 +3,7 @@ import {htmlToElement} from "../utils";
 import Notifier from "../components/Notifier";
 import {CalendarView} from "../components/CalendarView";
 
-const createAppointmentButton = document.querySelectorAll(
-    ".create-appointment-btn"
-);
+const createAppointmentButton = document.querySelectorAll(".create-appointment-btn");
 
 /**
  * @type {Array<{time_id: number, from_time: string, to_time:string}>}
@@ -13,6 +11,7 @@ const createAppointmentButton = document.querySelectorAll(
 let timeslots = [];
 
 createAppointmentButton.forEach(function (btn) {
+
     btn.addEventListener("click", async function () {
         try {
             const customerID = Number(btn.dataset.id);
@@ -25,8 +24,7 @@ createAppointmentButton.forEach(function (btn) {
             const result = await fetch(`/vehicles/by-customer-json?id=${customerID}`, {
                 headers: {
                     "Content-Type": "application/json",
-                },
-                method: "GET",
+                }, method: "GET",
             });
 
             switch (result.status) {
@@ -34,8 +32,7 @@ createAppointmentButton.forEach(function (btn) {
                     Notifier.show({
                         text: "No vehicles found for this customer<br>Please add one first",
                         type: "danger",
-                        header: "Error",
-                        // closable: true,
+                        header: "Error", // closable: true,
                     })
                     return;
                 case 200:
@@ -52,7 +49,7 @@ createAppointmentButton.forEach(function (btn) {
                     const createAppointmentForm = htmlToElement(`
         <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
             <div class="office-create-appointment-form_title mb-4" >
-                <button class="modal-close-btn">
+                <button class="modal-close-btn" type="button">
                     <i class="fas fa-times"></i>
                 </button>
                 <h1>
@@ -108,10 +105,11 @@ createAppointmentButton.forEach(function (btn) {
                             const template = `<div style="width: 350px">
                                 <h3>Are you sure you want to create this appointment?</h3>
                                 <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
-                                    <button class="btn btn--thin btn--danger modal-close-btn">
+                                    <button type="button" class="btn btn--thin btn--danger modal-close-btn">
                                         Cancel
                                     </button>
-                                    <button class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
+                                    <button type="button" class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
+                                        <i class="fa fa-spinner"></i>
                                         Confirm
                                     </button>
                                 </div>
@@ -119,12 +117,16 @@ createAppointmentButton.forEach(function (btn) {
 
                             const createAppointmentConfirmationModal = htmlToElement(template);
 
-                            createAppointmentConfirmationModal
-                                .querySelector("#create-appointment-confirm-btn")
+                            const createAppointmentConfirmBtn = createAppointmentConfirmationModal.querySelector("#create-appointment-confirm-btn");
+                            createAppointmentConfirmBtn
                                 .addEventListener("click", () => {
-                                    const submitBtn = createAppointmentForm?.querySelector(
-                                        "#create-appointment-final-btn");
+
+                                    createAppointmentConfirmBtn.classList.add("btn--loading");
+                                    const submitBtn = createAppointmentForm?.querySelector("#create-appointment-final-btn");
                                     submitBtn?.click();
+                                    setTimeout(() => {
+                                        createAppointmentConfirmBtn.classList.remove("btn--loading");
+                                    }, 2000);
                                 });
 
                             Modal.show({
@@ -136,9 +138,7 @@ createAppointmentButton.forEach(function (btn) {
 
                     createAppointmentForm?.addEventListener("submit", async (e) => {
                         e.preventDefault();
-                        if (
-                            createAppointmentForm.classList.contains("create-appointment-form--error")
-                        ) {
+                        if (createAppointmentForm.classList.contains("create-appointment-form--error")) {
                             createAppointmentForm
                                 .querySelectorAll(".form-item")
                                 .forEach((inputWrapper) => {
@@ -151,24 +151,16 @@ createAppointmentButton.forEach(function (btn) {
                         // return;
                         try {
                             const result = await fetch(`/appointments/create`, {
-                                body: formData,
-                                method: "POST",
+                                body: formData, method: "POST",
                             });
-
-                            console.log(await result.text())
-                            return
 
                             if (result.status === 400) {
                                 createAppointmentForm?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
                                 for (const inputName in resultBody.errors) {
-                                    const inputWrapper = createAppointmentForm.querySelector(
-                                        `#${inputName}`
-                                    ).parentElement;
+                                    const inputWrapper = createAppointmentForm.querySelector(`#${inputName}`).parentElement;
                                     inputWrapper.classList.add("form-item--error");
-                                    const errorElement = htmlToElement(
-                                        `<small>${resultBody.errors[inputName]}</small>`
-                                    );
+                                    const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`);
                                     inputWrapper.appendChild(errorElement);
                                 }
                             } else if (result.status === 201) {
@@ -177,10 +169,7 @@ createAppointmentButton.forEach(function (btn) {
                         } catch (e) {
                             console.log(e);
                             Notifier.show({
-                                closable: true,
-                                header: "Error",
-                                type: "danger",
-                                text: e.message,
+                                closable: true, header: "Error", type: "danger", text: e.message,
                             });
                         }
                     });
@@ -198,27 +187,22 @@ createAppointmentButton.forEach(function (btn) {
 
 
                     Modal.show({
-                        content: createAppointmentForm,
-                        closable: false,
-                        key: "createAppointmentForm",
+                        content: createAppointmentForm, closable: false, key: "createAppointmentForm",
                     });
+
                     new CalendarView({
                         // maxDate a month from now
                         maxDate: (() => {
                             let currentDate = new Date(); // Get the current date
                             return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
-                        })(),
-                        // minDate  a day from now
+                        })(), // minDate  a day from now
                         minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
                         parent: ".create-time-slot",
                         boundInput: ".create-time-slot input[name='date']",
-                        restrictedDates: [
-                            {month: 4, date: 29},
-                            {month: 4, date: 30},
-                            {month: 5, date: 6},
-                            {month: 5, date: 7},
-                            {month: 5, date: 18},
-                        ]
+                        restrictedDates: [{month: 4, date: 29}, {month: 4, date: 30}, {month: 5, date: 6}, {
+                            month: 5,
+                            date: 7
+                        }, {month: 5, date: 18},]
                     })
                     break;
                 case 401:
@@ -232,11 +216,7 @@ createAppointmentButton.forEach(function (btn) {
                     return;
                 default:
                     Notifier.show({
-                        text: "Something went wrong",
-                        type: "danger",
-                        header: "Error",
-                        closable: true,
-                        duration: 5000,
+                        text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
                     });
                     return
             }
@@ -244,10 +224,7 @@ createAppointmentButton.forEach(function (btn) {
         } catch (e) {
             console.log(e);
             Notifier.show({
-                closable: true,
-                header: "Error",
-                type: "danger",
-                text: "Something went wrong",
+                closable: true, header: "Error", type: "danger", text: "Something went wrong",
             })
         }
 
@@ -269,23 +246,18 @@ async function loadTimeSlots(input, formEl) {
         switch (result.status) {
             case 404:
                 Notifier.show({
-                    text: "No timeslots available",
-                    type: "danger",
-                    header: "Error",
-                    closable: true,
-                    duration: 5000
+                    text: "No timeslots available", type: "danger", header: "Error", closable: true, duration: 5000
                 });
                 timeslots = [];
+                break;
             case 200:
                 const resultBody = await result.json();
                 timeslots = resultBody;
                 const selectTag = formEl.querySelector("select#timeslot");
                 timeslots.forEach((timeslot) => {
-                    const option = htmlToElement(
-                        `<option value="${timeslot.time_id}">
+                    const option = htmlToElement(`<option value="${timeslot.time_id}">
                                     ${timeslot.from_time} - ${timeslot.to_time}
-                                 </option>`
-                    )
+                                 </option>`)
                     selectTag.appendChild(option)
                 })
 
@@ -293,12 +265,7 @@ async function loadTimeSlots(input, formEl) {
     } catch (e) {
         console.log(e)
         Notifier.show({
-            text: "Something went wrong",
-            type: "danger",
-            header: "Error",
-            closable: true,
-            duration: 5000,
+            text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
         });
     }
-
 }
