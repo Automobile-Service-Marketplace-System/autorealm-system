@@ -23,68 +23,6 @@ class JobCard
     public function getAllJobsByForemanID(int $foremanId): array|string
     {
         try {
-
-            ////             trying to test db latency
-//            $currentTime = date("Y-m-d H:i:s");
-//
-//            $statement = $this->pdo->prepare(query: "SELECT job_card_id as id, vin as regNo, status, TIMESTAMPDIFF(MINUTE , start_date_time, end_date_time) as time_collapsed  FROM jobcard  WHERE employee_id = :foremanId");
-//            $statement->bindValue(param: ":foremanId", value: $foremanId);
-//            $statement->execute();
-//            $rawJobs = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
-//
-//
-//            $jobs = [
-//                "new" => [],
-//                "in-progress" => [],
-//                "completed" => [],
-//            ];
-//
-//            foreach ($rawJobs as $rawJob) {
-//                // make a copy of the raw job array
-//                $job = $rawJob;
-//                $query = "SELECT COUNT(job_card_id) FROM jobcardhasproduct jhp WHERE jhp.job_card_id = :jobId";
-//                $statement = $this->pdo->prepare(query: $query);
-//                $statement->bindValue(param: ":jobId", value: $job['id']);
-//                $statement->execute();
-//                $productCountResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
-//                $job["productCount"] = $productCountResult["COUNT(job_card_id)"];
-//
-//                $query = "SELECT COUNT(job_card_id) FROM jobcardhasservice jhs WHERE jhs.job_card_id = :jobId";
-//                $statement = $this->pdo->prepare(query: $query);
-//                $statement->bindValue(param: ":jobId", value: $job['id']);
-//                $statement->execute();
-//                $serviceCountResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
-//                $job["serviceCount"] = $serviceCountResult["COUNT(job_card_id)"];
-//
-//
-//                $query = "SELECT COUNT(job_card_id) FROM jobcardhastechnician jhs WHERE jhs.job_card_id = :jobId";
-//                $statement = $this->pdo->prepare(query: $query);
-//                $statement->bindValue(param: ":jobId", value: $job['id']);
-//                $statement->execute();
-//                $technicianCountResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
-//                $job["technicianCount"] = $technicianCountResult["COUNT(job_card_id)"];
-//
-//
-//                $query = "SELECT SUM(CASE WHEN is_completed = 0 THEN 1 ELSE  0 END) as not_completed_count,SUM(CASE WHEN is_completed = 1 THEN 1 ELSE  0 END) as completed_count FROM jobcardhasservice WHERE job_card_id = :jobId";
-//                $statement = $this->pdo->prepare(query: $query);
-//                $statement->bindValue(param: ":jobId", value: $job['id']);
-//                $statement->execute();
-//                $serviceStatusResult = $statement->fetch(mode: PDO::FETCH_ASSOC);
-//                $all = (int)$serviceStatusResult["not_completed_count"] + (int)$serviceStatusResult["completed_count"];
-//                $done = (int)$serviceStatusResult["completed_count"];
-//                $job['done'] = $done;
-//                $job['all'] = $all;
-//                $jobs[$job["status"]][] = $job;
-//            }
-//            $now = date("Y-m-d H:i:s");
-//            // get difference in seconds
-//            $diff = strtotime($now) - strtotime($currentTime);
-//            // get difference in milliseconds
-//            $diff = $diff * 1000;
-//            var_dump("Time taken to fetch jobs: " . $diff . "ms");
-////            exit();
-//            return $jobs;
-
             $query = "SELECT
               jc.job_card_id as id,
               jc.vin as regNo,
@@ -355,6 +293,7 @@ class JobCard
     }
 
     public function getAllJobsForForemanTechnicianAndAdmin(
+
         int|null $count = null,
         int|null $page = 1,
         string   $searchTermCustomer = null,
@@ -371,12 +310,10 @@ class JobCard
 
         foreach ($options as $option_key => $option_value) {
             if ($option_value !== null) {
-                switch ($option_key) {
-                    case "job_date":
-                        if ($option_value !== "") {
-                            $conditions[] = "DATE(j.start_date_time) = DATE(:job_date)";
-                        }
-                        break;
+                if ($option_key == "job_date") {
+                    if ($option_value !== "") {
+                        $conditions[] = "DATE(j.start_date_time) = DATE(:job_date)";
+                    }
                 }
             }
         }
@@ -460,18 +397,8 @@ class JobCard
                             INNER JOIN vehicle v on j.vin = v.vin 
                             INNER JOIN brand b on v.brand_id = b.brand_id 
                             INNER JOIN model m on v.model_id = m.model_id  
-                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause");
 
-            DevOnly::prettyEcho("SELECT 
-                        COUNT(*) as total
-                        FROM jobcard j 
-                            INNER JOIN employee e on j.employee_id = e.employee_id 
-                            INNER JOIN vehicle v on j.vin = v.vin 
-                            INNER JOIN brand b on v.brand_id = b.brand_id 
-                            INNER JOIN model m on v.model_id = m.model_id  
-                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
-
-            exit();
             if ($options['job_date'] !== null && $options['job_date'] !== "") {
                 $statement->bindValue(param: ":job_date", value: $options['job_date']);
             }
@@ -507,21 +434,27 @@ class JobCard
     public function officeCreateJobCard(): bool|string
     {
         try {
+
+            $statement = $this->pdo->prepare("SELECT vin from vehicle WHERE reg_no = :vehicle_reg_no");
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->execute();
+            $vin = $statement->fetch()['vin'];
+
             $query = "INSERT INTO 
                             jobcard(
-                                vehicle_reg_no,
+                                vin,
                                 mileage,
                                 customer_id,
                                 employee_id)
                     VALUES(
-                                :vehicle_reg_no,
+                                :vin,
                                 :mileage,
                                 :customer_id,
                                 :employee_id)
                             ";
 
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":vin", $vin);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
             $statement->bindValue(":employee_id", $this->body["foreman_id"]);
@@ -595,6 +528,128 @@ class JobCard
         }
     }
 
+    public function getJobDetailsForSelector(
+        int|null $count = null,
+        int|null $page = 1,
+        string   $searchTermCustomer = null,
+        string   $searchTermVehicleRegNo = null,
+        string   $searchTermForemanName = null,
+        array    $options = [
+            'job_date' => null,
+        ]
+    ): bool|array|string
+    {
+
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                if ($option_key == "job_date") {
+                    if ($option_value !== "") {
+                        $conditions[] = "DATE(j.start_date_time) = DATE(:job_date)";
+                    }
+                }
+            }
+        }
+
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_customer_name" : "WHERE CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_customer_name";
+        }
+
+        if ($searchTermVehicleRegNo !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND v.reg_no LIKE :search_term_vehicle_reg_no" : "WHERE v.reg_no LIKE :search_term_vehicle_reg_no";
+        }
+
+        if ($searchTermForemanName !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name" : "WHERE CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name";
+        }
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+
+
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        j.job_card_id, v.reg_no, 
+                        j.start_date_time, 
+                        j.end_date_time,
+                        CONCAT(LEFT(c.f_name, 1), '. ', c.l_name) as customer_name 
+                        FROM jobcard j 
+                            INNER JOIN employee e on j.employee_id = e.employee_id 
+                            INNER JOIN vehicle v on j.vin = v.vin 
+                            INNER JOIN brand b on v.brand_id = b.brand_id 
+                            INNER JOIN model m on v.model_id = m.model_id  
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause AND j.status = 'finished' $limitClause $pageClause");
+
+            if ($options['job_date'] !== null && $options['job_date'] !== "") {
+                $statement->bindValue(param: ":job_date", value: $options['job_date']);
+            }
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(param: ":search_term_customer_name", value: "%" . $searchTermCustomer . "%");
+            }
+
+            if ($searchTermForemanName !== null) {
+                $statement->bindValue(param: ":search_term_foreman_name", value: "%" . $searchTermForemanName . "%");
+            }
+
+            if ($searchTermVehicleRegNo !== null) {
+                $statement->bindValue(param: ":search_term_vehicle_reg_no", value: "%" . $searchTermVehicleRegNo . "%");
+            }
+
+            $statement->execute();
+            $rawJobs = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            // get total results
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        COUNT(*) as total
+                        FROM jobcard j 
+                            INNER JOIN employee e on j.employee_id = e.employee_id 
+                            INNER JOIN vehicle v on j.vin = v.vin 
+                            INNER JOIN brand b on v.brand_id = b.brand_id 
+                            INNER JOIN model m on v.model_id = m.model_id  
+                            INNER JOIN customer c on j.customer_id = c.customer_id $whereClause AND j.status = 'finished'");
+
+            if ($options['job_date'] !== null && $options['job_date'] !== "") {
+                $statement->bindValue(param: ":job_date", value: $options['job_date']);
+            }
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(param: ":search_term_customer_name", value: "%" . $searchTermCustomer . "%");
+            }
+
+            if ($searchTermForemanName !== null) {
+                $statement->bindValue(param: ":search_term_foreman_name", value: "%" . $searchTermForemanName . "%");
+            }
+
+            if ($searchTermVehicleRegNo !== null) {
+                $statement->bindValue(param: ":search_term_vehicle_reg_no", value: "%" . $searchTermVehicleRegNo . "%");
+            }
+
+
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $total = $result['total'];
+
+
+            return [
+                'jobs' => $rawJobs,
+                'total' => $total
+            ];
+        } catch (PDOException|Exception $e) {
+            DevOnly::prettyEcho($e->getMessage());
+            return $e->getMessage();
+        }
+    }
     public function getTotalOngoingJobs(): int
     {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM jobcard where status != 'finished'");

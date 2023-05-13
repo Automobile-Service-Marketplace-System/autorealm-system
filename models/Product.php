@@ -252,22 +252,6 @@ class Product
         ]
     ): array|string
     {
-//        DevOnly::prettyEcho($minPrice, $maxPrice);
-//        DevOnly::prettyEcho($options);
-//        DevOnly::prettyEcho($searchTerm);
-//        DevOnly::prettyEcho($count);
-//        DevOnly::prettyEcho($page);
-//        exit();
-//
-//        var_dump($options);
-//        var_dump($searchTerm);
-//        var_dump($minPrice);
-//        var_dump($maxPrice);
-//
-//        exit();
-
-        DevOnly::prettyEcho($options);
-//        exit();
 
         $whereClause = "";
         $conditions = [];
@@ -341,9 +325,6 @@ class Product
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        DevOnly::prettyEcho($whereClause);
-//        exit();
-
 
         $query = "SELECT 
                         p.item_code as ID, 
@@ -365,12 +346,11 @@ class Product
                     ORDER BY p.name 
                     $limitClause $pageClause";
 
-        var_dump($query);
 
         $statement = $this->pdo->prepare($query);
 
         $firstThirdOptions = array_slice($options, 0, 3);
-        DevOnly::prettyEcho($firstThirdOptions);
+
 
         foreach ($firstThirdOptions as $option_key => $option_value) {
             if ($option_value !== null) {
@@ -378,32 +358,24 @@ class Product
             }
         }
 
-        DevOnly::prettyEcho("Got here");
-//        exit();
 
         if ($searchTerm !== null) {
             $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
         }
 
         if ($minPrice !== null) {
-            DevOnly::prettyEcho("min price is $minPrice");
             $statement->bindValue(":min_price", $minPrice);
         }
 
         if ($maxPrice !== null) {
-            DevOnly::prettyEcho("max price is $maxPrice");
             $statement->bindValue(":max_price", $maxPrice);
         }
-
-        DevOnly::prettyEcho("Got here");
 
 
         try {
             $statement->execute();
             $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-            DevOnly::prettyEcho($products);
-//            exit();
-//
+
             $query2 = "SELECT
                        COUNT(*) as total
 

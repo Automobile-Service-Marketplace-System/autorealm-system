@@ -117,3 +117,11 @@
     width: 100%;
 }
 
+
+#add-to-cart-confirm-btn svg {
+    display: none;
+}
+
+#add-to-cart-confirm-btn.btn--loading svg {
+    display: initial;
+}

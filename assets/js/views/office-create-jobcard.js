@@ -166,7 +166,7 @@ createJobCardButton.forEach(function (btn) {
                     closable: true,
                 });
 
-
+                
             });
 
         const selectForemanCards = officeCreateJobCardForm.querySelector(".select-foreman-cards");

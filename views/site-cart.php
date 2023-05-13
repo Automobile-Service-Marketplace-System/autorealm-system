@@ -48,13 +48,13 @@ if (!$isCartEmpty) {
                 </div>
                 <div class='cart-item__actions'>
                     <button class='cart-action cart-action--decrease' data-productId='{$cartItem['item_code']}' data-price='$priceAmount'>
-                        <i class='fas fa-minus'></i>
+                        <i class='fas fa-minus minus-icon'></i>
                     </button>
                     <p id='cart-amount-{$cartItem['item_code']}'>
                         {$cartItem['amount']}
                     </p>
                     <button class='cart-action cart-action--increase'  data-productId='{$cartItem['item_code']}' data-price='$priceAmount'>
-                        <i class='fas fa-plus'></i>
+                        <i class='fas fa-plus plus-icon'></i>
                     </button>
                 </div>
                 <div class='cart-item__total'>

@@ -1,5 +1,5 @@
 import Notifier from "../components/Notifier";
-import {htmlToElement} from "../utils";
+import {htmlToElement, setSpinner} from "../utils";
 import {Modal} from "../components/Modal";
 
 /**
@@ -290,7 +290,8 @@ export async function getItemChangeConfirmationModal(productId, price, factor, a
                       <button class="btn btn--thin btn--danger modal-close-btn" type="reset">
                         Cancel
                       </button>   
-                      <button class="btn btn--thin modal-close-btn" type="submit">
+                      <button class="btn btn--thin modal-close-btn" type="submit" id="add-to-cart-confirm-btn">
+                        <i class="fas fa-spinner"></i>
                         Confirm
                       </button> 
                     </div>
@@ -307,6 +308,14 @@ export async function getItemChangeConfirmationModal(productId, price, factor, a
 
     getAmountToAddModal.querySelector("form")?.addEventListener('submit', async (e) => {
         e.preventDefault()
+
+        // get the submit button
+        const submitBtn = getAmountToAddModal.querySelector("#add-to-cart-confirm-btn")
+        // disable the button
+        submitBtn.disabled = true
+        // add loading icon
+        submitBtn.classList.add('btn--loading')
+
         const by = Number(getAmountToAddModal.querySelector("input")?.value) * factor
         if (by > 0) {
             await updateCart({productId, by, price}, mode)
@@ -318,6 +327,11 @@ export async function getItemChangeConfirmationModal(productId, price, factor, a
                 await updateCart({productId, by, price})
             }
         }
+
+        // enable the button
+        submitBtn.disabled = false
+        // remove loading icon
+        submitBtn.classList.remove('btn--loading')
     })
 
     Modal.show({
@@ -331,6 +345,7 @@ export async function getItemChangeConfirmationModal(productId, price, factor, a
 cartItemIncreaseButtons.forEach(button => {
     button.addEventListener('click', async () => {
         try {
+            setSpinner(button.querySelector(".cart-action .plus-icon"), true)
             const productId = Number(button.dataset.productid)
             const price = Number(button.dataset.price)
             await getItemChangeConfirmationModal(productId, price, 1)
@@ -343,8 +358,9 @@ cartItemIncreaseButtons.forEach(button => {
                 closable: true,
                 duration: 5000
             })
+        } finally {
+            setSpinner(button.querySelector(".cart-action .plus-icon"), false)
         }
-
     })
 });
 
@@ -352,6 +368,7 @@ cartItemIncreaseButtons.forEach(button => {
 cartItemDecreaseButtons.forEach(button => {
     button.addEventListener('click', async () => {
         try {
+            setSpinner(button.querySelector(".cart-action .minus-icon"), true)
             const productId = Number(button.dataset.productid)
             const price = Number(button.dataset.price)
             const amountText = document.querySelector(`#cart-amount-${productId}`)?.innerHTML
@@ -370,9 +387,9 @@ cartItemDecreaseButtons.forEach(button => {
                 closable: true,
                 duration: 5000
             })
+        } finally {
+            setSpinner(button.querySelector(".cart-action .minus-icon"), false)
         }
-
-
     })
 });
 

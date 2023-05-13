@@ -96,9 +96,20 @@ class AnalyticsController
     public function getOrderRevenue(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $query = $req->query();
+
+            $fromDate = $query['from'];
+            $toDate = $query['to'];
+
+//            var_dump($fromDate);
+//            var_dump($toDate);
+
             $orderModel = new Order();
-            $revenueData = $orderModel->getOrderRevenueData();
-            if (is_string($revenueData)) {
+            $result = $orderModel->getOrderRevenueData(
+                from: $fromDate, to: $toDate
+            );
+            if (is_string($result)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
@@ -107,7 +118,7 @@ class AnalyticsController
             $res->setStatusCode(200);
             return $res->json([
                 "message" => "Success",
-                "data" => $revenueData
+                "data" => $result['revenueData'],
             ]);
         }
         $res->setStatusCode(401);
@@ -123,8 +134,16 @@ class AnalyticsController
     public function getOrderQuantityDetails(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $query = $req->query();
+
+            $fromDate = $query['from'];
+            $toDate = $query['to'];
+
             $orderModel = new Order();
-            $quantityData = $orderModel->getOrderQuantityData();
+            $quantityData = $orderModel->getOrderQuantityData(
+                from: $fromDate, to: $toDate
+            );
             if (is_string($quantityData)) {
                 $res->setStatusCode(500);
                 return $res->json([
@@ -152,8 +171,16 @@ class AnalyticsController
     public function getProductQuantityDetails(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $query= $req->query();
+            $fromDate = $query['from'];
+            $toDate = $query['to'];
+
             $orderModel = new Order();
-            $quantityData = $orderModel->getProductQuantityData();
+            $quantityData = $orderModel->getProductQuantityData(
+                from: $fromDate,
+                to: $toDate
+            );
 
             if (is_string($quantityData)) {
                 $res->setStatusCode(500);
