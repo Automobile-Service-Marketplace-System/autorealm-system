@@ -20,17 +20,68 @@ class Vehicle
         $this->body = $registerBody;
     }
 
-    public function getVehicles(int | null $count = null, int | null $page = 1): array
+    public function getVehicles(
+        int | null $count = null, 
+        int | null $page = 1, 
+        string $searchTermRegNo = null, 
+        string $searchTermCustomer = null,
+        string $vehicleType = null
+        ): array|string
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        try {
+        $whereClause = null;
+        $conditions = null;
+        
+
+        if ($vehicleType !== null) {
+            switch ($vehicleType) {
+                case "all":
+                    break;
+                case "Bike":
+                    $conditions = "vehicle_type = 'Bike'";
+                    break;
+                case "Car":
+                    $conditions = "vehicle_type = 'Car'";
+                    break;
+                case "Jeep":
+                    $conditions = "vehicle_type = 'Jeep'";
+                    break;
+                case "Van":
+                    $conditions = "vehicle_type = 'Van'";
+                    break;
+                case "Lorry":
+                    $conditions = "vehicle_type = 'Lorry'";
+                    break;
+                case "Bus":
+                    $conditions = "vehicle_type = 'Bus'";
+                    break;
+                case "Other":
+                    $conditions = "vehicle_type = 'Other'";
+                    break;
+            }
+        }
+
+        
+        if ($searchTermRegNo !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND reg_no LIKE :search_term_reg" : "WHERE reg_no LIKE :search_term_reg";
+        }
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus";
+        }
+
+        if ($conditions !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND $conditions " : "WHERE $conditions";
+        }
+
             $statement = $this->pdo->prepare(
                 "SELECT
                     vin as VIN,
                     reg_no as 'Registration No',
                     engine_no as 'Engine No',
+                    CONCAT(c.f_name, ' ',c.l_name) as 'Customer Name',
                     manufactured_year as 'Manufactured Year',
                     engine_capacity as 'Engine Capacity',
                     vehicle_type as 'Vehicle Type',
@@ -40,14 +91,30 @@ class Vehicle
                     m.model_id as 'Model ID',
                     b.brand_id as 'Brand ID',
                     b.brand_name as 'Brand Name',
-                    customer_id as 'Customer ID'
+                    v.customer_id as 'Customer ID'
                 FROM
                     vehicle v
+                INNER JOIN customer c ON c.customer_id = v.customer_id
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
+                $whereClause
                 ORDER BY v.vin $limitClause $pageClause");
+
+        if ($searchTermRegNo !== null) {
+            $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermCustomer !== null) {
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+     
+
+        try{
+
             $statement->execute();
             $vehicles = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

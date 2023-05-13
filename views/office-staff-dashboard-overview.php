@@ -18,10 +18,18 @@
     </div>
 
     <div class="office-overview-foremen-details">
-        <div class="office-overview-foreman-chart">
-            <div class="foremen-chart">
-                    <canvas id="foremen-status-canvas"></canvas>
-            </div>
+        <div class="office-overview-foremen">
+            <p>Foremen availability</p>
+        <?php 
+            foreach ($foremenDetails as $foremenDetail) {
+                if ($foremenDetail["Availability"] == 1) {
+                  echo "<span>" . $foremenDetail["Name"] . "</span><span style='color:green'> Available</span><br><br>";
+                } else {
+                  echo "<span>" . $foremenDetail["Name"] . "</span><span style='color:red'> Busy</span><br><br>";
+                }
+              }
+              
+        ?>              
             
         </div>
 

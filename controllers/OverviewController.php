@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Customer;
 use app\models\Appointment;
+use app\models\Foreman;
 use app\models\Employee;
 use app\models\JobCard;
 
@@ -105,23 +106,33 @@ class OverviewController
 
     public function getOfficeStaffOverviewPage(Request $req, Response $res): string
     {
+            //create new object from customer and get customers count
             $customer = new Customer();
             $totalCustomers = $customer->getTotalCustomers();
-            // var_dump($totalCustomers);
 
+            //create new object from appointment and get appointments count
             $appointment = new Appointment();
             $totalAppointments = $appointment->getTotalAppointments();
 
+            //create new object from jobcard and get jobs count
             $jobCard = new JobCard();
             $totalOngoingJobs = $jobCard->getTotalOngoingJobs();
+
+            //get weekly job details
             $weeklyJobStatus = $jobCard->getWeeklyJobStatus();
 
+            //create new object from foreman and get foreman details
+            $foremen = new Foreman();
+            $foremenDetails = $foremen->getAvailableForemen();
+
+            //render page
             return $res->render(view: "office-staff-dashboard-overview", layout: "office-staff-dashboard", 
             pageParams: [
                 "customerCount" => $totalCustomers,
                 "appointmentCount" => $totalAppointments,
                 "ongoingJobsCount" => $totalOngoingJobs,
                 "weeklyJobStatus" => $weeklyJobStatus,
+                "foremenDetails" => $foremenDetails
             ],
             layoutParams: [
                 "title" => "Overview",

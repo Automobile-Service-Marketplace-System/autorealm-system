@@ -9,15 +9,18 @@ use app\components\Table;
 
 $columns = [];
 
+//for pagination
 $noOfJobs = $customers['total'];
 $startNo = ($page - 1) * $limit + 1;
 $endNo = min($startNo + $limit - 1, $noOfJobs);
 
-
+//table headings
 $columns = array("ID", "Full Name", "Contact No", "Address", "Email", "Actions");
 
+//for table data
 $items = [];
 
+//filling data from array
 foreach($customers['customers'] as $customer) {
     $items[] = [
         "ID" => $customer["ID"],
@@ -33,13 +36,14 @@ foreach($customers['customers'] as $customer) {
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
                                          <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn data-name='{$customer["Full Name"]}' data-id='{$customer["ID"]}'>
-                                            <i class='fa-solid fa-wrench'></i>
+                                            <i class='fa-solid fa-calendar-check'></i>
                                          </button>
                         </div>"
     ];
 }
 ?>
 
+<!-- button for add new customer -->
 <div class="office-staff-button-set">
     <div class="add-button">
         <a class="btn" href="customers/add">
@@ -49,6 +53,7 @@ foreach($customers['customers'] as $customer) {
     
 </div>
 
+<!-- pagination details -->
 <div class="product-count-and-actions">
     <div class="product-table-count">
         <p>
@@ -57,11 +62,13 @@ foreach($customers['customers'] as $customer) {
         </p>
     </div>
 </div>
-    
+
+<!-- call table component -->
 <?php
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
+<!-- pagination page details -->
 <div class="pagination-container">
     <?php 
         foreach(range(1,ceil($total / $limit)) as $i) {
