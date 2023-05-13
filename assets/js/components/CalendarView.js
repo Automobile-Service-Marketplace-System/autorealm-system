@@ -10,7 +10,7 @@ import {htmlToElement} from "../utils"
  */
 
 
-class CalendarView {
+export class CalendarView {
 
     /**
      * @type {HTMLElement | null}
@@ -278,7 +278,10 @@ class CalendarView {
                     // this.onDateSelected(this.selectedDate)
                     console.log("Selected date is", this.selectedDate)
                     if (this.boundInput) {
-                        this.boundInput.value = this.selectedDate.toLocaleDateString()
+                        this.boundInput.value = this.selectedDate.toISOString().substring(0, 10)
+                        // trigger change event
+                        this.boundInput.dispatchEvent(new InputEvent('change'))
+                        console.log(this.boundInput.value)
                     }
                 })
             }
@@ -286,22 +289,3 @@ class CalendarView {
     }
 
 }
-
-
-new CalendarView({
-    // maxDate a month from now
-    maxDate: (() => {
-        let currentDate = new Date(); // Get the current date
-        return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
-    })(),
-    // minDate  a day from now
-    minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-    parent: "#calendar-container",
-    restrictedDates: [
-        {month: 4, date: 29},
-        {month: 4, date: 30},
-        {month: 5, date: 6},
-        {month: 5, date: 7},
-        {month: 5, date: 18},
-    ]
-})

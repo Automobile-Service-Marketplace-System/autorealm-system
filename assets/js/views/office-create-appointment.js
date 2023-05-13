@@ -1,6 +1,7 @@
-import { Modal } from "../components/Modal";
-import { htmlToElement } from "../utils";
+import {Modal} from "../components/Modal";
+import {htmlToElement} from "../utils";
 import Notifier from "../components/Notifier";
+import {CalendarView} from "../components/CalendarView";
 
 const createAppointmentButton = document.querySelectorAll(
     ".create-appointment-btn"
@@ -48,22 +49,18 @@ createAppointmentButton.forEach(function (btn) {
                     }).join("");
 
 
-    const createAppointmentForm = htmlToElement(`
+                    const createAppointmentForm = htmlToElement(`
         <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
-            <div class="office-create-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
+            <div class="office-create-appointment-form_title mb-4" >
                 <button class="modal-close-btn">
                     <i class="fas fa-times"></i>
                 </button>
                 <h1>
-                    Create an appointment
+                    Create an appointment for ${name}
                 </h1>
-
-                <h2>
-                    ${name}
-                </h2>
             </div>
 
-            <div class="office-create-appointment-input-wrapper">  
+            <div class="office-create-appointment-input-wrapper mt-8">  
                 <div class='form-item '>
                     <label for='vehicle'>Vehicle<sup>*</sup></label>
                     <select  name='vehicle_reg_no' id='vehicle' required> 
@@ -78,16 +75,13 @@ createAppointmentButton.forEach(function (btn) {
 
                 <div class='form-item create-appointment-remarks'>
                     <label for='remarks'>Remarks</sup></label>
-                    <textarea name='remarks' id='remarks' placeholder='' value='' rows="1" style="height: 40px">
+                    <textarea name='remarks' id='remarks' placeholder='' rows="1" style="height: 40px">
                     </textarea>
                 </div>
-                
-                <div class='form-item create-timeslot'>
-                    <label for='date'>Date<sup>*</sup></label>
-                    <input type="date" name="date" id="date">
+                <div class="create-time-slot">
+                    <input type="date" id="date" style="display: none" name="date">
                 </div>
                 <input style="display: none" name='customerID' id='customerID' value='${customerID}'>
-
                 <div class='form-item'>
                     <label for='timeslot'>Timeslot<sup>*</sup></label>
                     <select name='timeslot' id='timeslot' required> </select>
@@ -95,8 +89,8 @@ createAppointmentButton.forEach(function (btn) {
             </div>
 
             <div class="office-create-appointment__actions">
-                <button type="reset" class="btn btn--danger">Reset</button>
-                <button type="button" class="btn" id="create-appointment-modal-btn">Submit</button>
+                <button type="reset" class="btn btn--danger btn--thin btn--text">Reset</button>
+                <button type="button" class="btn btn--thin" id="create-appointment-modal-btn">Submit</button>
                 <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
             </div>
     </form>
@@ -104,7 +98,7 @@ createAppointmentButton.forEach(function (btn) {
 
 
                     createAppointmentForm.querySelector("input#date")?.addEventListener('change', async (e) => {
-                        await loadTimeSlots(e, createAppointmentForm)
+                        await loadTimeSlots(createAppointmentForm.querySelector("input#date"), createAppointmentForm)
                     })
 
 
@@ -143,7 +137,7 @@ createAppointmentButton.forEach(function (btn) {
                     createAppointmentForm?.addEventListener("submit", async (e) => {
                         e.preventDefault();
                         if (
-                        createAppointmentForm.classList.contains("create-appointment-form--error")
+                            createAppointmentForm.classList.contains("create-appointment-form--error")
                         ) {
                             createAppointmentForm
                                 .querySelectorAll(".form-item")
@@ -163,7 +157,7 @@ createAppointmentButton.forEach(function (btn) {
 
                             console.log(await result.text())
                             return
-       
+
                             if (result.status === 400) {
                                 createAppointmentForm?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
@@ -202,11 +196,30 @@ createAppointmentButton.forEach(function (btn) {
                         });
                     });
 
+
                     Modal.show({
                         content: createAppointmentForm,
                         closable: false,
                         key: "createAppointmentForm",
                     });
+                    new CalendarView({
+                        // maxDate a month from now
+                        maxDate: (() => {
+                            let currentDate = new Date(); // Get the current date
+                            return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
+                        })(),
+                        // minDate  a day from now
+                        minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+                        parent: ".create-time-slot",
+                        boundInput: ".create-time-slot input[name='date']",
+                        restrictedDates: [
+                            {month: 4, date: 29},
+                            {month: 4, date: 30},
+                            {month: 5, date: 6},
+                            {month: 5, date: 7},
+                            {month: 5, date: 18},
+                        ]
+                    })
                     break;
                 case 401:
                     Notifier.show({
@@ -243,17 +256,14 @@ createAppointmentButton.forEach(function (btn) {
 
 
 /**
- * @param event {InputEvent}
+ * @param input {HTMLInputElement}
  * @param formEl {HTMLElement}
  * @returns {Promise<void>}
  */
-async function loadTimeSlots(event, formEl) {
+async function loadTimeSlots(input, formEl) {
     try {
-        /**
-         * @type {HTMLInputElement}
-         */
-        const input = event.target;
         const date = input.value;
+        console.log(date)
         const result = await fetch(`/appointments/timeslots?date=${date}`);
 
         switch (result.status) {
