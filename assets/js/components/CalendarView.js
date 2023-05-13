@@ -3,18 +3,24 @@ import {htmlToElement} from "../utils"
 /**
  * @typedef {Object} CalendarViewProps
  * @property {string | HTMLElement} parent
+ * @property {string | HTMLInputElement} boundInput
  * @property {Date | string} minDate
  * @property {Date | string} maxDate
  * @property {{month: number;date: number}[]} restrictedDates
  */
 
 
-class CalendarView {
+export class CalendarView {
 
     /**
      * @type {HTMLElement | null}
      */
     parent;
+
+    /**
+     * @type {HTMLInputElement | null}
+     */
+    boundInput;
 
     /**
      * @type {Date}
@@ -36,18 +42,30 @@ class CalendarView {
      */
     element;
 
+    /**
+     * @type {number}
+     */
+    year;
+
+    /**
+     * @type {number}
+     */
+    month;
 
     /**
      * @param {CalendarViewProps} options
      */
     constructor(options) {
         this.parent = typeof options.parent === "string" ? document.querySelector(options.parent) : options.parent;
+        this.boundInput = typeof options.boundInput === "string" ? document.querySelector(options.boundInput) : options.boundInput;
         this.minDate = new Date(options.minDate);
         this.maxDate = new Date(options.maxDate);
         this.restrictedDates = options.restrictedDates;
 
         console.log(this.maxDate)
-        this.element = this.buildElement(this.minDate.getMonth() + 1, this.minDate.getFullYear())
+        this.year = this.minDate.getFullYear()
+        this.month = this.minDate.getMonth() + 1
+        this.element = this.buildElement(this.month, this.year)
     }
 
 
@@ -83,6 +101,10 @@ class CalendarView {
             )
 
             this.parent.appendChild(calendarWrapper)
+            this.setListeners(calendarWrapper.querySelectorAll(".calendar-view__date"))
+            calendarWrapper.querySelectorAll(".calendar-view__date").forEach(dateEl => {
+                console.log(dateEl)
+            })
             return calendarWrapper
         }
         this.element.querySelector(".calendar-view__header")?.remove()
@@ -100,6 +122,12 @@ class CalendarView {
                 </div>  
                 `
             ))
+
+            this.setListeners(this.element.querySelectorAll(".calendar-view__date"))
+            // this.element.querySelectorAll(".calendar-view__date").forEach(dateEl => {
+            //     console.log(dateEl)
+            // })
+
             setTimeout(() => {
                 dates?.classList.remove("calendar-view__dates--destroy")
             }, 300)
@@ -174,10 +202,14 @@ class CalendarView {
             `
         )
         header.querySelector("#next-month")?.addEventListener("click", () => {
+            this.month = month + 1
+            this.year = year
             this.changeMonth(month + 1, year)
         })
 
         header.querySelector("#prev-month")?.addEventListener("click", () => {
+                this.month = month - 1
+                this.year = year
                 this.changeMonth(month - 1, year)
             }
         )
@@ -231,23 +263,29 @@ class CalendarView {
         return new Date(`${month}/1/${year}`).getDay();
     }
 
+    /**
+     * @param {NodeListOf<HTMLParagraphElement>} dateElements
+     */
+    setListeners(dateElements) {
+        dateElements.forEach(dateEl => {
+            if (!dateEl.classList.contains('calendar-view__date--disabled') && !dateEl.classList.contains('calendar-view__date--restricted')) {
+                dateEl.addEventListener("click", () => {
+                    this.selectedDate = new Date(this.year, this.month - 1, parseInt(dateEl.innerText) + 1)
+                    this.element.querySelectorAll(".calendar-view__date").forEach(dateEl => {
+                        dateEl.classList.remove("calendar-view__date--selected")
+                    })
+                    dateEl.classList.add("calendar-view__date--selected")
+                    // this.onDateSelected(this.selectedDate)
+                    console.log("Selected date is", this.selectedDate)
+                    if (this.boundInput) {
+                        this.boundInput.value = this.selectedDate.toISOString().substring(0, 10)
+                        // trigger change event
+                        this.boundInput.dispatchEvent(new InputEvent('change'))
+                        console.log(this.boundInput.value)
+                    }
+                })
+            }
+        })
+    }
+
 }
-
-
-new CalendarView({
-    // maxDate a month from now
-    maxDate: (() => {
-        let currentDate = new Date(); // Get the current date
-        return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
-    })(),
-    // minDate  a day from now
-    minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-    parent: "#calendar-container",
-    restrictedDates: [
-        {month: 4, date: 29},
-        {month: 4, date: 30},
-        {month: 5, date: 6},
-        {month: 5, date: 7},
-        {month: 5, date: 18},
-    ]
-})

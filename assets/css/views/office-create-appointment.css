@@ -1,6 +1,7 @@
 .office-create-appointment-form {
     position: relative;
     padding-top: 1rem;
+    width: 700px;
 
 }
 .office-create-appointment-form .top-part-form {
@@ -27,7 +28,7 @@
 
 .office-create-appointment-form h2 {
     padding-top: 2rem;
-    font-size: 1.rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1rem;
 }
@@ -59,4 +60,5 @@
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    margin-top: 3rem;
 }

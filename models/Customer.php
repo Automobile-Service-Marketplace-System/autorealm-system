@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\core\Database;
 use app\core\Session;
+use app\utils\DevOnly;
 use app\utils\EmailClient;
 use app\utils\FSUploader;
 use app\utils\SmsClient;
@@ -118,7 +119,7 @@ class Customer
 
 //                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
                     return ["customerId" => $customerId];
-                } catch (PDOException | Exception $e) {
+                } catch (PDOException|Exception $e) {
                     $this->pdo->rollBack();
                     return $e->getMessage();
                 }
@@ -246,6 +247,7 @@ class Customer
                     )";
 
                 $statement = $this->pdo->prepare($query);
+                var_dump($this->body);
                 $statement->bindValue(":vin", $this->body["vin"]);
                 $statement->bindValue(":reg_no", $this->body["reg_no"]);
                 $statement->bindValue(":engine_no", $this->body["engine_no"]);
@@ -254,7 +256,7 @@ class Customer
                 $statement->bindValue(":vehicle_type", $this->body["vehicle_type"]);
                 $statement->bindValue(":fuel_type", $this->body["fuel_type"]);
                 $statement->bindValue(":transmission_type", $this->body["transmission_type"]);
-                $statement->bindValue(":customer_id", $this->pdo->lastInsertId());
+                $statement->bindValue(":customer_id", $customerId);
                 $statement->bindValue(":model", $this->body["model"]);
                 $statement->bindValue(":brand", $this->body["brand"]);
                 try {
@@ -262,7 +264,9 @@ class Customer
                     $this->pdo->commit();
                     return true;
                 } catch (PDOException $e) {
+                    DevOnly::prettyEcho($e->getMessage());
                     $this->pdo->rollBack();
+                    exit();
                     return $e->getMessage();
                 }
             } else {
@@ -597,7 +601,7 @@ class Customer
             $statement->bindValue(":l_name", $this->body["l_name"]);
             $statement->bindValue(":address", $this->body["address"]);
             $statement->bindValue(":customer_id", $this->body["customer_id"]);
-            
+
             try {
                 $statement->execute();
                 return true;
@@ -614,8 +618,8 @@ class Customer
     {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer");
         $stmt->execute();
-        return (int) $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
-    
+
 }
 
