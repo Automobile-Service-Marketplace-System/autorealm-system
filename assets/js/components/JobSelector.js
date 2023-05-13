@@ -251,6 +251,13 @@ export class JobSelector {
                     jobEl.classList.remove("job-selector__gallery-item--selected")
                     this.selectedJob = null;
                 } else {
+
+                    // remove selected class from all other elements
+                    const selectedElements = this.element.querySelectorAll(".job-selector__gallery-item--selected")
+                    selectedElements.forEach(selectedElement => {
+                        selectedElement.classList.remove("job-selector__gallery-item--selected")
+                    })
+
                     jobEl.classList.add("job-selector__gallery-item--selected")
                     this.selectedJob = job.job_card_id;
                 }

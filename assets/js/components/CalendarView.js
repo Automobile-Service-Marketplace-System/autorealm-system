@@ -234,20 +234,20 @@ class CalendarView {
 }
 
 
-// new CalendarView({
-//     // maxDate a month from now
-//     maxDate: (() => {
-//         let currentDate = new Date(); // Get the current date
-//         return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
-//     })(),
-//     // minDate  a day from now
-//     minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-//     parent: "#calendar-container",
-//     restrictedDates: [
-//         {month: 4, date: 29},
-//         {month: 4, date: 30},
-//         {month: 5, date: 6},
-//         {month: 5, date: 7},
-//         {month: 5, date: 18},
-//     ]
-// })
+new CalendarView({
+    // maxDate a month from now
+    maxDate: (() => {
+        let currentDate = new Date(); // Get the current date
+        return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
+    })(),
+    // minDate  a day from now
+    minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+    parent: "#calendar-container",
+    restrictedDates: [
+        {month: 4, date: 29},
+        {month: 4, date: 30},
+        {month: 5, date: 6},
+        {month: 5, date: 7},
+        {month: 5, date: 18},
+    ]
+})

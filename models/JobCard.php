@@ -667,4 +667,24 @@ class JobCard
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
+
+    public function getCustomerInfoByJobCardId(int $jobId) : false | array | string{
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        CONCAT(f_name, ' ', l_name) as customerName, 
+                        address , 
+                        contact_no as contactNo, 
+                        email 
+                       FROM customer c 
+                           INNER JOIN jobcard j on c.customer_id = j.customer_id 
+                       WHERE j.job_card_id = :job_card_id"
+            );
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

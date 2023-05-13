@@ -707,6 +707,40 @@ class Product
         }
     }
 
+    public function getProductsForJobSelector(
+        int $jobId,
+    ): array|string
+    {
+
+        try {
+            $query = "SELECT 
+                        p.item_code as ID, 
+                        p.name as Name, 
+                        c.name as Category,
+                        m.model_name as Model,
+                        b.brand_name as Brand,
+                        ROUND(p.price/100, 2) as 'Price (LKR)', 
+                        p.quantity as Quantity,
+                        p.image as Image
+
+                    FROM product p 
+                        
+                        INNER JOIN model m on p.model_id = m.model_id 
+                        INNER JOIN brand b on p.brand_id = b.brand_id 
+                        INNER JOIN category c on p.category_id = c.category_id
+                        INNER JOIN jobcardhasproduct j on p.item_code = j.item_code
+                    WHERE j.job_card_id = :job_id
+                    ";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":job_id", $jobId);
+            $statement->execute();
+            return $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
 
     // validations
 
