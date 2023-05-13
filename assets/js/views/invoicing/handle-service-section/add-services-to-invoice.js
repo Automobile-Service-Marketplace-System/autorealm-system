@@ -17,27 +17,34 @@ let currentServiceRow = 0
  */
 let alreadySelectedServices = []
 
-/**
- * @return {HTMLTableRowElement}
- */
-export function getNewServiceRow() {
+
+function getNewServiceRowWithoutEventListener() {
     currentServiceRow++
-    const element = htmlToElement(
+    return htmlToElement(
         `<tr data-index="${currentServiceRow}">
                 <td>
-                    <input type="text" placeholder="Service / Labor" name="service_names[]">
+                    <input type="text" placeholder="Service / Labor" name="service_names[]" readonly>
                 </td>
                 <td>
-                    <input type="number" placeholder="Cost" name="service_costs[]">
+                    <input type="number" placeholder="Cost" name="service_costs[]" readonly>
                 </td>
                 <td>
                     <input type="number" placeholder="Discount" name="service_discounts[]" min="0" max="100">
                 </td>
                 <td>
-                    <input type="number" placeholder="Amount" name="service_amounts[]">
+                    <input type="number" placeholder="Amount" name="service_amounts[]" readonly>
                 </td>
             </tr>`
     )
+}
+
+
+/**
+ * @return {HTMLTableRowElement}
+ */
+export function getNewServiceRow() {
+    currentServiceRow++
+    const element = getNewServiceRowWithoutEventListener()
     const serviceInput = element.querySelector('input[name="service_names[]"]')
     serviceInput.addEventListener('focus', handleFocusOfServiceInput)
     return element
@@ -71,7 +78,7 @@ function addServicesToRow(e, services) {
     // console.log(rowElement)
 
     // setRowValues(rowElement, services[0]);
-    decideNewItemOrExistingItem(services[0], false, rowElement)
+    decideNewServiceOrExistingService(services[0], false, rowElement)
 
 
     let restOfServices = services.slice(1)
@@ -84,12 +91,12 @@ function addServicesToRow(e, services) {
         if (rowElement.nextElementSibling) {
             rowElement = rowElement.nextElementSibling
             // setRowValues(rowElement, service);
-            decideNewItemOrExistingItem(service, false, rowElement)
+            decideNewServiceOrExistingService(service, false, rowElement)
         } else {
             // console.log("creating new row")
             rowElement = getNewServiceRow()
             // setRowValues(rowElement, service, true);
-            decideNewItemOrExistingItem(service, true, rowElement)
+            decideNewServiceOrExistingService(service, true, rowElement)
         }
     })
 
@@ -101,7 +108,7 @@ function addServicesToRow(e, services) {
  * @param {boolean = false} add
  * @param {HTMLTableRowElement | undefined = undefined} rowElement
  */
-function decideNewItemOrExistingItem(service, add = false, rowElement = undefined) {
+function decideNewServiceOrExistingService(service, add = false, rowElement = undefined) {
     if (alreadySelectedServices.includes(service.Code)) {
         // console.log("already in")
         rowElement = document.querySelector(`tr[data-serviceid="${service.Code}"]`)
@@ -193,6 +200,56 @@ function calculateItemTotal() {
 
     // trigger the change event to update the grand total
     serviceTotalInput.dispatchEvent(new InputEvent('change'))
+}
+
+
+/**
+ * @param {Array<Service>} services
+ */
+export function addServicesFromJob(services) {
+    if(services.length === 0) return
+
+    /**
+     * @type {HTMLTableRowElement}
+     */
+    let rowElement = getNewServiceRowWithoutEventListener()
+
+    decideNewServiceOrExistingService(services[0], true, rowElement)
+
+    let restOfServices = services.slice(1)
+    if (restOfServices.length === 0) return
+
+    restOfServices.forEach(service => {
+        console.log(service)
+        if (rowElement.nextElementSibling) {
+            rowElement = rowElement.nextElementSibling
+            // setRowValues(rowElement, service);
+            decideNewServiceOrExistingService(service, false, rowElement)
+        } else {
+            console.log("creating new row")
+            rowElement = getNewServiceRowWithoutEventListener()
+            // setRowValues(rowElement, service, true);
+            decideNewServiceOrExistingService(service, true, rowElement)
+        }
+    })
+}
+
+
+export function removeAllServices() {
+    let serviceRows = serviceTableBody.querySelectorAll('tr')
+    serviceRows.forEach(row => {
+        // setting all the number inputs to 0 and trigger the change event
+        let numberInputs = row.querySelectorAll(`input[name="service_costs[]"], input[name="service_discounts[]"], input[name="service_amounts[]"]`)
+        numberInputs.forEach(input => {
+            input.value = 0
+            input.dispatchEvent(new InputEvent('change'))
+        })
+        row.remove()
+    })
+    const serviceTotalInput = document.querySelector('#service-total')
+    serviceTotalInput.value = 0
+    serviceTotalInput.dispatchEvent(new InputEvent('change'))
+    alreadySelectedServices = []
 }
 
 /**

@@ -7,6 +7,7 @@ use app\core\Response;
 use app\models\Brand;
 use app\models\Customer;
 use app\models\Model;
+use app\utils\DevOnly;
 
 class CustomersController
 {
@@ -87,6 +88,7 @@ class CustomersController
             foreach ($rawModels as $rawModel) {
                 $models[$rawModel['model_id']] = $rawModel['model_name'];
             }
+//            DevOnly::prettyEcho($rawModels, $models);
 
             //create new object from brand and call the method
             $modelBrand = new Brand();
@@ -97,6 +99,8 @@ class CustomersController
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
+//            DevOnly::prettyEcho($rawBrands, $brands);
+
 
             //render page
             return $res->render(view:"office-staff-dashboard-add-customer", layout:"office-staff-dashboard", pageParams:[

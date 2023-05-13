@@ -5,13 +5,14 @@
 
 .calendar-view__header {
     border-radius: 0.5rem 0.5rem 0 0;
+    background-color: #5b5b81;
+    color: #fff;
 }
 
 
 .calendar-view__month {
     text-align: center;
     padding: 0.5rem;
-    background-color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
     position: relative;
@@ -29,7 +30,7 @@
 }
 
 #next-month:hover {
-    transform: translateY(-50%) translateX(0.25rem);
+    transform: translateY(-50%) scale(1.05);
 }
 
 #prev-month {
@@ -42,7 +43,7 @@
 }
 
 #prev-month:hover {
-    transform: translateY(-50%) translateX(-0.25rem);
+    transform: translateY(-50%) scale(1.05);
 }
 
 .calendar-view__days {
@@ -56,8 +57,9 @@
     align-items: center;
     padding: 0.5rem;
     width: 50px;
-    background-color: var(--color-primary);
-    color: #fff;
+    background-color: #fff;
+    color: #5b5b81;
+
 }
 
 .calendar-view__dates {
@@ -67,10 +69,10 @@
     transition: all 0.3s ease-in-out;
 }
 
-.calendar-view__dates--destroy {
-    opacity: 0;
-    transform: translateY(-20%);
-}
+/*.calendar-view__dates--destroy {*/
+/*    opacity: 0;*/
+/*    transform: translateY(-20%);*/
+/*}*/
 
 .calendar-view__dates--appear {
     opacity: 1;
@@ -84,6 +86,12 @@
     padding: 0.5rem;
     background-color: #fff;
     width: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.calendar-view__date:hover {
+    background-color: rgba(var(--primary), 0.3);
 }
 
 .calendar-view__date--disabled {
@@ -92,7 +100,29 @@
     cursor: not-allowed;
 }
 
+
+
 .calendar-view__date--restricted {
-    background-color: rgba(var(--danger), 0.5);
+    /*background-color: rgba(var(--danger), 0.5);*/
+    color: var(--color-danger);
     cursor: not-allowed;
+}
+
+.calendar-view__date--disabled:hover {
+    background-color: #ccc;
+}
+
+
+.calendar-view__date--restricted:hover {
+    background-color: transparent;
+}
+
+
+.calendar-view__date--selected {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.calendar-view__date--selected:hover {
+    background-color: var(--color-primary);
 }

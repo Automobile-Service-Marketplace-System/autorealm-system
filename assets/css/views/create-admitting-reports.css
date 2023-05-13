@@ -83,3 +83,11 @@
 #admitting-report-add-images__input{
     margin-bottom: 1rem;
 }
+
+.create-admitting-reports__section{
+    margin-bottom: 1.25rem;
+}
+
+.create-admitting-reports__topic{
+    margin-top: .75rem;
+}

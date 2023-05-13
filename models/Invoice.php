@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
 use PDOException;
 use Exception;
@@ -97,7 +98,58 @@ class Invoice
 
             return $revenueData;
         } catch (PDOException|Exception $e) {
-            return "Failed to get order revenue data : " . $e->getMessage();
+            return "Failed to get invoice revenue data : " . $e->getMessage();
+        }
+    }
+
+    public function createInvoice(int $employeeId)
+    {
+        try {
+            $this->pdo->beginTransaction();
+
+            $itemCosts = $this->body['product_amounts'];
+            $serviceCosts = $this->body['service_amounts'];
+
+            $totalCost = 0;
+            foreach (array_merge($itemCosts, $serviceCosts) as $cost) {
+                $totalCost += (double) $cost;
+            }
+
+            DevOnly::prettyEcho($totalCost);
+
+            // create the invoice record,
+            $statement = $this->pdo->prepare(
+                "INSERT INTO invoice 
+                        (customer_name, 
+                         customer_phone,
+                         customer_email,
+                         customer_address,
+                         total_cost, 
+                         type, 
+                         employee_id, 
+                         job_card_id, 
+                         created_at,
+                         job_card_id,
+                         employee_id
+                         ) VALUES 
+                (
+                 :customer_name,
+                    :customer_phone,
+                    :customer_email,
+                    :customer_address,
+                    :total_cost,
+                    :type,
+                    :employee_id,
+                    :job_card_id,
+                    :created_at,
+                    :job_card_id,
+                    :employee_id
+                )"
+            );
+
+        } catch (PDOException|Exception $e) {
+            $this->pdo->rollBack();
+            return "Failed to begin transaction : " . $e->getMessage();
         }
     }
 }

@@ -10,9 +10,12 @@ use app\models\InspectionCondition;
 //use app\models\Appointment;
 //use app\models\Foreman;
 use app\models\MaintenanceInspectionReport;
+use app\models\Product;
+use app\models\Service;
 use app\models\Technician;
 use app\utils\DevOnly;
 use Exception;
+use JsonException;
 
 class JobsController
 {
@@ -236,7 +239,7 @@ class JobsController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function createInspectionReportDraft(Request $req, Response $res): string
     {
@@ -517,7 +520,7 @@ class JobsController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function startJob(Request $req, Response $res): string
     {
@@ -556,7 +559,7 @@ class JobsController
 
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getAvailableTechniciansForJob(Request $req, Response $res): string
     {
@@ -586,7 +589,7 @@ class JobsController
 
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function changeJobServiceStatus(Request $req, Response $res): string
     {
@@ -626,7 +629,7 @@ class JobsController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getJobSelectorJobs(Request $req, Response $res): string
     {
@@ -673,6 +676,106 @@ class JobsController
             'searchTermVehicleRegNo' => $searchTermVehicleRegNo,
             'searchTermForemanName' => $searchTermForemanName,
             'jobDate' => $jobDate
+        ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getCustomerDetailsForJob(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $jobId = $query["job_id"] ?? null;
+
+        if (!$jobId) {
+            $res->setStatusCode(code: 400);
+            return $res->json(data: [
+                "success" => false,
+                "message" => "Job ID is required"
+            ]);
+        }
+
+        $jobCardModel = new JobCard();
+        $customerDetails = $jobCardModel->getCustomerInfoByJobCardId(jobId: $jobId);
+
+        if (is_string($customerDetails) || !$customerDetails) {
+            $res->setStatusCode(code: 500);
+            return $res->json(data: [
+                "success" => false,
+                "message" => $customerDetails
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json(data: [
+            "message" => "Customer details fetched successfully",
+            "data" => $customerDetails
+        ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getProductsForJob(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $jobId = $query["job_id"] ?? null;
+
+        if ($jobId) {
+            $productModel = new Product();
+            $products = $productModel->getProductsForJobSelector(jobId: $jobId);
+            if (is_string($products)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $products
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Products fetched successfully",
+                "products" => $products
+            ]);
+        }
+
+        $res->setStatusCode(code: 400);
+        return $res->json(data: [
+            "success" => false,
+            "message" => "Job ID is required"
+        ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getServicesForJob(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $jobId = $query["job_id"] ?? null;
+
+        if ($jobId) {
+            $serviceModel = new Service();
+            $services = $serviceModel->getServicesForJobSelector(jobId: $jobId);
+            if (is_string($services)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "success" => false,
+                    "message" => $services
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json(data: [
+                "success" => true,
+                "message" => "Services fetched successfully",
+                "services" => $services
+            ]);
+        }
+
+        $res->setStatusCode(code: 400);
+        return $res->json(data: [
+            "success" => false,
+            "message" => "Job ID is required"
         ]);
     }
 }

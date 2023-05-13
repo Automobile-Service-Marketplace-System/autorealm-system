@@ -10,10 +10,14 @@ use Exception;
 class AdmittingController{
     public function getCreateAdmittingReportPage(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
+            $query= $req->query();
+            $regNo = $query['reg_no'] ?? null;
             return $res->render(view: "security-officer-dashboard-admitting-report", layout:"security-officer-dashboard",layoutParams:[
                 "title"=>"Create admitting report",
                 "pageMainHeading"=>"Create Admitting Report",
                 "employeeId"=>$req->session->get("user_id"),
+            ], pageParams:[
+                "reg_no" => $regNo
             ]);
         }
         return $res->redirect(path:"/login");

@@ -231,15 +231,7 @@ class AppointmentsController
     {
         $body = $req->body();
         $appointment = new Appointment($body);
-
-//        var_dump($body);
-
-
-//        echo("<img src='$qrcode'>");
-//        DevOnly::prettyEcho($qrcode);
-//        exit();
         $result = $appointment->officeCreateAppointment();
-
 
         if (is_string($result)) {
             $res->setStatusCode(code: 500);

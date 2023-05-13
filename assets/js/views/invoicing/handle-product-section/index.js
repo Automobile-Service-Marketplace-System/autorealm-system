@@ -2,16 +2,18 @@ import {getNewItemRow, itemTableBody} from "./add-products-to-invoice"
 
 
 const createInvoiceSection = document.querySelector('.create-invoice__section')
+/**
+ * @type {HTMLButtonElement}
+ */
+export const addNewItemRowButton = document.querySelector('#new-item-row-button')
+
 
 if (createInvoiceSection) {
-    /**
-     * @type {HTMLButtonElement}
-     */
-    const addNewItemRowButton = document.querySelector('#new-item-row-button')
 
     addNewItemRowButton.addEventListener('click', () => {
         itemTableBody.appendChild(getNewItemRow())
     })
 }
+
 
 export * from "./add-products-to-invoice"

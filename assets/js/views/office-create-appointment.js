@@ -1,10 +1,9 @@
-import { Modal } from "../components/Modal";
-import { htmlToElement } from "../utils";
+import {Modal} from "../components/Modal";
+import {htmlToElement} from "../utils";
 import Notifier from "../components/Notifier";
+import {CalendarView} from "../components/CalendarView";
 
-const createAppointmentButton = document.querySelectorAll(
-    ".create-appointment-btn"
-);
+const createAppointmentButton = document.querySelectorAll(".create-appointment-btn");
 
 /**
  * @type {Array<{time_id: number, from_time: string, to_time:string}>}
@@ -12,6 +11,7 @@ const createAppointmentButton = document.querySelectorAll(
 let timeslots = [];
 
 createAppointmentButton.forEach(function (btn) {
+
     btn.addEventListener("click", async function () {
         try {
             const customerID = Number(btn.dataset.id);
@@ -24,8 +24,7 @@ createAppointmentButton.forEach(function (btn) {
             const result = await fetch(`/vehicles/by-customer-json?id=${customerID}`, {
                 headers: {
                     "Content-Type": "application/json",
-                },
-                method: "GET",
+                }, method: "GET",
             });
 
             switch (result.status) {
@@ -33,8 +32,7 @@ createAppointmentButton.forEach(function (btn) {
                     Notifier.show({
                         text: "No vehicles found for this customer<br>Please add one first",
                         type: "danger",
-                        header: "Error",
-                        // closable: true,
+                        header: "Error", // closable: true,
                     })
                     return;
                 case 200:
@@ -48,22 +46,18 @@ createAppointmentButton.forEach(function (btn) {
                     }).join("");
 
 
-    const createAppointmentForm = htmlToElement(`
+                    const createAppointmentForm = htmlToElement(`
         <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
-            <div class="office-create-appointment-form_title" style="margin-top: -1rem;margin-bottom: 1rem">
-                <button class="modal-close-btn">
+            <div class="office-create-appointment-form_title mb-4" >
+                <button class="modal-close-btn" type="button">
                     <i class="fas fa-times"></i>
                 </button>
                 <h1>
-                    Create an appointment
+                    Create an appointment for ${name}
                 </h1>
-
-                <h2>
-                    ${name}
-                </h2>
             </div>
 
-            <div class="office-create-appointment-input-wrapper">  
+            <div class="office-create-appointment-input-wrapper mt-8">  
                 <div class='form-item '>
                     <label for='vehicle'>Vehicle<sup>*</sup></label>
                     <select  name='vehicle_reg_no' id='vehicle' required> 
@@ -78,16 +72,13 @@ createAppointmentButton.forEach(function (btn) {
 
                 <div class='form-item create-appointment-remarks'>
                     <label for='remarks'>Remarks</sup></label>
-                    <textarea name='remarks' id='remarks' placeholder='' value='' rows="1" style="height: 40px">
+                    <textarea name='remarks' id='remarks' placeholder='' rows="1" style="height: 40px">
                     </textarea>
                 </div>
-                
-                <div class='form-item create-timeslot'>
-                    <label for='date'>Date<sup>*</sup></label>
-                    <input type="date" name="date" id="date">
+                <div class="create-time-slot">
+                    <input type="date" id="date" style="display: none" name="date">
                 </div>
                 <input style="display: none" name='customerID' id='customerID' value='${customerID}'>
-
                 <div class='form-item'>
                     <label for='timeslot'>Timeslot<sup>*</sup></label>
                     <select name='timeslot' id='timeslot' required> </select>
@@ -95,8 +86,8 @@ createAppointmentButton.forEach(function (btn) {
             </div>
 
             <div class="office-create-appointment__actions">
-                <button type="reset" class="btn btn--danger">Reset</button>
-                <button type="button" class="btn" id="create-appointment-modal-btn">Submit</button>
+                <button type="reset" class="btn btn--danger btn--thin btn--text">Reset</button>
+                <button type="button" class="btn btn--thin" id="create-appointment-modal-btn">Submit</button>
                 <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
             </div>
     </form>
@@ -104,7 +95,7 @@ createAppointmentButton.forEach(function (btn) {
 
 
                     createAppointmentForm.querySelector("input#date")?.addEventListener('change', async (e) => {
-                        await loadTimeSlots(e, createAppointmentForm)
+                        await loadTimeSlots(createAppointmentForm.querySelector("input#date"), createAppointmentForm)
                     })
 
 
@@ -114,10 +105,11 @@ createAppointmentButton.forEach(function (btn) {
                             const template = `<div style="width: 350px">
                                 <h3>Are you sure you want to create this appointment?</h3>
                                 <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
-                                    <button class="btn btn--thin btn--danger modal-close-btn">
+                                    <button type="button" class="btn btn--thin btn--danger modal-close-btn">
                                         Cancel
                                     </button>
-                                    <button class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
+                                    <button type="button" class="btn btn--thin modal-close-btn" id="create-appointment-confirm-btn">
+                                        <i class="fa fa-spinner"></i>
                                         Confirm
                                     </button>
                                 </div>
@@ -125,12 +117,16 @@ createAppointmentButton.forEach(function (btn) {
 
                             const createAppointmentConfirmationModal = htmlToElement(template);
 
-                            createAppointmentConfirmationModal
-                                .querySelector("#create-appointment-confirm-btn")
+                            const createAppointmentConfirmBtn = createAppointmentConfirmationModal.querySelector("#create-appointment-confirm-btn");
+                            createAppointmentConfirmBtn
                                 .addEventListener("click", () => {
-                                    const submitBtn = createAppointmentForm?.querySelector(
-                                        "#create-appointment-final-btn");
+
+                                    createAppointmentConfirmBtn.classList.add("btn--loading");
+                                    const submitBtn = createAppointmentForm?.querySelector("#create-appointment-final-btn");
                                     submitBtn?.click();
+                                    setTimeout(() => {
+                                        createAppointmentConfirmBtn.classList.remove("btn--loading");
+                                    }, 2000);
                                 });
 
                             Modal.show({
@@ -142,9 +138,7 @@ createAppointmentButton.forEach(function (btn) {
 
                     createAppointmentForm?.addEventListener("submit", async (e) => {
                         e.preventDefault();
-                        if (
-                        createAppointmentForm.classList.contains("create-appointment-form--error")
-                        ) {
+                        if (createAppointmentForm.classList.contains("create-appointment-form--error")) {
                             createAppointmentForm
                                 .querySelectorAll(".form-item")
                                 .forEach((inputWrapper) => {
@@ -157,24 +151,16 @@ createAppointmentButton.forEach(function (btn) {
                         // return;
                         try {
                             const result = await fetch(`/appointments/create`, {
-                                body: formData,
-                                method: "POST",
+                                body: formData, method: "POST",
                             });
 
-                            console.log(await result.text())
-                            return
-       
                             if (result.status === 400) {
                                 createAppointmentForm?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
                                 for (const inputName in resultBody.errors) {
-                                    const inputWrapper = createAppointmentForm.querySelector(
-                                        `#${inputName}`
-                                    ).parentElement;
+                                    const inputWrapper = createAppointmentForm.querySelector(`#${inputName}`).parentElement;
                                     inputWrapper.classList.add("form-item--error");
-                                    const errorElement = htmlToElement(
-                                        `<small>${resultBody.errors[inputName]}</small>`
-                                    );
+                                    const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`);
                                     inputWrapper.appendChild(errorElement);
                                 }
                             } else if (result.status === 201) {
@@ -183,10 +169,7 @@ createAppointmentButton.forEach(function (btn) {
                         } catch (e) {
                             console.log(e);
                             Notifier.show({
-                                closable: true,
-                                header: "Error",
-                                type: "danger",
-                                text: e.message,
+                                closable: true, header: "Error", type: "danger", text: e.message,
                             });
                         }
                     });
@@ -202,11 +185,25 @@ createAppointmentButton.forEach(function (btn) {
                         });
                     });
 
+
                     Modal.show({
-                        content: createAppointmentForm,
-                        closable: false,
-                        key: "createAppointmentForm",
+                        content: createAppointmentForm, closable: false, key: "createAppointmentForm",
                     });
+
+                    new CalendarView({
+                        // maxDate a month from now
+                        maxDate: (() => {
+                            let currentDate = new Date(); // Get the current date
+                            return new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
+                        })(), // minDate  a day from now
+                        minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+                        parent: ".create-time-slot",
+                        boundInput: ".create-time-slot input[name='date']",
+                        restrictedDates: [{month: 4, date: 29}, {month: 4, date: 30}, {month: 5, date: 6}, {
+                            month: 5,
+                            date: 7
+                        }, {month: 5, date: 18},]
+                    })
                     break;
                 case 401:
                     Notifier.show({
@@ -219,11 +216,7 @@ createAppointmentButton.forEach(function (btn) {
                     return;
                 default:
                     Notifier.show({
-                        text: "Something went wrong",
-                        type: "danger",
-                        header: "Error",
-                        closable: true,
-                        duration: 5000,
+                        text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
                     });
                     return
             }
@@ -231,10 +224,7 @@ createAppointmentButton.forEach(function (btn) {
         } catch (e) {
             console.log(e);
             Notifier.show({
-                closable: true,
-                header: "Error",
-                type: "danger",
-                text: "Something went wrong",
+                closable: true, header: "Error", type: "danger", text: "Something went wrong",
             })
         }
 
@@ -243,39 +233,31 @@ createAppointmentButton.forEach(function (btn) {
 
 
 /**
- * @param event {InputEvent}
+ * @param input {HTMLInputElement}
  * @param formEl {HTMLElement}
  * @returns {Promise<void>}
  */
-async function loadTimeSlots(event, formEl) {
+async function loadTimeSlots(input, formEl) {
     try {
-        /**
-         * @type {HTMLInputElement}
-         */
-        const input = event.target;
         const date = input.value;
+        console.log(date)
         const result = await fetch(`/appointments/timeslots?date=${date}`);
 
         switch (result.status) {
             case 404:
                 Notifier.show({
-                    text: "No timeslots available",
-                    type: "danger",
-                    header: "Error",
-                    closable: true,
-                    duration: 5000
+                    text: "No timeslots available", type: "danger", header: "Error", closable: true, duration: 5000
                 });
                 timeslots = [];
+                break;
             case 200:
                 const resultBody = await result.json();
                 timeslots = resultBody;
                 const selectTag = formEl.querySelector("select#timeslot");
                 timeslots.forEach((timeslot) => {
-                    const option = htmlToElement(
-                        `<option value="${timeslot.time_id}">
+                    const option = htmlToElement(`<option value="${timeslot.time_id}">
                                     ${timeslot.from_time} - ${timeslot.to_time}
-                                 </option>`
-                    )
+                                 </option>`)
                     selectTag.appendChild(option)
                 })
 
@@ -283,12 +265,7 @@ async function loadTimeSlots(event, formEl) {
     } catch (e) {
         console.log(e)
         Notifier.show({
-            text: "Something went wrong",
-            type: "danger",
-            header: "Error",
-            closable: true,
-            duration: 5000,
+            text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
         });
     }
-
 }

@@ -90,6 +90,7 @@
 @import "views/view-product.css";
 @import "views/stockmanager-analytics.css";
 @import "views/admin-analytics.css";
+@import "views/overview-card.css";
 
 body{
   font-family: "Nunito", sans-serif;

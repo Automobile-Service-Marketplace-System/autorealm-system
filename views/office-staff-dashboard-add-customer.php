@@ -6,6 +6,9 @@
  * @var array $brands
  */
 
+
+\app\utils\DevOnly::prettyEcho( $models, $brands);
+
 use app\components\FormItem;
 use app\components\FormSelectItem;
 
@@ -25,7 +28,7 @@ $hasEngineNoError = $hasErrors && isset($errors['engine_no']);
 
 $years = [];
 for ($i=date('Y'); $i >= 1900 ; $i--) { 
-    $years[] = $i;
+    $years["$i"] = $i;
 };
 
 ?>
@@ -170,7 +173,6 @@ for ($i=date('Y'); $i >= 1900 ; $i--) {
                 name: "manufactured_year",
                 // hasError: $hasFNameError,
                 // error: $hasFNameError ? $errors['brand'] : "",
-                value: "1",
                 options: $years
             );
 
