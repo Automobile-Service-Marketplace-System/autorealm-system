@@ -19,23 +19,56 @@ class Invoice
     }
 
 
-    public function getInvoices(int|null $count = null, int|null $page = 1): array
+    public function getInvoices(
+        int|null $count = null, 
+        int|null $page = 1,
+        string $searchTermCustomer = null, 
+        string $searchTermEmployee = null,): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        $invoices = $this->pdo->query(
+        $whereClause = null;
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND customer_name LIKE :search_term_cus" : "WHERE customer_name LIKE :search_term_cus";
+        }
+
+        if ($searchTermEmployee !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_emp" : "WHERE CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_emp";
+        }
+
+        $statement = $this->pdo->prepare(
             "SELECT
                 invoice_no as 'Invoice No',
                 customer_name as 'Customer Name',
                 total_cost as 'Total Cost',
                 type as Type,
-                employee_id as 'Employee ID',
+                CONCAT(e.f_name,' ',e.l_name) as 'Employee Name',
                 job_card_id as 'JobCard ID'
             FROM 
-                invoice
+                invoice i
+            INNER JOIN employee e ON e.employee_id = i.employee_id
+            $whereClause
             ORDER BY invoice_no DESC $limitClause $pageClause"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        );
+
+        if ($searchTermCustomer !== null) {
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermEmployee !== null) {
+            $statement->bindValue(":search_term_emp", "%" . $searchTermEmployee . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $invoices = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
 
         $totalInvoices = $this->pdo->query(
             "SELECT COUNT(*) as total FROM invoice"

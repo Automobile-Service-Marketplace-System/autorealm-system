@@ -13,7 +13,6 @@ class VehiclesController
 {
     public function getVehiclesPage(Request $req, Response $res): string
     {
-
         //check authentication
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
             

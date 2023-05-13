@@ -132,12 +132,21 @@ class AppointmentsController
     public function getOfficeAppointmentsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
+            $searchTermRegNo = $query["reg"] ?? null;
+            $searchTermCustomer = $query["cus"] ?? null;
+
             $appointmentModel = new Appointment();
-            $appointments = $appointmentModel->getAllAppointments(count: $limit, page: $page);
+            $appointments = $appointmentModel->getAllAppointments(
+                count: $limit, 
+                page: $page,
+                searchTermRegNo: $searchTermRegNo,
+                searchTermCustomer: $searchTermCustomer
+            );
             $officeUserId = $req->session->get('user_id');
 
             return $res->render(view: "office-staff-dashboard-appointments-page", layout: "office-staff-dashboard",

@@ -63,6 +63,44 @@ foreach($customers['customers'] as $customer) {
     </div>
 </div>
 
+<!-- for searching -->
+<div class="order-filtering-and-sort">
+    <div class="filters" id="dashboard-order-filters">
+        <div class="filters__actions">
+            <div class="filters__dropdown-trigger">
+                Search
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <form>
+            <div class="filters__dropdown">
+                <div class="order-filter-search-items">
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search customer by name"
+                               id="dashboard-order-cus-name-search" name="cus" >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search customer by email" id="dashboard-order-id-search" name="email">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <div class="filter-action-buttons">
+                    <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
+                    </button>
+                    <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+
 <!-- call table component -->
 <?php
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);

@@ -481,11 +481,24 @@ class JobsController
     {
 
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //for search and filtering
+            $searchTermCustomer = $query["cus"] ?? null;
+            $searchTermEmployee = $query["emp"] ?? null;
+            $searchTermRegNo = $query["reg"] ?? null;
+
             $jobCardModel = new JobCard();
-            $jobCards = $jobCardModel->getAllJobs(count: $limit, page: $page);
+            $jobCards = $jobCardModel->getAllJobs(
+                count: $limit, 
+                page: $page,
+                searchTermCustomer: $searchTermCustomer,
+                searchTermEmployee: $searchTermEmployee,
+                searchTermRegNo: $searchTermRegNo
+            );
 
             return $res->render(view: "office-staff-dashboard-all-jobs-page", layout: "office-staff-dashboard",
                 pageParams: [

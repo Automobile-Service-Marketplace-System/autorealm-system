@@ -257,11 +257,32 @@ class JobCard
         }
     }
 
-    public function getAllJobs(int|null $count = null, int|null $page = 1): array
+    public function getAllJobs(
+        int|null $count = null, 
+        int|null $page = 1,
+        string $searchTermCustomer = null, 
+        string $searchTermEmployee = null,
+        string $searchTermRegNo = null
+        ): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
-        $jobs = $this->pdo->query(
+
+        $whereClause = null;
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND concat(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE concat(c.f_name,' ',c.l_name) LIKE :search_term_cus";
+        }
+
+        if ($searchTermEmployee !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND concat(e.f_name,' ',e.l_name) LIKE :search_term_emp" : "WHERE concat(e.f_name,' ',e.l_name) LIKE :search_term_cus";
+        }
+
+        if ($searchTermRegNo !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND v.reg_no LIKE :search_term_reg" : "WHERE v.reg_no LIKE :search_term_reg";
+        }
+
+        $statement = $this->pdo->prepare(
             "SELECT
                 job_card_id as 'JobCard ID',
                 concat(c.f_name,' ',c.l_name) as 'Customer Name',
@@ -278,9 +299,32 @@ class JobCard
                 employee e ON e.employee_id = j.employee_id
             INNER JOIN 
                 vehicle v ON j.vin = v.vin
+            $whereClause
             ORDER BY
                 j.job_card_id DESC $limitClause $pageClause"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        );
+
+        if ($searchTermCustomer !== null) {
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermEmployee !== null) {
+            $statement->bindValue(":search_term_emp", "%" . $searchTermEmployee . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermRegNo !== null) {
+            $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $jobs = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
         $totalJobs = $this->pdo->query(
             "SELECT COUNT(*) as total FROM jobcard"
         )->fetch(PDO::FETCH_ASSOC);
