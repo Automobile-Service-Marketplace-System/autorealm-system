@@ -1,0 +1,8 @@
+- finish invoicing part with pdf and email
+- send an order confirmation through email
+- customer profile update
+- forgot password
+- mark job as finished by the foreman
+- finish filter + pagination part in site products page
+- foreman and technician overviews
+- real time progress updates for foreman and technicians

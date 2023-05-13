@@ -26,6 +26,21 @@ class Customer
         $this->body = $registerBody;
     }
 
+    // public function getCustomerCountData():array|string{
+    //     try{
+    //         $statement = $this->pdo->prepare("SELECT
+    //         count(cvc.*) from as count from customer_verification_codes cvc
+    //         join customer c on c.customer_id=cvc.customer_id
+    //         WHERE created_at BETWEEN DATE_FORMAT(CURRENT_DATE, '%Y-%m-01') 
+    //         AND CURRENT_DATE");
+    //         $statement->execute();
+    //         $CustomerCount = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //         return $CustomerCount;
+    //     }
+    //     catch(PDOException|Exception $e){
+    //         return "Failed to get data : " . $e->getMessage();
+    //     }
+    // }
 
     public function getCustomerById(int $customer_id): bool|object|null
     {
