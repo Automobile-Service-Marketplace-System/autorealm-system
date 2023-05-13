@@ -28,7 +28,7 @@ class FormSelectItem
     {
         $errorClass = $hasError ? "form-item--error" : "";
         $errorElement = $hasError ? "<small>$error</small>" : "";
-        $requiredIndicator = $required ? "<sup>*</sup>" : "";
+        $requiredIndicator = $required ? ($label != "" ? "<sup>*</sup>" : ""): "";
         $optionsGroup = "";
         foreach ($options as $optionId => $optionValue) {
             $isSelected = $optionId === $value ? "selected" : "";
@@ -36,7 +36,7 @@ class FormSelectItem
         }
 
         echo "<div class='form-item $errorClass'>
-                    <label for='$id'>$label.$requiredIndicator</label>
+                    <label for='$id'>$label$requiredIndicator</label>
                     <select  name='$name' id='$id'  $required $disabled> 
                         $optionsGroup
                     </select>

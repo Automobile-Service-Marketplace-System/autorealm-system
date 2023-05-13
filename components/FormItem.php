@@ -37,7 +37,7 @@ class FormItem
         $additionalAttributes = $additionalAttributes ?? "";
 
         echo "<div class='form-item $errorClass'>
-                    <label for='$id'>$label.$requiredIndicator</label>
+                    <label for='$id'>$label$requiredIndicator</label>
                     <input type='$type' name='$name' id='$id' placeholder='$placeholder' $required $disabled value='$value'  $additionalAttributes >
                     $errorElement
               </div>";
