@@ -176,9 +176,6 @@ class Admitting
             $errors['vehicle_reg_no'] = 'Registraion number must not be empty';
         }
 
-        if(empty($this->body['image'])) {
-            $errors['image'] = 'Please select an image to upload';
-        }
 
         if ($this->body['lights_lf'] !== 'good' && $this->body['lights_lf'] !== 'scratched' && $this->body['lights_lf'] !== 'cracked' && $this->body['lights_lf'] !== 'damaged' && $this->body['lights_lf'] !== 'not working') {
             $errors['lights_lf'] = 'You must select the state of  LF lights.';
@@ -287,7 +284,7 @@ class Admitting
         if(empty($errors)){
             try {
                 $imageUrls = FSUploader::upload(innerDir: "admittingreport/multiple-images", multiple: true);
-                // var_dump(json_encode($imageUrls));
+                var_dump(json_encode($imageUrls));
                 // exit; 
 
             } catch (Exception $e) {

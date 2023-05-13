@@ -120,14 +120,19 @@ class AdmittingController{
     public function addAdmittingReportPage(Request $req, Response $res):string{
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="security_officer"){
             $body=$req->body(); 
+            $query= $req->query();
+            $regNo = $query['reg_no'] ?? null;
             $admittingReport=new Admitting($body);
             $employeeId=$req->session->get("user_id");
             $result=$admittingReport->addAdmittingReport($employeeId);
+            // var_dump($result);
+            // exit();
             
             if (is_array($result)) {
                 return $res->render(view: "security-officer-dashboard-admitting-report", layout:"security-officer-dashboard", pageParams: [
                     'errors' => $result,
-                    'body' => $body
+                    'body' => $body,
+                    'reg_no' => $regNo
                 ], layoutParams: [
                     "title" => "Create an admitting report",
                     'pageMainHeading' => 'Create an admitting report',
