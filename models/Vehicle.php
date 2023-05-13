@@ -108,8 +108,6 @@ class Vehicle
             $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
         }
 
-     
-
         try{
 
             $statement->execute();

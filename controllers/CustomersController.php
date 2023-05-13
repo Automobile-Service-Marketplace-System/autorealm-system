@@ -18,11 +18,20 @@ class CustomersController
         $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
         $page = isset($query['page']) ? (int)$query['page'] : 1;
 
+         //for search and filtering
+        $searchTermCustomer = $query["cus"] ?? null;
+        $searchTermEmail = $query["email"] ?? null;
+
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
 
             //create new object from model and call the method
             $customerModel = new Customer();
-            $customers = $customerModel->getCustomers(count: $limit, page: $page);
+            $customers = $customerModel->getCustomers(
+                count: $limit, 
+                page: $page,
+                searchTermCustomer: $searchTermCustomer,
+                searchTermEmail: $searchTermEmail
+            );
 
             //check authentication for office staff
             if($req->session->get("user_role") === "office_staff_member"){

@@ -302,12 +302,27 @@ class Customer
         return $errors;
     }
 
-    public function getCustomers(int|null $count = null, int|null $page = 1): array
+    public function getCustomers(
+        int|null $count = null, 
+        int|null $page = 1,
+        string $searchTermCustomer = null,
+        string $searchTermEmail = null
+        ): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        $customers = $this->pdo->query(
+        $whereClause = null;
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(f_name,' ',l_name) LIKE :search_term_cus" : " WHERE CONCAT(f_name,' ',l_name) LIKE :search_term_cus";
+        }
+
+        if ($searchTermEmail !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND email LIKE :search_term_email" : " WHERE email LIKE :search_term_email";
+        }
+
+        $statement = $this->pdo->prepare(
             "SELECT 
                 customer_id as ID,
                 CONCAT(f_name, ' ', l_name) as 'Full Name',
@@ -315,7 +330,25 @@ class Customer
                 address as Address,
                 email as Email
             FROM customer
-            ORDER BY customer_id DESC $limitClause $pageClause")->fetchAll(PDO::FETCH_ASSOC);
+            $whereClause
+            ORDER BY customer_id DESC $limitClause $pageClause");
+        
+        if ($searchTermCustomer !== null) {
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermEmail !== null) {
+            $statement->bindValue(":search_term_email", "%" . $searchTermEmail . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $customer = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
 
         $totalCustomers = $this->pdo->query(
             "SELECT COUNT(*) as total FROM customer"
@@ -323,7 +356,7 @@ class Customer
 
         return [
             "total" => $totalCustomers['total'],
-            "customers" => $customers
+            "customers" => $customer
         ];
     }
 
