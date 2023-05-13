@@ -36,7 +36,7 @@ foreach($customers['customers'] as $customer) {
                                             <i class='fa-solid fa-pencil'></i>
                                          </button>
                                          <button id='create-appointment-btn-{$customer['ID']}' class='btn btn--rounded btn--success create-appointment-btn data-name='{$customer["Full Name"]}' data-id='{$customer["ID"]}'>
-                                            <i class='fa-solid fa-wrench'></i>
+                                            <i class='fa-solid fa-calendar-check'></i>
                                          </button>
                         </div>"
     ];
