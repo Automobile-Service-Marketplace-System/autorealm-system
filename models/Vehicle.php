@@ -76,11 +76,6 @@ class Vehicle
             $whereClause = $whereClause ? $whereClause . " AND $conditions " : "WHERE $conditions";
         }
 
-        var_dump($conditions);
-
-
-
-
             $statement = $this->pdo->prepare(
                 "SELECT
                     vin as VIN,
