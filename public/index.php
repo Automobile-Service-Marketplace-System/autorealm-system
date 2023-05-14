@@ -95,7 +95,7 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/records", callback: [ServicesController::class, 'getPastServiceRecordsByVehicleIdCustomerPage']);
     $app->router->get(path: "/dashboard/orders", callback: [OrdersController::class, 'getCustomerDashboardOrdersPage']);
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
-    $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
+    $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'getOngoingServicesForCustomerPage']);
     $app->router->get(path: "/vehicles/for-appointment", callback: [VehiclesController::class, 'getVehicleNameListForCustomer']);
     $app->router->get(path: "/holidays", callback: [AppointmentsController::class, 'getHolidays']);
     $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);

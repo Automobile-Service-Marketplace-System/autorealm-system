@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\JobCard;
 use app\models\Model;
 use app\models\Service;
 use JsonException;
@@ -23,15 +24,15 @@ class ServicesController
             $serviceStatus = isset($query['status']) ? ($query['status'] == "" ? "active" : $query['status']) : "active";
 
             //for pagination
-            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:5;
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 5;
             $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
             $serviceModel = new Service();
 
             $result = $serviceModel->getServices(
-                count: $limit, 
+                count: $limit,
                 page: $page,
-                searchTermName : $serachTermName,
-                searchTermCode : $serachTermCode,
+                searchTermName: $serachTermName,
+                searchTermCode: $serachTermCode,
                 options: [
                     'serviceStatus' => $serviceStatus,
                 ]
@@ -39,15 +40,15 @@ class ServicesController
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
                 "services" => $result['services'],
-                'total'=> $result['total'],
+                'total' => $result['total'],
                 'page' => $page,
                 'limit' => $limit,
-            
+
                 //pasing filter option
                 'searchTermName' => $serachTermName,
                 'searchTermCode' => $serachTermCode,
                 'serviceStatus' => $serviceStatus
-            
+
             ], layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'Services',
@@ -158,17 +159,48 @@ class ServicesController
     }
 
 
-    public function geOngoingServicesForCustomerPage(Request $req, Response $res)
+    public function getOngoingServicesForCustomerPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
-            $customerId = $req->session->get("user_id");
+            $userId = $req->session->get("user_id");
+            $jobCardModel = new JobCard();
+            $jobId = $jobCardModel->getJobIdByCustomerId(customerId: $userId);
 
-            return $res->render(view: "customer-dashboard-services", layout: "customer-dashboard", layoutParams: [
-                "title" => "Ongoing Services / Repairs",
-                "pageMainHeading" => "Ongoing Services / Repairs",
-                "customerId" => $customerId
+            if (is_string($jobId)) {
+                return $jobId;
+            }
+
+            if(!$jobId) {
+                return $res->render(view: "customer-dashboard-services", layout: "customer-dashboard", pageParams: [
+                    "jobId" => $jobId,
+                ], layoutParams: [
+                    'title' => 'Ongoing services / repairs',
+                    'pageMainHeading' => "Ongoing Services / repairs",
+                    'customerId' => $userId,
+                ]);
+            }
+
+            $vehicleDetails = $jobCardModel->getVehicleDetailsByJobId(jobId: $jobId);
+            if (is_string($vehicleDetails)) {
+                return $vehicleDetails;
+            }
+
+            $jobDetails = $jobCardModel->getAssignedJobServiceAndVehicleDetails(jobId: $jobId);
+            if (is_string($jobDetails)) {
+                return $jobDetails;
+            }
+            return $res->render(view: "customer-dashboard-services", layout: "customer-dashboard", pageParams: [
+                "vehicleDetails" => $vehicleDetails,
+                "jobDetails" => $jobDetails,
+                "jobId" => $jobId,
+            ], layoutParams: [
+                'title' => 'Ongoing services / repairs',
+                'pageMainHeading' => "Ongoing Services / repairs",
+                'customerId' => $userId,
             ]);
         }
+
+        return $res->redirect(path: "/login");
     }
 
     /**
