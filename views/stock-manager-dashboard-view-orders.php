@@ -96,7 +96,7 @@ foreach ($orders as $order) {
                         <select name="status" id="dashboard-order-status-filter">
                             <option value="all" <?= ($orderStatus=='all')? 'selected': ""?>>Status</option>
                             <option value="Not Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Not Prepared</option>
-                            <option value="Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Prepared</option>
+                            <option value="Prepared" <?= ($orderStatus=='Prepared')? 'selected': ""?>>Prepared</option>
                             <option value="Delivery" <?= ($orderStatus=='Delivery')? 'selected': ""?>>Delivery</option>
                             <option value="CourierConfirmed" <?= ($orderStatus=='CourierConfirmed')? 'selected': ""?>>Courier Confirmed</option>
                             <option value="CustomerConfirmed" <?= ($orderStatus=='CustomerConfirmed')? 'selected': ""?>>Customer Confirmed</option>

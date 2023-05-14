@@ -541,12 +541,13 @@ class Order
             //to get item_codes that are not in orderhasproduct table in a given range
             $statement2 = $this->pdo->prepare("
                 SELECT item_code, name
-                FROM product
+                FROM product p
                 WHERE item_code NOT IN (
                     SELECT ohp.item_code
                     FROM orderhasproduct ohp
                     INNER JOIN  `order` o ON  o.order_no = ohp.order_no
-                    WHERE o.created_at BETWEEN :from AND :to)
+                    WHERE  o.created_at BETWEEN :from AND :to)
+                AND p.is_discontinued = FALSE
             ");
             $statement2->bindValue(":from", $from);
             $statement2->bindValue(":to", $to);
