@@ -57,12 +57,16 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> appointments
         }
     ?>
     
-    <div class="pagination-container">
-        <?php 
-            foreach(range(1, ceil($total / $limit)) as $i){
-                $activePage = $i === (float)$page ? "pagination-item--active" : "";
-                echo "<a class='pagination-item $activePage' href='/security-officer-dashboard/view-appointment?regno=$searchTermRegNo&date=$searchTermDate&page=$i&limit=$limit'> $i </a>";
-            }
-        ?>
+    <?php if($total>0){ ?>
+    <div class="pagination-container"> <?php
+        foreach(range(1, ceil($total / $limit)) as $i){
+            $activePage = $i === (float)$page ? "pagination-item--active" : "";
+            echo "<a class='pagination-item $activePage' href='/security-officer-dashboard/view-appointment?regno=$searchTermRegNo&date=$searchTermDate&page=$i&limit=$limit'> $i </a>";
+        } ?>
+
+        <?php }
+        else{
+            echo "<div id='view-no-data-pagination'>Data are not available</div>";
+        } ?>    
     </div>
 </div>

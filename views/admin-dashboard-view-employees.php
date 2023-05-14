@@ -41,7 +41,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Employee by Id" id="dashboard-product-search" name="id" <?php if($searchTermId) echo "value='$searchTermId"; ?> >
+                <input type="text" placeholder="Search Employee by Id" id="dashboard-product-search" name="id" <?php if($searchTermId) echo "value='$searchTermId'"; ?> >
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
@@ -119,12 +119,18 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
     }
     ?>
 
-    <div class="pagination-container">
-        <?php 
+</div>  
+        <?php if($total>0){ ?>
+            <div class="pagination-container"> <?php
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
-                echo "<a class='pagination-item $activePage' href='/employees?name=$searchTermName&id=$searchTermId&role=$employeeJobRole&status=$employeeStatus&page=$i&limit=$limit'> $i </a>";
-            }
+                echo "<a class='pagination-item $activePage' href='/employees?name=$searchTermName&id=$searchTermId&role=$employeeJobRole&status=$employeeStatus&page=$i&limit=$limit'> $i </a>";                       
+            } ?>
+            </div>
+
+        <?php }
+        else{
+            echo "<div id='view-no-data-pagination'>Data are not available</div>";
+        }
+
         ?>
-    </div>
-</div>
