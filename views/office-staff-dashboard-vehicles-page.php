@@ -11,9 +11,9 @@
 
 use app\components\Table;
 
-$noOfJobs = $vehicles['total'];
+$noOfVehicles = $vehicles['total'];
 $startNo = ($page - 1) * $limit + 1;
-$endNo = min($startNo + $limit - 1, $noOfJobs);
+$endNo = min($startNo + $limit - 1, $noOfVehicles);
 
 $columns = ["VIN", "Reg no", "Engine no", "Customer Name", "Manufactured Year", "Engine Capacity", "Vehicle Type", "Fuel Type", "Transmission Type", "Model Name", "Brand Name", "Actions"];
 
@@ -55,13 +55,12 @@ foreach ($vehicles['vehicles'] as $vehicle) {
             <div class="filters__dropdown">
                 <div class="order-filter-search-items">
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search vehicle by Reg No"
-                               id="dashboard-order-cus-name-search" name="reg" >
+                        <input type="text" placeholder="Search vehicle by registration number" id="dashboard-order-cus-name-search" name="reg" <?php if ($searchTermRegNo) echo "value='$searchTermRegNo'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
 
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search vehicle by customer name" id="dashboard-order-id-search" name="cus">
+                        <input type="text" placeholder="Search vehicle by customer name" id="dashboard-order-id-search" name="cus" <?php if ($searchTermCustomer) echo "value='$searchTermCustomer'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
@@ -70,18 +69,19 @@ foreach ($vehicles['vehicles'] as $vehicle) {
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="type" id="dashboard-order-status-filter">
-                            <option value="all">Type</option>
-                            <option value="Bike">Bike</option>
-                            <option value="Car">Car</option>
-                            <option value="Jeep">Jeep</option>
-                            <option value="Van">Van</option>
-                            <option value="Lorry">Lorry</option>
-                            <option value="Bus">Bus</option>
-                            <option value="Other">Other</option>
+                            <option value="all" <?= ($vehicleType == 'all') ? 'selected' : "" ?>>Type</option>
+                            <option value="Bike" <?= ($vehicleType == 'Bike') ? 'selected' : "" ?>>Bike</option>
+                            <option value="Car" <?= ($vehicleType == 'Jeep') ? 'selected' : "" ?>>Car</option>
+                            <option value="Jeep" <?= ($vehicleType == 'Jeep') ? 'selected' : "" ?>>Jeep</option>
+                            <option value="Van" <?= ($vehicleType == 'Van') ? 'selected' : "" ?>>Van</option>
+                            <option value="Lorry" <?= ($vehicleType == 'Lorry') ? 'selected' : "" ?>>Lorry</option>
+                            <option value="Bus" <?= ($vehicleType == 'Bus') ? 'selected' : "" ?>>Bus</option>
+                            <option value="Other"> <?= ($vehicleType == 'Other') ? 'selected' : "" ?>Other</option>
                         </select>
                     </div>
 
                 </div>
+
                 <div class="filter-action-buttons">
                     <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
                     </button>
@@ -97,9 +97,8 @@ foreach ($vehicles['vehicles'] as $vehicle) {
 
 <div class="product-count-and-actions">
     <div class="product-table-count">
-        <p>
+        <p class="order-count" style="margin-bottom: 1rem">
             Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> vehicles
-            <!--            Showing 25 out of 100 products-->
         </p>
     </div>
 </div>
@@ -108,13 +107,31 @@ foreach ($vehicles['vehicles'] as $vehicle) {
 Table::render(items: $items, columns: $columns, keyColumns: ["VIN", "Actions"]);
 ?>
 
-<div class="pagination-container">
-    <?php 
-        foreach(range(1,ceil($total / $limit)) as $i) {
-            $isActive = $i === (float)$page ? "pagination-item--active" : "";
-            echo "<a class='pagination-item $isActive' href='/vehicles?page=$i&limit=$limit'>$i</a>";
-        }
-        ?>
+<div class="dashboard-pagination-container">
+    <?php
+
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/vehicles?reg=$searchTermRegNo&cus=$searchTermCustomer&type=$vehicleType&page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/vehicles?reg=$searchTermRegNo&cus=$searchTermCustomer&type=$vehicleType&page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/vehicles?reg=$searchTermRegNo&cus=$searchTermCustomer&type=$vehicleType&page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>
 
 <script>

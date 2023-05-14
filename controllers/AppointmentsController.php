@@ -154,7 +154,9 @@ class AppointmentsController
                     "appointments" => $appointments,
                     "total" => $appointments['total'],
                     "limit" => $limit,
-                    "page" => $page
+                    "page" => $page,
+                    "searchTermRegNo" => $searchTermRegNo,
+                    "searchTermCustomer" => $searchTermCustomer
                 ],
                 layoutParams: [
                     "title" => "Appointments",

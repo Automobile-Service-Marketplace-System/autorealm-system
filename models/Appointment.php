@@ -99,13 +99,37 @@ class Appointment
             $statement->execute();
             $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+            $statement = $this->pdo->prepare(
+                "SELECT
+                    count(appointment_id) as total            
+                FROM 
+                    appointment a
+                INNER JOIN 
+                    customer c 
+                ON  
+                    c.customer_id = a.customer_id
+                INNER JOIN  
+                    timeslot t 
+                ON 
+                    t.time_id = a.time_id
+                $whereClause"
+            );
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermRegNo !== null) {
+                $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalAppointments = $statement->fetch(PDO::FETCH_ASSOC);
+
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        
-        $totalAppointments = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM appointment WHERE time_id IS NOT NULL"
-        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "total" => $totalAppointments['total'],
