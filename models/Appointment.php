@@ -44,7 +44,7 @@ class Appointment
         int|null $count = null, 
         int|null $page = 1,
         string $searchTermRegNo = null, 
-        string $searchTermCustomer = null,): array
+        string $searchTermCustomer = null): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
@@ -87,11 +87,11 @@ class Appointment
         );
 
         if ($searchTermRegNo !== null) {
-            $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%");
         }
 
         if ($searchTermCustomer !== null) {
-            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%");
         }
 
         try{
@@ -175,11 +175,11 @@ class Appointment
         $statement = $this->pdo->prepare($query);
 
         if($searchTermRegNo !== null){
-            $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%");
         }
 
         if($searchTermDate !== null){
-            $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%", PDO::PARAM_STR);
+            $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%");
         }
 
         try{
@@ -192,18 +192,18 @@ class Appointment
             );
 
             if($searchTermRegNo !== null){
-                $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+                $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%");
             }
     
             if($searchTermDate !== null){
-                $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%", PDO::PARAM_STR);
+                $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%");
             }
 
             $statement->execute();
-            $totalAppoinment = $statement->fetch(PDO::FETCH_ASSOC);
+            $totalAppointments = $statement->fetch(PDO::FETCH_ASSOC);
             // var_dump($searchTermRegNo);
             return [
-                'total' => $totalAppoinment['total'],
+                'total' => $totalAppointments['total'],
                 'appointments' => $appointments,
                 'searchTermRegNo' => $searchTermRegNo,
                 'searchTermDate' => $searchTermDate
@@ -240,7 +240,7 @@ class Appointment
         }
     }
   
-    public function officeCreateAppointment()
+    public function officeCreateAppointment(): array|string
     {
         try {
             $query = "  INSERT INTO 
@@ -346,9 +346,10 @@ class Appointment
             return $e->getMessage();
         }
     }
-  
+
     /**
-     * @return array
+     * @param int $customer_id
+     * @return array|string
      */
     public function getAppointmentsByCustomerID(int $customer_id): array | string
     {
@@ -389,13 +390,13 @@ class Appointment
             $statement->execute();
             return true;
         }
-        catch (PDOException $e){
+        catch (PDOException){
             return "Error deleting Supplier";
 
         }
     }
 
-    public function officeUpdateAppointment()
+    public function officeUpdateAppointment(): bool|string
     {
         try {
             $query = "UPDATE 
