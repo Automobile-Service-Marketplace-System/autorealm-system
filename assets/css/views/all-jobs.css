@@ -92,9 +92,12 @@
     object-fit: cover;
 }
 
+
+
 .job-info-card__info-date {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
 }
 
@@ -149,3 +152,9 @@
     color: var(--color-info);
 }
 
+@media screen and (min-width: 500px) {
+    .job-info-card__info-date {
+        flex-direction: row;
+        align-items: center;
+    }
+}

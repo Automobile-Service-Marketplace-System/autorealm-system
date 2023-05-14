@@ -16,7 +16,7 @@ class CompletedJobCard
                     <h3 class='job-card__title'>Job #{$job['id']}</h3>
                     <h4 class='job-card__subtitle'>Reg No: {$job['regNo']}</h4>
                 </div>
-                <a href='/jobs/view?id={$job['id']}&form_created=true' class='btn btn--square'>
+                <a href='/jobs/completed/view?id={$job['id']}' class='btn btn--square'>
                     <i class='fa-solid fa-arrow-right'></i>
                 </a>
             </div>

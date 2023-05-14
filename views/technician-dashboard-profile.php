@@ -6,7 +6,8 @@
 ?>
 
 <div class="employee-profile">
-    <img src="<?php echo $technician->image ?>" alt="<?php echo $technician->f_name . ' ' . $technician->l_name . '\'s'; ?>">
+    <img src="<?php echo $technician->image ?>"
+         alt="<?php echo $technician->f_name . ' ' . $technician->l_name . '\'s'; ?>">
     <div class="employee-profile__info">
         <p>
             <strong>
@@ -55,10 +56,7 @@
     <div class="employee-profile__actions">
         <button class="btn btn--danger" id="edit-customer-password">
             <i class="fa-solid fa-lock"></i>
-            Edit password</button>
-        <button class="btn btn--warning" id="edit-customer-profile">
-            <i class="fa-solid fa-pencil"></i>
-
-            Edit profile</button>
+            Edit password
+        </button>
     </div>
 </div>

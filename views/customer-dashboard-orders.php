@@ -45,7 +45,7 @@ use app\components\CustomerOrderCard;
                 CustomerOrderCard::render($order);
             }
         } else {
-            echo "<p style='margin: 4rem auto;font-size: 3rem;color: rgba(0,0,0,0.3)'>No results</p>";
+            echo "<p style='margin: 8rem auto;font-size: 3rem;color: rgba(0,0,0,0.3)'>No results</p>";
         }
         ?>
     </div>

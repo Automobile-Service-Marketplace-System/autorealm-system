@@ -13,7 +13,7 @@ class JobCard
     private PDO $pdo;
     private array $body;
 
-    public function __construct(array $body=[])
+    public function __construct(array $body = [])
     {
         $this->pdo = Database::getInstance()->pdo;
         $this->body = $body;
@@ -82,7 +82,8 @@ class JobCard
             $query = "SELECT 
                             CONCAT(b.brand_name,' ',m.model_name,' ',YEAR(v.manufactured_year), ' Edition') as vehicle_name, 
                             v.reg_no as reg_no, 
-                            CONCAT(c.f_name, ' ', c.l_name) as customer_name
+                            CONCAT(c.f_name, ' ', c.l_name) as customer_name,
+                            c.contact_no as contact_no
                           FROM vehicle v 
                               LEFT JOIN brand b ON v.brand_id = b.brand_id 
                               LEFT JOIN model m ON v.model_id = m.model_id 
@@ -258,12 +259,12 @@ class JobCard
     }
 
     public function getAllJobs(
-        int|null $count = null, 
+        int|null $count = null,
         int|null $page = 1,
-        string $searchTermCustomer = null, 
-        string $searchTermEmployee = null,
-        string $searchTermRegNo = null
-        ): array
+        string   $searchTermCustomer = null,
+        string   $searchTermEmployee = null,
+        string   $searchTermRegNo = null
+    ): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
@@ -316,7 +317,7 @@ class JobCard
             $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
         }
 
-        try{
+        try {
 
             $statement->execute();
             $jobs = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -401,7 +402,7 @@ class JobCard
                             INNER JOIN model m on v.model_id = m.model_id  
                             INNER JOIN customer c on j.customer_id = c.customer_id $whereClause $limitClause $pageClause");
 
-            if ($options['job_date'] !== null && $options['job_date'] !== "" ) {
+            if ($options['job_date'] !== null && $options['job_date'] !== "") {
                 $statement->bindValue(param: ":job_date", value: $options['job_date']);
             }
 
@@ -523,6 +524,19 @@ class JobCard
         }
     }
 
+    public function isCompleted(int $jobId): bool
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT status FROM jobcard WHERE job_card_id = :job_card_id");
+            $statement->bindValue(":job_card_id", $jobId);
+            $statement->execute();
+            $jobStatus = $statement->fetch(PDO::FETCH_ASSOC);
+            return $jobStatus["status"] === "completed";
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function getJobIdByTechnicianId(int $technicianId)
     {
         try {
@@ -575,6 +589,11 @@ class JobCard
                 }
             }
 
+            if ($all == $done) {
+                $statement = $this->pdo->prepare("UPDATE jobcard SET status = 'completed' WHERE job_card_id = :job_card_id");
+                $statement->bindValue(":job_card_id", $jobId);
+                $statement->execute();
+            }
 
             return [
                 "inProgress" => $all - $done,
@@ -707,11 +726,12 @@ class JobCard
             return $e->getMessage();
         }
     }
+
     public function getTotalOngoingJobs(): int
     {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM jobcard where status != 'finished'");
         $stmt->execute();
-        return (int) $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     public function getWeeklyJobStatus(): array
@@ -725,7 +745,8 @@ class JobCard
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
-    public function getCustomerInfoByJobCardId(int $jobId) : false | array | string{
+    public function getCustomerInfoByJobCardId(int $jobId): false|array|string
+    {
         try {
             $statement = $this->pdo->prepare(
                 "SELECT 
@@ -741,6 +762,50 @@ class JobCard
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function markJobAsFinished(int $jobId): bool|string
+    {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare(
+                "UPDATE jobcard SET status = 'finished' WHERE job_card_id = :job_card_id"
+            );
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+
+
+            // get technician ids
+            $statement = $this->pdo->prepare(
+                "SELECT employee_id FROM jobcardhastechnician WHERE job_card_id = :job_card_id"
+            );
+            $statement->bindValue(param: ":job_card_id", value: $jobId);
+            $statement->execute();
+
+            $technicianIds = $statement->fetchAll(PDO::FETCH_COLUMN);
+            if($technicianIds) {
+                foreach ($technicianIds as $technicianId) {
+                    $statement = "SELECT * FROM jobcard j INNER JOIN jobcardhastechnician jht on j.job_card_id = jht.job_card_id WHERE j.job_card_id != :job_card_id AND j.status != 'finished' AND jht.employee_id = :employee_id";
+                    $statement = $this->pdo->prepare($statement);
+                    $statement->bindValue(param: ":job_card_id", value: $jobId);
+                    $statement->bindValue(param: ":employee_id", value: $technicianId);
+                    $statement->execute();
+                    $result = $statement->fetch(PDO::FETCH_ASSOC);
+                    if(!$result) {
+                        $statement = $this->pdo->prepare(
+                            "UPDATE technician SET is_available = TRUE WHERE employee_id = :employee_id"
+                        );
+                        $statement->bindValue(param: ":employee_id", value: $technicianId);
+                        $statement->execute();
+                    }
+                }
+            }
+            $this->pdo->commit();
+            return $statement->rowCount() > 0;
+        } catch (PDOException|Exception $e) {
+            $this->pdo->rollBack();
             return $e->getMessage();
         }
     }
