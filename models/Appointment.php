@@ -40,12 +40,26 @@ class Appointment
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllAppointments(int|null $count = null, int|null $page = 1): array
+    public function getAllAppointments(
+        int|null $count = null, 
+        int|null $page = 1,
+        string $searchTermRegNo = null, 
+        string $searchTermCustomer = null,): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
-        $appointments = $this->pdo->query(
+        $whereClause = null;
+
+        if ($searchTermRegNo !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND vehicle_reg_no LIKE :search_term_reg" : "WHERE vehicle_reg_no LIKE :search_term_reg";
+        }
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus";
+        }
+
+        $statement = $this->pdo->prepare(
             "SELECT
                 appointment_id as 'Appointment ID',
                 vehicle_reg_no as 'Vehicle Reg No',
@@ -67,9 +81,27 @@ class Appointment
                 timeslot t 
             ON 
                 t.time_id = a.time_id
+            $whereClause
             ORDER BY
                 a.appointment_id DESC $limitClause $pageClause"
-        )->fetchAll(PDO::FETCH_ASSOC);
+        );
+
+        if ($searchTermRegNo !== null) {
+            $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermCustomer !== null) {
+            $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
         
         $totalAppointments = $this->pdo->query(
             "SELECT COUNT(*) as total FROM appointment WHERE time_id IS NOT NULL"

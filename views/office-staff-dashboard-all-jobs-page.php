@@ -44,6 +44,49 @@ foreach($jobCards['jobCards'] as $jobCard) {
     </div>
 </div>
 
+<!-- for searching -->
+<div class="order-filtering-and-sort">
+    <div class="filters" id="dashboard-order-filters">
+        <div class="filters__actions">
+            <div class="filters__dropdown-trigger">
+                Search
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <form>
+            <div class="filters__dropdown">
+                <div class="order-filter-search-items">
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search jobs by customer name"
+                               id="dashboard-order-cus-name-search" name="cus" >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search jobs by employee name" id="dashboard-order-id-search" name="emp">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <div class="form-item form-item--icon-right form-item--no-label filters__search">
+                        <input type="text" placeholder="Search jobs by vehicle registration no" id="dashboard-order-id-search" name="reg">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <div class="filter-action-buttons">
+                    <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear
+                    </button>
+                    <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+
 <?php
 Table::render(items: $items, columns: $columns, keyColumns: ["JobCard ID","Status"]);
 ?>

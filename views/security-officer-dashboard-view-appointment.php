@@ -27,11 +27,11 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> appointments
     <form>
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Employee by Registration Number" id="dashboard-product-search" name="regno" <?php if($searchTermRegNo) echo "value='$searchTermRegNo'"; ?>>
+                <input type="text" placeholder="Search Appointment by Registration Number" id="dashboard-product-search" name="regno" <?php if($searchTermRegNo) echo "value='$searchTermRegNo'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="date" placeholder="Search Employee by date" id="dashboard-product-search" name="date" <?php if($searchTermDate) echo "value='$searchTermDate'" ;?>>
+                <input type="date" placeholder="Search Appointment by date" id="dashboard-product-search" name="date" <?php if($searchTermDate) echo "value='$searchTermDate'" ;?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 

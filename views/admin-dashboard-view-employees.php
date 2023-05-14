@@ -5,6 +5,10 @@ use app\utils\DevOnly;
  * @var int $limit
  * @var int $page
  * @var int $total
+ * @var string $searchTermName
+ * @var string $searchTermId
+ * @var string $employeeRole
+ * @var string $employeeStatus
  */
 
 $noOfEmplyees = count($employees);
@@ -33,11 +37,11 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
     <form>
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Employee by Name" id="dashboard-product-search" name="name">
+                <input type="text" placeholder="Search Employee by Name" id="dashboard-product-search" name="name" <?php if($searchTermName) echo "value='$searchTermName'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Employee by Id" id="dashboard-product-search" name="id">
+                <input type="text" placeholder="Search Employee by Id" id="dashboard-product-search" name="id" <?php if($searchTermId) echo "value='$searchTermId"; ?> >
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
@@ -45,20 +49,20 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="status" id="dashboard-order-status-filter">
-                            <option value="active">Available</option>
-                            <option value="busy">Not Available</option>
+                            <option value="active" <?php if($employeeStatus=='active') echo 'selected';?>>Available</option>
+                            <option value="busy" <?php if($employeeStatus=='busy') echo 'selected';?>>Not Available</option>
 
                         </select>
                     </div>
                     <div class="form-item form-item--no-label">
                         <select name="role" id="dashboard-order-status-filter">
-                            <option value="all">All</option>
-                            <option value="admin">Admin</option>
-                            <option value="security_officer">Security Officer</option>
-                            <option value="technician">Technician</option>
-                            <option value="foreman">Foreman</option>
-                            <option value="office_staff_member">Office Staff Member</option>
-                            <option value="stock_manager">Stock Manager</option>
+                            <option value="all" <?php if($employeeRole=='all') echo 'selected';?>>All</option>
+                            <option value="admin" <?php if($employeeRole=='admin') echo 'selected';?>>Admin</option>
+                            <option value="security_officer" <?php if($employeeRole=='security_officer') echo 'selected';?>>Security Officer</option>
+                            <option value="technician" <?php if($employeeRole=='technician') echo 'selected';?>>Technician</option>
+                            <option value="foreman" <?php if($employeeRole=='foreman') echo 'selected';?>>Foreman</option>
+                            <option value="office_staff_member" <?php if($employeeRole=='office_staff_member') echo 'selected';?>>Office Staff Member</option>
+                            <option value="stock_manager" <?php if($employeeRole=='stock_manager') echo 'selected';?>>Stock Manager</option>
                         </select>
                     </div>
                 </div>
@@ -119,7 +123,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
-                echo "<a class='pagination-item $activePage' href='/employees?page=$i&limit=$limit'> $i </a>";
+                echo "<a class='pagination-item $activePage' href='/employees?name=$searchTermName&id=$searchTermId&role=$employeeRole&status=$employeeStatus&page=$i&limit=$limit'> $i </a>";
             }
         ?>
     </div>
