@@ -629,7 +629,7 @@ class Customer
         return $errors;
     }
 
-    public function updateCustomer()
+    public function updateCustomer() : bool|string|array
     {
         $errors = $this->validateUpdateCustomerBody();
         if (empty($errors)) {
