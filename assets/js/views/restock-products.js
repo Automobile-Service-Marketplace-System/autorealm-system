@@ -89,6 +89,17 @@ productRestockButtons?.forEach(function (btn) {
                         </div>
                         `)
 
+                    const restockDateInput = restockProductForm.querySelector("#sup_date");
+
+                    const today = new Date().toISOString().split('T')[0];
+                    const now = new Date();
+                    const twoWeekBeforeRaw = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 14);
+                    const twoWeekBefore = twoWeekBeforeRaw.toISOString().split('T')[0];
+
+                    restockDateInput.setAttribute('max', today);
+                    restockDateInput.setAttribute('min', twoWeekBefore)
+                    restockDateInput.value = today;
+
                     restockProductForm?.querySelector("#restock-product-modal-btn")?.addEventListener("click", (e) => {
 
                         const confModal = htmlToElement(`<div>
