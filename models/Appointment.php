@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\S3Uploader;
 use PDO;
 use PDOException;
 
@@ -41,10 +42,10 @@ class Appointment
     }
 
     public function getAllAppointments(
-        int|null $count = null, 
+        int|null $count = null,
         int|null $page = 1,
-        string $searchTermRegNo = null, 
-        string $searchTermCustomer = null): array
+        string   $searchTermRegNo = null,
+        string   $searchTermCustomer = null): array
     {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
@@ -94,7 +95,7 @@ class Appointment
             $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%");
         }
 
-        try{
+        try {
 
             $statement->execute();
             $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -130,6 +131,10 @@ class Appointment
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+      
+        $totalAppointments = $this->pdo->query(
+            "SELECT COUNT(*) as total FROM appointment WHERE time_id IS NOT NULL"
+        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "total" => $totalAppointments['total'],
@@ -137,9 +142,9 @@ class Appointment
         ];
     }
 
-    public function getAppointmentInfo(int $appointment_id): array | string
+    public function getAppointmentInfo(int $appointment_id): array|string
     {
-        try{
+        try {
             $statement = $this->pdo->prepare(
                 "SELECT
                     CONCAT(c.f_name, ' ', c.l_name) as 'Customer Name',
@@ -166,20 +171,20 @@ class Appointment
     }
 
     public function getAppointments(
-        int|null $count=null,
-        int|null $page=1,
-        string $searchTermRegNo=null,
-        string $searchTermDate=null,
+        int|null $count = null,
+        int|null $page = 1,
+        string   $searchTermRegNo = null,
+        string   $searchTermDate = null,
     ): array|string
     {
 
         $whereClause = null;
 
-        if($searchTermRegNo !== null){
+        if ($searchTermRegNo !== null) {
             $whereClause = $whereClause ? $whereClause . " AND a.vehicle_reg_no LIKE :search_term_reg_no" : " WHERE a.vehicle_reg_no LIKE :search_term_reg_no";
         }
 
-        if($searchTermDate !== null){
+        if ($searchTermDate !== null) {
             $whereClause = $whereClause ? $whereClause . " AND t.date LIKE :search_term_date" : "WHERE t.date LIKE :search_term_date";
         }
 
@@ -198,15 +203,15 @@ class Appointment
 
         $statement = $this->pdo->prepare($query);
 
-        if($searchTermRegNo !== null){
+        if ($searchTermRegNo !== null) {
             $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%");
         }
 
-        if($searchTermDate !== null){
+        if ($searchTermDate !== null) {
             $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%");
         }
 
-        try{
+        try {
             $statement->execute();
             $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -215,11 +220,11 @@ class Appointment
                 inner join timeslot t on t.time_id=a.time_id $whereClause"
             );
 
-            if($searchTermRegNo !== null){
+            if ($searchTermRegNo !== null) {
                 $statement->bindValue(":search_term_reg_no", "%" . $searchTermRegNo . "%");
             }
-    
-            if($searchTermDate !== null){
+
+            if ($searchTermDate !== null) {
                 $statement->bindValue(":search_term_date", "%" . $searchTermDate . "%");
             }
 
@@ -232,8 +237,7 @@ class Appointment
                 'searchTermRegNo' => $searchTermRegNo,
                 'searchTermDate' => $searchTermDate
             ];
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             return $e->getMessage();
         }
     }
@@ -263,7 +267,7 @@ class Appointment
             return $e->getMessage();
         }
     }
-  
+
     public function officeCreateAppointment(): array|string
     {
         try {
@@ -288,28 +292,31 @@ class Appointment
             $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
             $statement->bindValue(":mileage", $this->body["mileage"]);
             $statement->bindValue(":remarks", $this->body["remarks"]);
-            $statement->bindValue(":date", $this->body["date"]); 
-            $statement->bindValue(":customer_id", $this->body["customerID"]);                       
-            $statement->bindValue(":time_id", $this->body["timeslot"]);            
-            $statement-> execute();
+            $statement->bindValue(":date", $this->body["date"]);
+            $statement->bindValue(":customer_id", $this->body["customerID"]);
+            $statement->bindValue(":time_id", $this->body["timeslot"]);
+            $statement->execute();
+
+            $appointment_id = $this->pdo->lastInsertId();
 
             $statement = $this->pdo->prepare("SELECT CONCAT(from_time, ' - ', to_time) as timeslot FROM timeslot WHERE time_id = :time_id");
             $statement->bindValue(":time_id", $this->body["timeslot"]);
             $statement->execute();
-            $timeslot =  $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
+            $timeslot = $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
 
 
             $statement = $this->pdo->prepare("SELECT email, CONCAT(f_name, ' ', l_name) as name from customer WHERE customer_id = :customer_id");
             $statement->bindValue(":customer_id", $this->body["customerID"]);
             $statement->execute();
-            $result =  $statement->fetch(PDO::FETCH_ASSOC);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
             $email = $result['email'];
-            $name =  $result['name'];
+            $name = $result['name'];
 
             return [
                 "timeslot" => $timeslot,
                 "email" => $email,
-                "name" => $name
+                "name" => $name,
+                "appointmentId" => $appointment_id,
             ];
         } catch (PDOException $e) {
             var_dump($e->getMessage());
@@ -345,20 +352,20 @@ class Appointment
             $statement->bindValue(":date", $this->body["date"]);
             $statement->bindValue(":customer_id", $customerId);
             $statement->bindValue(":time_id", $this->body["timeslot"]);
-            $statement-> execute();
+            $statement->execute();
 
             $statement = $this->pdo->prepare("SELECT CONCAT(from_time, ' - ', to_time) as timeslot FROM timeslot WHERE time_id = :time_id");
             $statement->bindValue(":time_id", $this->body["timeslot"]);
             $statement->execute();
-            $timeslot =  $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
+            $timeslot = $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
 
 
             $statement = $this->pdo->prepare("SELECT email, CONCAT(f_name, ' ', l_name) as name from customer WHERE customer_id = :customer_id");
             $statement->bindValue(":customer_id", $customerId);
             $statement->execute();
-            $result =  $statement->fetch(PDO::FETCH_ASSOC);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
             $email = $result['email'];
-            $name =  $result['name'];
+            $name = $result['name'];
 
             return [
                 "timeslot" => $timeslot,
@@ -375,7 +382,7 @@ class Appointment
      * @param int $customer_id
      * @return array|string
      */
-    public function getAppointmentsByCustomerID(int $customer_id): array | string
+    public function getAppointmentsByCustomerID(int $customer_id): array|string
     {
         try {
             $statement = $this->pdo->prepare(
@@ -385,6 +392,7 @@ class Appointment
                             a.remarks,
                             t.date as 'appointment_date',
                             t.from_time as 'appointment_time',
+                            a.qrcode as qrcode_url,
                             DATE(a.created_at) as 'created_date'
                         FROM
                             appointment a
@@ -397,7 +405,7 @@ class Appointment
             if (!$appointments) {
                 return "No appointments available for this customer";
             }
-            return $appointments;    
+            return $appointments;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -405,18 +413,38 @@ class Appointment
         return "Internal Server Error";
     }
 
-    public function deleteAppointmentById(int $id):bool|string
+    public function deleteAppointmentById(int $id): array|string
     {
         try {
-            $query ="DELETE FROM appointment WHERE appointment_id = :id";
-            $statement = $this->pdo->prepare($query);
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare("SELECT a.time_id, c.email, CONCAT(c.f_name, ' ', c.l_name) as customer_name, a.qrcode as qrcode FROM appointment a INNER JOIN customer c on a.customer_id = c.customer_id WHERE appointment_id = :id");
             $statement->bindValue(":id", $id);
             $statement->execute();
-            return true;
-        }
-        catch (PDOException){
-            return "Error deleting Supplier";
+            $appointment = $statement->fetch(PDO::FETCH_ASSOC);
 
+
+            $timeId = $appointment['time_id'];
+            $statement = $this->pdo->prepare("UPDATE timeslot SET remaining_count = remaining_count + 1 WHERE time_id = :id");
+            $statement->bindValue(":id", $timeId);
+            $statement->execute();
+
+            $statement = $this->pdo->prepare("DELETE FROM appointment WHERE appointment_id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+
+            $qrCodeUrl = $appointment['qrcode'];
+            if($qrCodeUrl !== null) {
+                S3Uploader::deleteFile(url: $qrCodeUrl);
+            }
+
+            $this->pdo->commit();
+            return [
+                "customer_name" => $appointment['customer_name'],
+                "email" => $appointment['email'],
+            ];
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $e->getMessage();
         }
     }
 
@@ -434,16 +462,16 @@ class Appointment
                         time_id = :time_id
                     WHERE 
                         appointment_id= :appointment_id";
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
-                $statement->bindValue(":mileage", $this->body["mileage"]);
-                $statement->bindValue(":remarks", $this->body["remarks"]);
-                $statement->bindValue(":date", $this->body["date"]);
-                $statement->bindValue(":customer_id", $this->body["customer_id"]);
-                $statement->bindValue(":time_id", $this->body["time_id"]);
-                $statement->bindValue(":appointment_id", $this->body["appointment_id"]);
-                $statement->execute();
-                return true;
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $this->body["vehicle_reg_no"]);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
+            $statement->bindValue(":remarks", $this->body["remarks"]);
+            $statement->bindValue(":date", $this->body["date"]);
+            $statement->bindValue(":customer_id", $this->body["customer_id"]);
+            $statement->bindValue(":time_id", $this->body["time_id"]);
+            $statement->bindValue(":appointment_id", $this->body["appointment_id"]);
+            $statement->execute();
+            return true;
         } catch (PDOException $e) {
             var_dump($e->getMessage());
             return $e->getMessage();
@@ -454,7 +482,22 @@ class Appointment
     {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointment WHERE date = CURDATE()");
         $stmt->execute();
-        return (int) $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function setQRCodeURL(int $appointmentId, string $url): bool|string
+    {
+        try {
+            var_dump("Appointment ID: " . $appointmentId);
+            var_dump("URL: " . $url);
+            $statement = $this->pdo->prepare("UPDATE appointment SET qrcode = :url WHERE appointment_id = :appointment_id");
+            $statement->bindValue(":url", $url);
+            $statement->bindValue(":appointment_id", $appointmentId);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 }
 

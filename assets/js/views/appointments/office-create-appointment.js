@@ -161,6 +161,9 @@ createAppointmentButton.forEach(function (btn) {
                                 body: formData, method: "POST",
                             });
 
+                            console.log(await result.text());
+                            return
+
                             if (result.status === 400) {
                                 createAppointmentForm?.classList.add("create-appointment-form--error");
                                 const resultBody = await result.json();
