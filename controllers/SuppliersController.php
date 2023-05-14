@@ -23,7 +23,7 @@ class SuppliersController
             $searchTermSupplier = $query["sup"] ?? null;
             $searchTermMail = $query["mail"] ?? null;
             $supplierStatus = isset($query["status"]) ? ($query["status"] == "" ? "active" : $query["status"]) : "active";
-            $supplyDate = isset($query["date"]) ? ($query["date"] == "" ? "all" : $query["date"]) : "all";
+
 
             $supplierModel = new Supplier();
             $result = $supplierModel->getSuppliersList(
@@ -33,7 +33,6 @@ class SuppliersController
                 searchTermMail: $searchTermMail,
                 options: [
                     'status' => $supplierStatus,
-                    'supply_date' => $supplyDate,
                 ],
             );
 
@@ -50,7 +49,7 @@ class SuppliersController
                         'searchTermSupplier' => $searchTermSupplier,
                         'searchTermMail' => $searchTermMail,
                         'supplierStatus' => $supplierStatus,
-                        'supplyDate' => $supplyDate,
+
                     ],
                     layoutParams: [
                         'title' => 'Suppliers',

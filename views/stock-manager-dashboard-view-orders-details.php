@@ -6,7 +6,7 @@
 
 use app\utils\DevOnly;
 
-DevOnly::prettyEcho($orderDetails);
+//DevOnly::prettyEcho($orderDetails);
 ?>
 
 <main class="order-details-grid">

@@ -9,14 +9,14 @@
  * @var string $searchTermSupplier
  * @var string $searchTermMail
  * @var string $supplierStatus
- * @var string $supplyDate
+ *
  */
 
 use app\components\Table;
 
 //\app\utils\DevOnly::prettyEcho($suppliers);
 
-$columns = ["ID", "Name", "Address", "Registration No", "Sales Manager", "Contacts", "Last Purchase Date", "Last Supply Amount", "Email", "Actions"];
+$columns = ["ID", "Name", "Address", "Registration No", "Sales Manager", "Contacts", "Email", "Actions"];
 
 $items = [];
 
@@ -39,8 +39,8 @@ foreach ($suppliers as $supplier) {
         "Registration No" => $supplier["Registration No"],
         "Sales Manager" => $supplier["Sales Manager"],
         "Contacts" => $contacts,
-        "Last Purchase Date" => $supplier["Last Purchase Date"] ?? "N/A",
-        "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
+//        "Last Purchase Date" => $supplier["Last Purchase Date"] ?? "N/A",
+//        "Last Supply Amount" => $supplier["Last Supply Amount"] ?? "N/A",
         "Email" => $supplier["Email"],
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'
                                 data-supplierId='{$supplier["ID"]}'
@@ -105,18 +105,7 @@ foreach ($suppliers as $supplier) {
 
             <p>Filter suppliers by</p>
             <div class="filters__dropdown-content">
-                <!--                filter by last supply date-->
-                <div class="form-item form-item--no-label">
-                    <select name="date" id="dashboard-last-supply-date-filter">
-                        <option value="all" <?= ($supplyDate == "all") ? 'selected' : "" ?>>Last Supply Date</option>
-                        <option value="Today" <?= ($supplyDate == "Today") ? 'selected' : "" ?>>Today</option>
-                        <option value="Yesterday" <?= ($supplyDate == "Yesterday") ? 'selected' : "" ?>>Yesterday
-                        </option>
-                        <option value="Last7" <?= ($supplyDate == "Last7") ? 'selected' : "" ?>>Last 7 Days</option>
-                        <option value="Last30" <?= ($supplyDate == "Last30") ? 'selected' : "" ?>>Last 30 Days</option>
-                        <option value="Last90" <?= ($supplyDate == "Last90") ? 'selected' : "" ?>>Last 90 Days</option>
-                    </select>
-                </div>
+
                 <!--                filter by supplier discontinued or no-->
                 <div class="form-item form-item--no-label">
                     <select name="status" id="dashboard-supplier-status-filter">
@@ -153,10 +142,10 @@ if ($suppliers){
 
         $hasNextPage = $page < ceil(num: $total / $limit);
         $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-        $hasNextPageHref = $hasNextPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasNextPageHref = $hasNextPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&status=$supplierStatus&page=" . ($page + 1) . "&limit=$limit" : "";
         $hasPreviousPage = $page > 1;
         $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-        $hasPreviousPageHref = $hasPreviousPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page - 1) . "&limit=$limit" : "";
+        $hasPreviousPageHref = $hasPreviousPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&status=$supplierStatus&page=" . ($page - 1) . "&limit=$limit" : "";
 
         ?>
         <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
@@ -167,7 +156,7 @@ if ($suppliers){
 
         foreach (range(1, ceil($total / $limit)) as $i) {
             $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-            echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=$i&limit=$limit'>$i</a>";
+            echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&status=$supplierStatus&page=$i&limit=$limit'>$i</a>";
         }
         ?>
         <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
