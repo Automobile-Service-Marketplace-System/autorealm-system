@@ -25,7 +25,7 @@ class JobCard
         try {
             $query = "SELECT
               jc.job_card_id as id,
-              jc.vin as regNo,
+              v.reg_no as regNo,
               jc.status,
               TIMESTAMPDIFF(MINUTE, jc.start_date_time, jc.end_date_time) as time_collapsed,
               COUNT(DISTINCT jhp.item_code) as productCount,
@@ -38,10 +38,12 @@ class JobCard
               LEFT JOIN jobcardhasproduct jhp ON jhp.job_card_id = jc.job_card_id
               LEFT JOIN jobcardhasservice jhs ON jhs.job_card_id = jc.job_card_id
               LEFT JOIN jobcardhastechnician jht ON jht.job_card_id = jc.job_card_id
+              INNER JOIN vehicle v on jc.vin = v.vin
           WHERE
               jc.employee_id = :foremanId
           GROUP BY
-              jc.job_card_id";
+              jc.job_card_id , jc.start_date_time
+          ORDER BY jc.start_date_time DESC";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(":foremanId", $foremanId);
@@ -771,7 +773,7 @@ class JobCard
         try {
             $this->pdo->beginTransaction();
             $statement = $this->pdo->prepare(
-                "UPDATE jobcard SET status = 'finished' WHERE job_card_id = :job_card_id"
+                "UPDATE jobcard SET status = 'finished', end_date_time = NOW() WHERE job_card_id = :job_card_id"
             );
             $statement->bindValue(param: ":job_card_id", value: $jobId);
             $statement->execute();

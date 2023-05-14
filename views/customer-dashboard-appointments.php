@@ -60,7 +60,7 @@ if (isset($error)) {
                             </p>
                         </div>
                         <div>
-                            <h3>Service Type</h3>
+                            <h3>Your remarks</h3>
                             <p>
                                 {$appointment['remarks']}
                             </p>
@@ -76,9 +76,6 @@ if (isset($error)) {
                     <div class='flex items-center gap-4'>
                         <button class='appointment-get-qrcode' data-qrcode='{$appointment['qrcode_url']}'>
                             Get QR Code
-                        </button>
-                        <button>
-                            Cancel
                         </button>
                     </div>
                 </div>
