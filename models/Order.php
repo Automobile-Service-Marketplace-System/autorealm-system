@@ -207,6 +207,21 @@ class Order
     }
 
 
+    public function getOrderStatusData():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            COUNT(*) AS COUNT, status 
+            FROM `order`
+            WHERE status IN ('Paid', 'Prepared', 'Delivery')
+            GROUP BY status;");
+            $statement->execute();
+            $orderStatus = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $orderStatus;
+        }
+        catch(PDOException|Exception $e){
+            return "Failed to get data : " . $e->getMessage();
+        }
+    }
     public function getOrdersForCustomer(int $customerId, int $page, int $limit, string $status): array|string
     {
         $limitClause = $limit ? "LIMIT $limit" : "";
@@ -393,7 +408,7 @@ class Order
         return $orderDetails;
     }
 
-    public function updateOrderStatus(int $orderNo, string $mode, string $status): bool|string|array
+    public function updateOrderStatus(int $orderNo, string $mode, string $status, int $employeeId): bool|string|array
     {
         $errors = $this->validateUpdateOrderStatusBody([
             'mode' => $mode,
@@ -402,7 +417,7 @@ class Order
         if (!empty($errors)) {
             return $errors;
         }
-        $dateTime = $status ? date("Y-m-d H:i:s") : "NULL";
+        $dateTime = $status ? date("Y-m-d H:i:s") : NULL;
         $columnName = "";
         switch ($mode) {
             case  "Prepared":
@@ -417,8 +432,9 @@ class Order
         }
         $mode = $status ? $mode : $this->getPreviousStatus($mode);
         try {
-            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
+            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode', employee_id = :employee_id WHERE order_no = :order_no");
             $stmt->bindValue(":order_no", $orderNo);
+            $stmt->bindValue(":employee_id", $employeeId);
             $stmt->execute();
             return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
@@ -540,12 +556,13 @@ class Order
             //to get item_codes that are not in orderhasproduct table in a given range
             $statement2 = $this->pdo->prepare("
                 SELECT item_code, name
-                FROM product
+                FROM product p
                 WHERE item_code NOT IN (
                     SELECT ohp.item_code
                     FROM orderhasproduct ohp
                     INNER JOIN  `order` o ON  o.order_no = ohp.order_no
-                    WHERE o.created_at BETWEEN :from AND :to)
+                    WHERE  o.created_at BETWEEN :from AND :to)
+                AND p.is_discontinued = FALSE
             ");
             $statement2->bindValue(":from", $from);
             $statement2->bindValue(":to", $to);

@@ -546,7 +546,10 @@ class JobsController
                     "jobCards" => $jobCards,
                     "total" => $jobCards['total'],
                     "limit" => $limit,
-                    "page" => $page
+                    "page" => $page,
+                    "searchTermCustomer" => $searchTermCustomer,
+                    "searchTermEmployee" => $searchTermEmployee,
+                    "searchTermRegNo" => $searchTermRegNo
                 ],
                 layoutParams: [
                     'title' => 'Jobs',

@@ -7,10 +7,15 @@ import Notifier from "../components/Notifier";
  * @type {HTMLButtonElement}
  */
 const editCustomerProfileButton = document.querySelector("#edit-customer-profile")
-
+const cusEditInfoDiv = document.querySelector("#customer-profile--info")
+console.log(cusEditInfoDiv)
+let cusFirstName = cusEditInfoDiv.dataset.cusfname
+let cusLastName = cusEditInfoDiv.dataset.cuslname
+let cusAddress = cusEditInfoDiv.dataset.cusaddress
+let cusId = cusEditInfoDiv.dataset.cusid
 
 const updateCustomerProfileForm = htmlToElement(
-    `<form action="/profile" method="post" enctype="multipart/form-data" id="update-customer-profile">
+    `<form  method="post" enctype="multipart/form-data" id="update-customer-profile">
                 <div class="modal-header">
                     <h3>
                     Update your profile 
@@ -23,16 +28,21 @@ const updateCustomerProfileForm = htmlToElement(
                 <div class="grid gap-4">
                 <div class='form-item'>
                         <label for='f_name'>First Name<sup>*</sup></label>
-                        <input type='text' name='f_name' id='f_name' placeholder='' required  value=''>
+                        <input type='text' name='f_name' id='f_name' placeholder='' required  value='${cusFirstName}'>
+                        <input style='display:none' type='text' name='old_f_name' id='old_f_name' placeholder='' required  value='${cusFirstName}'>
+
                 </div>
                 <div class='form-item'>
                         <label for='l_name'>Last Name<sup>*</sup></label>
-                        <input type='text' name='l_name' id='l_name' placeholder='' required  value=''>
+                        <input type='text' name='l_name' id='l_name' placeholder='' required  value='${cusLastName}'>
+                        <input style='display:none' type='text' name='old_l_name' id='old_l_name' placeholder='' required  value='${cusLastName}'>
                 </div>
                 <div class='form-item'>
                         <label for='address'>Address<sup>*</sup></label>
-                        <input type='text' name='address' id='address' placeholder='' required  value=''>      
+                        <input type='text' name='address' id='address' placeholder='' required  value='${cusAddress}'>      
+                        <input style='display:none' type='text' name='old_address' id='old_address' placeholder='' required  value='${cusAddress}'>
                 </div>
+                <input style="display: none" type="number" value="${cusId}" name="customer_id">
                 </div>
 
                 <div class="flex-centered-y justify-between mt-4">
@@ -75,7 +85,7 @@ updateCustomerProfileForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-        const result = await fetch(`/profile`, {
+        const result = await fetch(`/profile/update`, {
             body: formData,
             method: 'POST'
         })
@@ -118,6 +128,7 @@ updateCustomerProfileForm?.addEventListener('reset', (e) => {
 })
 
 editCustomerProfileButton?.addEventListener("click", () => {
+
     Modal.show({
         content: updateCustomerProfileForm,
         closable: false,

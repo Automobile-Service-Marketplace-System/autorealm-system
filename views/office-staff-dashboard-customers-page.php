@@ -10,9 +10,10 @@ use app\components\Table;
 $columns = [];
 
 //for pagination
-$noOfJobs = $customers['total'];
+$noOfCustomers = $customers['total'];
 $startNo = ($page - 1) * $limit + 1;
-$endNo = min($startNo + $limit - 1, $noOfJobs);
+$endNo = min($startNo + $limit - 1, $noOfCustomers);
+
 
 //table headings
 $columns = array("ID", "Full Name", "Contact No", "Address", "Email", "Actions");
@@ -54,14 +55,9 @@ foreach($customers['customers'] as $customer) {
 </div>
 
 <!-- pagination details -->
-<div class="product-count-and-actions">
-    <div class="product-table-count">
-        <p>
-            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> customers
-            <!--            Showing 25 out of 100 products-->
-        </p>
-    </div>
-</div>
+<p class="order-count" style="margin-bottom: 1rem">
+    Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> orders
+</p>
 
 <!-- for searching -->
 <div class="order-filtering-and-sort">
@@ -78,12 +74,12 @@ foreach($customers['customers'] as $customer) {
                 <div class="order-filter-search-items">
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
                         <input type="text" placeholder="Search customer by name"
-                               id="dashboard-order-cus-name-search" name="cus" >
+                               id="dashboard-order-cus-name-search" name="cus" <?php if($searchTermCustomer) echo "value='$searchTermCustomer'" ?> >
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
 
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search customer by email" id="dashboard-order-id-search" name="email">
+                        <input type="text" placeholder="Search customer by email" id="dashboard-order-id-search" name="email" <?php if($searchTermEmail) echo "value='$searchTermEmail'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
@@ -107,12 +103,30 @@ foreach($customers['customers'] as $customer) {
 ?>
 
 <!-- pagination page details -->
-<div class="pagination-container">
-    <?php 
-        foreach(range(1,ceil($total / $limit)) as $i) {
-            $isActive = $i === (float)$page ? "pagination-item--active" : "";
-            echo "<a class='pagination-item $isActive' href='/customers?page=$i&limit=$limit'>$i</a>";
-        }
-        ?>
+<div class="dashboard-pagination-container">
+    <?php
+
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/customers?cus=$searchTermCustomer&email=$searchTermEmail&page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/customers?cus=$searchTermCustomer&email=$searchTermEmail&page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/customers?cus=$searchTermCustomer&email=$searchTermEmail&page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>
 

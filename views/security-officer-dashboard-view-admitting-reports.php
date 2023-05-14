@@ -108,6 +108,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
         }
     ?>
 
+    <?php if($total>0){ ?>
     <div class="pagination-container">
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
@@ -115,6 +116,12 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                 echo "<a class='pagination-item $activePage' href='/security-officer-dashboard/view-admitting-reports?regNo=$searchTermRegNo&admitting_date=$admitting_date&approve=$approve&page=$i&limit=$limit'> $i </a>";
             }
         ?>
+    </div>
+
+    <?php }
+    else{
+        echo "<div id='view-no-data-pagination'>Data are not available</div>";   
+    } ?>
     </div>
 </div>
 

@@ -13,9 +13,9 @@ use app\components\Table;
 
 $columns = [];
 
-$noOfJobs = $invoices['total'];
+$noOfInvoices = $invoices['total'];
 $startNo = ($page - 1) * $limit + 1;
-$endNo = min($startNo + $limit - 1, $noOfJobs);
+$endNo = min($startNo + $limit - 1, $noOfInvoices);
 
 if (empty($invoices['invoices'])) {
     echo "<p class='no-data'>No Invoices as of now </p>";
@@ -48,14 +48,10 @@ if (empty($invoices['invoices'])) {
 }
 ?>
 
-<div class="product-count-and-actions">
-    <div class="product-table-count">
-        <p>
-            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> invoices
-            <!--            Showing 25 out of 100 products-->
-        </p>
-    </div>
-</div>
+<!-- pagination details -->
+<p class="order-count" style="margin-bottom: 1rem">
+    Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> orders
+</p>
 
 <!-- for searching -->
 <div class="order-filtering-and-sort">
@@ -72,12 +68,12 @@ if (empty($invoices['invoices'])) {
                 <div class="order-filter-search-items">
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
                         <input type="text" placeholder="Search invoices by customer name"
-                               id="dashboard-order-cus-name-search" name="cus" >
+                               id="dashboard-order-cus-name-search" name="cus" <?php if($searchTermCustomer) echo "value='$searchTermCustomer'" ?> >
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
 
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search invoices by employee name" id="dashboard-order-id-search" name="emp">
+                        <input type="text" placeholder="Search invoices by employee name" id="dashboard-order-id-search" name="emp" <?php if($searchTermEmployee) echo "value='$searchTermEmployee'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
@@ -99,11 +95,30 @@ if (empty($invoices['invoices'])) {
 Table::render(items: $items, columns: $columns, keyColumns: ["Invoice No", "Actions"]);
 ?>
 
-<div class="pagination-container">
-    <?php 
-        foreach(range(1,ceil($total / $limit)) as $i) {
-            $isActive = $i === (float)$page ? "pagination-item--active" : "";
-            echo "<a class='pagination-item $isActive' href='/invoices?page=$i&limit=$limit'>$i</a>";
-        }
-        ?>
+<!-- pagination page details -->
+<div class="dashboard-pagination-container">
+    <?php
+
+    $hasNextPage = $page < ceil(num: $total / $limit);
+    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+    $hasNextPageHref = $hasNextPage ? "/invoices?cus=$searchTermCustomer&emp=$searchTermEmployee&page=" . ($page + 1) . "&limit=$limit" : "";
+    $hasPreviousPage = $page > 1;
+    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+    $hasPreviousPageHref = $hasPreviousPage ? "/invoices?cus=$searchTermCustomer&emp=$searchTermEmployee&page=" . ($page - 1) . "&limit=$limit" : "";
+
+    ?>
+    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+       href="<?= $hasPreviousPageHref ?>">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <?php
+    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    foreach (range(1, ceil($total / $limit)) as $i) {
+        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+        echo "<a class='dashboard-pagination-item $isActive' href='/invoices?cus=$searchTermCustomer&emp=$searchTermEmployee&page=$i&limit=$limit'>$i</a>";
+    }
+    ?>
+    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
 </div>

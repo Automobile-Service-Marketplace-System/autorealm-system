@@ -99,10 +99,10 @@ class Customer
 
                     $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id,  email_otp) VALUE (:customer_id,  :email_otp)";
                     $emailOtp = (string)random_int(100000, 999999);
-//                    $mobileOtp = (string)random_int(100000, 999999);
+                    //                    $mobileOtp = (string)random_int(100000, 999999);
                     $statement = $this->pdo->prepare($customerVerificationCodesQuery);
                     $statement->bindValue(":customer_id", $customerId);
-//                    $statement->bindValue(":mobile_otp", $mobileOtp);
+                    //                    $statement->bindValue(":mobile_otp", $mobileOtp);
                     $statement->bindValue(":email_otp", $emailOtp);
 
                     $statement->execute();
@@ -117,9 +117,9 @@ class Customer
 
                     $this->pdo->commit();
 
-//                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
+                    //                    SmsClient::sendSmsToCustomer(customer: $this->body, message: "Your verification code is {$mobileOtp}");
                     return ["customerId" => $customerId];
-                } catch (PDOException|Exception $e) {
+                } catch (PDOException | Exception $e) {
                     $this->pdo->rollBack();
                     return $e->getMessage();
                 }
@@ -228,10 +228,10 @@ class Customer
 
                 $customerVerificationCodesQuery = "INSERT INTO customer_verification_codes (customer_id,  email_otp) VALUE (:customer_id,  :email_otp)";
                 $emailOtp = (string)random_int(100000, 999999);
-//                    $mobileOtp = (string)random_int(100000, 999999);
+                //                    $mobileOtp = (string)random_int(100000, 999999);
                 $statement = $this->pdo->prepare($customerVerificationCodesQuery);
                 $statement->bindValue(":customer_id", $customerId);
-//                    $statement->bindValue(":mobile_otp", $mobileOtp);
+                //                    $statement->bindValue(":mobile_otp", $mobileOtp);
                 $statement->bindValue(":email_otp", $emailOtp);
 
                 $statement->execute();
@@ -303,12 +303,11 @@ class Customer
     }
 
     public function getCustomers(
-        int|null $count = null, 
+        int|null $count = null,
         int|null $page = 1,
         string $searchTermCustomer = null,
         string $searchTermEmail = null
-        ): array
-    {
+    ): array {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
@@ -331,8 +330,9 @@ class Customer
                 email as Email
             FROM customer
             $whereClause
-            ORDER BY customer_id DESC $limitClause $pageClause");
-        
+            ORDER BY customer_id DESC $limitClause $pageClause"
+        );
+
         if ($searchTermCustomer !== null) {
             $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
         }
@@ -341,22 +341,33 @@ class Customer
             $statement->bindValue(":search_term_email", "%" . $searchTermEmail . "%", PDO::PARAM_STR);
         }
 
-        try{
+        try {
 
             $statement->execute();
-            $customer = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $customers = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM customer $whereClause"
+            );
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermEmail !== null) {
+                $statement->bindValue(":search_term_email", "%" . $searchTermEmail . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalCustomers = $statement->fetch(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
-        $totalCustomers = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM customer"
-        )->fetch(PDO::FETCH_ASSOC);
-
         return [
             "total" => $totalCustomers['total'],
-            "customers" => $customer
+            "customers" => $customers
         ];
     }
 
@@ -372,7 +383,6 @@ class Customer
         } catch (Exception $e) {
             return $e->getMessage();
         }
-
     }
 
 
@@ -426,7 +436,7 @@ class Customer
         }
     }
 
-//    validation methods
+    //    validation methods
     private function validateRegisterBody(): array
     {
         $errors = [];
@@ -619,7 +629,7 @@ class Customer
         return $errors;
     }
 
-    public function updateCustomer()
+    public function updateCustomer() : bool|string|array
     {
         $errors = $this->validateUpdateCustomerBody();
         if (empty($errors)) {
@@ -641,7 +651,6 @@ class Customer
             } catch (PDOException $e) {
                 return $e->getMessage();
             }
-
         } else {
             return $errors;
         }
@@ -653,6 +662,4 @@ class Customer
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-
 }
-

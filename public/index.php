@@ -59,6 +59,8 @@ if (!$isInternal) {
     $app->router->get(path: "/products", callback: [SiteController::class, 'getProductsPage']);
     $app->router->get(path: "/products/view", callback: [SiteController::class, 'getViewProductPage']);
 
+    $app->router->post(path: "/profile/update", callback: [CustomersController::class, 'updateCustomerProfile']);
+
     $app->router->post(path: "/reviews", callback: [ReviewController::class, 'createReview']);
     $app->router->get(path: "/reviews", callback: [ReviewController::class, 'getReviewsForProductPage']);
     $app->router->post(path: "/reviews/delete", callback: [ReviewController::class, 'deleteReview']);
@@ -172,6 +174,7 @@ if ($isInternal) {
     $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
     $app->router->get(path: "/overview/employee-count" , callback: [EmployeeController::class, 'getEmployeeCountData']);
     $app->router->get(path: "/overview/customer-count" , callback: [OverviewController::class, 'getCustomerCount']);
+    $app->router->get(path: "/overview/order-status", callback: [OverviewController::class, 'getOrderStatusData']);
     // $app->router->get(path: "/overview/foreman-jobs" , callback: [OverviewController::class, 'getForemanJobs']);    
     // $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 

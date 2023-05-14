@@ -5,6 +5,7 @@
  * @var array $brands
  * @var array $categories
  * @var array $models
+ *
  * @var  int $limit
  * @var  int $page
  * @var  int $total
@@ -93,7 +94,7 @@ foreach ($products as $product) {
 
 <div class="filters" id="dashboard-product-filters">
     <div class="filters__actions">
-        <div class="filters__dropdown-trigger" >
+        <div class="filters__dropdown-trigger">
             Search & Filter
             <i class="fa-solid fa-chevron-right"></i>
         </div>
@@ -103,11 +104,12 @@ foreach ($products as $product) {
 
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Product by Name" id="dashboard-product-search" name="q" <?php if($searchTerm) echo "value='$searchTerm'" ?>>
+                <input type="text" placeholder="Search Product by Name" id="dashboard-product-search"
+                       name="q" <?php if ($searchTerm) echo "value='$searchTerm'" ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <?php $searchTerm = null; ?>
-            <p >Filter products by</p>
+            <p>Filter products by</p>
             <div class="filters__dropdown-content">
                 <div class="form-item">
                     <input list="categories" name="category_name" id="category-filter"
@@ -138,25 +140,37 @@ foreach ($products as $product) {
                 <div class="form-item">
                     <select name="product_type" id="type-filter" class="product-filter--select">
                         <option value="all">All Types</option>
-                        <option value="spare part" <?php if($productType=='spare part') echo 'selected';?>>Spare Part</option>
-                        <option value="accessory" <?php if($productType=='accessory') echo 'selected';?>>Accessory</option>
+                        <option value="spare part" <?php if ($productType == 'spare part') echo 'selected'; ?>>Spare
+                            Part
+                        </option>
+                        <option value="accessory" <?php if ($productType == 'accessory') echo 'selected'; ?>>Accessory
+                        </option>
                     </select>
                 </div>
 
 
                 <div class="form-item">
                     <select name="quantity" id="quantity-filter" class="product-filter--select ">
-                        <option value="all" <?php if($quantityLevel=='all') echo 'selected';?>>All Quantities</option>
-                        <option value="low" <?php if($quantityLevel=='low') echo 'selected';?>>🔴 Low Quantity</option>
-                        <option value="medium" <?php if($quantityLevel=='medium') echo 'selected';?>>🟡 Medium Quantity</option>
-                        <option value="high" <?php if($quantityLevel=='high') echo 'selected';?>>🟢 High Quantity</option>
+                        <option value="all" <?php if ($quantityLevel == 'all') echo 'selected'; ?>>All Quantities
+                        </option>
+                        <option value="low" <?php if ($quantityLevel == 'low') echo 'selected'; ?>>🔴 Low Quantity
+                        </option>
+                        <option value="medium" <?php if ($quantityLevel == 'medium') echo 'selected'; ?>>🟡 Medium
+                            Quantity
+                        </option>
+                        <option value="high" <?php if ($quantityLevel == 'high') echo 'selected'; ?>>🟢 High Quantity
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-item">
                     <select name="status" id="status-filter" class="product-filter--select ">
-                        <option value="active" <?php if($status=='active') echo 'selected';?>>Currently active products</option>
-                        <option value="discontinued" <?php if($status=='discontinued') echo 'selected';?>>Discontinued products</option>
+                        <option value="active" <?php if ($status == 'active') echo 'selected'; ?>>Currently active
+                            products
+                        </option>
+                        <option value="discontinued" <?php if ($status == 'discontinued') echo 'selected'; ?>>
+                            Discontinued products
+                        </option>
                     </select>
                 </div>
 
@@ -170,36 +184,50 @@ foreach ($products as $product) {
 
 </div>
 
+<!--show the table-->
+
 <?php
-Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
+if ($products){
+    Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
 
-<div class="dashboard-pagination-container">
-    <?php
+    <div class="dashboard-pagination-container">
+        <?php
 
-    $hasNextPage = $page < ceil(num: $total / $limit);
-    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-    $hasNextPageHref = $hasNextPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page + 1) . "&limit=$limit" : "";
-    $hasPreviousPage = $page > 1;
-    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-    $hasPreviousPageHref = $hasPreviousPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page - 1) . "&limit=$limit" : "";
+        $hasNextPage = $page < ceil(num: $total / $limit);
+        $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+        $hasNextPageHref = $hasNextPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasPreviousPage = $page > 1;
+        $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+        $hasPreviousPageHref = $hasPreviousPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page - 1) . "&limit=$limit" : "";
 
-    ?>
-    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
-       href="<?= $hasPreviousPageHref ?>">
-        <i class="fa-solid fa-chevron-left"></i>
-    </a>
-    <?php
-    //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-        echo "<a class='dashboard-pagination-item $isActive' href='/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=$i&limit=$limit'>$i</a>";
-    }
-    ?>
-    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
-        <i class="fa-solid fa-chevron-right"></i>
-    </a>
-</div>
+        ?>
+        <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+           href="<?= $hasPreviousPageHref ?>">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <?php
+        //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        foreach (range(1, ceil($total / $limit)) as $i) {
+            $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+            echo "<a class='dashboard-pagination-item $isActive' href='/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=$i&limit=$limit'>$i</a>";
+        }
+        ?>
+        <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+    </div>
+
+
+<?php   }else{ ?>
+    <div class="stock-manager-no-items">
+        <p>
+            There are no products matching your search criteria.
+        </p>
+    </div>
+<?php   } ?>
+
+
 
 
 <script>

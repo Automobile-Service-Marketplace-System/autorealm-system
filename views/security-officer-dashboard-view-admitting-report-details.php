@@ -39,11 +39,14 @@ use app\components\FormTextareaItem;
             </div>
         </div>
 
+<div class="create-admitting-reports__section">
 <br><p><b>Light</b></p>
+    <div class="create-admitting-reports__topic">
+    <p>LF</p>
         <?php
             FormSelectItem::render(
                 id: "light_lf",
-                label: "LF",
+                label: "",
                 name: "lights_lf",
                 disabled: "disabled",
                 value: $admittingReport->lights_lf,
@@ -64,11 +67,14 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->light_lf_description,
             );
         ?>
-       
+    </div>
+    
+    <div class="create-admitting-reports__topic">
+    <p>RF</p>     
         <?php 
             FormSelectItem::render(
                 id: "light_rf",
-                label: "RF",
+                label: "",
                 name: "lights_rf",
                 disabled: "disabled",
                 value: $admittingReport->lights_rf,
@@ -89,11 +95,14 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->light_rf_description,
             );
         ?>
+    </div>
 
+    <div class="create-admitting-reports__topic">
+    <p>LR</p>
         <?php 
             FormSelectItem::render(
                 id: "light_lr",
-                label: "LR",
+                label: "",
                 name: "lights_lr",
                 disabled: "disabled",
                 value: $admittingReport->lights_lr,
@@ -114,11 +123,14 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->light_lr_description,
             );
         ?>
+    </div>
 
+    <div class="create-admitting-reports__topic">
+    <p>RR</p>
         <?php 
             FormSelectItem::render(
                 id: "light_rr",
-                label: "RR",
+                label: "",
                 name: "lights_rr",
                 disabled: "disabled",
                 value: $admittingReport->lights_rr,
@@ -140,12 +152,17 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->light_rr_description,
             );
         ?>
+    </div>
+</div>
 
+<div class="create-admitting-reports__section">
 <p><b><br>Seat</b></p>
+    <div class="create-admitting-reports__topic">
+    <p>LF</p>
         <?php 
             FormSelectItem::render(
                 id: "seat_lf",
-                label: "LF",
+                label: "",
                 name: "seat_lf",
                 disabled: "disabled",
                 value: $admittingReport->seat_lf,
@@ -166,11 +183,14 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->seat_lf_description,
             );
         ?>
+    </div>
 
+    <div class="create-admitting-reports__topic">
+    <p>RF</p>   
         <?php
             FormSelectItem::render(
                 id: "seat_rf",
-                label: "RF",
+                label: "",
                 name: "seat_rf",
                 disabled: "disabled",
                 value: $admittingReport->seat_rf,
@@ -191,11 +211,14 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->seat_rf_description,
             );
         ?>
+    </div>
 
+    <div class="create-admitting-reports__topic">
+    <p>REAR</p>   
         <?php
             FormSelectItem::render(
                 id: "seat_rear",
-                label: "REAR",
+                label: "",
                 name: "seat_rear",
                 disabled: "disabled",
                 value: $admittingReport->seat_rear,
@@ -216,12 +239,17 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->seat_rear_description,
             );
         ?>
+    </div>
+</div>
 
+<div class="create-admitting-reports__section">
 <p><b><br>Carpet</b></p>
+    <div class="create-admitting-reports__topic">
+    <p>LF</p>
         <?php
             FormSelectItem::render(
                 id: "carpet_lf",
-                label: "LF",
+                label: "",
                 name: "carpet_lf",
                 disabled: "disabled",
                 value: $admittingReport->carpet_lf,
@@ -243,11 +271,13 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->carpet_lf_description,
             );
         ?>
-            
+    </div>
+    <div class="create-admitting-reports__topic">
+    <p>RF</p>            
         <?php
             FormSelectItem::render(
                 id: "carpet_rf",
-                label: "RF",
+                label: "",
                 name: "carpet_rf",
                 disabled: "disabled",
                 value: $admittingReport->carpet_rf,
@@ -269,11 +299,12 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->carpet_rf_description,
             );
         ?>
-
+    <div class="create-admitting-reports__topic">
+    <p>REAR</p>
         <?php
             FormSelectItem::render(
                 id: "carpet_rear",
-                label: "REAR",
+                label: "",
                 name: "carpet_rear",
                 disabled: "disabled",
                 value: $admittingReport->carpet_rear,
@@ -295,13 +326,18 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->carpet_rear_description,
             );
         ?>
+    </div>
+</div>
 
 
+<div class="create-admitting-reports__section">
 <p><b><br>Rim</b></p>
+    <div class="create-admitting-reports__topic">
+    <p>LF</p>
         <?php
             FormSelectItem::render(
                 id: "rim_lf",
-                label: "LF",
+                label: "",
                 name: "rim_lf",
                 disabled: "disabled",
                 value: $admittingReport->rim_lf,
@@ -322,11 +358,13 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->rim_lf_description,
             );
         ?>
-
+    </div>
+    <div class="create-admitting-reports__topic">
+    <p>RF</p>
         <?php
             FormSelectItem::render(
                 id: "rim_rf",
-                label: "RF",
+                label: "",
                 name: "rim_rf",
                 disabled: "disabled",
                 value: $admittingReport->rim_rf,
@@ -347,11 +385,13 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->rim_rf_description,
             );
         ?>
-
+    </div>
+    <div class="create-admitting-reports__topic">
+    <p>LR</p>
         <?php
             FormSelectItem::render(
                 id: "rim_lr",
-                label: "LR",
+                label: "",
                 name: "rim_lr",
                 disabled: "disabled",
                 value: $admittingReport->rim_lr,
@@ -373,10 +413,12 @@ use app\components\FormTextareaItem;
             );
         ?>
 
+    <div class="create-admitting-reports__topic">
+    <p>RR</p>    
         <?php
             FormSelectItem::render(
                 id: "rim_rr",
-                label: "RR",
+                label: "",
                 name: "rim_rr",
                 disabled: "disabled",
                 value: $admittingReport->rim_rr,
@@ -388,9 +430,7 @@ use app\components\FormTextareaItem;
                     "missing" => "Missing",
                 ],
             );
-        ?>
-  
-        <?php
+
             FormItem::render(
                 id: "rim_rr_description",
                 label: "",
@@ -399,7 +439,11 @@ use app\components\FormTextareaItem;
                 value: $admittingReport->rim_rr_description,
             );
         ?>
+    </div>
+</div>
 
+
+<div class="create-admitting-reports__section">
     <?php
         FormSelectItem::render(
             id: "current_fuel_level",
@@ -424,7 +468,9 @@ use app\components\FormTextareaItem;
             value: $admittingReport->current_fuel_level_description,
         );
     ?>
+</div>
 
+<div class="create-admitting-reports__section">
     <?php
         FormItem::render(
             id: "mileage",
@@ -433,7 +479,11 @@ use app\components\FormTextareaItem;
             disabled: "disabled",
             value: $admittingReport->mileage,
         );
+    ?>
+</div>
 
+<div class="create-admitting-reports__section">
+    <?php
         FormItem::render(
             id: "admitting_time",
             label: "<b><br>Admitting Time</b>",
@@ -443,9 +493,10 @@ use app\components\FormTextareaItem;
         );
 
     ?>
+</div>
 
   
-
+<div class="create-admitting-reports__section">
     <?php
         FormTextareaItem::render(
             id: "customer_belongings",
@@ -454,7 +505,11 @@ use app\components\FormTextareaItem;
             disabled: "disabled",
             value: $admittingReport->customer_belongings,
         );
+    ?>
+</div>
 
+<div class="create-admitting-reports__section">
+    <?php
         FormTextareaItem::render(
             id: "additional_note",
             label: "<b>Additional Note</b>",
@@ -462,7 +517,11 @@ use app\components\FormTextareaItem;
             disabled: "disabled",
             value: $admittingReport->additional_note,
         );
+    ?>
+</div>
 
+<div class="create-admitting-reports__section">
+    <?php 
         FormSelectItem::render(
             id: "dashboard",
             label: "<b><br>Dashboard</b>",
@@ -485,7 +544,11 @@ use app\components\FormTextareaItem;
             disabled: "disabled",
             value: $admittingReport->dashboard_description,
         );
+    ?>
+</div>
 
+<div class="create-admitting-reports__section">
+    <?php
         FormSelectItem::render(
             id: "windshield",
             label: "<b><br>Windshield</b>",
@@ -508,6 +571,7 @@ use app\components\FormTextareaItem;
             value: $admittingReport->windshield_description,
         );
     ?>
+</div>
 
 <br><div class="form-radio">
     <p><b>Toolkit</b></p>

@@ -7,8 +7,6 @@
  */
 
 
-\app\utils\DevOnly::prettyEcho( $models, $brands);
-
 use app\components\FormItem;
 use app\components\FormSelectItem;
 
