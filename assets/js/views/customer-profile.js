@@ -12,9 +12,10 @@ console.log(cusEditInfoDiv)
 let cusFirstName = cusEditInfoDiv.dataset.cusfname
 let cusLastName = cusEditInfoDiv.dataset.cuslname
 let cusAddress = cusEditInfoDiv.dataset.cusaddress
+let cusId = cusEditInfoDiv.dataset.cusid
 
 const updateCustomerProfileForm = htmlToElement(
-    `<form action="/profile" method="post" enctype="multipart/form-data" id="update-customer-profile">
+    `<form  method="post" enctype="multipart/form-data" id="update-customer-profile">
                 <div class="modal-header">
                     <h3>
                     Update your profile 
@@ -39,8 +40,9 @@ const updateCustomerProfileForm = htmlToElement(
                 <div class='form-item'>
                         <label for='address'>Address<sup>*</sup></label>
                         <input type='text' name='address' id='address' placeholder='' required  value='${cusAddress}'>      
-                        <input style='display:none' type='text' name='old_l_name' id='old_l_name' placeholder='' required  value='${cusLastName}'>
+                        <input style='display:none' type='text' name='old_address' id='old_address' placeholder='' required  value='${cusAddress}'>
                 </div>
+                <input style="display: none" type="number" value="${cusId}" name="customer_id">
                 </div>
 
                 <div class="flex-centered-y justify-between mt-4">

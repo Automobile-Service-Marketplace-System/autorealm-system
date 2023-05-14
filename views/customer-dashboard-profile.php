@@ -13,6 +13,7 @@
                             data-cusFname='<?= $customer->f_name ?>'
                             data-cusLname='<?= $customer->l_name ?>'
                             data-cusAddress='<?= $customer->address ?>'
+                            data-cusid='<?= $customer->customer_id ?>'
     >
         <p>
             <strong>
