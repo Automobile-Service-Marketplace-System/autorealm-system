@@ -33,3 +33,14 @@
     align-items: center;
     justify-content: center;
 }
+
+.jobcard-orderstatus{
+    display: flex;
+    flex-direction: column;
+}
+
+.overview{
+    display: flex;
+    flex-direction: row;
+    gap:2rem;
+}
