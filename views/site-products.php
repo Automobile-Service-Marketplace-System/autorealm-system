@@ -33,6 +33,7 @@ use app\components\ProductCard;
 
 $minPrice = $minPrice/100;
 $maxPrice = $maxPrice/100;
+$count = count($products);
 
 ?>
 
@@ -153,7 +154,7 @@ $maxPrice = $maxPrice/100;
 
 
 <p class="product-count">
-    Showing <?php echo $limit; ?> of <?php echo $total; ?> orders
+    Showing <?php echo $count; ?> of <?php echo $total; ?> orders
 </p>
 
 <?php if($products){?>
