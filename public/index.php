@@ -170,6 +170,7 @@ if ($isInternal) {
     $app->router->post(path: "/services/delete", callback: [ServicesController::class, 'deleteService']);
     $app->router->get(path: "/overview/employee-count" , callback: [EmployeeController::class, 'getEmployeeCountData']);
     $app->router->get(path: "/overview/customer-count" , callback: [OverviewController::class, 'getCustomerCount']);
+    $app->router->get(path: "/overview/order-status", callback: [OverviewController::class, 'getOrderStatusData']);
     // $app->router->get(path: "/overview/foreman-jobs" , callback: [OverviewController::class, 'getForemanJobs']);    
     // $app->router->get(path: "/admin-dashboard/overview", callback: [OverviewController::class, 'getOverviewPage']);
 

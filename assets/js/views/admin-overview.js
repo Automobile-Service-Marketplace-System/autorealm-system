@@ -39,6 +39,9 @@ Chart.register(
 const employeeCountCanvas = document.querySelector("#employee-count-canvas");
 console.log(employeeCountCanvas)
 
+const orderStatusCanvas = document.querySelector('#orderstatus-revenue-canvas')
+console.log(orderStatusCanvas);
+
 if(employeeCountCanvas){
     async function showEmployeeCountChart() {
         try {
@@ -109,4 +112,64 @@ if(employeeCountCanvas){
         }
     }
     window.addEventListener("load", showEmployeeCountChart)
+}
+
+
+if(orderStatusCanvas){
+    async function showOrderStatus(){
+        try{
+            const result = await fetch("/overview/order-status")
+            console.log(result)
+            switch(result.status){
+                case 200:
+                    const resData = await result.json()
+                    console.log(resData)
+
+                    const Status = resData.data.map(
+                        item => item.status
+                    )
+
+                    const Count = resData.data.map(
+                        item => item.COUNT
+                    )
+
+                    // console.log(Status)
+                    // console.log(Count)
+
+                    const orderstatusChart = new Chart(orderStatusCanvas, {
+                        type: "doughnut", data: {
+                            labels: Status, datasets: [{
+                                label: "Order Status", data: Count,
+
+                                hoverOffset: 5
+                            }]
+                        }, options: {
+                            responsive: true, plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                            },
+                        },
+                    });
+
+                    break;
+                case 500:
+                    const error = await result.json()
+                    // console.log("Tharushi")
+                    console.log(error);
+                    throw new Error(error.message)
+            }
+        }
+        catch(e){
+            console.log(e)
+            Notifier.show({
+                text: e.message,
+                header: "Error",
+                duration: 30000,
+                closable: false,
+                type: "danger"
+            })          
+        }
+    }
+    window.addEventListener("load", showOrderStatus)
 }

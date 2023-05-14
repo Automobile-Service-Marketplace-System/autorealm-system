@@ -207,6 +207,21 @@ class Order
     }
 
 
+    public function getOrderStatusData():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            COUNT(*) AS COUNT, status 
+            FROM `order`
+            WHERE status IN ('Paid', 'Prepared', 'Delivery')
+            GROUP BY status;");
+            $statement->execute();
+            $orderStatus = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $orderStatus;
+        }
+        catch(PDOException|Exception $e){
+            return "Failed to get data : " . $e->getMessage();
+        }
+    }
     public function getOrdersForCustomer(int $customerId, int $page, int $limit, string $status): array|string
     {
         $limitClause = $limit ? "LIMIT $limit" : "";
