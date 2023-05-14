@@ -44,6 +44,13 @@ if (isset($error)) {
                 $reminder = "<p class='due due--danger'>Overdue</p>";
             }
 
+            $appointmentCancelBtn = $days > 0
+                ?
+                "<button class='customer-appointment-delete-btn' data-id='{$appointment['appointment_id']}'>
+                    Cancel
+                </button>" :
+                "";
+
             echo "
             <div class='appointment-card'>
                 <div class='appointment-card__header'>
@@ -77,6 +84,7 @@ if (isset($error)) {
                         <button class='appointment-get-qrcode' data-qrcode='{$appointment['qrcode_url']}'>
                             Get QR Code
                         </button>
+                        $appointmentCancelBtn
                     </div>
                 </div>
              </div>
