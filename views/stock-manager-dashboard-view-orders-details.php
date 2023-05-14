@@ -4,7 +4,9 @@
  */
 
 
-//var_dump($orderDetails);
+use app\utils\DevOnly;
+
+//DevOnly::prettyEcho($orderDetails);
 ?>
 
 <main class="order-details-grid">
@@ -160,52 +162,91 @@
                 Deliver Details
             </h2>
             <div class="order-customer-details-section item-summery-products-section">
+
+
+
                 <div class="order-deliver-details-row ">
-                    <!--                    <span class="order-deliver-details-row--column1">-->
-                    <!--                        <div class='form-item--radio'>-->
-                    <!--                            <input type='radio' name='Prepared' value='Passed' id='Prepared'>-->
-                    <!--                            <label for='Prepared'>Prepared</label>-->
-                    <!--                        </div>-->
-                    <!--                    </span>-->
+
+                    <span class="order-deliver-details-row--column2">
+                        Ordered Date and Time
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+                        <?php
+                        if ($orderDetails['created_at'] && $orderDetails['created_at'] != '0000-00-00 00:00:00') {
+                            echo $orderDetails['created_at'];
+                        } else {
+                            echo "N/A";
+                        }
+                        ?>
+                    </span>
+                </div>
+
+
+
+
+                <div class="order-deliver-details-row ">
+
                     <span class="order-deliver-details-row--column2">
                         Prepared Date and Time
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if ($orderDetails['status'] == 'Paid') {
-                            echo "N/A";
-                        } else {
+                        if ($orderDetails['prepared_date_time'] && $orderDetails['prepared_date_time'] != '0000-00-00 00:00:00') {
                             echo $orderDetails['prepared_date_time'];
+                        } else {
+                            echo "N/A";
                         }
                         ?>
                     </span>
                 </div>
 
                 <div class="order-deliver-details-row">
-                    <!--                    <span class="order-deliver-details-row--column1">-->
-                    <!--                        <div class='form-item--radio'>-->
-                    <!--                            <input type='radio' name='Delivery' value='Delivery' id='Delivery'>-->
-                    <!--                            <label for='Delivery'>Hand over to<br>Delivery</label>-->
-                    <!--                        </div>-->
-                    <!--                    </span>-->
                     <span class="order-deliver-details-row--column2">
                         Dispatched Date and Time
                     </span>
                     <span class="order-deliver-details-row--column3">
                         <?php
-                        if ($orderDetails['status'] == 'Paid' || $orderDetails['status'] == 'Prepared') {
-                            echo "N/A";
-                        } else {
+                        if ($orderDetails['shipped_date_time'] && $orderDetails['shipped_date_time'] != '0000-00-00 00:00:00') {
                             echo $orderDetails['shipped_date_time'];
+                        } else {
+                            echo "N/A";
                         }
                         ?>
                     </span>
                 </div>
 
                 <div class="order-deliver-details-row">
-                    <!--                    <span class="order-deliver-details-row--column1">-->
-                    <!---->
-                    <!--                    </span>-->
+                    <span class="order-deliver-details-row--column2">
+                        Courier confirmed Date and Time
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+                        <?php
+                        if ($orderDetails['courier_confirmed_date_time'] && $orderDetails['courier_confirmed_date_time'] != '0000-00-00 00:00:00') {
+                            echo $orderDetails['courier_confirmed_date_time'];
+                        } else {
+                            echo "N/A";
+                        }
+                        ?>
+                    </span>
+                </div>
+
+                <div class="order-deliver-details-row">
+                    <span class="order-deliver-details-row--column2">
+                        Customer confirmed Date and Time
+                    </span>
+                    <span class="order-deliver-details-row--column3">
+                        <?php
+                        if ($orderDetails['customer_confirmed_date_time'] && $orderDetails['customer_confirmed_date_time'] != '0000-00-00 00:00:00') {
+                            echo $orderDetails['customer_confirmed_date_time'];
+                        } else {
+                            echo "N/A";
+                        }
+                        ?>
+                    </span>
+                </div>
+
+                <div class="order-deliver-details-row">
+                    <!--get the stock manager-->
                     <span class="order-deliver-details-row--column2">
                         Handle by
                     </span>
@@ -217,36 +258,61 @@
                     </span>
                 </div>
 
-                <div class="order-deliver-details-row">
-                    <!--                    <span class="order-deliver-details-row--column1">-->
-                    <!---->
-                    <!--                    </span>-->
-                    <span class="order-deliver-details-row--column2">
-                        Courier Name
-                    </span>
-                    <span class="order-deliver-details-row--column3">
-                        N/A
-                    </span>
-                </div>
-                <div class="order-deliver-details-row">
-                    <!--                    <span class="order-deliver-details-row--column1">-->
-                    <!---->
-                    <!--                    </span>-->
-                    <span class="order-deliver-details-row--column2">
-                        Courier Mobile Number
-                    </span>
-                    <span class="order-deliver-details-row--column3">
-                        N/A
-                    </span>
-                </div>
-
-
             </div>
         </div>
+
+
+<!--        to check the checkbox considering status-->
+        <!--                check if prepared-->
+        <?php
+        if ($orderDetails['prepared_date_time'] != null && $orderDetails['prepared_date_time'] != "0000-00-00 00:00:00") {
+            $isPreparedCheck = 'checked' ;
+        } else {
+            $isPreparedCheck = '';
+        }
+        ?>
+
+
+        <!--                check is dispatched-->
+        <?php
+        if ($orderDetails['shipped_date_time'] != null && $orderDetails['shipped_date_time'] != "0000-00-00 00:00:00") {
+            $isShippedCheck = 'checked';
+        } else {
+            $isShippedCheck = '';
+        }
+        ?>
+
+<!--                     check if cur confirmed -->
+        <?php
+        if ($orderDetails['courier_confirmed_date_time'] != null && $orderDetails['courier_confirmed_date_time'] != "0000-00-00 00:00:00") {
+            $isCourCheck = 'checked';
+
+        } else {
+            $isCourCheck = '';
+        }
+        ?>
+
+        <!--                check if cus confirmed-->
+        <?php
+        if ($orderDetails['customer_confirmed_date_time'] != null && $orderDetails['customer_confirmed_date_time'] != "0000-00-00 00:00:00") {
+            $isCusCheck = 'checked';
+        } else {
+            $isCusCheck = '';
+        }
+        ?>
+
+
+
+
+
+<!--order status update card-->
+
         <div class="order-details-card order-summery-card">
             <h2 class="item-summery-title order-details-title-under">
                 Status
             </h2>
+
+<!--            Not prepare row-->
             <div class="order-customer-details-section item-summery-products-section">
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
@@ -257,13 +323,10 @@
                         Not Prepared
                     </label>
                 </div>
-                <?php
-                if ($orderDetails['prepared_date_time'] != null && $orderDetails['prepared_date_time'] != "0000-00-00 00:00:00") {
-                    $isPreparedCheck = 'checked';
-                } else {
-                    $isPreparedCheck = '';
-                }
-                ?>
+
+
+
+<!--               prepare row -->
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
                              <input type="checkbox" name="is_prepared" id="is_prepared" <?php echo $isPreparedCheck ?> data-orderno="<?= $orderDetails['order_no'] ?>">
@@ -273,13 +336,8 @@
                     </label>
                 </div>
 
-                <?php
-                if ($orderDetails['shipped_date_time'] != null && $orderDetails['shipped_date_time'] != "0000-00-00 00:00:00") {
-                    $isShippedCheck = 'checked';
-                } else {
-                    $isShippedCheck = '';
-                }
-                ?>
+
+<!--             dispatched row   -->
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
 
@@ -287,16 +345,12 @@
 
                     </span>
                     <label class="order-status-details-row--column2 status-btn-shape del-st-col" for="is_delivery">
-                        Delivery
+                        Dispatched
                     </label>
                 </div>
-                <?php
-                if ($orderDetails['courier_confirmed_date_time'] != null && $orderDetails['courier_confirmed_date_time'] != "0000-00-00 00:00:00") {
-                    $isCourCheck = 'checked';
-                } else {
-                    $isCourCheck = '';
-                }
-                ?>
+
+
+<!--                cur confirmed row-->
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
                              <input type="checkbox" name="is_cur_confirmed" id="is_cur_confirmed" <?php echo $isCourCheck ?> data-orderno="<?= $orderDetails['order_no'] ?>">
@@ -305,13 +359,9 @@
                         Confirmed by Courier
                     </label>
                 </div>
-                <?php
-                if ($orderDetails['customer_confirmed_date_time'] != null && $orderDetails['customer_confirmed_date_time'] != "0000-00-00 00:00:00") {
-                    $isCusCheck = 'checked';
-                } else {
-                    $isCusCheck = '';
-                }
-                ?>
+
+
+<!--                custom confirmed row-->
                 <div class="order-status-details-row">
                     <span class="order-status-details-row--column1 form-item form-item--checkbox">
                              <input type="checkbox" name="is_cus_confirmed"

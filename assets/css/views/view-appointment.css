@@ -24,3 +24,10 @@
 .appointment-card-title{
     font-weight: bold;
 }
+
+#view-no-data-pagination{
+    font-size: xx-large;
+    font: bolder;
+    margin-left:25rem;
+    width: 100%;;
+}

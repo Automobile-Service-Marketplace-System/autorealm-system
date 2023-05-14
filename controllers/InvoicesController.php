@@ -33,7 +33,9 @@ class InvoicesController
                     "invoices" => $invoices,
                     "total" => $invoices['total'],
                     "limit" => $limit,
-                    "page" => $page],
+                    "page" => $page,
+                    "searchTermCustomer" => $searchTermCustomer,
+                    "searchTermEmployee" => $searchTermEmployee],
                 layoutParams: [
                     'title' => 'Invoices',
                     'pageMainHeading' => 'Invoices',

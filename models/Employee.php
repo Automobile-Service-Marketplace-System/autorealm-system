@@ -488,7 +488,7 @@ class Employee
             if (empty($errors)) {
                 if($new_job_role!== $before_job_role){
                     if($before_job_role=='security_officer'){
-                        $query = "DELETE from securityofficer where employee_id= $employee_id";
+                        $query = "UPDATE securityofficer set  is_discontinued=TRUE where employee_id= $employee_id";
                         $statement = $this->pdo->prepare($query);
                         try{
                             $statement->execute();
@@ -522,7 +522,7 @@ class Employee
                         }
                     }
                     elseif($before_job_role=="office_staff_member"){
-                        $query = "DELETE from officestaff where employee_id= $employee_id";
+                        $query = "UPDATE officestaff set is_discontinued=TRUE where employee_id= $employee_id";
                         $statement = $this->pdo->prepare($query);
                         try{
                             $statement->execute();
@@ -556,7 +556,7 @@ class Employee
                         }                  
                     }
                     elseif($before_job_role=="foreman"){
-                        $query = "DELETE from foreman where employee_id= $employee_id";
+                        $query = "UPDATE foreman set is_discontinued=TRUE where employee_id= $employee_id";
                         var_dump($query);
                         $statement = $this->pdo->prepare($query);
                         try{
@@ -591,7 +591,7 @@ class Employee
                         }                  
                     }
                     elseif($before_job_role=="technician"){
-                        $query = "DELETE from technician where employee_id= $employee_id";
+                        $query = "UPDATE technician set is_discontinued=TRUE where employee_id= $employee_id";
                         $statement = $this->pdo->prepare($query);
                         try{
                             $statement->execute();
@@ -625,7 +625,7 @@ class Employee
                         }                      
                     }
                     elseif($before_job_role=="stock_manager"){
-                        $query = "DELETE from stockmanager where employee_id= $employee_id";
+                        $query = "UPDATE stockmanager set is_discontinued=TRUE where employee_id= $employee_id";
                         $statement = $this->pdo->prepare($query);
                         try{
                             $statement->execute();

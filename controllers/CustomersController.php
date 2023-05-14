@@ -40,8 +40,9 @@ class CustomersController
                         "total"=>$customers['total'],
                         "limit"=>$limit,
                         "page"=>$page,
-                        'customers' => $customers
-                        // 'services' => $services
+                        'customers' => $customers,
+                        'searchTermCustomer'=> $searchTermCustomer,
+                        'searchTermEmail'=> $searchTermEmail
                     ],
                     layoutParams:[
                         'title' => 'Customers',

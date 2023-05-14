@@ -9,6 +9,7 @@ use app\models\Appointment;
 use app\models\Foreman;
 use app\models\Employee;
 use app\models\JobCard;
+use app\models\Order;
 
 class OverviewController
 {
@@ -54,12 +55,35 @@ class OverviewController
     {
     }
   
+    public function getOrderStatusData(Request $req, Response $res):string{
+        if($req->session->get("is_authenticated") && $req->session->get("user_role")==="admin"){
+            $orderModel = new Order;
+            $orderStatus = $orderModel -> getOrderStatusData();
+
+            if($orderStatus){
+                if(is_string($orderStatus)){
+                    $res->setStatusCode(500);
+                    return $res->json([
+                        "message" => "Internal Server Error"
+                    ]); 
+                }
+                $res->setStatusCode(200);
+                return $res->json([
+                    "message" => "Success",
+                    "data" => $orderStatus
+                ]);
+            }
+            $res->setStatusCode(401);
+            return $res->json([
+                "message" => "Unauthorized"
+            ]);
+        }
+    }
     private function getAdminOverviewPage(Request $req, Response $res) : string|array {
         if($req->session->get("is_authenticated") && $req->session->get("user_role")==="admin"){
             $foremamodel = new Employee;
             $foremanJobs = $foremamodel -> getForemanJobsData();
-            // $customermodel = new Customer;
-            // $customerCount = $customermodel -> getCustomerCountData();
+
             if ($foremanJobs) {
                 return $res->render(view: "admin-dashboard-overview", layout: "admin-dashboard", pageParams: [
                     'foremanJobs' => $foremanJobs,
@@ -75,7 +99,6 @@ class OverviewController
             ]);
         }
     }
-
     private function getCustomerOverviewPage(Request $req, Response $res): string
     {
     }

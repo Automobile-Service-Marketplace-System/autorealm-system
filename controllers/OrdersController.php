@@ -135,6 +135,8 @@ class OrdersController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            $empId = $req->session->get("user_id");
+
             $body = $req->body();
             $order_no = $body["order_no"] ?? null;
             if (!$body["order_no"]) {
@@ -147,7 +149,13 @@ class OrdersController
             $mode = $body["mode"];
             $status = $body["status"];
             $orderModel = new Order();
-            $result = $orderModel->updateOrderStatus(orderNo: $orderNo, mode: $mode, status: $status);
+            $result = $orderModel->updateOrderStatus(
+                orderNo: $orderNo,
+                mode: $mode,
+                status: $status,
+                employeeId: $empId
+
+            );
 
             if (is_array($result)) {
                 $res->setStatusCode(code: 400);
