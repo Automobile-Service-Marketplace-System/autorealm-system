@@ -34,15 +34,15 @@ class Supplier
         string $searchTermMail = null,
         array $options = [
                 'status' => null,
-                'supply_date' => null,
+
             ]
 
     ): array|string
     {
         $whereClause = null;
         $conditions = [];
-        $dateFrom = null;
-        $dateTo = null;
+//        $dateFrom = null;
+//        $dateTo = null;
 
 //        print_r($options);
 
@@ -59,33 +59,33 @@ class Supplier
                                 break;
                         }
                         break;
-                    case "supply_date":
-                        switch ($option_value) {
-                            case 'all':
-                                break;
-                            case 'Today':
-                                $dateFrom = date('Y-m-d 00:00:00');
-                                $dateTo = date('Y-m-d 23:59:59');
-                                break;
-                            case 'Yesterday':
-                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
-                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
-                                break;
-                            case 'Last7':
-                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
-                                $dateTo = date('Y-m-d 23:59:59');
-                                break;
-                            case 'Last30':
-                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
-                                $dateTo = date('Y-m-d 23:59:59');
-                                break;
-                            case 'Last90':
-                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
-                                $dateTo = date('Y-m-d 23:59:59');
-                                break;
+//                    case "supply_date":
+//                        switch ($option_value) {
+//                            case 'all':
+//                                break;
+//                            case 'Today':
+//                                $dateFrom = date('Y-m-d 00:00:00');
+//                                $dateTo = date('Y-m-d 23:59:59');
+//                                break;
+//                            case 'Yesterday':
+//                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
+//                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
+//                                break;
+//                            case 'Last7':
+//                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
+//                                $dateTo = date('Y-m-d 23:59:59');
+//                                break;
+//                            case 'Last30':
+//                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
+//                                $dateTo = date('Y-m-d 23:59:59');
+//                                break;
+//                            case 'Last90':
+//                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
+//                                $dateTo = date('Y-m-d 23:59:59');
+//                                break;
+//
+//                        }
 
-                        }
-                        break;
                 }
             }
         }
@@ -142,17 +142,17 @@ class Supplier
 
         $supplierList = [];
         foreach ($suppliers as $supplier) {
-            $id = $supplier["ID"];
-
-            if(isset($dateFrom) && isset($dateTo)){
-                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id AND date_time BETWEEN '$dateFrom' AND '$dateTo' ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
-            }else {
-                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
-            }
-            if($lastPurchaseReport) {
-                $supplier["Last Purchase Date"] = $lastPurchaseReport["date_time"];
-                $supplier["Last Supply Amount"] = $lastPurchaseReport["amount"];
-            }
+//            $id = $supplier["ID"];
+//
+//            if(isset($dateFrom) && isset($dateTo)){
+//                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id AND date_time BETWEEN '$dateFrom' AND '$dateTo' ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+//            }else {
+//                $lastPurchaseReport = $this->pdo->query("SELECT * FROM stockpurchasereport WHERE supplier_id = $id ORDER BY date_time DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+//            }
+//            if($lastPurchaseReport) {
+//                $supplier["Last Purchase Date"] = $lastPurchaseReport["date_time"];
+//                $supplier["Last Supply Amount"] = $lastPurchaseReport["amount"];
+//            }
             $supplierList[] = $supplier;
 
         }
