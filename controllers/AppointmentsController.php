@@ -133,7 +133,7 @@ class AppointmentsController
     public function getOfficeAppointmentsPage(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            
+
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
@@ -143,7 +143,7 @@ class AppointmentsController
 
             $appointmentModel = new Appointment();
             $appointments = $appointmentModel->getAllAppointments(
-                count: $limit, 
+                count: $limit,
                 page: $page,
                 searchTermRegNo: $searchTermRegNo,
                 searchTermCustomer: $searchTermCustomer
@@ -261,6 +261,8 @@ class AppointmentsController
 
                     $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
 
+                    $appointment->setQRCodeURL(appointmentId: $result['appointmentId'], url: $qrCodeURL);
+
                     $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
 //                echo "$emailHtmlContent";
                     $sendToEmail = $result['email'];
@@ -296,6 +298,9 @@ class AppointmentsController
         ]);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function officeDeleteAppointment(Request $req, Response $res): string
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member")) {

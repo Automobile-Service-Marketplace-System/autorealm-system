@@ -285,7 +285,8 @@ class Appointment
             return [
                 "timeslot" => $timeslot,
                 "email" => $email,
-                "name" => $name
+                "name" => $name,
+                "appointmentId" => $this->pdo->lastInsertId(),
             ];
         } catch (PDOException $e) {
             var_dump($e->getMessage());
@@ -431,6 +432,19 @@ class Appointment
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointment WHERE date = CURDATE()");
         $stmt->execute();
         return (int) $stmt->fetchColumn();
+    }
+
+    public function setQRCodeURL(int $appointmentId, string $url): bool|string
+    {
+        try {
+            $statement = $this->pdo->prepare("UPDATE appointment SET qrcode = :url WHERE appointment_id = :appointment_id");
+            $statement->bindValue(":url", $url);
+            $statement->bindValue(":appointment_id", $appointmentId);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 }
 
