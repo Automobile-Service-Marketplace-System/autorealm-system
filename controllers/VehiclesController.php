@@ -50,7 +50,10 @@ class VehiclesController
                         "limit" => $limit,
                         "page" => $page,
                         "models" => $modelModel->getMOdels(),
-                        "brands" => $brandModel->getBrands()],
+                        "brands" => $brandModel->getBrands(),
+                        "searchTermRegNo" => $searchTermRegNo,
+                        "searchTermCustomer" => $searchTermCustomer,
+                        "vehicleType" => $vehicleType],
                     layoutParams: [
                         'title' => 'Vehicles',
                         'pageMainHeading' => 'Vehicles',

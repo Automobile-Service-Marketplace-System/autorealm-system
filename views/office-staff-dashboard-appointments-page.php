@@ -9,9 +9,9 @@
 
 use app\components\Table;
 
-$noOfJobs = $appointments['total'];
+$noOfAppointments = $appointments['total'];
 $startNo = ($page - 1) * $limit + 1;
-$endNo = min($startNo + $limit - 1, $noOfJobs);
+$endNo = min($startNo + $limit - 1, $noOfAppointments);
 
 $columns = [];
 $items = [];
@@ -19,7 +19,7 @@ $items = [];
 if (empty($appointments['appointments'])) {
     echo "<p class='no-data'>No Appointments <br> as of now </p>";
 } else {
-    $columns = array("Appointment ID","Reg No", "Customer Name", "Mileage (KM)", "Remarks", "Date", "From Time", "To Time", "Actions");
+    $columns = array("Appointment ID", "Reg No", "Customer Name", "Mileage (KM)", "Remarks", "Date", "From Time", "To Time", "Actions");
 
 
     foreach ($appointments['appointments'] as $appointment) {
@@ -44,15 +44,15 @@ if (empty($appointments['appointments'])) {
     }
 }
 ?>
-<?php if(!empty($appointments['appointments'])) { ?>
-<div class="product-count-and-actions">
-    <div class="product-table-count">
-        <p>
-            Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> appointments
-            <!--            Showing 25 out of 100 products-->
-        </p>
+<?php if (!empty($appointments['appointments'])) { ?>
+    <div class="product-count-and-actions">
+        <div class="product-table-count">
+            <!-- pagination details -->
+            <p class="order-count" style="margin-bottom: 1rem">
+                Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> orders
+            </p>
+        </div>
     </div>
-</div>
 <?php } ?>
 
 <!-- for searching -->
@@ -69,13 +69,12 @@ if (empty($appointments['appointments'])) {
             <div class="filters__dropdown">
                 <div class="order-filter-search-items">
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search appointment by vehicle registration no"
-                               id="dashboard-order-cus-name-search" name="reg" >
+                        <input type="text" placeholder="Search appointment by customer name" id="dashboard-order-cus-name-search" name="cus" <?php if ($searchTermCustomer) echo "value='$searchTermCustomer'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
 
                     <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                        <input type="text" placeholder="Search appointment by customer name" id="dashboard-order-id-search" name="cus">
+                        <input type="text" placeholder="Search appointment by vehicle registration number" id="dashboard-order-id-search" name="reg" <?php if ($searchTermRegNo) echo "value='$searchTermRegNo'" ?>>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
@@ -99,13 +98,33 @@ if (!empty($appointments['appointments'])) {
 }
 ?>
 
-<?php if(!empty($appointments['appointments'])) { ?>
-<div class="pagination-container">
-    <?php 
-        foreach(range(1,ceil($total / $limit)) as $i) {
-            $isActive = $i === (float)$page ? "pagination-item--active" : "";
-            echo "<a class='pagination-item $isActive' href='/appointments?page=$i&limit=$limit'>$i</a>";
+<?php if (!empty($appointments['appointments'])) { ?>
+    <!-- pagination page details -->
+    <div class="dashboard-pagination-container">
+        <?php
+
+        $hasNextPage = $page < ceil(num: $total / $limit);
+        $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+        $hasNextPageHref = $hasNextPage ? "/appointments?cus=$searchTermCustomer&reg=$searchTermRegNo&page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasPreviousPage = $page > 1;
+        $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+        $hasPreviousPageHref = $hasPreviousPage ? "/appointments?cus=$searchTermCustomer&reg=$searchTermRegNo&page=" . ($page - 1) . "&limit=$limit" : "";
+
+        ?>
+        <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>" href="<?= $hasPreviousPageHref ?>">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <?php
+        //    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        foreach (range(1, ceil($total / $limit)) as $i) {
+            $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+            echo "<a class='dashboard-pagination-item $isActive' href='/appointments?cus=$searchTermCustomer&reg=$searchTermRegNo&page=$i&limit=$limit'>$i</a>";
         }
         ?>
-</div>
+        <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+    </div>
+
+
 <?php } ?>

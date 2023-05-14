@@ -21,19 +21,18 @@ class Vehicle
     }
 
     public function getVehicles(
-        int | null $count = null, 
-        int | null $page = 1, 
-        string $searchTermRegNo = null, 
+        int | null $count = null,
+        int | null $page = 1,
+        string $searchTermRegNo = null,
         string $searchTermCustomer = null,
         string $vehicleType = null
-        ): array|string
-    {
+    ): array|string {
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
         $whereClause = null;
         $conditions = null;
-        
+
 
         if ($vehicleType !== null) {
             switch ($vehicleType) {
@@ -63,7 +62,7 @@ class Vehicle
             }
         }
 
-        
+
         if ($searchTermRegNo !== null) {
             $whereClause = $whereClause ? $whereClause . " AND reg_no LIKE :search_term_reg" : "WHERE reg_no LIKE :search_term_reg";
         }
@@ -76,8 +75,8 @@ class Vehicle
             $whereClause = $whereClause ? $whereClause . " AND $conditions " : "WHERE $conditions";
         }
 
-            $statement = $this->pdo->prepare(
-                "SELECT
+        $statement = $this->pdo->prepare(
+            "SELECT
                     vin as VIN,
                     reg_no as 'Registration No',
                     engine_no as 'Engine No',
@@ -98,7 +97,8 @@ class Vehicle
                 INNER JOIN model m ON m.model_id = v.model_id
                 INNER JOIN brand b ON b.brand_id = v.brand_id
                 $whereClause
-                ORDER BY v.vin $limitClause $pageClause");
+                ORDER BY v.vin $limitClause $pageClause"
+        );
 
         if ($searchTermRegNo !== null) {
             $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
@@ -108,18 +108,41 @@ class Vehicle
             $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
         }
 
-        try{
+        try {
 
             $statement->execute();
             $vehicles = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+
+            $totQuery = 
+            "SELECT
+                count(*) as total
+            FROM
+                vehicle v
+            INNER JOIN customer c ON c.customer_id = v.customer_id
+            INNER JOIN model m ON m.model_id = v.model_id
+            INNER JOIN brand b ON b.brand_id = v.brand_id
+            $whereClause";
+
+            $statement = $this->pdo->prepare($totQuery);
+
+            if ($searchTermRegNo !== null) {
+                $statement->bindValue(":search_term_reg", "%" . $searchTermRegNo . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($conditions !== null) {
+                $whereClause = $whereClause ? $whereClause . " AND $conditions " : "WHERE $conditions";
+            }
+
+            $statement->execute();
+            $totalVehicles = $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-
-        $totalVehicles = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM vehicle"
-        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "total" => $totalVehicles['total'],
@@ -159,7 +182,7 @@ class Vehicle
 
             foreach ($results as $result) {
 
-            //    DevOnly::prettyEcho($result);
+                //    DevOnly::prettyEcho($result);
 
                 $statement = $this->pdo->prepare("SELECT
                     mileage,
@@ -173,7 +196,7 @@ class Vehicle
                 $statement->bindValue(":vin", $result['vin']);
                 $statement->execute();
                 $lastService = $statement->fetch(PDO::FETCH_ASSOC);
-//                DevOnly::prettyEcho($lastService);
+                //                DevOnly::prettyEcho($lastService);
 
                 if ($lastService) {
                     $result['last_service_mileage'] = $lastService['mileage'];
@@ -184,19 +207,17 @@ class Vehicle
                 }
 
                 $resultsWithLastService[] = $result;
-//
-//                DevOnly::prettyEcho($result);
+                //
+                //                DevOnly::prettyEcho($result);
             }
 
-//            DevOnly::prettyEcho($resultsWithLastService);
+            //            DevOnly::prettyEcho($resultsWithLastService);
 
             return $resultsWithLastService;
-
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
         return "Internal Server Error";
-
     }
 
 
@@ -246,7 +267,6 @@ class Vehicle
             echo $e->getMessage();
         }
         return "Internal Server Error";
-
     }
 
     public function addVehicle(int $customer_id)
@@ -436,10 +456,8 @@ class Vehicle
             } catch (PDOException $e) {
                 return $e->getMessage();
             }
-
         } else {
             return $errors;
         }
     }
-
 }

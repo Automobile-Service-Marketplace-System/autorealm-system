@@ -67,13 +67,30 @@ class Invoice
             $statement->execute();
             $invoices = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+            $statement = $this->pdo->prepare(
+                "SELECT
+                    count(*) as total
+                FROM 
+                    invoice i
+                INNER JOIN employee e ON e.employee_id = i.employee_id
+                $whereClause"
+            );
+
+            if ($searchTermCustomer !== null) {
+                $statement->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermEmployee !== null) {
+                $statement->bindValue(":search_term_emp", "%" . $searchTermEmployee . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalInvoices = $statement->fetch(PDO::FETCH_ASSOC);
+
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-
-        $totalInvoices = $this->pdo->query(
-            "SELECT COUNT(*) as total FROM invoice"
-        )->fetch(PDO::FETCH_ASSOC);
 
         return [
             "total" => $totalInvoices['total'],
