@@ -401,3 +401,20 @@
      border: 2px solid var(--color-danger) !important;
     color: var(--color-danger) !important;
 }
+
+.rotate-on-hover-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.rotate-on-hover-btn:hover {
+    transform: rotate(90deg);
+}
+
+.btn.about-to-spin svg{
+    display: none;
+}
+
+.btn.btn--loading.about-to-spin svg{
+    display: initial;
+    animation: spin 1s linear infinite;
+}

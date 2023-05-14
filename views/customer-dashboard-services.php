@@ -25,7 +25,7 @@
             <canvas id="assigned-job-progress"></canvas>
             <i class="fa fa-spinner spin-icon"></i>
         </div>
-        <h3 class="mb-4">Mark completed services</h3>
+        <h3 class="mb-4">Service progress</h3>
         <div class="flex flex-col w-full gap-4 mb-8">
             <?php
             if ($services) {

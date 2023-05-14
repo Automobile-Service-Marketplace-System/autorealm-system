@@ -33,13 +33,13 @@
         </a>
     </li>
     <li>
-        <a href="/all-jobs?vehicle_reg_no=<?= $vehicleDetails['reg_no']?>">
+        <a href="/all-jobs?vehicle_reg_no=<?= $vehicleDetails['reg_no'] ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View previous jobs for this vehicle
         </a>
     </li>
     <li>
-        <a href="tel:+94703614315">
+        <a href="tel:<?= $vehicleDetails['contact_no'] ?>">
             <i class="fa-solid fa-phone"></i>
             Contact customer
         </a>
@@ -104,10 +104,7 @@
     }
     ?>
 </section>
-
-<section class="flex items-center my-8">
-    <p class="text-center" style="font-size: 1.5rem;color: rgba(0,0,0,0.3)">
-        After technician completes the job, this will move to the completed jobs list.
-        There you can inspect it and mark it as finished.
-    </p>
+<section class="flex items-center justify-end gap-4 my-8">
+    <button class="btn" type="button" data-jobid="<?= $jobId ?>" id="finish-job-btn">Mark this job as finished</button>
 </section>
+
