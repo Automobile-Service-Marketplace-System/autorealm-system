@@ -11,6 +11,8 @@ $hasErrors = isset($errors) && !empty($errors);
 $hasEmailError = $hasErrors && isset($errors['email']);
 $hasPasswordError = $hasErrors && isset($errors['password']);
 
+$redirect_url = $redirect_url ?? "/";
+
 ?>
 
 <div class="customer-auth">
