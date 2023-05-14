@@ -1,5 +1,5 @@
-import {Modal} from "../components/Modal"
-import {htmlToElement} from "../utils";
+import {Modal} from "../../components/Modal"
+import {htmlToElement} from "../../utils";
 
 
 const createAppointmentButton = document.querySelector("#create-appointment-btn");

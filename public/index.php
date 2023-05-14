@@ -2,6 +2,8 @@
 
 use app\controllers\AnalyticsController;
 use app\core\Application;
+use app\core\Request;
+use app\core\Response;
 use app\controllers\SiteController;
 
 use app\controllers\EmployeeController;
@@ -102,9 +104,7 @@ if (!$isInternal) {
 
 if ($isInternal) {
 
-    $app->router->get("/", function (\app\core\Request $req, \app\core\Response $res) {
-        return $res->render(view: "temp", layout: "plain");
-    });
+    $app->router->get("/", callback: [DashboardController::class, 'getDashboardIndexPage']);
 
 // definitive employee routes
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getEmployeeLoginPage']);
@@ -127,6 +127,7 @@ if ($isInternal) {
     $app->router->get(path: "/jobs/customer-info", callback: [JobsController::class, 'getCustomerDetailsForJob']);
     $app->router->get(path: "/jobs/product-info", callback: [JobsController::class, 'getProductsForJob']);
     $app->router->get(path: "/jobs/service-info", callback: [JobsController::class, 'getServicesForJob']);
+    $app->router->get(path: "/holidays", callback: [AppointmentsController::class, 'getHolidays']);
 
 // foreman routes
     // $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);

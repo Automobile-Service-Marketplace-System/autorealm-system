@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Appointment;
+use app\models\Holiday;
 use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
@@ -313,6 +314,9 @@ class AppointmentsController
         return $res->redirect(path: "/login");
     }
 
+    /**
+     * @throws JsonException
+     */
     public function officeUpdateAppointment(Request $req, Response $res): string
     {
         $body = $req->body();
@@ -339,6 +343,27 @@ class AppointmentsController
                 "success" => "Appointment updated successfully"
             ]);
         }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getHolidays(Request $req, Response $res): string
+    {
+        $holidayModel = new Holiday();
+        $holidays = $holidayModel->getHolidays();
+
+        if (is_string($holidays) || !$holidays) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            "holidays" => $holidays,
+            "message" => "Holidays fetched successfully"
+        ]);
     }
 }
 

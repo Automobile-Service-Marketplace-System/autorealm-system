@@ -14,7 +14,7 @@
     transition: all 0.2s ease-in-out
 }
 .office-create-appointment-form .modal-close-btn svg:hover {
-    transform: rotate(180deg);
+    transform: rotate(90deg);
 }
 
 .office-create-appointment-form h1 {
