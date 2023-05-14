@@ -127,7 +127,7 @@ class Vehicle
         ];
     }
 
-    public function getVehiclesByID(int $customer_id): array | string
+    public function getVehiclesByCustomerID(int $customer_id): array | string
     {
         try {
             $statement = $this->pdo->prepare("SELECT
@@ -191,6 +191,34 @@ class Vehicle
 //            DevOnly::prettyEcho($resultsWithLastService);
 
             return $resultsWithLastService;
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return "Internal Server Error";
+
+    }
+
+
+    public function getVehicleNamesByCustomerID(int $customer_id): array | string
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT
+                reg_no,
+                CONCAT(reg_no,' - ',b.brand_name, ' ', m.model_name, ' ', YEAR(v.manufactured_year)) as vehicle_name
+            FROM vehicle v
+                INNER JOIN model m ON m.model_id = v.model_id
+                INNER JOIN brand b ON b.brand_id = v.brand_id
+                INNER JOIN customer c ON c.customer_id = v.customer_id
+            WHERE
+                v.customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customer_id);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$results) {
+                return [];
+            }
+            return $results;
 
         } catch (PDOException $e) {
             echo $e->getMessage();

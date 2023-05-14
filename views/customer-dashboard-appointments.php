@@ -2,55 +2,54 @@
 
 /**
  * @var array $appointments
-
  */
 
 //\app\utils\DevOnly::prettyEcho($appointments);
 
-if(isset($error)) {
+if (isset($error)) {
     echo "<p class='error'>$error</p>";
     return;
 }
 
 ?>
 
-
-<div class="product-filters justify-between">
-    <div class="flex gap-4 items-center">
-        <div class="product-search">
-            <input type="text" placeholder="Search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-        <select name="type" id="product-type" class="product-filter--select">
-            <option value="Tyres">Coming Soon</option>
-            <option value="Tyres">Shipped</option>
-            <option value="Tyres">Completed</option>
-            <option value="Tyres">All</option>
-        </select>
-    </div>
-    <select name="type" id="product-type" class="product-filter--select">
-        <option value="Tyres">Sort By</option>
-    </select>
-    <button id="create-appointment-btn" class="btn">
-        <i class="fa-regular fa-calendar-check"></i>
-        Get an Appointment
+<div class="flex items-center justify-end">
+    <button class="btn" id="customer-create-appointment-btn">
+        <i class="fa fa-calendar"></i>
+        Get an appointment
     </button>
 </div>
 
 <div class="appointments-container">
     <?php
 
-    if(is_string($appointments)){
+    if (is_string($appointments)) {
         echo "<p class='no-data'>Sorry! <br> there are no Appointments for you</p>";
-    }
-    else{
-        foreach ($appointments as $appointment){
+    } else {
+        foreach ($appointments as $appointment) {
+
+            $appointmentDate = $appointment['appointment_date'];
+            $today = date("Y-m-d");
+            $diff = date_diff(date_create($today), date_create($appointmentDate));
+            $days = intval($diff->format("%a"));
+            if ($days > 7) {
+                $reminder = "<p class='due'>$days days to go</p>";
+            } else if ($days == 1) {
+                $reminder = "<p class='due'>Tomorrow</p>";
+            } else if ($days > 1) {
+                $reminder = "<p class='due'>Coming soon</p>";
+            } else if ($days == 0) {
+                $reminder = "<p class='due due--warning'>Today</p>";
+            } else {
+                $reminder = "<p class='due due--danger'>Overdue</p>";
+            }
+
             echo "
             <div class='appointment-card'>
                 <div class='appointment-card__header'>
                     <p>Appointment Date: {$appointment['appointment_date']}</p>
                     <p>Appointment Time: {$appointment['appointment_time']}</p>
-                    <p class='due'>Coming Soon</p>
+                    $reminder
                 </div>
                 <div class='appointment-card__info'>
                     <div class='appointment-card__info-date'>
@@ -88,16 +87,7 @@ if(isset($error)) {
         }
     }
 
- ?>
+    ?>
 
 
-</div>
-
-<div class="pagination-container">
-    <a class='pagination-item pagination-item--active' href='/dashboard/records?vehicle_id=123&page=1&limit=2'>1</a>
-    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=2&limit=2'>2</a>
-    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=3&limit=2'>3</a>
-    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=4&limit=2'>4</a>
-    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=5&limit=2'>5</a>
-    <a class='pagination-item' href='/dashboard/records?vehicle_id=123&page=6&limit=2'>6</a>
 </div>

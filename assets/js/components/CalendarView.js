@@ -62,7 +62,6 @@ export class CalendarView {
         this.maxDate = new Date(options.maxDate);
         this.restrictedDates = options.restrictedDates;
 
-        console.log(this.maxDate)
         this.year = this.minDate.getFullYear()
         this.month = this.minDate.getMonth() + 1
         this.element = this.buildElement(this.month, this.year)
@@ -102,9 +101,6 @@ export class CalendarView {
 
             this.parent.appendChild(calendarWrapper)
             this.setListeners(calendarWrapper.querySelectorAll(".calendar-view__date"))
-            calendarWrapper.querySelectorAll(".calendar-view__date").forEach(dateEl => {
-                console.log(dateEl)
-            })
             return calendarWrapper
         }
         this.element.querySelector(".calendar-view__header")?.remove()
@@ -124,9 +120,6 @@ export class CalendarView {
             ))
 
             this.setListeners(this.element.querySelectorAll(".calendar-view__date"))
-            // this.element.querySelectorAll(".calendar-view__date").forEach(dateEl => {
-            //     console.log(dateEl)
-            // })
 
             setTimeout(() => {
                 dates?.classList.remove("calendar-view__dates--destroy")
@@ -235,7 +228,6 @@ export class CalendarView {
                 (new Date(year, month - 1, i - dateOffset + 1) < this.minDate) ||
                 (new Date(year, month - 1, i - dateOffset) > this.maxDate)
 
-            console.log(isRestricted, month, i - dateOffset)
 
             if (date < 1) {
                 datesElements += `<p class="calendar-view__date calendar-view__date--disabled">${date + numberOfDaysInPreviousMonth}</p>`
@@ -275,13 +267,11 @@ export class CalendarView {
                         dateEl.classList.remove("calendar-view__date--selected")
                     })
                     dateEl.classList.add("calendar-view__date--selected")
-                    // this.onDateSelected(this.selectedDate)
                     console.log("Selected date is", this.selectedDate)
                     if (this.boundInput) {
                         this.boundInput.value = this.selectedDate.toISOString().substring(0, 10)
                         // trigger change event
                         this.boundInput.dispatchEvent(new InputEvent('change'))
-                        console.log(this.boundInput.value)
                     }
                 })
             }

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Appointment;
+use app\models\Holiday;
 use app\models\JobCard;
 use app\models\Service;
 use app\models\Foreman;
@@ -229,62 +230,69 @@ class AppointmentsController
      */
     public function officeCreateAppointment(Request $req, Response $res): string
     {
-        $body = $req->body();
-        $appointment = new Appointment($body);
-        $result = $appointment->officeCreateAppointment();
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            $body = $req->body();
+            $appointment = new Appointment($body);
+            $result = $appointment->officeCreateAppointment();
 
-        if (is_string($result)) {
-            $res->setStatusCode(code: 500);
-            return $res->json([
-                "message" => $result
-            ]);
-        }
-
-        if (is_array($result)) {
-            $options = new QROptions(
-                [
-                    'eccLevel' => QRCode::ECC_L,
-                    'outputType' => QRCode::OUTPUT_IMAGE_JPG,
-                    'version' => 5,
-                ]
-            );
-
-            $qrcode = (new QRCode($options))->render(json_encode([
-                "date" => $body['date'],
-                "timeslot" => $result['timeslot'],
-                "registrationNumber" => $body["vehicle_reg_no"]
-            ]));
-
-            try {
-
-                $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
-
-                $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
-//                echo "$emailHtmlContent";
-                $sendToEmail = $result['email'];
-                $sendToName = $result['name'];
-
-                EmailClient::sendEmail(
-                    receiverEmail: $sendToEmail,
-                    receiverName: $sendToName,
-                    subject: "Appointment Confirmation",
-                    htmlContent: $emailHtmlContent,
-                    templateLess: true
-                );
-
-            } catch (Exception $e) {
-                var_dump($e->getMessage());
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => $result
+                ]);
             }
 
+            if (is_array($result)) {
+                $options = new QROptions(
+                    [
+                        'eccLevel' => QRCode::ECC_L,
+                        'outputType' => QRCode::OUTPUT_IMAGE_JPG,
+                        'version' => 5,
+                    ]
+                );
 
-            $res->setStatusCode(code: 201);
-            return $res->json([
-                "success" => "Appointment created successfully"
+                $qrcode = (new QRCode($options))->render(json_encode([
+                    "date" => $body['date'],
+                    "timeslot" => $result['timeslot'],
+                    "registrationNumber" => $body["vehicle_reg_no"]
+                ]));
+
+                try {
+
+                    $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
+
+                    $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
+//                echo "$emailHtmlContent";
+                    $sendToEmail = $result['email'];
+                    $sendToName = $result['name'];
+
+                    EmailClient::sendEmail(
+                        receiverEmail: $sendToEmail,
+                        receiverName: $sendToName,
+                        subject: "Appointment Confirmation",
+                        htmlContent: $emailHtmlContent,
+                        templateLess: true
+                    );
+
+                } catch (Exception $e) {
+                    var_dump($e->getMessage());
+                }
+
+
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Appointment created successfully"
+                ]);
+            }
+
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
             ]);
         }
 
-        return $res->render("500", "error", [
-            "error" => "Something went wrong. Please try again later."
+        $res->setStatusCode(code: 401);
+        return $res->json([
+            "message" => "Unauthorized"
         ]);
     }
 
@@ -322,6 +330,9 @@ class AppointmentsController
         return $res->redirect(path: "/login");
     }
 
+    /**
+     * @throws JsonException
+     */
     public function officeUpdateAppointment(Request $req, Response $res): string
     {
         $body = $req->body();
@@ -348,6 +359,100 @@ class AppointmentsController
                 "success" => "Appointment updated successfully"
             ]);
         }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getHolidays(Request $req, Response $res): string
+    {
+        $holidayModel = new Holiday();
+        $holidays = $holidayModel->getHolidays();
+
+        if (is_string($holidays) || !$holidays) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            "holidays" => $holidays,
+            "message" => "Holidays fetched successfully"
+        ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function createAppointmentByCustomer(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
+
+            $customerId = $req->session->get("user_id");
+            $body = $req->body();
+            $appointment = new Appointment($body);
+            $result = $appointment->customerCreateAppointment(customerId: $customerId);
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => $result
+                ]);
+            }
+
+            if (is_array($result)) {
+                $options = new QROptions(
+                    [
+                        'eccLevel' => QRCode::ECC_L,
+                        'outputType' => QRCode::OUTPUT_IMAGE_JPG,
+                        'version' => 5,
+                    ]
+                );
+
+                $qrcode = (new QRCode($options))->render(json_encode([
+                    "date" => $body['date'],
+                    "timeslot" => $result['timeslot'],
+                    "registrationNumber" => $body["vehicle_reg_no"]
+                ]));
+
+                try {
+
+                    $qrCodeURL = S3Uploader::saveDataURLFile(dataURL: $qrcode, innerDir: "appointments/qr-codes");
+
+                    $emailHtmlContent = EmailTemplates::appointmentConfirmationTemplate(imageUrl: $qrCodeURL, date: $body['date'], timeslot: $result['timeslot']);
+//                echo "$emailHtmlContent";
+                    $sendToEmail = $result['email'];
+                    $sendToName = $result['name'];
+
+                    EmailClient::sendEmail(
+                        receiverEmail: $sendToEmail,
+                        receiverName: $sendToName,
+                        subject: "Appointment Confirmation",
+                        htmlContent: $emailHtmlContent,
+                        templateLess: true
+                    );
+
+                } catch (Exception $e) {
+                    var_dump($e->getMessage());
+                }
+
+
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Appointment created successfully"
+                ]);
+            }
+
+            return $res->render("500", "error", [
+                "error" => "Something went wrong. Please try again later."
+            ]);
+        }
+
+        $res->setStatusCode(code: 401);
+        return $res->json([
+            "message" => "Unauthorized"
+        ]);
     }
 }
 

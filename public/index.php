@@ -96,15 +96,17 @@ if (!$isInternal) {
     $app->router->get(path: "/dashboard/orders", callback: [OrdersController::class, 'getCustomerDashboardOrdersPage']);
     $app->router->get(path: "/dashboard/appointments", callback: [AppointmentsController::class, 'getAppointmentsPageForCustomer']);
     $app->router->get(path: "/dashboard/services", callback: [ServicesController::class, 'geOngoingServicesForCustomerPage']);
+    $app->router->get(path: "/vehicles/for-appointment", callback: [VehiclesController::class, 'getVehicleNameListForCustomer']);
+    $app->router->get(path: "/holidays", callback: [AppointmentsController::class, 'getHolidays']);
+    $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);
+    $app->router->post(path: "/appointments/create-by-customer", callback:[AppointmentsController::class, 'createAppointmentByCustomer']);
 
 //    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
 if ($isInternal) {
 
-    $app->router->get("/", function (\app\core\Request $req, \app\core\Response $res) {
-        return $res->render(view: "temp", layout: "plain");
-    });
+    $app->router->get("/", callback: [DashboardController::class, 'getDashboardIndexPage']);
 
 // definitive employee routes
     $app->router->get(path: "/login", callback: [AuthenticationController::class, 'getEmployeeLoginPage']);
@@ -127,6 +129,7 @@ if ($isInternal) {
     $app->router->get(path: "/jobs/customer-info", callback: [JobsController::class, 'getCustomerDetailsForJob']);
     $app->router->get(path: "/jobs/product-info", callback: [JobsController::class, 'getProductsForJob']);
     $app->router->get(path: "/jobs/service-info", callback: [JobsController::class, 'getServicesForJob']);
+    $app->router->get(path: "/holidays", callback: [AppointmentsController::class, 'getHolidays']);
 
 // foreman routes
     // $app->router->get(path: "/foreman-dashboard/overview", callback: [DashboardController::class, 'getForemanDashboardOverview']);
