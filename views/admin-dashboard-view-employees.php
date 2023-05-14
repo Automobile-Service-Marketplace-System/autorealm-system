@@ -7,7 +7,7 @@ use app\utils\DevOnly;
  * @var int $total
  * @var string $searchTermName
  * @var string $searchTermId
- * @var string $employeeRole
+ * @var string $employeeJobRole
  * @var string $employeeStatus
  */
 
@@ -56,13 +56,13 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
                     </div>
                     <div class="form-item form-item--no-label">
                         <select name="role" id="dashboard-order-status-filter">
-                            <option value="all" <?php if($employeeRole=='all') echo 'selected';?>>All</option>
-                            <option value="admin" <?php if($employeeRole=='admin') echo 'selected';?>>Admin</option>
-                            <option value="security_officer" <?php if($employeeRole=='security_officer') echo 'selected';?>>Security Officer</option>
-                            <option value="technician" <?php if($employeeRole=='technician') echo 'selected';?>>Technician</option>
-                            <option value="foreman" <?php if($employeeRole=='foreman') echo 'selected';?>>Foreman</option>
-                            <option value="office_staff_member" <?php if($employeeRole=='office_staff_member') echo 'selected';?>>Office Staff Member</option>
-                            <option value="stock_manager" <?php if($employeeRole=='stock_manager') echo 'selected';?>>Stock Manager</option>
+                            <option value="all" <?php if($employeeJobRole=='all') echo 'selected';?>>All</option>
+                            <option value="admin" <?php if($employeeJobRole=='admin') echo 'selected';?>>Admin</option>
+                            <option value="security_officer" <?php if($employeeJobRole=='security_officer') echo 'selected';?>>Security Officer</option>
+                            <option value="technician" <?php if($employeeJobRole=='technician') echo 'selected';?>>Technician</option>
+                            <option value="foreman" <?php if($employeeJobRole=='foreman') echo 'selected';?>>Foreman</option>
+                            <option value="office_staff_member" <?php if($employeeJobRole=='office_staff_member') echo 'selected';?>>Office Staff Member</option>
+                            <option value="stock_manager" <?php if($employeeJobRole=='stock_manager') echo 'selected';?>>Stock Manager</option>
                         </select>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> employees
         <?php 
             foreach(range(1, ceil($total / $limit)) as $i){
                 $activePage = $i === (float)$page ? "pagination-item--active" : "";
-                echo "<a class='pagination-item $activePage' href='/employees?name=$searchTermName&id=$searchTermId&role=$employeeRole&status=$employeeStatus&page=$i&limit=$limit'> $i </a>";
+                echo "<a class='pagination-item $activePage' href='/employees?name=$searchTermName&id=$searchTermId&role=$employeeJobRole&status=$employeeStatus&page=$i&limit=$limit'> $i </a>";
             }
         ?>
     </div>
