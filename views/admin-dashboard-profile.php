@@ -3,7 +3,9 @@
  * @var object $admin
  */
 
+var_dump($admin);
 ?>
+
 
 <div class="employee-profile">
     <img src="<?php echo $admin->image ?>" alt="<?php echo $admin->f_name . ' ' . $admin->l_name . '\'s'; ?>">
@@ -51,14 +53,5 @@
             </span>
 
         </p>
-    </div>
-    <div class="employee-profile__actions">
-        <button class="btn btn--danger" id="edit-customer-password">
-            <i class="fa-solid fa-lock"></i>
-            Edit password</button>
-        <button class="btn btn--warning" id="edit-customer-profile">
-            <i class="fa-solid fa-pencil"></i>
-
-            Edit profile</button>
     </div>
 </div>

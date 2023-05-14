@@ -22,9 +22,11 @@ use app\utils\DevOnly;
                 <div class='admin-overview__container'>
                     <?php
                         foreach ($foremanJobs as $job) {
-                            $status = $job['status'];
-                            $count = $job['count'];
-                            echo "<br>$status: $count";
+                            if($job['status'] !== 'completed'){
+                                $status = $job['status'];
+                                $count = $job['count'];
+                                echo "<br>$status: $count";
+                            }
                         }
                     ?>
                 </div>

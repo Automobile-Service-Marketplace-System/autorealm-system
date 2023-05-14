@@ -193,7 +193,7 @@ class DashboardController
                     'title' => 'Profile',
                     'security-officer' => $securityOfficer,
                     'pageMainHeading' => 'Profile',
-                    'securityOfficerId' => $req->session->get("user_id"),
+                    'employeeId' => $req->session->get("user_id"),
                 ]);
             }
 

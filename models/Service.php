@@ -80,7 +80,7 @@ class Service
                 service_name as Name,
                 description as Description, 
                 (price / 100) as Price
-            FROM service $whereClause $limitClause $pageClause";
+            FROM service $whereClause order by servicecode DESC $limitClause $pageClause";
 
         $statement = $this->pdo->prepare($query);
 

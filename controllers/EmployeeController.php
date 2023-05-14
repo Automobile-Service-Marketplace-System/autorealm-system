@@ -77,7 +77,15 @@ class EmployeeController
                 "employees"=>$result['employees'],
                 'total' => $result['total'],
                 'limit' => $limit,
-                'page' => $page], layoutParams: [
+                'page' => $page,
+            
+                //pasing filter option
+                'searchTermName' => $searchTermName,
+                'searchTermId' => $searchTermId,
+                'employeeRole' => $employeeRole,
+                'employeeStatus' => $employeeStatus
+                
+                ] , layoutParams: [
                 'title' => 'Employees',
                 'pageMainHeading' => 'Employees',
                 'employeeId'=> $req->session->get("user_id")
