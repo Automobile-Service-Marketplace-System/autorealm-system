@@ -11,9 +11,9 @@ use app\utils\DevOnly;
  * @var string $employeeStatus
  */
 
-$noOfEmplyees = count($employees);
+$noOfEmployees = count($employees);
 $startNo = ($page - 1) * $limit + 1;
-$endNo = $startNo + $noOfEmplyees - 1;
+$endNo = $startNo + $noOfEmployees - 1;
 
 ?>
 
