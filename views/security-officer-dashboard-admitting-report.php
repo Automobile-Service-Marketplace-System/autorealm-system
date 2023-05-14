@@ -85,7 +85,6 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
         <br><p><b>Light</b></p>
             <div class="create-admitting-reports__topic">
                 <p>LF</p>
-            </div>
                 <?php 
                     FormSelectItem::render(
                         id: "light_lf",
@@ -115,8 +114,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['light_lf_description'] ?? null,
                     );
                 ?>
-        </div>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RF</p>         
                 <?php 
                     FormSelectItem::render(
@@ -147,7 +146,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['light_rf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>LR</p>
                 <?php 
                     FormSelectItem::render(
@@ -178,7 +178,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['light_lr_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RR</p>
                 <?php 
                     FormSelectItem::render(
@@ -209,8 +210,12 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['light_rr_description'] ?? null,
                     );
                 ?>
+            <div>
+        </div>
 
+        <div class="create-admitting-reports__section">
         <p><b><br>Seat</b></p>
+            <div class="create-admitting-reports__topic">
             <p>LF</p>
                 <?php 
                     FormSelectItem::render(
@@ -241,7 +246,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['seat_lf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RF</p>
                 <?php
                     FormSelectItem::render(
@@ -272,7 +278,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['seat_rf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>REAR</p>
                 <?php
                     FormSelectItem::render(
@@ -303,8 +310,12 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['seat_rear_description'] ?? null,
                     );
                 ?>
+            <div>
+        </div>
 
-         <p><b><br>Carpet</b></p>
+        <div class="create-admitting-reports__section">
+        <p><b><br>Carpet</b></p>
+            <div class="create-admitting-reports__topic">
             <p>LF</p>
                 <?php
                     FormSelectItem::render(
@@ -336,7 +347,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['carpet_lf_description'] ?? null,
                     );
                 ?>
-            
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RF</p>
                 <?php
                     FormSelectItem::render(
@@ -368,7 +380,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['carpet_rf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>REAR</p>
                 <?php
                     FormSelectItem::render(
@@ -401,9 +414,11 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     );
                 ?>
             </div>
+        </div>
 
-
+        <div class="create-admitting-reports__section">
         <p><b><br>Rim</b></p>
+            <div class="create-admitting-reports__topic">
             <p>LF</p>
                 <?php
                     FormSelectItem::render(
@@ -434,7 +449,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['rim_lf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RF</p>
                 <?php
                     FormSelectItem::render(
@@ -465,7 +481,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['rim_rf_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>LR</p>
                 <?php
                     FormSelectItem::render(
@@ -496,7 +513,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['rim_lr_description'] ?? null,
                     );
                 ?>
-
+            </div>
+            <div class="create-admitting-reports__topic">
             <p>RR</p>
                 <?php
                     FormSelectItem::render(
@@ -527,13 +545,14 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         value: $body['rim_rr_description'] ?? null,
                     );
                 ?>
+            </div>
+        </div>
 
-
-        <p><b>Current Fuel Level</b></p>
+        <div class="create-admitting-reports__section">
             <?php
                 FormSelectItem::render(
                     id: "current_fuel_level",
-                    label: "",
+                    label: "<b>Current Fuel Level</b>",
                     name: "current_fuel_level",
                     hasError: $hasCurrentFuelLevelError,
                     error: $hasCurrentFuelLevelError ? $errors['current_fuel_level'] : "",
@@ -557,57 +576,72 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     hasError: $hasCurrentFuelLevelDescriptionError,
                     error: $hasCurrentFuelLevelDescriptionError ? $errors['current_fuel_level_description'] : "",
                     value: $body['current_fuel_level_description'] ?? null,
+                ); ?>
+        </div>
+
+        <div class="create-admitting-reports__section">
+            <?php 
+                FormItem::render(
+                    id: "mileage",
+                    label: "<b>Mileage</b>",
+                    name: "mileage",
+                    type: "number",
+                    hasError:$hasMilageError,
+                    error:$hasMilageError ? $errors['mileage'] : "",
+                    value: $body['mileage'] ?? null,
                 );
+            ?>
+        </div>
 
+        <div class="create-admitting-reports__section">
+            <?php 
+                FormItem::render(
+                    id: "admitting_time",
+                    label: "<b><br>Admitting Time</b>",
+                    name: "admitting_time",
+                    type: "time",
+                    hasError:$hasAdmittingTimeError,
+                    error:$hasAdmittingTimeError ? $errors['admitting_time'] : "",
+                    value: $body['admitting_time'] ?? null,
+                );
+            ?>
+        </div>
 
-            FormItem::render(
-                id: "mileage",
-                label: "Mileage",
-                name: "mileage",
-                type: "number",
-                hasError:$hasMilageError,
-                error:$hasMilageError ? $errors['mileage'] : "",
-                value: $body['mileage'] ?? null,
-            );
+        <div class="create-admitting-reports__section">
+            <?php
+                FormTextareaItem::render(
+                    id: "customer_belongings",
+                    label: "<b>Customer Belongins</b>",
+                    name: "customer_belongings",
+                    type: "text",
+                    required: false,
+                    hasError:$hasCustomerBelongingsError,
+                    error:$hasCustomerBelongingsError ? $errors['customer_belongings'] : "",
+                    value: $body['customer_belongings'] ?? null,
+                );
+            ?>
+        </div>
 
-            FormItem::render(
-                id: "admitting_time",
-                label: "<b><br>Admitting Time</b>",
-                name: "admitting_time",
-                type: "time",
-                hasError:$hasAdmittingTimeError,
-                error:$hasAdmittingTimeError ? $errors['admitting_time'] : "",
-                value: $body['admitting_time'] ?? null,
-            );
+        <div class="create-admitting-reports__section">
+            <?php 
+                FormTextareaItem::render(
+                    id: "additional_note",
+                    label: "<b>Additional Note</b>",
+                    name: "additional_note",
+                    type: "text",
+                    required: false,
+                    hasError:$hasAdditionalNoteError,
+                    error:$hasAdditionalNoteError ? $errors['additional_note'] : "",
+                    value: $body['additional_note'] ?? null,
+                );
+            ?>
+        </div>
 
-            FormTextareaItem::render(
-                id: "customer_belongings",
-                label: "<b>Customer Belongins</b>",
-                name: "customer_belongings",
-                type: "text",
-                required: false,
-                hasError:$hasCustomerBelongingsError,
-                error:$hasCustomerBelongingsError ? $errors['customer_belongings'] : "",
-                value: $body['customer_belongings'] ?? null,
-            );
-
-            FormTextareaItem::render(
-                id: "additional_note",
-                label: "<b>Additional Note</b>",
-                name: "additional_note",
-                type: "text",
-                required: false,
-                hasError:$hasAdditionalNoteError,
-                error:$hasAdditionalNoteError ? $errors['additional_note'] : "",
-                value: $body['additional_note'] ?? null,
-            );
-        ?>
-
-        <p><b>Dashboard</b></p>
+        <div class="create-admitting-reports__section">
             <?php
                 FormSelectItem::render(
                     id: "dashboard",
-                    label: "",
+                    label: "<b>Dashboard</b>",
                     name: "dashboard",
                     hasError: $hasDashboardError,
                     error: $hasDashboardError ? $errors['dashboard'] : "",
@@ -620,7 +654,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                         "stained" => "Stained",
                     ],
                 );
-
+    
                 FormItem::render(
                     id: "dashboard_description",
                     label: "",
@@ -633,12 +667,14 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     value: $body['dashboard_description'] ?? null,
                 );
             ?>
+        </div>
 
-        <b>Windshield</b>
+        
+        <div class="create-admitting-reports__section">
             <?php
                 FormSelectItem::render(
                     id: "windshield",
-                    label: "",
+                    label: "<b>Windshield</b>",
                     name: "windshield",
                     hasError: $hasWindshieldError,
                     error: $hasWindshieldError ? $errors['windshield'] : "",
@@ -663,6 +699,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                     value: $body['windshield_description'] ?? null,
                 );
             ?>
+        </div>
 
         <br><div class="form-radio">
             <p><b>Toolkit</b></p>

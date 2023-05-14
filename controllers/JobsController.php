@@ -409,7 +409,11 @@ class JobsController
             $jobId = $jobCardModel->getJobIdByTechnicianId(technicianId: $userId);
 
             if (!$jobId || is_string($jobId)) {
-                return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", layoutParams: [
+                return $res->render(view: "technician-dashboard-assigned", layout: "technician-dashboard", pageParams: [
+                    "vehicleDetails" => null,
+                    "jobDetails" => null,
+                    "jobId" => null,
+                ], layoutParams: [
                     'title' => 'Current Job',
                     'technicianId' => $req->session->get("user_id"),
                 ]);

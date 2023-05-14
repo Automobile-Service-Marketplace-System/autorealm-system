@@ -112,13 +112,20 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
        href="<?= $hasPreviousPageHref ?>">
         <i class="fa-solid fa-chevron-left"></i>
     </a>
-    <?php
 
-    foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-        echo "<a class='dashboard-pagination-item $isActive' href='/services?name=$searchTermName&code=$searchTermCode&status=$serviceStatus&page=$i&limit=$limit'>$i</a>";
-    }
-    ?>
+    <?php if($total>0){ ?>
+        <div class="pagination-container"> <?php
+            foreach (range(1, ceil($total / $limit)) as $i) {
+                $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+                echo "<a class='dashboard-pagination-item $isActive' href='/services?name=$searchTermName&code=$searchTermCode&status=$serviceStatus&page=$i&limit=$limit'>$i</a>";
+            } ?>
+        </div>
+
+        <?php }
+        else{
+            echo "<div id='view-no-data-pagination'>Data are not available</div>";
+        } ?>
+        
     <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
         <i class="fa-solid fa-chevron-right"></i>
     </a>
