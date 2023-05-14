@@ -183,9 +183,9 @@ if (analyticFilterContainer) {
 
                     const revenues = resData.data.map(item => item.revenue)
 
-                    // console.log(resData.data)
-                    // console.log(yearMonthLabels)
-                    // console.log(revenues)
+                    console.log(resData.data)
+                    console.log(yearMonthLabels)
+                    console.log(revenues)
 
                     //to get the total sum
                     let revSum = 0;

@@ -3,12 +3,17 @@
  * @var object $customer
  */
 
+
 ?>
 
 <div class="customer-profile">
 
     <img src="<?php echo $customer->image ?>" alt="<?php echo $customer->f_name . ' ' . $customer->l_name . '\'s'; ?>">
-    <div class="customer-profile__info">
+    <div class='customer-profile__info' id='customer-profile--info'
+                            data-cusFname='<?= $customer->f_name ?>'
+                            data-cusLname='<?= $customer->l_name ?>'
+                            data-cusAddress='<?= $customer->address ?>'
+    >
         <p>
             <strong>
                 First name
