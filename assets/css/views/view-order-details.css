@@ -32,6 +32,8 @@
 /*    grid-column: 1 / 3;*/
 /*}*/
 
+
+
 .item-summery-title{
     font-weight: bold;
 
@@ -152,4 +154,24 @@
 .cus-st-col{
     background-color: rgba(0, 83, 243, 0.25) !important;
     color: var(--color-info);
+}
+
+
+/*all orders page*/
+
+.order-filtering-and-sort{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-filters__dropdown--active {
+    height: 215px !important;
+}
+
+.order-filter-search-items{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
 }

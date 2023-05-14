@@ -3,21 +3,26 @@
  * @var string $jobId
  * @var array $suggestions
  * @var array $vehicleDetails
+ * @var array $inspectionReport
  */
+
+$isDraft = $inspectionReport ? ($inspectionReport['is_draft'] == 1 ? "Finish the drafted report" : "Update the inspection report") : "Create inspection report for this job";
+
+
 ?>
 
 <ul class="job-vehicle-details">
     <li>
         <strong>Vehicle:</strong>
-        <?php  echo $vehicleDetails['vehicle_name']  ?>
+        <?php echo $vehicleDetails['vehicle_name'] ?>
     </li>
     <li>
         <strong>Reg No:</strong>
-        <?php echo $vehicleDetails['reg_no']  ?>
+        <?php echo $vehicleDetails['reg_no'] ?>
     </li>
     <li>
         <strong>Customer:</strong>
-        <?php echo $vehicleDetails['customer_name']  ?>
+        <?php echo $vehicleDetails['customer_name'] ?>
     </li>
 </ul>
 
@@ -25,11 +30,11 @@
     <li>
         <a href="/inspection-reports/create?job_id=<?php echo $jobId; ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            Create Inspection report for this job
+            <?= $isDraft ?>
         </a>
     </li>
     <li>
-        <a href="/all-jobs?vehicle=QL 9904">
+        <a href="/all-jobs?vehicle_reg_no=<?= $vehicleDetails['reg_no'] ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View previous jobs for this vehicle
         </a>
@@ -76,4 +81,33 @@ if (empty($suggestions)) {
     echo "</div>";
 }
 ?>
+<?php if($isDraft !== "Create inspection report for this job") { ?>
 
+<form action="/jobs/start?id=<?= $jobId ?>" method="post" id="start-job-form">
+    <h2 class='suggestions-heading'><i class='fa-solid fa-box'></i>Selected products</h2>
+    <section class="create-job__products">
+        <button class="create-job__products-item create-job__products-item--new" type="button">
+            <i class="fa-solid fa-plus"></i>
+            Manually add a product
+        </button>
+    </section>
+
+    <h2 class='suggestions-heading'><i class='fa-solid fa-wrench'></i>Selected services</h2>
+    <section class="create-job__services">
+        <button class="create-job__services-item create-job__services-item--new" type="button">
+            <i class="fa-solid fa-plus"></i>
+            Manually add a product
+        </button>
+    </section>
+
+
+    <h2 class='suggestions-heading'><i class="fa-solid fa-user"></i>Selected technicians</h2>
+    <section class="create-job__employees">
+    </section>
+    <div class="flex items-center justify-end gap-4 my-8">
+        <button class="btn" type="button" id="start-job-btn">Start job</button>
+        <button style="display: none" id="start-job-final-btn">Submit</button>
+    </div>
+</form>
+
+<?php } ?>

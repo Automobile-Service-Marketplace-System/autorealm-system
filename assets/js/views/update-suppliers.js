@@ -12,12 +12,12 @@ supplierUpdateButtons.forEach(function (btn){
     btn.addEventListener("click", function(){
         //console.log(btn.dataset)
 
-        const supplierId = btn.dataset.supplierid
-        const supplierName = btn.dataset.suppliername
-        const address = btn.dataset.address
-        const salesManager = btn.dataset.salesmanager
-        const email = btn.dataset.email
-        const regNo = btn.dataset.registrationno
+        const supplierId = btn.parentElement.dataset.supplierid
+        const supplierName = btn.parentElement.dataset.suppliername
+        const address = btn.parentElement.dataset.address
+        const salesManager = btn.parentElement.dataset.salesmanager
+        const email = btn.parentElement.dataset.email
+        const regNo = btn.parentElement.dataset.registrationno
 
         const supplierRow = btn.parentElement.parentElement.parentElement
 
@@ -48,16 +48,19 @@ supplierUpdateButtons.forEach(function (btn){
                         <div class="form-item">
                             <label for='name'>Supplier Name.<sup>*</sup></label>
                             <input type='text' name='name' id='name' placeholder='' required  value='${supplierInfo.supplierName}'   >
+                            <input style='display:none' type='text' name='old_name' id='old_name' value='${supplierInfo.supplierName}'   >
                          </div>
                 
                         <div class="form-item">
                             <label for='company_reg_no'>Business Registration No.<sup>*</sup></label>
                             <input type='text' name='company_reg_no' id='company_reg_no' placeholder='' required  value='${supplierInfo.regNo}'   >
+                            <input style='display:none' type='text' name='old_company_reg_no' id='old_company_reg_no' value='${supplierInfo.regNo}'   >
                         </div>
                         
                         <div class="form-item">
                             <label for='email'>Email.<sup>*</sup></label>
                             <input type='text' name='email' id='email' placeholder='' required  value='${supplierInfo.email}'   >
+                            <input style='display:none' type='text' name='old_email' id='old_email' value='${supplierInfo.email}'   >
                         </div>
                   
 
@@ -118,6 +121,12 @@ supplierUpdateButtons.forEach(function (btn){
 
         updateSupplierForm?.addEventListener('submit', async (e) =>{
             e.preventDefault();
+            if(updateSupplierForm.classList.contains("update-supplier-form--error")){
+                updateSupplierForm.querySelectorAll(".form-item").forEach((inputWrapper)=>{
+                    inputWrapper.classList.remove("form-item--error")
+                    inputWrapper.querySelector("small")?.remove()
+                })
+            }
             //console.log("Inside submit event listener")
             const formData = new FormData(e.target);
             try{
@@ -128,6 +137,7 @@ supplierUpdateButtons.forEach(function (btn){
 
                 })
                 if(result.status === 400) {
+                    updateSupplierForm?.classList.add("update-supplier-form--error");
                     const resultBody = await result.json()
                     for (const inputName in resultBody.errors) {
                         const inputWrapper = updateSupplierForm.querySelector(`#${inputName}`).parentElement
@@ -161,7 +171,16 @@ supplierUpdateButtons.forEach(function (btn){
                 })
             }
         })
-
+        updateSupplierForm?.addEventListener("reset", (e) => {
+            const formItems = updateSupplierForm.querySelectorAll(".form-item");
+            formItems.forEach((item) => {
+                item.classList.remove("form-item--error");
+                const errorElement = item.querySelector("small");
+                if (errorElement) {
+                    item.removeChild(errorElement);
+                }
+            });
+        });
 
     })
 })

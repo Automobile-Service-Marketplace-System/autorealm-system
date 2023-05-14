@@ -1,25 +1,11 @@
- #cancel-button{
-    margin-top: 1cm;
-    background-color: #e53030;
-    color: #fff;
-    border-color: #e53030;
-    width: 100px;
-    height: 50px;
-    border-radius: 8px;
-    margin-left: 2cm;
+.create-admitting-reports .form-item {
+    width:100% !important;
+    
 }
 
-#create-button{
-    margin-top: 1cm;
-    width: 100px;
-    height: 50px;
-    background: #6100FF;
-    border-color: #6100ff;
-    border-radius: 8px;
-    color: #fff;
-    margin-left: 1.5cm;
-    float: left;
-} 
+.create-admitting-reports-button{
+    margin:1cm;
+}
 
 .admitting-images{
     display: flex;
@@ -28,37 +14,15 @@
     margin: .5cm;
 }
 
-.create-admitting-report-btn{
-    display: flex;
-    gap: 10rem;
-    margin-left: 20rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-#create-btn, #cansel-btn{
-    width: 10rem;
-}
 
 .item-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-.description-grid{
-    margin-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
-#spare_wheel{
-    margin-left: 42rem;
-}
 
 .add-extra-image{
-    /* background-color:red; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,33 +63,31 @@
 
 .form-radio{
     display: flex;
-    gap: 2rem;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    /* width: 100vw; */
 }
 
-input[type='radio']:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -2px;
-    left: -1px;
-    position: relative;
-    background-color:white;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid blue;
+.admitting-report-add-images{
+    margin-top: 2rem;
 }
 
-input[type='radio']:checked:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -2px;
-    left: -1px;
-    position: relative;
-    background-color: blue;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid blue;
+.admitting-report-add-images-container{
+    margin: 1rem;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+#admitting-report-add-images__input{
+    margin-bottom: 1rem;
+}
+
+.create-admitting-reports__section{
+    margin-bottom: 1.25rem;
+}
+
+.create-admitting-reports__topic{
+    margin-top: .75rem;
 }

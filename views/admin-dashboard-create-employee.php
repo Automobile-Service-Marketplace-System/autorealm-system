@@ -27,23 +27,23 @@ $hasImageError = $hasErrors && isset($errors['image']);
         <br><b>Choose the account type</b>
         <div class="role-input">
             <div class="role-input-item">
-                <input type="radio" id="security-officer" name="job_role" value="security_officer">
+                <input type="radio" id="security-officer" name="job_role" value="security_officer" required>
                 <label for="security-officer">Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
+                <input type="radio" id="office-staff" name="job_role" value="office_staff_member" required>
                 <label for="office-staff">Office Staff</label>
-            </div>
+            </div> 
             <div class="role-input-item">
-                <input type="radio" id="foreman" name="job_role" value="foreman">
+                <input type="radio" id="foreman" name="job_role" value="foreman" required>
                 <label for="foreman">Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="technician" name="job_role" value="technician">
+                <input type="radio" id="technician" name="job_role" value="technician" required>
                 <label for="technician">Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="stock-manager" name="job_role" value="stock_manager">
+                <input type="radio" id="stock-manager" name="job_role" value="stock_manager" required>
                 <label for="stock-manager">Stock Manager</label>
 
             </div>
@@ -80,14 +80,14 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
                 <div class="form-input">
                     <?php
-                    FormItem::render(
-                        id: "fi",
-                        label: "Full Name with initials",
-                        name: "fi",
-                        hasError: $hasFIError,
-                        error: $hasFIError ? $errors['fi'] : "",
-                        value: $body['fi'] ?? null,
-                    );
+                    // FormItem::render(
+                    //     id: "fi",
+                    //     label: "Full Name with initials",
+                    //     name: "fi",
+                    //     hasError: $hasFIError,
+                    //     error: $hasFIError ? $errors['fi'] : "",
+                    //     value: $body['fi'] ?? null,
+                    // );
 
                     ?>
                 </div>
@@ -194,21 +194,10 @@ $hasImageError = $hasErrors && isset($errors['image']);
                 </div>
             
             </div>
-            <div class="part2">
-                <div class="form-input">
-                    <b>Photo</b>
-                    <input type="file" name="image">
-                </div>
-            </div>
-        </div>
-        <div class="create-reset-buttons">
-            <button type="reset" id="rst" class="btn1">Reset</button>
-            <button type="submit" id="sm" class="btn2">Create Account</button>
-            </div>
 
             <div class="form-input">
                 <b>Photo</b>
-                <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                <input type="file" name="image" accept="image/*" onchange="loadImage(event)" required>
                 <img id="image-preview">
                 <script>
                     function loadImage(event) {
@@ -224,8 +213,8 @@ $hasImageError = $hasErrors && isset($errors['image']);
             </div>
         </div>
         <div class="flex items-center justify-between my-4 ">
-            <button type="reset" id="rst" class="btn btn--danger">Reset</button>
-            <button type="submit" id="sm" class="btn">Create Account</button>
+            <button type="reset" class="btn btn--danger create-employee-reset-btn">Reset</button>
+            <button type="submit" class="btn">Create Account</button>
         </div>
     </form>
 </main>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use app\utils\FSUploader;
 use app\utils\Util;
 use Exception;
@@ -29,6 +30,36 @@ class Employee
 
         ]);
         return $stmt->fetchObject();
+    }
+
+    public function getForemanJobsData():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            COUNT(*) AS count, status FROM jobcard 
+            WHERE start_date_time BETWEEN DATE_FORMAT(CURRENT_DATE, '%Y-%m-01') 
+            AND CURRENT_DATE GROUP BY status ORDER BY count DESC;");
+            $statement->execute();
+            $foremanJobs = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $foremanJobs;
+        }
+        catch(PDOException|Exception $e){
+            return "Failed to get data : " . $e->getMessage();
+        }
+    }
+
+    public function getEmployeeCount():array|string{
+        try{
+            $statement = $this->pdo->prepare("SELECT 
+            count(*) as count,
+            job_role as JobRole
+            from employee group by job_role;");
+            $statement->execute();
+            $employeeCount = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $employeeCount;
+        }
+        catch(PDOException|Exception $e) {
+            return "Failed to get data : " . $e->getMessage();
+        }
     }
 
     public function register(): bool|array
@@ -133,9 +164,9 @@ class Employee
             $errors['l_name'] = 'Last name must contain only letters.';
         }
 
-        if (trim($this->body['fi']) === '') {
-            $errors['fi'] = 'Full name with initials must not be empty.';
-        }
+        // if (trim($this->body['fi']) === '') {
+        //     $errors['fi'] = 'Full name with initials must not be empty.';
+        // }
 
         if (empty($this->body['dob'])) {
             $errors['dob'] = 'Date of birth must not be empty.';
@@ -234,11 +265,81 @@ class Employee
         return $errors;
     }
 
-    public function getEmployees(): array
+    public function getEmployees(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermName = null,
+        string $searchTermId = null,
+        array $options =[
+            'employeeStatus' => null,
+            'employeeRole' => null        
+        ]): array|string
     {
+        $whereClause = null;
+        $conditions =[];
 
-        return $this->pdo->query("
-            SELECT 
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch($option_key){
+                    case 'employeeRole':
+                        switch($option_value){
+                            case "all":
+                                // $conditions[] = "job_role = 'admin' OR job_role = 'security_officer' OR job_role = 'office_staff_member' OR job_role = 'foreman' OR job_role = 'technician' OR job_role = 'stock_manager'";
+                                break;
+                            case "admin":
+                                $conditions[] = "job_role = 'admin'";
+                                break;
+                            case "security_officer":
+                                $conditions[] = "job_role = 'security_officer'";
+                                break;
+                            case "office_staff_member":
+                                $conditions[] = "job_role = 'office_staff_member'";
+                                break;
+                            case "foreman":
+                                $conditions[] = "job_role = 'foreman'";
+                                break;
+                            case "technician":
+                                $conditions[] = "job_role = 'technician'";
+                                break;
+                            case "stock_manager":
+                                $conditions[] = "job_role = 'stock_manager'";
+                                break;
+                        }
+                        break;
+
+                    case 'employeeStatus':
+                        switch($option_value){
+                            case "active":
+                                $conditions[] = "is_active = TRUE";
+                                break;
+                            case "busy":
+                                $conditions[] = "is_active = FALSE";
+                                break;
+                        }
+                    break;
+                }
+            }
+        }
+
+        if(!empty($conditions)){
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        if($searchTermName !== null){
+            $whereClause = $whereClause ? $whereClause . " AND concat(f_name,' ',l_name)  LIKE :search_term_name" : " WHERE concat(f_name,' ',l_name) LIKE :search_term_name";
+        }
+
+        if($searchTermId !== null){
+            $whereClause = $whereClause ? $whereClause . " AND employee_id LIKE :search_term_id" : " WHERE employee_id LIKE :search_term_id";
+        }
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        
+        // var_dump(('Tharushi'));
+        // var_dump($whereClause);
+
+        $query =  "SELECT 
                 employee_id as ID,
                 f_name as 'First Name',
                 l_name as 'Last Name',
@@ -247,7 +348,47 @@ class Employee
                 job_role as JobType,
                 is_active as isActive,
                 image as Image
-            FROM employee")->fetchAll(PDO::FETCH_ASSOC);
+            FROM employee $whereClause order by employee_id DESC $limitClause $pageClause ";
+        
+        $statement = $this->pdo->prepare($query);
+
+        if($searchTermName !== null){
+            $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+        }
+
+        if($searchTermId !== null){
+            $statement->bindValue(":search_term_id", "%" . $searchTermId . "%", PDO::PARAM_STR);
+        }
+
+        try{
+
+            $statement->execute();
+            $employees = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare("
+                SELECT count(*) as total FROM employee $whereClause"
+            );
+
+            if($searchTermName !== null){
+                $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermId !== null){
+                $statement->bindValue(":search_term_id", "%" . $searchTermId . "%", PDO::PARAM_STR);
+            }
+
+            $statement -> execute();
+            $totalEmployees = $statement->fetch(PDO::FETCH_ASSOC);
+
+            return [
+                "total" => $totalEmployees['total'],
+                "employees" => $employees
+            ];
+
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
 
     }
 
@@ -332,9 +473,12 @@ class Employee
         return $errors;
     }
 
-    public function update(int $employee_id): bool|array
+    public function update(int $employee_id, string $new_job_role, string $before_job_role): bool|array
     {
         $errors = $this->validateUpdateFormBody();
+        var_dump($new_job_role);
+        var_dump($before_job_role);
+        var_dump($employee_id);
         if (empty($errors)) {
             try {
                 $imageUrl = FSUploader::upload(innerDir: "employee/profile-photos");
@@ -342,6 +486,179 @@ class Employee
                 $errors["image"] = $e->getMessage();
             }
             if (empty($errors)) {
+                if($new_job_role!== $before_job_role){
+                    if($before_job_role=='security_officer'){
+                        $query = "DELETE from securityofficer where employee_id= $employee_id";
+                        $statement = $this->pdo->prepare($query);
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                        if($new_job_role=='office_staff_member'){
+                            $query = "INSERT into officestaff (employee_id) values ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='foreman'){
+                            $query = "INSERT into foreman (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='technician'){
+                            $query = "INSERT into technician (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        else{
+                            $query = "INSERT into stockmanager (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                    }
+                    elseif($before_job_role=="office_staff_member"){
+                        $query = "DELETE from officestaff where employee_id= $employee_id";
+                        $statement = $this->pdo->prepare($query);
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                        if($new_job_role=='security_officer'){
+                            $query = "INSERT into securityofficer (employee_id) values ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='foreman'){
+                            $query = "INSERT into foreman (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='technician'){
+                            $query = "INSERT into technician (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        else{
+                            $query = "INSERT into stockmanager (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }                  
+                    }
+                    elseif($before_job_role=="foreman"){
+                        $query = "DELETE from foreman where employee_id= $employee_id";
+                        var_dump($query);
+                        $statement = $this->pdo->prepare($query);
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                        if($new_job_role=='office_staff_member'){
+                            $query = "INSERT into officestaff (employee_id) values ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='security_officer'){
+                            $query = "INSERT into securityofficer (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='technician'){
+                            $query = "INSERT into technician (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        else{
+                            $query = "INSERT into stockmanager (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }                  
+                    }
+                    elseif($before_job_role=="technician"){
+                        $query = "DELETE from technician where employee_id= $employee_id";
+                        $statement = $this->pdo->prepare($query);
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                        if($new_job_role=='office_staff_member'){
+                            $query = "INSERT into officestaff (employee_id) values ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='foreman'){
+                            $query = "INSERT into foreman (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='security_officer'){
+                            $query = "INSERT into securityofficer (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        else{
+                            $query = "INSERT into stockmanager (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }                      
+                    }
+                    elseif($before_job_role=="stock_manager"){
+                        $query = "DELETE from stockmanager where employee_id= $employee_id";
+                        $statement = $this->pdo->prepare($query);
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }
+                        if($new_job_role=='office_staff_member'){
+                            $query = "INSERT into officestaff (employee_id) values ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='foreman'){
+                            $query = "INSERT into foreman (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        elseif($new_job_role=='technician'){
+                            $query = "INSERT into technician (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        else{
+                            $query = "INSERT into securityofficer (employee_id) VALUES ($employee_id)";
+                            $statement = $this->pdo->prepare($query);
+                        }
+                        try{
+                            $statement->execute();
+                        }
+                        catch(PDOException $e){
+                            $errors["db_error"] = $e->getMessage();
+                            return $errors;
+                        }                 
+                    }
+                }
                 $query = "UPDATE employee SET
                     NIC = :nic,
                     f_name = :f_name, 
@@ -362,16 +679,42 @@ class Employee
                 $statement->bindValue(":email", $this->body["email"]);
                 $statement->bindValue(":job_role", $this->body["job_role"]);
                 $statement->bindValue(":contact_no", $this->body["contact_no"]);
-                $statement->bindValue(":employee_id", $this->body["employee_id"]);
+                $statement->bindValue(":employee_id", $employee_id);
                 $statement->bindValue(":image", $imageUrl ?? "");
-
+                try{
+                    $statement->execute();
+                    return $statement->rowCount() > 0;
+                }
+                catch(PDOException $e){
+                    $errors["db_error"] = $e->getMessage();
+                    return $errors;
+                }
             } else {
                 return $errors;
             }
-
         } 
         else {
             return $errors;
+        }
+    }
+
+    public function deleteEmployeeById(int $employee_id):bool|string
+
+    {
+        var_dump($employee_id);
+        try {
+            $query ="UPDATE employee SET is_active = FALSE WHERE employee_id = :employee_id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":employee_id", $employee_id);
+            $statement->execute();
+
+            return $statement->rowCount() > 0;
+        }
+        catch (PDOException $e){
+
+        var_dump($e->getMessage());
+            return "Error deleting Employee";
+
         }
     }
 }

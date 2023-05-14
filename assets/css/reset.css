@@ -223,3 +223,26 @@ video {
 [hidden] {
     display: none;
 }
+
+
+
+*::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}

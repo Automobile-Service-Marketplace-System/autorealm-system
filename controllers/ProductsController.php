@@ -10,6 +10,7 @@ use app\models\Brand;
 use app\models\Category;
 use app\models\Supplier;
 use app\models\Vehicle;
+use Exception;
 use JsonException;
 
 class ProductsController
@@ -19,18 +20,63 @@ class ProductsController
     {
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
 
+            //for pagination
+            $query = $req->query();
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit'] : 8;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+
+            //for search
+            $searchTerm = $query['q'] ?? null;
+            $categoryName = isset($query['category_name'])? ($query['category_name'] == "" ? "all" : $query['category_name']) : "all";
+            $brandName = isset($query['brand_name']) ? ($query['brand_name'] == "" ? "all" : $query['brand_name']) : "all";
+            $productType = isset($query['product_type']) ? ($query['product_type'] == "" ? "all" : $query['product_type']) : "all";
+            $quantityLevel = isset($query['quantity']) ? ($query['quantity'] == "" ? "all" : $query['quantity']) : "all";
+            $status = $query['status'] ?? "active";
+
+            //for the model
             $productModel = new Product();
             $brandModel = new Brand();
             $categoryModel = new Category();
             $modelModel = new Model();
-            $products = $productModel->getProducts();
+
+            $result = $productModel->getProducts(
+                count: $limit,
+                page: $page,
+                options: [
+                    'category_name' => $categoryName,
+                    'brand_name' => $brandName,
+                    'product_type' => $productType,
+                    'quantity_level' => $quantityLevel,
+                    'status' => $status,
+                ],
+                searchTerm: $searchTerm,
+
+            );
+
+            if (is_string($result)) {
+                var_dump($result);
+                return "";
+            }
 
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
-                    "products" => $products,
+
                     "brands" => $brandModel->getBrands(),
                     "categories" => $categoryModel->getCategories(),
                     "models" => $modelModel->getModels(),
+                    "limit" => $limit,
+                    "page" => $page,
+                    'products' => $result['products'],
+                    'total' => $result['total'],
+
+                    //passing filter options to pageParams
+                    'searchTerm' => $searchTerm,
+                    'categoryName' => $categoryName,
+                    'brandName' => $brandName,
+                    'productType' => $productType,
+                    'quantityLevel' => $quantityLevel,
+                    'status' => $status,
+
                 ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
@@ -40,7 +86,7 @@ class ProductsController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
-                    "products" => $products,
+                    'products' => $result['products'],
                     "brands" => $brandModel->getBrands(),
 
                     "categories" => $categoryModel->getCategories(),
@@ -108,7 +154,7 @@ class ProductsController
 
     public function AddProducts(Request $req, Response $res): string
     {
-        $body = $req->Body();
+        $body = $req->body();
         $product = new Product($body);
         $result = $product->addProducts();
 
@@ -172,6 +218,9 @@ class ProductsController
 
     }
 
+    /**
+     * @throws JsonException
+     */
     public function addSuppliers(Request $req, Response $res): string
     {
         $query = $req->query();
@@ -202,6 +251,10 @@ class ProductsController
             ]);
         }
 
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+
     }
 
 
@@ -209,6 +262,7 @@ class ProductsController
     public function updateProducts(Request $req, Response $res): string
     {
         $body = $req->body();
+//        return json_encode($body, JSON_THROW_ON_ERROR);
         $product = new Product($body);
         $result = $product->updateProduct();
 
@@ -227,7 +281,7 @@ class ProductsController
         }
 
         if ($result) {
-            $res->setStatusCode(code: 201);
+            $res->setStatusCode(code: 200);
             return $res->json([
                 "success" => "Product updated successfully"
             ]);
@@ -272,5 +326,197 @@ class ProductsController
 
         }
         return $res->redirect(path: "/login");
+    }
+
+    public function restockProducts(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+            $body = $req->body();
+            $product = new Product($body);
+            $result = $product->restockProduct();
+
+//            return json_encode($result, JSON_THROW_ON_ERROR);
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "errors" => $result
+                ]);
+            }
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "errors" => [
+                        "error" => "Internal Server Error"
+                    ]
+                ]);
+            }
+
+            if ($result) {
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Product restocked successfully"
+                ]);
+            }
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function addBrand(Request $req, Response $res): string
+    {
+        $body = $req->body();
+        $brand = new Brand($body);
+        $result = $brand->addBrand();
+
+        if (is_array($result)) {
+            $res->setStatusCode(code: 400);
+            return $res->json([
+                "errors" => $result
+            ]);
+        }
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "errors" => [
+                    "error" => "Internal Server Error"
+                ]
+            ]);
+        }
+
+        if ($result) {
+            $res->setStatusCode(code: 201);
+            return $res->json([
+                "success" => "Brand added successfully"
+            ]);
+        }
+
+        return $res->render("500", "error", [
+            "error" => "Something went wrong. Please try again later."
+        ]);
+
+    }
+
+    public function getBrandsAsJSON(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+
+            $brandModel = new Brand();
+            $brandsList = $brandModel->getBrandsOptList();
+
+            if (is_string($brandsList)) {
+                $res->setStatusCode(code: 500);
+                return $res->json(data: [
+                    "error" => "Internal Server Error"
+                ]);
+            } elseif (empty($brandsList)) {
+                $res->setStatusCode(code: 404);
+                return $res->json(data: [
+                    "message" => "No brands found"
+                ]);
+            }
+
+            $res->setStatusCode(code: 200);
+            return $res->json(data: $brandsList);
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    public function addModel(Request $req, Response $res): string
+    {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "stock_manager" || $req->session->get("user_role") === "admin")) {
+            $body = $req->body();
+            $model = new Model($body);
+            $result = $model->addModel();
+
+            if (is_array($result)) {
+                $res->setStatusCode(code: 400);
+                return $res->json([
+                    "errors" => $result
+                ]);
+            }
+
+            if (is_string($result)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "errors" => [
+                        "error" => "Internal Server Error"
+                    ]
+                ]);
+            }
+
+            if ($result) {
+                $res->setStatusCode(code: 201);
+                return $res->json([
+                    "success" => "Model added successfully"
+                ]);
+            }
+
+
+        }
+        return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getCategoriesBrandsModels(Request $req, Response $res): string
+    {
+
+        try {
+            $categoryModel = new Category();
+            $brandModel = new Brand();
+            $modelModel = new Model();
+            $res->setStatusCode(code: 200);
+            return $res->json([
+                "categories" => $categoryModel->getCategories(),
+                "brands" => $brandModel->getBrands(),
+                "models" => $modelModel->getModels()
+            ]);
+        } catch (Exception $e) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error"
+            ]);
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getProductSelectorProducts(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+        $categoryId = isset($query['categories']) ? (int)$query['categories'] : null;
+        $brandId = isset($query['brands']) ? (int)$query['brands'] : null;
+        $modelId = isset($query['models']) ? (int)$query['models'] : null;
+        $searchTerm = $query['q'] ?? null;
+
+
+        $productModel = new Product();
+        $result = $productModel->getProductsForProductSelector(count: $limit, page: $page, options: [
+            "category_id" => $categoryId,
+            "model_id" => $modelId,
+            "brand_id" => $brandId
+        ], searchTerm: $searchTerm);
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error",
+                "error" => $result
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            'products' => $result['products'],
+            'total' => $result['total'],
+            'limit' => $limit,
+            'page' => $page,
+        ]);
     }
 }

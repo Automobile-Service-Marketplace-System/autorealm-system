@@ -3,11 +3,14 @@ const employeeCards = document.querySelectorAll('.employee-card');
 
 employeeCards.forEach(card => {
     card.addEventListener('click', () => {
-        console.log(card.dataset)
         const employeeID = card.dataset.employeeid;
+        const employeeJobType = card.dataset.employeejobtype;
+        console.log(employeeJobType);
         `<input type="number" value="${employeeID}" name="employee_id" style="display: none" readonly> `
-        const url = `/employees/view?employee_id=${employeeID}`;
-        location.href = url;
+        if(employeeJobType !== "admin"){
+          const url = `/employees/view?employee_id=${employeeID}&job_type=${employeeJobType}`;
+          location.href = url;
+        }
      })
 })
 

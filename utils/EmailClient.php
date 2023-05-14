@@ -32,7 +32,7 @@ class EmailClient
     /**
      * @throws ApiException
      */
-    private function _sendEmail($receiverEmail, $receiverName = "", $subject = "", $htmlContent = "", $senderEmail = "security@autorealm.lk", $params = []): void
+    private function _sendEmail(string $receiverEmail, string $receiverName = "", string $subject = "", string $htmlContent = "", string $senderEmail = "security@autorealm.lk", $params = [], bool $templateLess = false): void
     {
         $sendEmailObject = new SendSmtpEmail();
         $sendEmailObject->setSubject($subject);
@@ -41,9 +41,13 @@ class EmailClient
         }
         $sendEmailObject->setSender(new SendSmtpEmailSender(["email" => $senderEmail, "name" => "AutoRealm"]));
         $sendEmailObject->setTo([new SendSmtpEmailTo(["email" => $receiverEmail, "name" => $receiverName])]);
-        $sendEmailObject->setParams($params);
+        if(!empty($params)) {
+            $sendEmailObject->setParams($params);
+        }
 //        set template id
-        $sendEmailObject->setTemplateId(templateId: 1);
+        if (!$templateLess) {
+            $sendEmailObject->setTemplateId(templateId: 1);
+        }
 
         self::$api->sendTransacEmail($sendEmailObject);
 
@@ -61,8 +65,8 @@ class EmailClient
     /**
      * @throws ApiException
      */
-    public static function sendEmail($receiverEmail, $receiverName = "", $subject = "", $htmlContent = "", $senderEmail = "security@autorealm.lk", $params = []): void
+    public static function sendEmail(string $receiverEmail, string $receiverName = "", string $subject = "", string $htmlContent = "", string $senderEmail = "security@autorealm.lk", array $params = [], bool $templateLess = false): void
     {
-        self::getInstance()->_sendEmail($receiverEmail, $receiverName, $subject, $htmlContent, $senderEmail, $params);
+        self::getInstance()->_sendEmail($receiverEmail, $receiverName, $subject, $htmlContent, $senderEmail, $params, $templateLess);
     }
 }

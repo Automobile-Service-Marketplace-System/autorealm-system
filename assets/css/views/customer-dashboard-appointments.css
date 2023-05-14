@@ -5,6 +5,19 @@
     margin-top: 1rem;
 }
 
+.appointments-container--empty {
+    height: calc(100vh - 300px);
+    align-items: center;
+    justify-content: center;
+}
+
+
+.appointments-container--empty p {
+    font-size: 3rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
 
 .appointments-vehicle {
     display: flex;
@@ -43,7 +56,7 @@
 
 .appointment-card__header {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
     gap: 1rem;
 }
@@ -60,9 +73,19 @@
 }
 
 .appointment-card__header p.due:last-child {
+    align-items: flex-end !important;
+    background-color: rgba(var(--success), 0.3);
+    color: var(--color-success);
+}
+
+.due--warning {
+    background-color: rgba(var(--warning), 0.3);
+    color: var(--color-warning);
+}
+
+.due--danger {
     background-color: rgba(var(--danger), 0.3);
     color: var(--color-danger);
-
 }
 
 .appointment-items {
@@ -92,7 +115,8 @@
 
 .appointment-card__info-date {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     gap: 1rem;
 }
 
@@ -104,7 +128,7 @@
     font-weight: bold;
 }
 
-.item-toggle  {
+.item-toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;

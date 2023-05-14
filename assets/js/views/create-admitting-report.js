@@ -1,22 +1,37 @@
-// const addImage = document.querySelector("#more-image")
+import { htmlToElement } from "../utils";
 
-// if(addImage) {
-//     const imageInput = document.querySelector("#image-input");
-//     addImage?.addEventListener("click", () => {
-//         imageInput.click();
-//     })
+const admittingReportAddImages = document.querySelector(
+  ".admitting-report-add-images"
+);
+const admittingReportAdImagesContainer = document.querySelector(
+  ".admitting-report-add-images-container"
+);
 
-//     imageInput?.addEventListener("change", async (e) => {
-    
-//         const files = e.target.files;
-//         const image = files[0];
-//         console.log(image);
-//         const dataReader = new FileReader();
-//         dataReader.readAsDataURL(image);
-//         dataReader.onload = (e) => {
-//             addImage.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${e.target.result})`;
-//             const cameraIcon = document.querySelector("#more-image svg")
-//             cameraIcon.style.color = "var(--color-white)";
-//         }
-//     })
-// }
+const admittingReportAddImagesInput = document.querySelector(
+  "#admitting-report-add-images__input"
+);
+
+let index = 1;
+
+admittingReportAddImagesInput?.addEventListener("change", () => {
+  // console.log(admittingReportAddImagesInput.files[0]);
+  admittingReportAdImagesContainer.querySelectorAll("div").forEach((el)=>
+  {
+    el.remove();
+  })
+
+  if ( admittingReportAddImagesInput.files && admittingReportAddImagesInput.files.length > 0) {
+    Array.from(admittingReportAddImagesInput.files).forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        const dataUrl = reader.result;
+        const element = htmlToElement(
+          `<div> <img src="${dataUrl}" > <input type> </div>`,
+
+        );
+        admittingReportAdImagesContainer.appendChild(element);
+      };
+    });
+  }
+});

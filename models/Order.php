@@ -20,9 +20,113 @@ class Order
         $this->body = $body;
     }
 
-    public function getOrders(): array
+    public function getOrders(
+        int|null $count = null,
+        int|null $page = 1,
+        string   $searchTermCustomer = null,
+        string   $searchTermOrder = null,
+        array    $options = [
+            'status' => null,
+            'order_date' => null,
+        ]
+    ): array|string
+
     {
-        return $this->pdo->query(
+//        DevOnly::prettyEcho($options);
+//        var_dump($searchTermCustomer);
+//        var_dump($searchTermOrder);
+        //number of rows
+
+        $whereClause = null;
+        $conditions = [];
+        $dateFrom = null;
+        $dateTo = null;
+
+        foreach ($options as $option_key => $option_value) {
+            if ($option_value !== null) {
+                switch ($option_key) {
+                    case "status":
+                        switch ($option_value) {
+                            case "all":
+                                $conditions[] = "o.status != 'Unpaid'";
+                                break;
+                            case "Not Prepared":
+                                $conditions[] = "o.status = 'Paid'";
+                                break;
+                            case "Prepared":
+                                $conditions[] = "o.status = 'Prepared'";
+                                break;
+                            case "Delivery":
+                                $conditions[] = "o.status = 'Delivery'";
+                                break;
+                            case "CourierConfirmed":
+                                $conditions[] = "o.status = 'CourierConfirmed'";
+                                break;
+                            case "CustomerConfirmed":
+                                $conditions[] = "o.status = 'CustomerConfirmed'";
+                                break;
+
+                        }
+                        break;
+                    case "order_date":
+                        switch ($option_value) {
+                            case 'all':
+                                break;
+                            case 'Today':
+                                $dateFrom = date('Y-m-d 00:00:00');
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Yesterday':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('yesterday'));
+                                $dateTo = date('Y-m-d 23:59:59', strtotime('yesterday'));
+                                break;
+                            case 'Last7':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-6 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last30':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-29 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+                            case 'Last90Days':
+                                $dateFrom = date('Y-m-d 00:00:00', strtotime('-89 days'));
+                                $dateTo = date('Y-m-d 23:59:59');
+                                break;
+
+                        }
+                        break;
+
+                }
+            }
+        }
+
+        if (isset($dateTo) && isset($dateFrom)) {
+            $conditions[] = "o.created_at BETWEEN :dateFrom AND :dateTo";
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+
+//        DevOnly::prettyEcho($conditions);
+//        DevOnly::prettyEcho($whereClause);
+
+        if ($searchTermCustomer !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND CONCAT(c.f_name,' ',c.l_name) LIKE :search_term_cus" : "WHERE c.f_name LIKE :search_term_cus AND o.status != 'Unpaid'";
+        }
+
+        if ($searchTermOrder !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND o.order_no LIKE :search_term_id" : "WHERE o.order_no LIKE :search_term_id AND o.status != 'Unpaid'";
+        }
+
+
+//        DevOnly::prettyEcho($whereClause);
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        //starting point of retrieving rows
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $query =
             "SELECT 
                           DISTINCT(o.order_no) as ID,
                           o.status as Status,
@@ -34,12 +138,72 @@ class Order
                      FROM `order` o
                           INNER JOIN customer c on o.customer_id = c.customer_id
                           INNER JOIN orderhasproduct h on o.order_no = h.order_no
-                          
+                    
+                     $whereClause
+                     
                      GROUP BY o.order_no, o.created_at
-                     ORDER BY o.created_at DESC "
+                     ORDER BY o.created_at DESC $limitClause $pageClause";
 
+        $stmt = $this->pdo->prepare($query);
 
-        )->fetchAll(PDO::FETCH_ASSOC);
+        if ($searchTermCustomer !== null) {
+            $stmt->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+        }
+
+        if ($searchTermOrder !== null) {
+            $stmt->bindValue(":search_term_id", "%" . $searchTermOrder . "%", PDO::PARAM_STR);
+        }
+
+        if (isset($dateTo) && isset($dateFrom)) {
+            $stmt->bindValue(":dateFrom", $dateFrom);
+            $stmt->bindValue(":dateTo", $dateTo);
+        }
+
+        try {
+            $stmt->execute();
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            //totQuery to get the total orders when filter is applied
+
+            $totQuery =
+                "SELECT 
+                          COUNT(DISTINCT(o.order_no)) as total
+                     FROM `order` o
+                          INNER JOIN customer c on o.customer_id = c.customer_id
+                          INNER JOIN orderhasproduct h on o.order_no = h.order_no
+                    
+                     $whereClause";
+
+            $totStmt = $this->pdo->prepare($totQuery);
+
+            if ($searchTermCustomer !== null) {
+                $totStmt->bindValue(":search_term_cus", "%" . $searchTermCustomer . "%", PDO::PARAM_STR);
+            }
+
+            if ($searchTermOrder !== null) {
+                $totStmt->bindValue(":search_term_id", "%" . $searchTermOrder . "%", PDO::PARAM_STR);
+            }
+
+            if (isset($dateTo) && isset($dateFrom)) {
+                $totStmt->bindValue(":dateFrom", $dateFrom);
+                $totStmt->bindValue(":dateTo", $dateTo);
+            }
+
+            $totStmt->execute();
+            $totalOrders = $totStmt->fetch(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+//
+//        $totalOrders = $this->pdo->query(
+//            "SELECT COUNT(*) as total FROM `order` WHERE status != 'Unpaid'  "
+//        )->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            "orders" => $orders,
+            "total" => $totalOrders['total'],
+        ];
     }
 
 
@@ -229,32 +393,177 @@ class Order
         return $orderDetails;
     }
 
-    public function updateOrderStatus(int $orderNo, string $prepDateTime, string $status): array|string
+    public function updateOrderStatus(int $orderNo, string $mode, string $status): bool|string|array
     {
+        $errors = $this->validateUpdateOrderStatusBody([
+            'mode' => $mode,
+            'status' => $status
+        ]);
+        if (!empty($errors)) {
+            return $errors;
+        }
+        $dateTime = $status ? date("Y-m-d H:i:s") : "NULL";
+        $columnName = "";
+        switch ($mode) {
+            case  "Prepared":
+                $columnName = "prepared_date_time";
+                break;
+            case "Delivery":
+                $columnName = "shipped_date_time";
+                break;
+            case "CourierConfirmed":
+                $columnName = "courier_confirmed_date_time";
+                break;
+        }
+        $mode = $status ? $mode : $this->getPreviousStatus($mode);
         try {
-            $stmt = $this->pdo->prepare("UPDATE `order` SET prepared_date_time = :prepDateTime, status = :status WHERE order_no = :order_no");
-            $stmt->bindValue(":status", $status);
-            $stmt->bindValue(":prepDateTime", $prepDateTime);
+            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
             $stmt->bindValue(":order_no", $orderNo);
             $stmt->execute();
             return $stmt->rowCount() > 0;
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             return "Order status update failed : " . $e->getMessage();
         }
-
     }
 
 
-    public function markAsPrepared(int $orderId) {
-        $stmt = $this->pdo->prepare("UPDATE `order` SET status = 'Prepared' WHERE order_no = :order_no");
-        $stmt->bindValue(":order_no", $orderId);
-        $stmt->execute();
-        return [
-            'message' => 'Order marked as prepared successfully.'
-        ];
+    private function getPreviousStatus(string $status): string
+    {
+        return match ($status) {
+            "Delivery" => "Prepared",
+            "CourierConfirmed" => "Delivery",
+            default => "Paid",
+        };
     }
 
+
+    private function validateUpdateOrderStatusBody(array $body): array
+    {
+        $errors = [];
+        if (!isset($body['mode'])) {
+            $errors[] = "Mode is required.";
+        }
+
+        if ($body['mode'] !== "Prepared" && $body['mode'] !== "Delivery" && $body['mode'] !== "CourierConfirmed") {
+            $errors[] = "Invalid mode.";
+        }
+
+        if (!isset($body['status'])) {
+            $errors[] = "Status is required.";
+        }
+        return $errors;
+    }
+
+    public function getOrderRevenueData(
+        string $from = null,
+        string $to = null
+    ): array|string
+    {
+        try {
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        SUM(ohp.quantity * ohp.price_at_order)/100 AS revenue
+                        FROM `order` o
+                        JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
+                        WHERE o.created_at BETWEEN :from AND :to
+                        GROUP BY ordered_year_month
+                        ORDER BY ordered_year_month;");
+            $statement->bindValue(":from", $from);
+            $statement->bindValue(":to", $to);
+            $statement->execute();
+            $revenueData = $statement->fetchAll(PDO::FETCH_ASSOC);
+//            var_dump($revenueData);
+
+
+            return [
+                'revenueData' => $revenueData
+            ];
+        } catch (PDOException|Exception $e) {
+            return "Failed to get order revenue data : " . $e->getMessage();
+        }
+    }
+
+    public function getOrderQuantityData(
+        string $from = null,
+        string $to = null
+    ): array|string
+    {
+        try {
+// query to get order count grouped by year and month
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        DATE_FORMAT(o.created_at, '%Y-%m-%d') AS ordered_year_month,
+                        COUNT(o.order_no) AS order_count,
+                        SUM(ohp.quantity) AS tot_quantity
+                        FROM `order` o
+                        JOIN orderhasproduct ohp ON o.order_no = ohp.order_no
+                        WHERE o.created_at BETWEEN :from AND :to
+                        GROUP BY ordered_year_month
+                        ORDER BY ordered_year_month;");
+
+            $statement->bindValue(":from", $from);
+            $statement->bindValue(":to", $to);
+            $statement->execute();
+            $orderCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $orderCountData;
+        } catch (PDOException|Exception $e) {
+            return "Failed to get order quantity data : " . $e->getMessage();
+        }
+    }
+
+    public function getProductQuantityData(
+        string $from = null,
+        string $to = null
+    ): array|string
+    {
+        try {
+            //query to get product count grouped by item_code
+            $statement = $this->pdo->prepare(
+                "SELECT 
+                        p.name as product_name,
+                        SUM(ohp.quantity) AS tot_quantity,
+                        SUM(ohp.price_at_order)/100 AS prod_rev
+                        FROM orderhasproduct ohp
+                        JOIN product p ON ohp.item_code = p.item_code
+                        JOIN `order` o ON ohp.order_no = o.order_no
+                        WHERE o.created_at BETWEEN :from AND :to
+
+                        GROUP BY p.item_code;");
+
+            $statement->bindValue(":from", $from);
+            $statement->bindValue(":to", $to);
+
+            $statement->execute();
+            $productCountData = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            //to get item_codes that are not in orderhasproduct table in a given range
+            $statement2 = $this->pdo->prepare("
+                SELECT item_code, name
+                FROM product
+                WHERE item_code NOT IN (
+                    SELECT ohp.item_code
+                    FROM orderhasproduct ohp
+                    INNER JOIN  `order` o ON  o.order_no = ohp.order_no
+                    WHERE o.created_at BETWEEN :from AND :to)
+            ");
+            $statement2->bindValue(":from", $from);
+            $statement2->bindValue(":to", $to);
+
+            $statement2->execute();
+            $notSoldProducts = $statement2->fetchAll(PDO::FETCH_ASSOC);
+
+
+            return [
+                'productCountData' => $productCountData,
+                'notSoldProducts' => $notSoldProducts
+            ];
+        } catch (PDOException|Exception $e) {
+            return "Failed to get product quantity data : " . $e->getMessage();
+        }
+
+
+    }
 
 
 }

@@ -21,6 +21,11 @@
 @import "components/tables.css";
 @import "components/notifiers.css";
 @import "components/modals.css";
+@import "components/product-selector.css";
+@import "components/calendar-view.css";
+@import "components/service-selector.css";
+@import "components/job-selector.css";
+@import "components/filter.css"; 
 
 /* importing css files for layouts */
 @import "layouts/customer-dashboard.css";
@@ -38,6 +43,7 @@
 @import "views/home.css";
 @import "views/jobs-page.css";
 @import "views/view-job.css";
+@import "views/create-job.css";
 @import "views/office-staff-login.css";
 @import "views/office-staff-add-customer.css";
 @import "views/office-staff-dashboard-get-customer-vehicle.css"; 
@@ -65,7 +71,6 @@
 @import "views/view-appointment.css";
 @import "views/view-reviews.css";
 @import "views/view-order-details.css";
-@import "views/view-admitting-reports.css";
 @import "views/office-staff-dashboard-generate-invoice-page.css";
 @import "views/cart-checkout.css";
 @import "views/all-jobs.css";
@@ -73,7 +78,19 @@
 @import "views/update-service.css";
 @import "views/update-products.css";
 @import "views/update-supplier.css";
-
+@import "views/restock-products.css";
+@import "views/add-models.css";
+@import "views/office-create-appointment.css";
+@import "views/office-update-appointment.css";
+@import "views/add-brand.css";
+@import "views/view-admitting-reports.css";
+@import "views/office-create-jobcard.css";
+@import "views/create-invoice.css";
+@import "views/view-all-jobs.css";
+@import "views/view-product.css";
+@import "views/stockmanager-analytics.css";
+@import "views/admin-analytics.css";
+@import "views/overview-card.css";
 
 body{
   font-family: "Nunito", sans-serif;

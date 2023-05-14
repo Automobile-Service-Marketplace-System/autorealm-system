@@ -56,7 +56,7 @@ class AuthenticationController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             return $res->render(view: 'customer-contact-verification', layoutParams: [
-                'title' => 'Verify your email & phone number',
+                'title' => 'Verify your email address',
                 'customerId' => $req->session->get("user_id"),
             ]);
         }
@@ -203,7 +203,7 @@ class AuthenticationController
             $req->session->set("is_authenticated", true);
             $req->session->set("user_id", $result->employee_id);
             $req->session->set("user_role", "office_staff_member");
-            return $res->redirect(path: "/office-staff-dashboard/profile");
+            return $res->redirect(path: "/profile");
         }
         {
             return $res->render(view: "500", layout: "error", pageParams: [

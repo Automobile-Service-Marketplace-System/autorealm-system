@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Database;
+use app\utils\DevOnly;
 use PDO;
 
 class InspectionCondition
@@ -17,25 +18,28 @@ class InspectionCondition
     }
 
 
-    public function getConditions() : array {
-        $rawConditions =  $this->pdo->query("SELECT * FROM inspectioncondition")->fetchAll(PDO::FETCH_ASSOC);
+    public function getConditions(): array
+    {
+        $rawConditions = $this->pdo->query("SELECT * FROM inspectioncondition")->fetchAll(PDO::FETCH_ASSOC);
 
         $conditions = [];
-        $conditions["condition_less"] = [];
+        $conditions["category_less"] = [];
         foreach ($rawConditions as $rawCondition) {
+
             $condition_parts = explode(" - ", $rawCondition['condition_name']);
 //            check id condition_parts array length is 2
             if (count($condition_parts) === 2) {
-                [$condition_name,$condition_section ] = $condition_parts;
-                if(!isset($conditions[$condition_section])) {
+                [$condition_name, $condition_section] = $condition_parts;
+                if (!isset($conditions[$condition_section])) {
                     $conditions[$condition_section] = [];
                 }
 
                 $conditions[$condition_section][] = $condition_name;
             } else {
-                $conditions["condition_less"][] = $condition_parts[0];
+                $conditions["category_less"][] = $condition_parts[0];
             }
         }
+
         return $conditions;
     }
 }

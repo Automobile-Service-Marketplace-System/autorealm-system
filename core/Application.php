@@ -68,7 +68,7 @@ class Application
                     exit;
                 case "foreman":
                     echo $this->response->render(view: "_error", layout: "foreman-dashboard", pageParams: $errorParams, layoutParams: [
-                        'employeeId' => $this->request->session->get('user_id'),
+                        'foremanId' => $this->request->session->get('user_id'),
                         "pageMainHeading" => "Error"
                     ]);
                     exit;
@@ -80,13 +80,13 @@ class Application
                     exit;
                 case "office_staff_member":
                     echo $this->response->render(view: "_error", layout: "office-staff-dashboard", pageParams: $errorParams, layoutParams: [
-                        'employeeId' => $this->request->session->get('user_id'),
+                        'officeStaffId' => $this->request->session->get('user_id'),
                         "pageMainHeading" => "Error"
                     ]);
                     exit;
                 case "technician":
                     echo $this->response->render(view: "_error", layout: "technician-dashboard", pageParams: $errorParams, layoutParams: [
-                        'employeeId' => $this->request->session->get('user_id'),
+                        'technicianId' => $this->request->session->get('user_id'),
                         "pageMainHeading" => "Error"
                     ]);
                     exit;

@@ -136,6 +136,7 @@
     display: none;
   }
 
+
   .brand > a > .brand__image {
     width: 2.5rem;
     height: 2.5rem;
@@ -151,4 +152,41 @@
     padding-inline: 1rem;
     padding-block: 0.25rem;
   }
+}
+
+
+/*hide header in print mode*/
+@media print {
+  .main-header {
+    display: none;
+  }
+
+    .main-header--home {
+        display: none;
+    }
+
+    .main-header--scrolled {
+        display: none;
+    }
+
+    .main-header__actions {
+        display: none;
+    }
+
+
+    .dropdown-nav {
+        display: none;
+    }
+
+    .main-nav {
+        display: none;
+    }
+
+    .main-header__actions {
+        display: none;
+    }
+
+    .employee-dashboard-container__content-header {
+        display: none;
+    }
 }

@@ -1,54 +1,56 @@
-.appointment-info{
+.appointment-info {
     display: flex;
 }
 
-.appointment-info p{
+.appointment-info p {
     width: 50%;
 }
 
-.office-staff-dashboard-create-jobCard-other-info{
+.office-staff-dashboard-create-jobCard-other-info {
     margin-top: 0.5rem;
     font-weight: bold;
 }
 
-.foreman-card{
-    margin-top: 0.5rem;
-    padding: 10px;
-    background-color: var(--color-white);
-    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s ease-in-out;
-    max-width: 200px;
-    cursor: pointer;
-}
+/*.foreman-card {*/
+/*    margin-top: 0.5rem;*/
+/*    padding: 10px;*/
+/*    background-color: var(--color-white);*/
+/*    box-shadow: 0 0.25rem 1rem rgba(var(--dark), 0.1);*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    gap: 1rem;*/
+/*    border-radius: 0.5rem;*/
+/*    transition: all 0.2s ease-in-out;*/
+/*    max-width: 100px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.foreman-card:hover{
-    transform: scale(1.01);
-    box-shadow: 0 0.35rem 1.25rem rgba(var(--dark), 0.2);
-}
+/*.foreman-card:hover {*/
+/*    transform: scale(1.01);*/
+/*    box-shadow: 0 0.35rem 1.25rem rgba(var(--dark), 0.2);*/
+/*}*/
 
-.foreman-card--active {
-    outline: 4px solid var(--color-primary);
-}
+/*.foreman-card--active {*/
+/*    outline: 4px solid var(--color-primary);*/
+/*}*/
 
-.foreman-card__header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
+/*.foreman-card__header {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 1rem;*/
+/*}*/
 
-.select-foreman-cards{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 1rem;
-}
 
-.foreman-card p,img {
-    text-align: center;
-    justify-content: center;
-}
+/*.foreman-card p, img {*/
+/*    text-align: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+
+/*.foreman-card img {*/
+/*    width: 100%;*/
+/*    aspect-ratio: 1;*/
+/*    object-fit: cover;*/
+/*}*/

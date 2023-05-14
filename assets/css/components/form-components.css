@@ -5,6 +5,10 @@
     gap: 0.5rem;
 }
 
+.form-item--no-label {
+    gap: 0;
+}
+
 .form-item > label > sup {
     color: var(--color-danger);
 }
@@ -30,7 +34,7 @@
     height: auto;
 }
 
-.form-item > input:focus, .form-item > select:focus, .form-item > textarea:focus {
+.form-item > input:focus, .form-item > select:focus, .form-item > textarea:focus, .form-item > datalist:focus ~ input {
     outline: var(--color-primary) 2px solid;
     border: 1px solid transparent;
 }
@@ -57,7 +61,8 @@ label {
 
 .form-item--icon-right svg {
     position: absolute;
-    top: 2.625rem;
+    top: 50%;
+    transform: translateY(-80%);
     left: 0.75rem;
     color: rgba(var(--black), 0.4);
 }

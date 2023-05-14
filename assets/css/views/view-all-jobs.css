@@ -1,0 +1,29 @@
+.jobs-filtering-and-sort {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.jobs-filters__dropdown--active {
+    height: 215px !important;
+}
+
+.job-filter-search-items {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+
+@media screen and (min-width: 768px) {
+    .job-filter-search-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .job-filter-search-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

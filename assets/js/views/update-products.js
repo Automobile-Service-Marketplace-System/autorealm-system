@@ -4,9 +4,9 @@ const productUpdateButtons = document.querySelectorAll(".update-product-btn")
 //console.log(productUpdateButtons)
 import {Modal} from '../components/Modal'
 import Notifier from "../components/Notifier";
-
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
+//
+// const urlSearchParams = new URLSearchParams(window.location.search);
+// const params = Object.fromEntries(urlSearchParams.entries());
 
 productUpdateButtons.forEach(function (btn) {
     //to add event listeners to every button
@@ -107,6 +107,7 @@ productUpdateButtons.forEach(function (btn) {
                             <div class="form-item">
                                 <label for='name'>Product Name<sup>*</sup></label>
                                 <input type='text' name='name' id='name' placeholder='' required  value='${productInfo.productName}'   >
+                                <input style="display: none" name='old_name' id="old_name" value='${productInfo.productName}'>
                             </div>
                             <div class="form-item">
                                 <label for='category'>Category<sup>*</sup></label>
@@ -136,7 +137,7 @@ productUpdateButtons.forEach(function (btn) {
                             </div>
                             <div class="form-item">
                                 <label for='price'>Selling Price<sup>*</sup></label>
-                                <input type='number' name='selling_price' id='price' placeholder='' required  value='${productInfo.price}'   >
+                                <input type='number' name='selling_price' id='selling_price' placeholder='' required  value='${productInfo.price}'   >
                             </div>
                             
                             <div class="form-item update-product-description">
@@ -195,36 +196,54 @@ productUpdateButtons.forEach(function (btn) {
         updateProductForm?.addEventListener('submit', async (e) =>{
             e.preventDefault();
             console.log("Inside submit event listiner")
+
+            //remove previous errors
+            if(updateProductForm.classList.contains("update-product-form--error")){
+                updateProductForm.querySelectorAll(".form-item").forEach((inputWrapper)=>{
+                    inputWrapper.classList.remove("form-item--error")
+                    inputWrapper.querySelector("small")?.remove()
+                })
+            }
             const formData = new FormData(e.target);
             try{
                 console.log("Inside try block")
+                // console.log(Object.fromEntries(formData.entries()))
                 const result = await fetch("/products/update", {
                     body: formData,
                     method: 'POST'
 
                 })
+
                 if(result.status === 400) {
                     const resultBody = await result.json()
+                    console.log(resultBody)
                     for (const inputName in resultBody.errors) {
-                        const inputWrapper = updateProductForm.querySelector(`#${inputName}`).parentElement
+                        const inputWrapper = updateProductForm.querySelector(
+                            `#${inputName}`).parentElement
                         inputWrapper.classList.add('form-item--error')
-                        const errorElement = htmlToElement(`<small>${resultBody.errors[inputName]}</small>`)
+                        const errorElement = htmlToElement(
+                            `<small>${resultBody.errors[inputName]}</small>`
+                        )
                         inputWrapper.appendChild(errorElement)
                     }
                 }
-                else if (result.status === 201) {
+                else if (result.status === 200) {
+                    Modal.close("update-product")
+                    Notifier.show({
+                        text: "Product updated successfully",
+                        type: "success",
+                        header: "Success",
+                    })
+                    setTimeout(() => {
+                        location.reload()
+                    }, 2000)
 
-                    // add success message to url search params
-                    window.location.search = new URLSearchParams({
-                        ...params,
-                        success: 'Product updated successfully'
-                    }).toString()
-                    location.reload()
+
                 }
 
                 else if(result.status === 500){
 
-                    const data = await result.text()
+                    const data = await result.json()
                     console.log(data);
                 }
             }
@@ -236,6 +255,17 @@ productUpdateButtons.forEach(function (btn) {
                     text: e.message
                 })
             }
+
+            updateProductForm?.addEventListener("reset", (e) => {
+                const formItems = updateProductForm.querySelectorAll(".form-item");
+                formItems.forEach((item) => {
+                    item.classList.remove("form-item--error");
+                    const errorElement = item.querySelector("small");
+                    if (errorElement) {
+                        item.removeChild(errorElement);
+                    }
+                });
+            });
         })
 
 

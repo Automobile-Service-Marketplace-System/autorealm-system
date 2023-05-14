@@ -46,8 +46,8 @@ mobileOtpInputs[0]?.addEventListener('paste', (e) => {
     handlePaste(e, 'mobile')
 })
 emailOtpInputs.forEach((emailOtpInput, index) => {
-    emailOtpInput.addEventListener('beforeinput', e => {
-        handleBeforeNormalInput(e, index, 'email')
+    emailOtpInput.addEventListener('beforeinput', async (e) => {
+        await handleBeforeNormalInput(e, index, 'email')
     })
     emailOtpInput.addEventListener('input', async (e) => {
         await handleNormalInput(e, index, 'email')
@@ -257,11 +257,11 @@ function completeStep(index) {
         verificationSteps[index].style.display = "none"
         verificationStepIndicators[0].classList.add("step-indicator--disabled")
         verificationStepIndicators[1].classList.remove("step-indicator--disabled")
-        if (index === 0) {
+        if (index === -1) {
             verificationSteps[1].classList.remove("verification__step--disabled")
             verificationSteps[1].classList.add("verification__step--active")
         } else {
-            window.location.href = "/dashboard"
+            window.location.href = "/dashboard/overview"
         }
     }, 300)
 }

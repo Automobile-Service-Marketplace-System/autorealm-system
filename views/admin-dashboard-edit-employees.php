@@ -1,4 +1,5 @@
 <?php
+use app\utils\DevOnly;
 /**
  * @var object $employee
  * @var array $errors
@@ -20,33 +21,39 @@ $hasImageError = $hasErrors && isset($errors['image']);
 
 
 $image = $employee->image ? $employee->image : "";
-
+// var_dump($employee->job_role);
 
 ?>
 
 <main class="update-employee">
-    <form action="/employees/edit?id=<?= $employee->employee_id ?>" method="post" enctype="multipart/form-data">
-        <p>Update the account of <?php echo $employee->f_name ?></p><br>
+    <form action="/employees/edit?id=<?= $employee->employee_id ?>&job_role=<?= $employee->job_role ?>" method="post" enctype="multipart/form-data">
         <b>Choose the account type</b>
         <div class="role-input">
+            <?php 
+                $is_security_officer = $employee->job_role === "security_officer" ? "checked" : "";
+                $is_office_staff_member = $employee->job_role === "office_staff_member" ? "checked" : "";
+                $is_foreman = $employee->job_role === "foreman" ? "checked" : "";
+                $is_technician = $employee->job_role === "technician" ? "checked" : "";
+                $is_stock_manager = $employee->job_role === "stock_manager" ? "checked" : "";
+            ?>
             <div class="role-input-item">
-                <input type="radio" id="security-officer" name="job_role" value="security_officer">
+                <input type="radio" id="security-officer" name="job_role" value="security_officer" <?= $is_security_officer?>>
                 <label for="security-officer">Security Officer</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="office-staff" name="job_role" value="office_staff_member">
+                <input type="radio" id="office-staff" name="job_role" value="office_staff_member" <?= $is_office_staff_member ?>>
                 <label for="office-staff">Office Staff</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="foreman" name="job_role" value="foreman">
+                <input type="radio" id="foreman" name="job_role" value="foreman" <?= $is_foreman ?>>
                 <label for="foreman">Foreman</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="technician" name="job_role" value="technician">
+                <input type="radio" id="technician" name="job_role" value="technician" <?= $is_technician ?>>
                 <label for="technician">Technician</label>
             </div>
             <div class="role-input-item">
-                <input type="radio" id="stock-manager" name="job_role" value="stock_manager">
+                <input type="radio" id="stock-manager" name="job_role" value="stock_manager" <?= $is_stock_manager ?>>
                 <label for="stock-manager">Stock Manager</label>
 
             </div>
@@ -107,7 +114,7 @@ $image = $employee->image ? $employee->image : "";
                             name: "nic",
                             hasError: $hasNICError,
                             error: $hasNICError ? $errors['nic'] : "",
-                            value: $employee->NIC ?? ($body['NIC'] ?? null),
+                            value: $employee->NIC ?? ($body['nic'] ?? null),
                             additionalAttributes: "pattern='^(\d{9}[xXvV]|\d{12})$'"
                         );
                         ?>
@@ -156,24 +163,27 @@ $image = $employee->image ? $employee->image : "";
             </div>
                 <div class="form-input">
                     <b>Photo</b>
-                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)" required>
                     <img id="image-preview-update" src="<?= $image ?>" style="object-fit: cover">
                     <script>
                         function loadImage(event) {
                             var file = event.target.files[0];
                             var reader = new FileReader();
-                            reader.readAsDataURL(file); 
+                            reader.readAsDataURL(file);
                             reader.onload = function() {
                                 var imagePreview = document.getElementById('image-preview-update');
                                 imagePreview.src = reader.result;
-                            };
+                                };
                         }
                     </script>      
                 </div>
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="reset" id='rst' class="btn">Cancel</button>
-            <button type="submit" id='sm' class="btn btn--warning" href=>Update</button>
+            <button type="reset" class="btn">Reset</button>
+            <div class="delete-update-btn">
+                <button type="button" id='delete-employee-btn' class="btn btn--danger" data-employeeid="<?= $employee->employee_id ?>">Delete</button>
+                <button type="submit" class="btn btn--warning" href=>Update</button>
+            </div>
         </div>
     </form>
 </main>

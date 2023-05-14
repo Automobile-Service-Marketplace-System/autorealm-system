@@ -15,7 +15,7 @@
 
 .reviews-row {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 1.5rem;
     margin-top: .5rem;
 }
@@ -41,7 +41,19 @@
     /*background-color: #3df58e;*/
 }
 
+.created-date-text{
+    grid-column: 7 / 8;
+    text-align: right;
+    /*background-color: #4699f6;*/
+}
+
 .review-titles {
     font-weight: bold;
 }
 
+
+/*for the filtering*/
+
+.review-filters__dropdown--active {
+    height: 215px !important;
+}

@@ -14,7 +14,10 @@ menuButtons.forEach((menuButton) => {
 });
 
 
+console.log(`Employee menu button: ${employeeMenuButton}`)
+
 employeeMenuButton?.addEventListener("click", () => {
+    console.log("clicked")
     employeeMenuButton?.classList.toggle("employee-menu-btn--active");
     if (window.innerWidth < 768) {
         if (employeeDashboardContainer?.classList.contains("employee-dashboard-container--close") || !employeeDashboardContainer?.classList.contains("employee-dashboard-container--open")) {

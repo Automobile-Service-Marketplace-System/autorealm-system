@@ -15,12 +15,40 @@ class ServicesController
     {
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "admin") {
 
-            $serviceModel = new Service();
-            $services = $serviceModel->getServices();
+            $query = $req->query();
 
+            //for search
+            $serachTermName = $query['name'] ?? null;
+            $serachTermCode = $query['code'] ?? null;
+            $serviceStatus = isset($query['status']) ? ($query['status'] == "" ? "active" : $query['status']) : "active";
+
+            //for pagination
+            $limit = (isset($query['limit']) && is_numeric($query['limit'])) ? (int)$query['limit']:5;
+            $page = (isset($query['page']) && is_numeric($query['page'])) ? (int)$query['page'] : 1;
+            $serviceModel = new Service();
+
+            $result = $serviceModel->getServices(
+                count: $limit, 
+                page: $page,
+                searchTermName : $serachTermName,
+                searchTermCode : $serachTermCode,
+                options: [
+                    'serviceStatus' => $serviceStatus,
+                ]
+            );
 
             return $res->render(view: "admin-dashboard-view-services", layout: "admin-dashboard", pageParams: [
-                "services" => $services], layoutParams: [
+                "services" => $result['services'],
+                'total'=> $result['total'],
+                'page' => $page,
+                'limit' => $limit,
+            
+                //pasing filter option
+                'searchTermName' => $serachTermName,
+                'searchTermCode' => $serachTermCode,
+                'serviceStatus' => $serviceStatus
+            
+            ], layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'Services',
                 'employeeId' => $req->session->get("user_id"),
@@ -181,5 +209,36 @@ class ServicesController
             }
         }
         return $res->redirect(path: "/login");
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getServiceSelectorServices(Request $req, Response $res): string
+    {
+        $query = $req->query();
+        $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+        $searchTerm = $query['q'] ?? null;
+
+
+        $serviceModel = new Service();
+        $result = $serviceModel->getServicesForServiceSelector(count: $limit, page: $page, searchTerm: $searchTerm);
+
+        if (is_string($result)) {
+            $res->setStatusCode(code: 500);
+            return $res->json([
+                "message" => "Internal Server Error",
+                "error" => $result
+            ]);
+        }
+
+        $res->setStatusCode(code: 200);
+        return $res->json([
+            'services' => $result['services'],
+            'total' => $result['total'],
+            'limit' => $limit,
+            'page' => $page,
+        ]);
     }
 }

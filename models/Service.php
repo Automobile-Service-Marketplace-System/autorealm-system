@@ -22,20 +22,111 @@ class Service
         $this->body = $body;
     }
 
-    public function getServices(): array
+    public function getServices(
+        int|null $count = null,
+        int|null $page = 1,
+        string $searchTermName = null,
+        string $searchTermCode = null,
+        array $options = [
+            'serviceStatus' => null,
+        ]
+        ): array|string
     {
-        return $this->pdo->query(
-            "SELECT 
-                        servicecode as ID,
-                        service_name as Name,
-                        description as Description, 
-                        price as Price
-                    FROM service WHERE is_discontinued = FALSE"
-        )->fetchAll(PDO::FETCH_ASSOC);
 
-    }
+        // var_dump($searchTermName);
+        // var_dump($searchTermCode);
+        // var_dump($options);
 
-    public function validateRegisterBody():array{
+        $whereClause = null;
+        $conditions = [];
+
+        foreach ($options as $option_key => $option_value){
+            if($option_value !== null){
+                switch ($option_key){
+                    case 'serviceStatus':
+                        switch ($option_value){
+                            case "active":
+                                $conditions[] = "is_discontinued = FALSE";
+                                break;
+                            case "discontinued":
+                                $conditions[] = "is_discontinued = TRUE";
+                        }
+                    break;
+                }
+            }
+        }
+
+        if (!empty($conditions)) {
+            $whereClause = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        // var_dump($whereClause);
+        
+        if ($searchTermName !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND service_name LIKE :search_term_name" : " WHERE service_name LIKE :search_term_name";
+        }
+
+        if ($searchTermCode !== null) {
+            $whereClause = $whereClause ? $whereClause . " AND servicecode LIKE :search_term_code" : " WHERE servicecode LIKE :search_term_code";
+        }
+        // var_dump($whereClause);
+
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        
+
+        $query = "SELECT 
+                servicecode as ID,
+                service_name as Name,
+                description as Description, 
+                (price / 100) as Price
+            FROM service $whereClause order by servicecode DESC $limitClause $pageClause";
+
+        $statement = $this->pdo->prepare($query);
+
+        if($searchTermName !== null){
+            $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+        }
+
+        if($searchTermCode !== null){
+            $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
+        }
+
+        try{
+            $statement->execute();
+            $services = $statement->fetchAll(PDO::FETCH_ASSOC);
+            
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM service $whereClause"
+            );
+
+            if($searchTermName !== null){
+                $statement->bindValue(":search_term_name", "%" . $searchTermName . "%", PDO::PARAM_STR);
+            }
+    
+            if($searchTermCode !== null){
+                $statement->bindValue(":search_term_code", "%" . $searchTermCode . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalServices = $statement->fetch(mode: PDO::FETCH_ASSOC);
+
+            return [
+                "services" => $services,
+                 "total" => $totalServices['total']
+            ];
+            
+        }
+        catch (PDOException $e) {
+            var_dump("there is an error");
+            return $e->getMessage();
+        }
+
+    } 
+
+
+    public function validateRegisterBody(): array
+    {
         $errors = [];
         if (trim($this->body['service_name']) === '') {
             $errors['service_name'] = 'Service name must not be empty.';
@@ -45,21 +136,21 @@ class Service
 
         if (trim($this->body['description']) === '') {
             $errors['description'] = 'Description must not be empty.';
-        } 
+        }
 
-        if(($this->body['price']<=0)){
+        if (($this->body['price'] <= 0)) {
             $errors['price'] = 'Price must not be empty or negative values.';
         }
         return $errors;
-    } 
+    }
 
 
     public function addServices(): bool|array|string
     {
         $errors = $this->validateRegisterBody();
 
-            if (empty($errors)) {
-                $query = "INSERT INTO service 
+        if (empty($errors)) {
+            $query = "INSERT INTO service 
                     (
                         price, service_name, description 
                     ) 
@@ -68,48 +159,48 @@ class Service
                     (
                         :price, :service_name, :description
                     )";
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":price", $this->body["price"]);
-                $statement->bindValue(":service_name", $this->body["service_name"]);
-                $statement->bindValue(":description", $this->body["description"]);
-                
-                try {
-                    $statement->execute();
-                    return true;
-                } catch (PDOException $e) {
-                    return $e->getMessage();
-                }
- 
-            } else {
-                return $errors;
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":price", $this->body["price"]*100);
+            $statement->bindValue(":service_name", $this->body["service_name"]);
+            $statement->bindValue(":description", $this->body["description"]);
+
+            try {
+                $statement->execute();
+                return true;
+            } catch (PDOException $e) {
+                return $e->getMessage();
             }
+
+        } else {
+            return $errors;
+        }
     }
 
     public function updateServices(): bool|array|string
     {
         $errors = $this->validateRegisterBody();
-            if (empty($errors)) {
-                $query = "UPDATE service SET 
+        if (empty($errors)) {
+            $query = "UPDATE service SET 
                         price = :price, 
                         service_name = :service_name, 
                         description = :description 
                     WHERE servicecode = :servicecode";
-                $statement = $this->pdo->prepare($query);
-                $statement->bindValue(":price", $this->body["price"]);
-                $statement->bindValue(":service_name", $this->body["service_name"]);
-                $statement->bindValue(":description", $this->body["description"]);
-                $statement->bindvalue(":servicecode", $this->body["servicecode"]);
-                
-                try {
-                    $statement->execute();
-                    return true;
-                } catch (PDOException $e) {
-                    return $e->getMessage();
-                }
- 
-            } else {
-                return $errors;
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":price", $this->body["price"]);
+            $statement->bindValue(":service_name", $this->body["service_name"]);
+            $statement->bindValue(":description", $this->body["description"]);
+            $statement->bindvalue(":servicecode", $this->body["servicecode"]);
+
+            try {
+                $statement->execute();
+                return true;
+            } catch (PDOException $e) {
+                return $e->getMessage();
             }
+
+        } else {
+            return $errors;
+        }
     }
 
     public function deleteServiceById(int $code): bool|string
@@ -121,6 +212,65 @@ class Service
             $statement->bindValue(":code", $code);
             $statement->execute();
             return $statement->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getServicesForServiceSelector(int|null $count, int|null $page, string|null $searchTerm = null): array|string
+    {
+        $limitClause = $count ? "LIMIT $count" : "";
+        $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
+        $whereClause = $searchTerm ? " WHERE service_name LIKE :search_term" : "";
+
+
+
+        try {
+            $query = "SELECT servicecode as Code, service_name as Name, description as Description, (price / 100) as Cost FROM service 
+                        $whereClause 
+                        ORDER BY servicecode $limitClause $pageClause";
+
+            $statement = $this->pdo->prepare($query);
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $services = $statement->fetchAll(mode: PDO::FETCH_ASSOC);
+
+            $statement = $this->pdo->prepare(
+                "SELECT COUNT(*) as total FROM service $whereClause"
+            );
+
+            if ($searchTerm !== null) {
+                $statement->bindValue(":search_term", "%" . $searchTerm . "%", PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $totalServices = $statement->fetch(mode: PDO::FETCH_ASSOC);
+            return [
+                "services" => $services,
+                "total" => $totalServices['total']
+            ];
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getServicesForJobSelector(int $jobId)
+    {
+
+        try {
+            $query = "SELECT servicecode as Code, service_name as Name, description as Description, (price / 100) as Cost FROM service 
+                        INNER JOIN jobcardhasservice j on service.servicecode = j.service_code
+                        WHERE j.job_card_id = :jobId
+                        ORDER BY servicecode";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":jobId", $jobId);
+            $statement->execute();
+            return $statement->fetchAll(mode: PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return $e->getMessage();
         }

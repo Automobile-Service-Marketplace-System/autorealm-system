@@ -1,4 +1,4 @@
-import {htmlToElement} from "../utils";
+import {disableScrollOnBody, enableScrollOnBody, htmlToElement} from "../utils";
 
 
 class ModalElement {
@@ -20,6 +20,11 @@ class ModalElement {
     key;
 
     /**
+     * @type {string | undefined}
+     */
+    previousScrollMode;
+
+    /**
      * @param {{ content: string|HTMLElement, closable: boolean, key: string   }} options
      */
     constructor({closable, content, key}) {
@@ -38,6 +43,7 @@ class ModalElement {
         this.modalEl = document.createElement("div");
         this.modalEl.classList.add("modal");
     }
+
 
     /**
      *
@@ -73,6 +79,11 @@ class ModalElement {
         document.body.appendChild(this.overlayEl);
         this.modalEl.classList.add("modal-open");
         this.overlayEl.classList.add("overlay-open");
+        // get current scroll mode of the body
+        this.previousScrollMode = document.body.style.overflow;
+        // disable scroll
+        // document.body.style.overflow = "hidden";
+        disableScrollOnBody();
     }
 
     /**
@@ -98,18 +109,23 @@ class ModalElement {
             this.overlayEl.classList.add("overlay-close");
 
             setTimeout(() => {
-                this.modalEl.style.display = "none";
-                this.overlayEl.style.display = "none";
-                this.modalEl.classList.remove("modal-close");
-                this.overlayEl.classList.remove("overlay-close");
+                if (this.modalEl && this.overlayEl) {
+                    this.modalEl.style.display = "none";
+                    this.overlayEl.style.display = "none";
+                    this.modalEl.classList.remove("modal-close");
+                    this.overlayEl.classList.remove("overlay-close");
 
-                this.modalEl.remove();
-                this.overlayEl.remove();
-                this.modalEl = undefined;
-                this.overlayEl = undefined;
+                    this.modalEl.remove();
+                    this.overlayEl.remove();
+                    this.modalEl = undefined;
+                    this.overlayEl = undefined;
+                }
             }, 200);
 
             Modal.activeModals.splice(Modal.activeModals.indexOf(this), 1);
+            // restore previous scroll mode
+            // document.body.style.overflow = this.previousScrollMode;
+            enableScrollOnBody(this.previousScrollMode)
         }
     }
 }
@@ -122,7 +138,7 @@ export class Modal {
     static activeModals = []
 
     /**
-     * @param {{ content: string | HTMLElement, closable?: boolean, key: string   }} options
+     * @param {{ content: string | Element |HTMLElement, closable?: boolean, key: string   }} options
      */
     static show({closable, content, key}) {
         const modal = new ModalElement({closable: closable || closable === undefined, content, key});
@@ -140,6 +156,7 @@ export class Modal {
             Modal.activeModals = Modal.activeModals.filter(modal => modal.key !== key);
         }
     }
+
 
 }
 

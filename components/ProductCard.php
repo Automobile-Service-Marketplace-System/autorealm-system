@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use app\utils\DevOnly;
 use JsonException;
 
 class ProductCard
@@ -30,8 +31,8 @@ class ProductCard
             </div>
             <div class='product-card__footer'>
                 <a class='btn btn--danger btn--block' href='/products/view?id={$product['ID']}'>More info</a>
-                <button class='btn btn--light-blue btn--square add-to-cart' title='$buttonTitle'  $isButtonDisabled data-productId='{$product['ID']}'>
-                    <i class='fa-solid fa-cart-plus'></i>
+                <button class='btn btn--light-blue btn--square add-to-cart' title='$buttonTitle'  $isButtonDisabled data-productid='{$product['ID']}' data-price='{$product['Price (LKR)']}'>
+                    <i class='fa-solid fa-cart-plus cart-icon'></i>
                 </button>
             </div>
         </div>";

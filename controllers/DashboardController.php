@@ -193,7 +193,7 @@ class DashboardController
                     'title' => 'Profile',
                     'security-officer' => $securityOfficer,
                     'pageMainHeading' => 'Profile',
-                    'securityOfficerId' => $req->session->get("user_id"),
+                    'employeeId' => $req->session->get("user_id"),
                 ]);
             }
 
@@ -201,6 +201,19 @@ class DashboardController
 
         }
         return $res->redirect(path: "/login");
+    }
+
+    public function getDashboardIndexPage(Request $req, Response $res): string
+    {
+        $userId = $req->session->get("user_id");
+        $userRole = $req->session->get("user_role");
+        $isAuthenticated = $req->session->get("is_authenticated");
+
+        if (!$isAuthenticated) {
+            return $res->redirect(path: "/login");
+        }
+
+
     }
 
 }

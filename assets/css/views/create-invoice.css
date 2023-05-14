@@ -1,0 +1,324 @@
+.create-invoice__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.create-invoice__header > button {
+    padding: 1rem 2rem;
+    width: 50%;
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0 0.5rem 1rem rgba(var(--color-primary), 0.1);
+    border-radius: 0.5rem;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.create-invoice__header > button:hover {
+    transform: translate(0, -0.1rem);
+    box-shadow: 0 1rem 2rem rgba(var(--color-primary), 0.2);
+}
+
+.create-invoice__header > button.load-from-job-btn--selected:hover {
+    transform: translate(0, 0);
+}
+
+.create-invoice__header > button.manually-add-customer-details-btn--selected:hover {
+    transform: translate(0, 0);
+}
+
+
+#load-from-job-btn #load-from-job-btn__cancel {
+    display: none;
+}
+
+#manually-add-customer-details-btn #manually-add-customer-details-btn__cancel {
+    display: none;
+}
+
+#load-from-job-btn.load-from-job-btn--selected #load-from-job-btn__cancel {
+    display: block;
+    background-color: var(--color-danger);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    right: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#manually-add-customer-details-btn.manually-add-customer-details-btn--selected #manually-add-customer-details-btn__cancel {
+    display: block;
+    background-color: var(--color-danger);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    right: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#load-from-job-btn__cancel:hover {
+    transform: rotate(90deg);
+}
+
+#load-from-job-btn.load-from-job-btn--selected .cancel-icon {
+    display: initial;
+    color: #fff;
+}
+
+
+#manually-add-customer-details-btn__cancel:hover {
+    transform: rotate(90deg);
+}
+
+#manually-add-customer-details-btn.manually-add-customer-details-btn--selected .cancel-icon {
+    display: initial;
+    color: #fff;
+}
+
+
+.invoice-customer-info {
+    width: 500px;
+}
+
+.invoice-customer-info__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.invoice-customer-info__header h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+.invoice-customer-info__header button {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.invoice-customer-info__header button:hover {
+    transform: rotate(90deg);
+}
+
+.invoice-customer-info__body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+
+.invoice-customer-info__body .form-item:first-child {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+}
+
+.invoice-customer-info__body .form-item:nth-child(2) {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+}
+
+.invoice-customer-info__body .form-item:nth-child(3) {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+}
+
+.invoice-customer-info__body .form-item:nth-child(4) {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+
+.invoice-customer-info__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.create-invoice__customer-info {
+
+}
+
+.create-invoice__customer-info h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.create-invoice__customer-info > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.create-invoice__customer-info > div p {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.create-invoice__customer-info > div input {
+    display: none;
+}
+
+.create-invoice__section {
+}
+
+.create-invoice__section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+.create-invoice__table {
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    table-layout: fixed;
+
+    /*    remove all table borders*/
+    border-collapse: collapse;
+    border-spacing: 0;
+    outline: none;
+}
+
+.create-invoice__table th {
+    background-color: #5b5b81;
+    color: #fff;
+}
+
+.create-invoice__table tr {
+    height: 2.5rem;
+}
+
+.create-invoice__table tr td:first-child input {
+    text-align: left;
+}
+
+.create-invoice__table input {
+    /* sizes */
+    padding-inline: 1rem;
+    padding-right: 0.2rem;
+    height: 2.5rem;
+    width: 100%;
+    /* transition */
+    outline: rgba(0, 0, 0, 0) 1px solid;
+    transition: all 0.2s ease-in-out;
+    text-align: right;
+}
+
+.create-invoice__table tfoot input {
+    background-color: var(--color-bg-secondary);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+}
+
+
+.create-invoice__table tfoot tr td:first-child {
+    padding-inline: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.create-invoice__new-row-button {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-inline: 2rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.create-invoice__new-row-button:disabled {
+    cursor: not-allowed;
+}
+
+.create-invoice__new-row-button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.create-invoice__table input:focus {
+    outline: rgba(0, 0, 0, 0.2) 1px solid;
+}
+
+.create-invoice__table--items tr th:nth-child(2) {
+    width: 100px;
+}
+
+
+.total-row {
+    background-color: red;
+    height: 2.5rem;
+}
+
+/*reduce height of each element and reduce font sizes in printing mode to make it possible to print invoice */
+@media print {
+    .create-invoice__table tr {
+        height: 1.5rem;
+    }
+
+    .create-invoice__table input {
+        height: 1.5rem;
+    }
+
+    .create-invoice__table th {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table td {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table tfoot tr td:first-child {
+        font-size: 0.8rem;
+    }
+
+    .create-invoice__table tfoot input {
+        font-size: 0.8rem;
+    }
+
+
+    .create-invoice__header {
+        display: none;
+    }
+
+    .create-invoice__section {
+        margin-top: 0;
+    }
+
+
+    .create-invoice__section h2 {
+        font-size: 1rem;
+    }
+
+    .create-invoice__table {
+        margin-top: 0;
+    }
+
+    .create-invoice__new-row-button {
+        display: none;
+    }
+
+    .create-invoice__table tr td:first-child input {
+        text-align: left;
+    }
+
+
+    .invoice-button-set {
+        display: none;
+    }
+
+}
+

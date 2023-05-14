@@ -1,7 +1,7 @@
 <?php
 /**
  * @var string $title
- * @var string $pageMainHeading
+ * @var string | null $pageMainHeading
  * @var int $technicianId
  */
 
@@ -36,7 +36,7 @@ DocumentHead::createHead(
             <a href="/assigned-job">
                 <i class="fa-solid fa-clock"></i>
                 <span>
-                    Assigned
+                    Assigned job
                 </span>
             </a>
             <a href="/all-jobs">
@@ -60,9 +60,11 @@ DocumentHead::createHead(
         </header>
 
         <div class="employee-dashboard-page">
-            <h1>
-                <?php echo $pageMainHeading; ?>
-            </h1>
+            <?php if (isset($pageMainHeading) && $pageMainHeading) { ?>
+                <h1>
+                    <?= $pageMainHeading ?>
+                </h1>
+            <?php } ?>
             {{content}}
         </div>
     </div>
