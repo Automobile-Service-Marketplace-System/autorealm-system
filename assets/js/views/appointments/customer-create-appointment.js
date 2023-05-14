@@ -8,7 +8,6 @@ import {loadTimeSlots, loadHolidays, appointmentDataUtils} from "./appointment-d
 const createAppointmentButton = document.querySelectorAll("#customer-create-appointment-btn");
 
 
-
 createAppointmentButton.forEach(function (btn) {
 
     btn.addEventListener("click", async function () {
@@ -19,7 +18,6 @@ createAppointmentButton.forEach(function (btn) {
                     "Content-Type": "application/json",
                 }, method: "GET",
             });
-
 
             let vehicleOptions = `<option value="na">No vehicles available</option>`;
 
@@ -38,9 +36,11 @@ createAppointmentButton.forEach(function (btn) {
                     const data = await result.json();
                     const {vehicles} = data;
 
-                    vehicleOptions = vehicles.map((vehicle) => {
-                        return `<option value="${vehicle.reg_no}">${vehicle.vehicle_name}</option>`;
-                    }).join("");
+                    if (vehicles.length !== 0) {
+                        vehicleOptions = vehicles.map((vehicle) => {
+                            return `<option value="${vehicle.reg_no}">${vehicle.vehicle_name}</option>`;
+                        }).join("");
+                    }
 
 
                     const createAppointmentForm = htmlToElement(`
