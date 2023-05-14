@@ -82,7 +82,7 @@ class EmployeeController
                 //pasing filter option
                 'searchTermName' => $searchTermName,
                 'searchTermId' => $searchTermId,
-                'employeeRole' => $employeeRole,
+                'employeeJobRole' => $employeeRole,
                 'employeeStatus' => $employeeStatus
                 
                 ] , layoutParams: [
