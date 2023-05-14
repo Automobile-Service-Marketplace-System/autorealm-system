@@ -31,6 +31,9 @@ if (createJobTechniciansContainer) {
                 body: formData
             })
 
+            // console.log(await response.text())
+            // return;
+
             switch (response.status) {
                 case 204:
                     Modal.close("start-job-confirmation-modal")

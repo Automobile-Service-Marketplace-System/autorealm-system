@@ -339,6 +339,7 @@ class JobsController
             $result = $jobCard->officeCreateJobCard();
 
             if (is_string($result)) {
+                var_dump($result);
                 $res->setStatusCode(code: 500);
                 return $res->json([
                     "message" => $result

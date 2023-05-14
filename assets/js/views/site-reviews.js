@@ -95,6 +95,7 @@ function addReview() {
                 }, method: 'POST'
             })
 
+
             switch (result.status) {
                 case 201:
                     await loadReviews(reviewLimit, 1)

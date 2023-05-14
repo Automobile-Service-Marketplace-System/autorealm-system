@@ -185,6 +185,7 @@ createJobCardButton.forEach(function (btn) {
                     body: formData,
                     method: "POST",
                 });
+
                 if (result.status === 400) {
                     officeCreateJobCardForm?.classList.add("office-create-jobcard-form--error");
                     const resultBody = await result.json();

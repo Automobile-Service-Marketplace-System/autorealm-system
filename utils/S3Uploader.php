@@ -181,4 +181,26 @@ class S3Uploader extends Uploader
             throw new RuntimeException($e->getMessage());
         }
     }
+
+    public static function deleteFile(string $url): string
+    {
+        return self::getInstance()->_deleteFile(url: $url);
+    }
+
+    private function _deleteFile(string $url): string
+    {
+        $parsedUrl = parse_url($url);
+        $path = $parsedUrl['path'];
+        $objectKey = ltrim($path, '/');
+        try {
+            self::$s3Client->deleteObject([
+                'Bucket' => self::$bucketName,
+                'Key' => $objectKey
+            ]);
+            return "File deleted successfully";
+        } catch (\AWS\S3\Exception\S3Exception $e) {
+            return  $e->getMessage();
+        }
+    }
+
 }

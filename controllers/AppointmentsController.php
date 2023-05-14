@@ -303,7 +303,7 @@ class AppointmentsController
      */
     public function officeDeleteAppointment(Request $req, Response $res): string
     {
-        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member")) {
+        if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "customer")) {
 
             $body = $req->body();
             if (empty($body['appointment_id'])) {
@@ -323,12 +323,11 @@ class AppointmentsController
                     "message" => "Internal Server Error"
                 ]);
             }
-            if ($result) {
+            if (is_array($result)) {
                 $res->setStatusCode(code: 204);
                 return $res->json([
                     "message" => "Appointment deleted successfully"
                 ]);
-
             }
         }
 
