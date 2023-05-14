@@ -16,7 +16,7 @@ class VehiclesController
 
         //check authentication
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "admin")) {
-            
+
             //for pagination
             $query = $req->query();
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
@@ -31,13 +31,13 @@ class VehiclesController
             //create new object from vehicle and get all vehicles
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicles(
-                count: $limit, 
-                page: $page, 
+                count: $limit,
+                page: $page,
                 searchTermRegNo: $searchTermRegNo,
                 searchTermCustomer: $searchTermCustomer,
                 vehicleType: $vehicleType
             );
-            
+
             //create model and brand objects
             $modelModel = new Model();
             $brandModel = new Brand();
@@ -47,9 +47,9 @@ class VehiclesController
                 return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "office-staff-dashboard",
                     pageParams: [
                         "vehicles" => $vehicles,
-                        "total"=>$vehicles['total'],
-                        "limit"=>$limit,
-                        "page"=>$page,
+                        "total" => $vehicles['total'],
+                        "limit" => $limit,
+                        "page" => $page,
                         "models" => $modelModel->getMOdels(),
                         "brands" => $brandModel->getBrands()],
                     layoutParams: [
@@ -101,14 +101,14 @@ class VehiclesController
             $rawBrands = $modelBrand->getVehicleBrands();
             $brands = [];
 
-            
+
             //fill brands array 
             foreach ($rawBrands as $rawBrand) {
                 $brands[$rawBrand['brand_id']] = $rawBrand['brand_name'];
             }
 
             //method for get the vehicles using customer id
-            $vehicles = $vehicleModel->getVehiclesByID(customer_id: (int)$query["id"]);
+            $vehicles = $vehicleModel->getVehiclesByCustomerID(customer_id: (int)$query["id"]);
             if (is_string($vehicles)) {
                 return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
                     pageParams: [
@@ -130,8 +130,8 @@ class VehiclesController
             //render page 
             return $res->render(view: "office-staff-dashboard-get-vehicle-by-customer", layout: "office-staff-dashboard",
                 pageParams: [
-                    "vehicles" => $vehicles, 
-                    'customer' => $customer,  
+                    "vehicles" => $vehicles,
+                    'customer' => $customer,
                     'brands' => $brands,
                     'models' => $models],
                 layoutParams: [
@@ -151,14 +151,14 @@ class VehiclesController
     {
         //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            
+
             //get the query 
             $query = $req->query();
 
             //create new object from vehicle and get vehicle names
             $vehicleModel = new Vehicle();
             $vehicles = $vehicleModel->getVehicleNamesByID(customer_id: (int)$query["id"]);
-            
+
             //if an error
             if (is_string($vehicles)) {
                 $res->setStatusCode(code: 500);
@@ -186,7 +186,7 @@ class VehiclesController
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "customer") {
             $customerId = $req->session->get('user_id');
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehiclesByID($customerId);
+            $vehicles = $vehicleModel->getVehiclesByCustomerID($customerId);
 
 
             return $res->render(view: "customer-dashboard-vehicles", layout: "customer-dashboard",
@@ -207,10 +207,10 @@ class VehiclesController
 
             //get query
             $query = $req->query();
-            
+
             //create new object from vehicle and get vehicles
             $vehicleModel = new Vehicle();
-            $vehicles = $vehicleModel->getVehiclesByID((int)$query["id"]);
+            $vehicles = $vehicleModel->getVehiclesByCustomerID((int)$query["id"]);
 
             //create new object from model and get models
             $modelModel = new Model();
@@ -311,11 +311,14 @@ class VehiclesController
         ]);
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function updateVehicle(Request $req, Response $res): string
     {
         //check authorization
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
-            
+
             //get body
             $body = $req->body();
 
@@ -352,5 +355,38 @@ class VehiclesController
                 "error" => "Something went wrong. Please try again later."
             ]);
         }
+        $res->setStatusCode(code: 401);
+        return $res->json([
+            "error" => "Unauthorized"
+        ]);
     }
+
+    /**
+     * @throws \JsonException
+     */
+    public function getVehicleNameListForCustomer(Request $req, Response $res): string
+    {
+        $is_authenticated = $req->session->get("is_authenticated");
+        $user_role = $req->session->get("user_role");
+        if ($is_authenticated && $user_role === "customer") {
+            $customerId = $req->session->get('user_id');
+            $vehicleModel = new Vehicle();
+            $vehicles = $vehicleModel->getVehicleNamesByCustomerID(customer_id: $customerId);
+            if (is_string($vehicles)) {
+                $res->setStatusCode(code: 500);
+                return $res->json([
+                    "message" => $vehicles
+                ]);
+            }
+            $res->setStatusCode(code: 200);
+            return $res->json([
+                "vehicles" => $vehicles
+            ]);
+        }
+        $res->setStatusCode(code: 401);
+        return $res->json([
+            "error" => "Unauthorized"
+        ]);
+    }
+
 }

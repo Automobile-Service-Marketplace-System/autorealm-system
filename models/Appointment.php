@@ -259,7 +259,61 @@ class Appointment
             var_dump($e->getMessage());
             return $e->getMessage();
         }
-    } 
+    }
+
+    public function customerCreateAppointment(int $customerId): array|string
+    {
+        try {
+            $vehicle_reg_no = $this->body["vehicle_reg_no"] === "na" ? null : $this->body["vehicle_reg_no"];
+            $query = "  INSERT INTO 
+                            appointment(
+                                vehicle_reg_no,
+                                mileage,
+                                remarks,
+                                date,
+                                customer_id,
+                                time_id)
+                        VALUES(
+                                :vehicle_reg_no,
+                                :mileage,
+                                :remarks,
+                                :date,
+                                :customer_id,
+                                :time_id)
+                            ";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(":vehicle_reg_no", $vehicle_reg_no);
+            $statement->bindValue(":mileage", $this->body["mileage"]);
+            $statement->bindValue(":remarks", $this->body["remarks"]);
+            $statement->bindValue(":date", $this->body["date"]);
+            $statement->bindValue(":customer_id", $customerId);
+            $statement->bindValue(":time_id", $this->body["timeslot"]);
+            $statement-> execute();
+
+            $statement = $this->pdo->prepare("SELECT CONCAT(from_time, ' - ', to_time) as timeslot FROM timeslot WHERE time_id = :time_id");
+            $statement->bindValue(":time_id", $this->body["timeslot"]);
+            $statement->execute();
+            $timeslot =  $statement->fetch(PDO::FETCH_ASSOC)['timeslot'];
+
+
+            $statement = $this->pdo->prepare("SELECT email, CONCAT(f_name, ' ', l_name) as name from customer WHERE customer_id = :customer_id");
+            $statement->bindValue(":customer_id", $customerId);
+            $statement->execute();
+            $result =  $statement->fetch(PDO::FETCH_ASSOC);
+            $email = $result['email'];
+            $name =  $result['name'];
+
+            return [
+                "timeslot" => $timeslot,
+                "email" => $email,
+                "name" => $name
+            ];
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return $e->getMessage();
+        }
+    }
   
     /**
      * @return array
@@ -272,16 +326,15 @@ class Appointment
                             a.appointment_id,
                             a.vehicle_reg_no,                       
                             a.remarks,
-                            a.service_type,
-                            a.date_and_time as 'created_date',
                             t.date as 'appointment_date',
-                            t.from_time as 'appointment_time'
+                            t.from_time as 'appointment_time',
+                            DATE(a.created_at) as 'created_date'
                         FROM
                             appointment a
                         INNER JOIN timeslot t ON t.time_id = a.time_id
                         
                         WHERE 
-                            customer_id = :customer_id");
+                            customer_id = :customer_id ORDER BY t.date");
             $statement->execute(['customer_id' => $customer_id]);
             $appointments = $statement->fetchAll(PDO::FETCH_ASSOC);
             if (!$appointments) {

@@ -2,18 +2,11 @@ import {Modal} from "../../components/Modal";
 import {htmlToElement} from "../../utils";
 import Notifier from "../../components/Notifier";
 import {CalendarView} from "../../components/CalendarView";
+import {loadTimeSlots, loadHolidays, appointmentDataUtils} from "./appointment-data-utils"
 
 const createAppointmentButton = document.querySelectorAll(".create-appointment-btn");
 
-/**
- * @type {Array<{time_id: number, from_time: string, to_time:string}>}
- */
-let timeslots = [];
-/**
- * @type {{month:number, date: number}[]}
- */
 
-let holidays = [];
 
 createAppointmentButton.forEach(function (btn) {
 
@@ -24,7 +17,6 @@ createAppointmentButton.forEach(function (btn) {
             const customerNameElement = customerRow.querySelector("td:nth-child(2)");
             const name = customerNameElement.textContent;
 
-            let customerVehicles = [];
 
             const result = await fetch(`/vehicles/by-customer-json?id=${customerID}`, {
                 headers: {
@@ -98,14 +90,14 @@ createAppointmentButton.forEach(function (btn) {
                         </form>`);
 
 
-                    createAppointmentForm.querySelector("input#date")?.addEventListener('change', async (e) => {
+                    createAppointmentForm.querySelector("input#date")?.addEventListener('change', async () => {
                         await loadTimeSlots(createAppointmentForm.querySelector("input#date"), createAppointmentForm)
                     })
 
 
                     createAppointmentForm
                         ?.querySelector("#create-appointment-modal-btn")
-                        ?.addEventListener("click", (e) => {
+                        ?.addEventListener("click", () => {
                             const template = `<div style="width: 350px">
                                 <h3>Are you sure you want to create this appointment?</h3>
                                 <div style="display: flex;align-items: center;justify-content: flex-end;gap: 1rem" class="mt-4">
@@ -189,7 +181,7 @@ createAppointmentButton.forEach(function (btn) {
                         }
                     });
 
-                    createAppointmentForm?.addEventListener("reset", (e) => {
+                    createAppointmentForm?.addEventListener("reset", () => {
                         const formItems = createAppointmentForm.querySelectorAll(".form-item");
                         formItems.forEach((item) => {
                             item.classList.remove("form-item--error");
@@ -216,7 +208,7 @@ createAppointmentButton.forEach(function (btn) {
                         minDate: new Date(new Date().setDate(new Date().getDate() + 1)),
                         parent: ".create-time-slot",
                         boundInput: ".create-time-slot input[name='date']",
-                        restrictedDates: holidays
+                        restrictedDates: appointmentDataUtils.holidays,
                     })
                     break;
                 case 401:
@@ -246,72 +238,3 @@ createAppointmentButton.forEach(function (btn) {
 });
 
 
-/**
- * @param input {HTMLInputElement}
- * @param formEl {HTMLElement}
- * @returns {Promise<void>}
- */
-async function loadTimeSlots(input, formEl) {
-    try {
-        const date = input.value;
-        console.log(date)
-        const result = await fetch(`/appointments/timeslots?date=${date}`);
-
-        switch (result.status) {
-            case 404:
-                Notifier.show({
-                    text: "No timeslots available", type: "danger", header: "Error", closable: true, duration: 5000
-                });
-                timeslots = [];
-                break;
-            case 200:
-                const resultBody = await result.json();
-                timeslots = resultBody;
-                const selectTag = formEl.querySelector("select#timeslot");
-                timeslots.forEach((timeslot) => {
-                    const option = htmlToElement(`<option value="${timeslot.time_id}">
-                                    ${timeslot.from_time} - ${timeslot.to_time}
-                                 </option>`)
-                    selectTag.appendChild(option)
-                })
-
-        }
-    } catch (e) {
-        console.log(e)
-        Notifier.show({
-            text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
-        });
-    }
-}
-
-
-/**
- * @returns {Promise<void>}
- */
-async function loadHolidays() {
-    try {
-        const result = await fetch(`/holidays`);
-        switch (result.status) {
-            case 404:
-                timeslots = [];
-                break;
-            case 200:
-                /**
-                 * @type {{holidays: {date: string, id: number}[]}}
-                 */
-                const resultBody = await result.json();
-                holidays = resultBody.holidays.map((holiday) => {
-                    const dateObj = new Date(holiday.date);
-                    const month = dateObj.getMonth() + 1;
-                    const date = dateObj.getDate();
-                    return {month, date}
-                })
-
-        }
-    } catch (e) {
-        console.log(e)
-        Notifier.show({
-            text: "Something went wrong", type: "danger", header: "Error", closable: true, duration: 5000,
-        });
-    }
-}

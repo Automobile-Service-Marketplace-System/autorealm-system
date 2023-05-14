@@ -74,9 +74,18 @@
 
 .appointment-card__header p.due:last-child {
     align-items: flex-end !important;
+    background-color: rgba(var(--success), 0.3);
+    color: var(--color-success);
+}
+
+.due--warning {
+    background-color: rgba(var(--warning), 0.3);
+    color: var(--color-warning);
+}
+
+.due--danger {
     background-color: rgba(var(--danger), 0.3);
     color: var(--color-danger);
-
 }
 
 .appointment-items {

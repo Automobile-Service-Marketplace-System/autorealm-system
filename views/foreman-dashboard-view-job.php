@@ -34,7 +34,7 @@ $isDraft = $inspectionReport ? ($inspectionReport['is_draft'] == 1 ? "Finish the
         </a>
     </li>
     <li>
-        <a href="/all-jobs?vehicle=QL 9904">
+        <a href="/all-jobs?vehicle_reg_no=<?= $vehicleDetails['reg_no'] ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View previous jobs for this vehicle
         </a>
