@@ -63,7 +63,7 @@ class SiteController
 
         $categoryName = isset($query['category']) ? ($query['category'] == "" ? "all" : $query['category']) : "all";
         $brandName = isset($query['brand']) ? ($query['brand'] == "" ? "all" : $query['brand']) : "all";
-        $productType = isset($query['product']) ? ($query['type'] == "" ? "all" : $query['type']) : "all";
+        $productType = isset($query['type']) ? ($query['type'] == "" ? "all" : $query['type']) : "all";
 
         $productModel = new Product();
         $brandModel = new Brand();
@@ -98,6 +98,14 @@ class SiteController
                     'limit' => $limit,
                     'page' => $page,
                     "is_authenticated" => $req->session->get("is_authenticated"),
+
+                    'minPrice' => $minPrice,
+                    'maxPrice' => $maxPrice,
+                    'searchTerm' => $searchTerm,
+                    'categoryName' => $categoryName,
+                    'brandName' => $brandName,
+                    'productType' => $productType,
+
                 ], layoutParams: [
                     'customerId' => $customerId,
                     'title' => 'Products',
