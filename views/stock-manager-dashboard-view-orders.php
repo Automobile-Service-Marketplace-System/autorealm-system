@@ -96,7 +96,7 @@ foreach ($orders as $order) {
                         <select name="status" id="dashboard-order-status-filter">
                             <option value="all" <?= ($orderStatus=='all')? 'selected': ""?>>Status</option>
                             <option value="Not Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Not Prepared</option>
-                            <option value="Prepared" <?= ($orderStatus=='Not Prepared')? 'selected': ""?>>Prepared</option>
+                            <option value="Prepared" <?= ($orderStatus=='Prepared')? 'selected': ""?>>Prepared</option>
                             <option value="Delivery" <?= ($orderStatus=='Delivery')? 'selected': ""?>>Delivery</option>
                             <option value="CourierConfirmed" <?= ($orderStatus=='CourierConfirmed')? 'selected': ""?>>Courier Confirmed</option>
                             <option value="CustomerConfirmed" <?= ($orderStatus=='CustomerConfirmed')? 'selected': ""?>>Customer Confirmed</option>
@@ -129,10 +129,11 @@ foreach ($orders as $order) {
 </div>
 
 <?php
-Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
-?>
+if ($orders){
+    Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
+    ?>
 
-<div class="dashboard-pagination-container">
+    <div class="dashboard-pagination-container">
     <?php
 
     $hasNextPage = $page < ceil(num: $total / $limit);
@@ -158,3 +159,11 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID", " "]);
         <i class="fa-solid fa-chevron-right"></i>
     </a>
 </div>
+<?php } else { ?>
+    <div class="stock-manager-no-items">
+        <p>
+            There are no Orders matching your search criteria.
+        </p>
+    </div>
+<?php   } ?>
+

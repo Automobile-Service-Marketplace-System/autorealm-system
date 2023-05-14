@@ -85,7 +85,7 @@ async function updateOrderStatus(inputElement, mode) {
                 })
                 setTimeout(() => {
                     location.reload()
-                }, 2000);
+                }, 700);
                 break;
 
             case 500:

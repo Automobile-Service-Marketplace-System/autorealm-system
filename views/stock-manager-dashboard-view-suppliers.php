@@ -90,13 +90,15 @@ foreach ($suppliers as $supplier) {
             <div class="order-filter-search-items">
                 <div class="form-item form-item--icon-right form-item--no-label filters__search">
                     <input type="text" placeholder="Search Supplier by Name"
-                           id="dashboard-supplier-name-search" name="sup" <?php if($searchTermSupplier) echo "value='$searchTermSupplier'"?>>
+                           id="dashboard-supplier-name-search"
+                           name="sup" <?php if ($searchTermSupplier) echo "value='$searchTermSupplier'" ?>>
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
 
                 <div class="form-item form-item--icon-right form-item--no-label filters__search">
                     <input type="email" placeholder="Search Supplier by Email"
-                           id="dashboard-supplier-email-search" name="mail"  <?php if($searchTermMail) echo "value='$searchTermMail'"?>>
+                           id="dashboard-supplier-email-search"
+                           name="mail" <?php if ($searchTermMail) echo "value='$searchTermMail'" ?>>
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </div>
@@ -106,19 +108,22 @@ foreach ($suppliers as $supplier) {
                 <!--                filter by last supply date-->
                 <div class="form-item form-item--no-label">
                     <select name="date" id="dashboard-last-supply-date-filter">
-                        <option value="all" <?= ($supplyDate=="all") ? 'selected' : ""?>>Last Supply Date</option>
-                        <option value="Today" <?= ($supplyDate=="Today") ? 'selected' : ""?>>Today</option>
-                        <option value="Yesterday" <?= ($supplyDate=="Yesterday") ? 'selected' : ""?>>Yesterday</option>
-                        <option value="Last7" <?= ($supplyDate=="Last7") ? 'selected' : ""?>>Last 7 Days</option>
-                        <option value="Last30" <?= ($supplyDate=="Last30") ? 'selected' : ""?>>Last 30 Days</option>
-                        <option value="Last90" <?= ($supplyDate=="Last90") ? 'selected' : ""?>>Last 90 Days</option>
+                        <option value="all" <?= ($supplyDate == "all") ? 'selected' : "" ?>>Last Supply Date</option>
+                        <option value="Today" <?= ($supplyDate == "Today") ? 'selected' : "" ?>>Today</option>
+                        <option value="Yesterday" <?= ($supplyDate == "Yesterday") ? 'selected' : "" ?>>Yesterday
+                        </option>
+                        <option value="Last7" <?= ($supplyDate == "Last7") ? 'selected' : "" ?>>Last 7 Days</option>
+                        <option value="Last30" <?= ($supplyDate == "Last30") ? 'selected' : "" ?>>Last 30 Days</option>
+                        <option value="Last90" <?= ($supplyDate == "Last90") ? 'selected' : "" ?>>Last 90 Days</option>
                     </select>
                 </div>
                 <!--                filter by supplier discontinued or no-->
                 <div class="form-item form-item--no-label">
                     <select name="status" id="dashboard-supplier-status-filter">
-                        <option value="active" <?= ($supplierStatus=="all") ? 'selected' : ""?>>Currently Active</option>
-                        <option value="discontinued" <?= ($supplierStatus=="all") ? 'selected' : ""?>>Discontinued</option>
+                        <option value="active" <?= ($supplierStatus == "all") ? 'selected' : "" ?>>Currently Active
+                        </option>
+                        <option value="discontinued" <?= ($supplierStatus == "all") ? 'selected' : "" ?>>Discontinued
+                        </option>
                     </select>
 
                 </div>
@@ -137,34 +142,42 @@ foreach ($suppliers as $supplier) {
 </div>
 
 <?php
+if ($suppliers){
 
-Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
-
-?>
-
-<div class="dashboard-pagination-container">
-    <?php
-
-    $hasNextPage = $page < ceil(num: $total / $limit);
-    $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
-    $hasNextPageHref = $hasNextPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page + 1) . "&limit=$limit" : "";
-    $hasPreviousPage = $page > 1;
-    $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
-    $hasPreviousPageHref = $hasPreviousPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page - 1) . "&limit=$limit" : "";
+    Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 
     ?>
-    <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
-       href="<?= $hasPreviousPageHref ?>">
-        <i class="fa-solid fa-chevron-left"></i>
-    </a>
-    <?php
 
-    foreach (range(1, ceil($total / $limit)) as $i) {
-        $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-        echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=$i&limit=$limit'>$i</a>";
-    }
-    ?>
-    <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
-        <i class="fa-solid fa-chevron-right"></i>
-    </a>
-</div>
+    <div class="dashboard-pagination-container">
+        <?php
+
+        $hasNextPage = $page < ceil(num: $total / $limit);
+        $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
+        $hasNextPageHref = $hasNextPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page + 1) . "&limit=$limit" : "";
+        $hasPreviousPage = $page > 1;
+        $hasPreviousPageClass = $hasPreviousPage ? "" : "dashboard-pagination-item--disabled";
+        $hasPreviousPageHref = $hasPreviousPage ? "/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=" . ($page - 1) . "&limit=$limit" : "";
+
+        ?>
+        <a class="dashboard-pagination-item <?= $hasPreviousPageClass ?>"
+           href="<?= $hasPreviousPageHref ?>">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <?php
+
+        foreach (range(1, ceil($total / $limit)) as $i) {
+            $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
+            echo "<a class='dashboard-pagination-item $isActive' href='/suppliers?sup=$searchTermSupplier&mail=$searchTermMail&date=$supplyDate&status=$supplierStatus&page=$i&limit=$limit'>$i</a>";
+        }
+        ?>
+        <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+    </div>
+<?php } else { ?>
+    <div class="stock-manager-no-items">
+        <p>
+            There are no Suppliers matching your search criteria.
+        </p>
+    </div>
+<?php   } ?>
