@@ -83,6 +83,7 @@ $endNo = $startNo + $noOfReviews - 1;
 
 </div>
 
+<?php if($reviews){ ?>
 <main class="reviews-grid">
     <section class="review-titles reviews-row">
         <div class="review-productName">
@@ -158,4 +159,12 @@ $endNo = $startNo + $noOfReviews - 1;
 
 </main>
 
+
+<?php } else{?>
+    <div class="stock-manager-no-items">
+        <p>
+            There are no Reviews matching your search criteria.
+        </p>
+    </div>
+<?php   } ?>
 

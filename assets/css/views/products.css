@@ -177,3 +177,15 @@
     text-align: right;
     align-items: center;
 }
+
+.stock-manager-no-items{
+    display: grid;
+    padding: 7rem;
+}
+
+.stock-manager-no-items p{
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
+}
