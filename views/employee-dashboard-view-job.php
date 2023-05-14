@@ -33,17 +33,17 @@
         </a>
     </li>
     <li>
-        <a href="/all-jobs?vehicle=QL 9904">
+        <a href="/all-jobs?vehicle_reg_no=<?= $vehicleDetails['reg_no'] ?>">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
             View all jobs for this vehicle
         </a>
     </li>
-    <li>
-        <a href="tel:+94703614315">
-            <i class="fa-solid fa-phone"></i>
-            Contact foreman
-        </a>
-    </li>
+<!--    <li>-->
+<!--        <a href="tel:+94703614315">-->
+<!--            <i class="fa-solid fa-phone"></i>-->
+<!--            Contact foreman-->
+<!--        </a>-->
+<!--    </li>-->
 </ul>
 
 
