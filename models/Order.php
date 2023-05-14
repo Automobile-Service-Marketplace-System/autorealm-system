@@ -393,7 +393,7 @@ class Order
         return $orderDetails;
     }
 
-    public function updateOrderStatus(int $orderNo, string $mode, string $status): bool|string|array
+    public function updateOrderStatus(int $orderNo, string $mode, string $status, int $employeeId): bool|string|array
     {
         $errors = $this->validateUpdateOrderStatusBody([
             'mode' => $mode,
@@ -402,7 +402,7 @@ class Order
         if (!empty($errors)) {
             return $errors;
         }
-        $dateTime = $status ? date("Y-m-d H:i:s") : "NULL";
+        $dateTime = $status ? date("Y-m-d H:i:s") : NULL;
         $columnName = "";
         switch ($mode) {
             case  "Prepared":
@@ -417,8 +417,9 @@ class Order
         }
         $mode = $status ? $mode : $this->getPreviousStatus($mode);
         try {
-            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode' WHERE order_no = :order_no");
+            $stmt = $this->pdo->prepare("UPDATE `order` SET $columnName = '$dateTime', status = '$mode', employee_id = :employee_id WHERE order_no = :order_no");
             $stmt->bindValue(":order_no", $orderNo);
+            $stmt->bindValue(":employee_id", $employeeId);
             $stmt->execute();
             return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
