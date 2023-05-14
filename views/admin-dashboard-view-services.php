@@ -6,6 +6,9 @@
  * @var int $limit
  * @var int $page
  * @var int $total
+ * @var string $searchTermName
+ * @var string $searchTermCode
+ * @var string $serviceStatus
  */
 
 use app\components\Table;
@@ -62,11 +65,11 @@ foreach ($services as $service) {
     <form>
         <div class="filters__dropdown">
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Service by Name" id="dashboard-product-search" name="name">
+                <input type="text" placeholder="Search Service by Name" id="dashboard-product-search" name="name" <?php if($searchTermName) echo "value='$searchTermName'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
-                <input type="text" placeholder="Search Product by Code" id="dashboard-product-search" name="code">
+                <input type="text" placeholder="Search Product by Code" id="dashboard-product-search" name="code" <?php if($searchTermCode) echo "value='$searchTermCode'"; ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
@@ -74,8 +77,8 @@ foreach ($services as $service) {
                 <div class="filters__dropdown-content">
                     <div class="form-item form-item--no-label">
                         <select name="status" id="dashboard-order-status-filter">
-                            <option value="active">Currently Active</option>
-                            <option value="discontinued">Discontinued</option>
+                            <option value="active" <?php if($serviceStatus=='active') echo 'selected';?>>Currently Active</option>
+                            <option value="discontinued" <?php if($serviceStatus=='discontinued') echo 'selected';?>>Discontinued</option>
 
                         </select>
                     </div>
@@ -113,7 +116,7 @@ Table::render(items: $items, columns: $columns, keyColumns: ["ID","Actions"]);
 
     foreach (range(1, ceil($total / $limit)) as $i) {
         $isActive = $i === (float)$page ? "dashboard-pagination-item--active" : "";
-        echo "<a class='dashboard-pagination-item $isActive' href='/services?page=$i&limit=$limit'>$i</a>";
+        echo "<a class='dashboard-pagination-item $isActive' href='/services?name=$searchTermName&code=$searchTermCode&status=$serviceStatus&page=$i&limit=$limit'>$i</a>";
     }
     ?>
     <a class="dashboard-pagination-item <?= $hasNextPageClass ?>" href="<?= $hasNextPageHref ?>">

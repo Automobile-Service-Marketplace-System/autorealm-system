@@ -41,8 +41,14 @@ class ServicesController
                 "services" => $result['services'],
                 'total'=> $result['total'],
                 'page' => $page,
-                'limit' => $limit], 
-                layoutParams: [
+                'limit' => $limit,
+            
+                //pasing filter option
+                'searchTermName' => $serachTermName,
+                'searchTermCode' => $serachTermCode,
+                'serviceStatus' => $serviceStatus
+            
+            ], layoutParams: [
                 'title' => 'services',
                 'pageMainHeading' => 'Services',
                 'employeeId' => $req->session->get("user_id"),

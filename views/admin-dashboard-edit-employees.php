@@ -163,23 +163,23 @@ $image = $employee->image ? $employee->image : "";
             </div>
                 <div class="form-input">
                     <b>Photo</b>
-                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)">
+                    <input type="file" name="image" accept="image/*" onchange="loadImage(event)" required>
                     <img id="image-preview-update" src="<?= $image ?>" style="object-fit: cover">
                     <script>
                         function loadImage(event) {
                             var file = event.target.files[0];
                             var reader = new FileReader();
-                            reader.readAsDataURL(file); 
+                            reader.readAsDataURL(file);
                             reader.onload = function() {
                                 var imagePreview = document.getElementById('image-preview-update');
                                 imagePreview.src = reader.result;
-                            };
+                                };
                         }
                     </script>      
                 </div>
         </div>
         <div class="flex items-center justify-between my-4">
-            <button type="reset" class="btn">Cancel</button>
+            <button type="reset" class="btn">Reset</button>
             <div class="delete-update-btn">
                 <button type="button" id='delete-employee-btn' class="btn btn--danger" data-employeeid="<?= $employee->employee_id ?>">Delete</button>
                 <button type="submit" class="btn btn--warning" href=>Update</button>

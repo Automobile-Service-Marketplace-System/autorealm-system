@@ -19,3 +19,8 @@
 .admitting-report{
     width:100% !important;
 }
+
+#admitting-report-approve{
+    align-items: center;
+    margin: 0 auto;
+}

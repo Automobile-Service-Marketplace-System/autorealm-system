@@ -4,8 +4,10 @@
  * @var array $errors
  * @var array $body
  * @var string $reg_no
+ * 
  */
 
+//  var_dump($reg_no)
 use app\components\FormItem;
 use app\components\FormSelectItem;
 use app\components\FormTextareaItem;
@@ -58,7 +60,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
 ?>
 
 <div class="create-admitting-reports">  
-    <form action="/security-officer-dashboard/admitting-reports/add" method="post" enctype="multipart/form-data">
+    <form action="/security-officer-dashboard/admitting-reports/add?reg_no=<?= $reg_no ?>" method="post" enctype="multipart/form-data">
         <?php
             FormItem::render(
                 id: "vehicle_reg_no",
@@ -67,7 +69,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 type: "text",
                 hasError: $hasVehicleRegNoError,
                 error: $hasVehicleRegNoError ? $errors['vehicle_reg_no'] : "",
-                value: $reg_no,
+                value: $reg_no ?? ($body['vehicle_reg_no'] ?? null),
+                additionalAttributes: $reg_no ? "readonly":""
             );
         ?>
 
@@ -559,7 +562,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
 
             FormItem::render(
                 id: "mileage",
-                label: "<b><br>Mileage</b>",
+                label: "Mileage",
                 name: "mileage",
                 type: "number",
                 hasError:$hasMilageError,
@@ -582,7 +585,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 label: "<b>Customer Belongins</b>",
                 name: "customer_belongings",
                 type: "text",
-                required: "false",
+                required: false,
                 hasError:$hasCustomerBelongingsError,
                 error:$hasCustomerBelongingsError ? $errors['customer_belongings'] : "",
                 value: $body['customer_belongings'] ?? null,
@@ -593,7 +596,7 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
                 label: "<b>Additional Note</b>",
                 name: "additional_note",
                 type: "text",
-                required: "false",
+                required: false,
                 hasError:$hasAdditionalNoteError,
                 error:$hasAdditionalNoteError ? $errors['additional_note'] : "",
                 value: $body['additional_note'] ?? null,
@@ -687,7 +690,8 @@ $hasAdditionalNoteError = $hasErrors && isset($errors['additional_note']);
             
 
         <div class="flex items-center justify-between mt-4 mb-8">
-            <button class="btn btn--danger" onclick=window.location.href="/security-officer-dashboard/view-admitting-reports">Cancel</button>
+            <!-- <button class="btn btn--danger" onclick=window.location.href="/security-officer-dashboard/view-admitting-reports">Cancel</button> -->
+            <button class='btn btn--danger'type="reset" class="btn">Reset</button>
             <button type="submit" class="btn">Create</button>
         </div>
     </form>

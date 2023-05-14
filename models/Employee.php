@@ -326,7 +326,7 @@ class Employee
         }
 
         if($searchTermName !== null){
-            $whereClause = $whereClause ? $whereClause . " AND f_name LIKE :search_term_name" : " WHERE f_name LIKE :search_term_name";
+            $whereClause = $whereClause ? $whereClause . " AND concat(f_name,' ',l_name)  LIKE :search_term_name" : " WHERE concat(f_name,' ',l_name) LIKE :search_term_name";
         }
 
         if($searchTermId !== null){
@@ -348,7 +348,7 @@ class Employee
                 job_role as JobType,
                 is_active as isActive,
                 image as Image
-            FROM employee $whereClause $limitClause $pageClause ";
+            FROM employee $whereClause order by employee_id DESC $limitClause $pageClause ";
         
         $statement = $this->pdo->prepare($query);
 
