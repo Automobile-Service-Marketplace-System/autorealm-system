@@ -7,32 +7,32 @@
  */
 
 
-
-
 //$jobDetails = null;
-
-$vehicleRegNo = $vehicleDetails['reg_no'] ?? null;
-$services = $jobDetails['services'] ?? null;
-$all = (int) $jobDetails['service_status']['all'];
-$done = (int) $jobDetails['service_status']['done'];
-$not_done = $all - $done;
 
 
 ?>
 
-<?php if ($jobDetails) { ?>
+<?php if ($jobId) { ?>
+    <?php
+    $vehicleRegNo = $vehicleDetails['reg_no'] ?? null;
+    $services = $jobDetails['services'] ?? null;
+    $all = (int)$jobDetails['service_status']['all'];
+    $done = (int)$jobDetails['service_status']['done'];
+    $not_done = $all - $done;
+    ?>
     <div class="assigned-job-overview" data-jobid="<?= $jobId ?>">
         <div class="assigned-job-overview__header">
             <p><strong>Vehicle</strong>: <?= $vehicleRegNo ?></p>
         </div>
-        <div class="assigned-job-progress-container assigned-job-progress-container--loading" data-completed="<?= $done ?>" data-notcompleted="<?=$not_done ?>">
+        <div class="assigned-job-progress-container assigned-job-progress-container--loading"
+             data-completed="<?= $done ?>" data-notcompleted="<?= $not_done ?>">
             <canvas id="assigned-job-progress"></canvas>
             <i class="fa fa-spinner spin-icon"></i>
         </div>
         <h3 class="mb-4">Mark completed services</h3>
         <div class="flex flex-col w-full gap-4 mb-8">
             <?php
-            if($services) {
+            if ($services) {
                 foreach ($services as $service) {
                     $service_name = $service['Name'];
                     $code = $service['Code'];

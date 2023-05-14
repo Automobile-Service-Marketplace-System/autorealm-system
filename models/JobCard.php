@@ -536,6 +536,19 @@ class JobCard
         }
     }
 
+    public function getJobIdByCustomerId(int $customerId)
+    {
+        try {
+            $statement = $this->pdo->prepare("SELECT j.job_card_id FROM jobcard j INNER JOIN customer c on j.customer_id = c.customer_id WHERE c.customer_id = :customer_id AND j.status = 'in-progress' ORDER BY j.start_date_time DESC LIMIT 1");
+            $statement->bindValue(":customer_id", $customerId);
+            $statement->execute();
+            $jobCard = $statement->fetch(PDO::FETCH_ASSOC);
+            return $jobCard["job_card_id"] ?? null;
+        } catch (PDOException|Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function changeJobServiceStatus(int $jobId, int $serviceCode, bool $status, int $technicianId): array|string
     {
         try {
