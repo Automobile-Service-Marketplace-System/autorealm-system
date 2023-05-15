@@ -102,10 +102,6 @@ if(editCustomerProfileButton || cusEditInfoDiv) {
             } else if (result.status === 201) {
 
                 // add success message to url search params
-                window.location.search = new URLSearchParams({
-                    ...params,
-                    success: 'Your profile has been updated successfully'
-                }).toString()
                 location.reload()
             }
         } catch (e) {
