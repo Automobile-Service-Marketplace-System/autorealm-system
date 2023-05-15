@@ -14,7 +14,7 @@ if (finishJobButton) {
         const jobFinishConfirmationDialog = htmlToElement(
             `
         <div>
-            <div>
+            <div class="flex items-center justify-between">
                 <h3>
                     Are you sure you want to mark this job as finished?                
                 </h3>
@@ -22,12 +22,12 @@ if (finishJobButton) {
                     <i class="fa fa-xmark"></i>    
                 </button>
             </div>
-            <div>
+            <div class="mt-4">
                 <p>
                 Once you mark this job as finished, you will not be able to undo this action.
                 </p>
             </div>
-            <div>
+            <div class="flex items-center justify-between mt-4">
                 <button class="btn btn--danger btn--thin btn--text">Cancel</button>
                 <button class="btn btn--thin" id="job-finish-confirm-btn">
                     <i class="fa fa-spinner"></i>

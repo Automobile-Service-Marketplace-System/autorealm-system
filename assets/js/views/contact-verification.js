@@ -194,6 +194,7 @@ async function handleCompleteOTPInput(e, mode) {
             duration: 5000,
             text: `Your ${isModeEmail ? "email address" : "mobile number"} has been verified successfully`
         })
+        window.location.href = "/"
         completeStep(isModeEmail ? 0 : 1)
     } catch (e) {
         /**
@@ -257,12 +258,13 @@ function completeStep(index) {
         verificationSteps[index].style.display = "none"
         verificationStepIndicators[0].classList.add("step-indicator--disabled")
         verificationStepIndicators[1].classList.remove("step-indicator--disabled")
-        if (index === -1) {
-            verificationSteps[1].classList.remove("verification__step--disabled")
-            verificationSteps[1].classList.add("verification__step--active")
-        } else {
-            window.location.href = "/dashboard/overview"
-        }
+        window.location.href = "/"
+        // if (index === -1) {
+        //     verificationSteps[1].classList.remove("verification__step--disabled")
+        //     verificationSteps[1].classList.add("verification__step--active")
+        // } else {
+        //     window.location.href = "/dashboard/overview"
+        // }
     }, 300)
 }
 

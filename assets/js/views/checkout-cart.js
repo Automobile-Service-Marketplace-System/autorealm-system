@@ -77,7 +77,7 @@ if (paymentForm) {
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: "https://fcf0-112-135-65-171.ap.ngrok.io/cart/checkout/success",
+                return_url: "https://8a10-2407-c00-5007-ae6a-6cfb-b5b2-344a-45c.ngrok-free.app/cart/checkout/success",
                 receipt_email: emailAddress,
             },
         });

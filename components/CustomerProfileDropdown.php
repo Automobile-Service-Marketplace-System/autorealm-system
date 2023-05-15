@@ -21,9 +21,9 @@ class CustomerProfileDropdown
                                     <i class='fa-solid fa-user'></i>
                                     My profile
                                 </a>
-                                <a href='/dashboard/overview'>
+                                <a href='/dashboard/appointments'>
                                     <i class='fa-solid fa-chart-simple'></i>
-                                    Dashboard
+                                    Apppointments
                                 </a>
                                 <form action='/logout' method='post'>
                                     <button>

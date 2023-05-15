@@ -582,5 +582,18 @@ class Order
 
     }
 
+    public function markAsConfirmed(int $customerId, int $orderId): bool|string
+    {
+        try {
+            $statement = $this->pdo->prepare("UPDATE `order` SET status = 'CustomerConfirmed' WHERE customer_id = :customer_id AND order_no = :order_id");
+            $statement->bindValue(":customer_id", $customerId);
+            $statement->bindValue(":order_id", $orderId);
+            $statement->execute();
+            return $statement->rowCount() > 0;
+        } catch (PDOException | Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 
 }

@@ -185,4 +185,23 @@ class OrdersController
     }
 
 
+    public function confirmOrder(Request $req, Response $res) : string {
+        if($req->session->get("is_authenticated")&& $req->session->get("user_role") === "customer") {
+            $orderId= $req->query()['order_id'];
+            $customerId = $req->session->get("user_id");
+
+            $orderModel = new Order();
+            $result = $orderModel->markAsConfirmed(customerId: $customerId,orderId: $orderId);
+
+            if(is_string($result)) {
+                return "Internal Server Error";
+            }
+
+            return $res->redirect("/dashboard/orders");
+        } else {
+            return $res->redirect("/login");
+        }
+    }
+
+
 }

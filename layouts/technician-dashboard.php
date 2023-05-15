@@ -28,12 +28,12 @@ DocumentHead::createHead(
             <p>AutoRealm</p>
         </div>
         <nav class="employee-dashboard-container__nav">
-            <a href="/technician-dashboard/overview">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span>
-                    Overview
-                </span>
-            </a>
+<!--            <a href="/technician-dashboard/overview">-->
+<!--                <i class="fa-solid fa-chart-simple"></i>-->
+<!--                <span>-->
+<!--                    Overview-->
+<!--                </span>-->
+<!--            </a>-->
             <a href="/assigned-job">
                 <i class="fa-solid fa-clock"></i>
                 <span>

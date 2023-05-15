@@ -11,6 +11,10 @@ class CustomerOrderCard
         $orderDate = $order['Order Date'];
         $items = $order['Items'];
 
+        $confirmForm = $status === "CourierConfirmed" ? "        <form action='/orders/mark-as-completed?order_id=$orderId' method='post'>
+            <button class='btn btn--text'>Mark as received</button>
+        </form>" : "";
+
         $totalPrice = 0;
 
         $itemsList = '';
@@ -56,6 +60,7 @@ class CustomerOrderCard
             </strong>
             Rs. $totalPrice
         </p>
+        $confirmForm
     </div>
         
         ";

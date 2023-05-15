@@ -55,12 +55,6 @@ DocumentHead::createHead(
         <nav class="dashboard-container__nav">
             <ul>
                 <li>
-                    <a href="/dashboard/overview">
-                        <i class="fa-solid fa-chart-simple"></i>
-                        Overview
-                    </a>
-                </li>
-                <li>
                     <a href="/dashboard/appointments">
                         <i class="fa-solid fa-calendar-check"></i>
                         My appointments
