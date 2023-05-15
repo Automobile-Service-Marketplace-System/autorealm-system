@@ -48,13 +48,18 @@ class InvoicesController
 
     public function getCreateInvoicePage(Request $req, Response $res): string
     {
-
+        //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            
+            //for pagination
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+            //get all invoices
             $invoiceModel = new Invoice();
             $invoices = $invoiceModel->getInvoices(count: $limit, page: $page);
 
+            //render invoice oage 
             return $res->render(view: "office-staff-dashboard-generate-invoice-page", layout: "office-staff-dashboard",
                 pageParams: [''],
                 layoutParams: [
@@ -63,15 +68,20 @@ class InvoicesController
                 ]);
         }
 
+        //if unauthorized
         return $res->redirect(path: "/login");
     }
 
     public function createInvoice(Request $req, Response $res)
     {
+        //check authentication
         if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            
+            //get the submitted data
             $body = $req->body();
             DevOnly::prettyEcho($body);
 
+            //call create invoice method with data
             $invoiceModel = new Invoice($body);
             $invoiceModel->createInvoice(employeeId: $req->session->get("user_id"));
         }

@@ -197,7 +197,6 @@ if ($isInternal) {
 //office staff routes
     $app->router->get(path: "/office-staff-login", callback: [AuthenticationController::class, 'getOfficeStaffLoginPage']);
     $app->router->post(path: "/office-staff-login", callback: [AuthenticationController::class, 'loginOfficeStaff']);
-    // $app->router->get(path: "/overview", callback: [DashboardController::class, 'getOfficeStaffDashboardOverview']);
     $app->router->get(path: "/profile", callback: [DashboardController::class, 'getOfficeStaffDashboardProfile']);
     $app->router->get(path: "/customers", callback: [CustomersController::class, 'getCustomersPage']);
     $app->router->get(path: "/customers/add", callback: [CustomersController::class, 'getAddCustomerPage']);
@@ -212,14 +211,12 @@ if ($isInternal) {
     $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);
     $app->router->get(path: "/appointments", callback: [AppointmentsController::class, 'getOfficeAppointmentsPage']);
     $app->router->post(path: "/appointments/create", callback: [AppointmentsController::class, 'officeCreateAppointment']);
-    // $app->router->get(path: "/create-job-card", callback: [JobsController::class, 'getCreateJobCardPage']);
     $app->router->post(path: "/create-job-card", callback: [JobsController::class, 'createJobCard']);
     $app->router->get(path: "/invoices/create", callback: [InvoicesController::class, 'getCreateInvoicePage']);
     $app->router->post(path: "/invoices/create", callback: [InvoicesController::class, 'createInvoice']);
     $app->router->post(path: "/customers/update", callback: [CustomersController::class, 'updateCustomer']);
     $app->router->post(path: "/vehicles/update", callback: [VehiclesController::class, 'updateVehicle']);
     $app->router->get(path: "/job-cards", callback: [JobsController::class, 'getAllJobsPage']);
-    $app->router->get(path: "/appointments/update", callback: [AppointmentsController::class, 'officeUpdateAppointment']);
     $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
     $app->router->get(path: "/foremen", callback: [AppointmentsController::class, 'getForemen']);
 

@@ -299,12 +299,17 @@ class JobsController
 
     public function createJobCard(Request $req, Response $res): string
     {
+        //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
+            //get the data from body
             $body = $req->body();
+
+            //pass data to save method
             $jobCard = new JobCard($body);
             $result = $jobCard->officeCreateJobCard();
 
+            //if an error
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json([
@@ -312,6 +317,7 @@ class JobsController
                 ]);
             }
 
+            //if an error
             if (is_array($result)) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
@@ -319,6 +325,7 @@ class JobsController
                 ]);
             }
 
+            //if successful
             if ($result) {
                 $res->setStatusCode(code: 201);
                 return $res->json([
@@ -326,11 +333,14 @@ class JobsController
                 ]);
             }
 
+            //if an error
             return $res->render("500", "error", [
                 "error" => "Something went wrong. Please try again later."
             ]);
 
         }
+
+        //if unauthorized
         return $res->redirect(path: "/login");
 
     }
@@ -482,18 +492,22 @@ class JobsController
 
     public function getAllJobsPage(Request $req, Response $res): string
     {
-
+        //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             
+            //get the query
             $query = $req->query();
+
+            //for pagination
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
-            //for search and filtering
+            //for searching
             $searchTermCustomer = $query["cus"] ?? null;
             $searchTermEmployee = $query["emp"] ?? null;
             $searchTermRegNo = $query["reg"] ?? null;
 
+            //get all jobs
             $jobCardModel = new JobCard();
             $jobCards = $jobCardModel->getAllJobs(
                 count: $limit, 
@@ -503,6 +517,7 @@ class JobsController
                 searchTermRegNo: $searchTermRegNo
             );
 
+            //render the all jobs page
             return $res->render(view: "office-staff-dashboard-all-jobs-page", layout: "office-staff-dashboard",
                 pageParams: [
                     "jobCards" => $jobCards,
@@ -519,6 +534,8 @@ class JobsController
                     'officeStaffId' => $req->session->get('user_id')
                 ]);
         }
+
+        //if unauthorized
         return $res->redirect(path: "/login");
     }
 

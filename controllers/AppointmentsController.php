@@ -100,19 +100,28 @@ class AppointmentsController
     public function getCreateAppointmentPage(Request $req, Response $res): string
     {
         {
+            //check authentication
             if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
+                //get the query
                 $query = $req->query();
+
+                //create appointment object and get the owner details
                 $appointmentModel = new Appointment();
                 $appointment = $appointmentModel->getOwnerInfo((int)$query["id"]);
 
+                //create service object and get the service details
                 $modelService = new Service();
                 $rawServices = $modelService->getServices();
+
                 $services = [];
+
+                //fill the service array
                 foreach ($rawServices as $rawService) {
                     $services[$rawService['ID']] = $rawService['Name'];
                 }
 
+                //render create appointment page
                 return $res->render(view: "office-staff-dashboard-create-appointment", layout: "office-staff-dashboard",
                     pageParams: [
                         "appointment" => $appointment,
@@ -124,6 +133,7 @@ class AppointmentsController
                     ]);
             }
 
+            //if unauthorized
             return $res->redirect(path: "/login");
 
         }
@@ -131,15 +141,21 @@ class AppointmentsController
 
     public function getOfficeAppointmentsPage(Request $req, Response $res): string
     {
+        //check authorization
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             
+            //get the query
             $query = $req->query();
+
+            //for pagination
             $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
             $page = isset($query['page']) ? (int)$query['page'] : 1;
 
+            //for searching
             $searchTermRegNo = $query["reg"] ?? null;
             $searchTermCustomer = $query["cus"] ?? null;
 
+            //get all appointments 
             $appointmentModel = new Appointment();
             $appointments = $appointmentModel->getAllAppointments(
                 count: $limit, 
@@ -147,8 +163,11 @@ class AppointmentsController
                 searchTermRegNo: $searchTermRegNo,
                 searchTermCustomer: $searchTermCustomer
             );
+
+            //get user id
             $officeUserId = $req->session->get('user_id');
 
+            //render appointment page
             return $res->render(view: "office-staff-dashboard-appointments-page", layout: "office-staff-dashboard",
                 pageParams: [
                     "appointments" => $appointments,
@@ -165,6 +184,7 @@ class AppointmentsController
                 ]);
         }
 
+        //if unauthorized
         return $res->redirect(path: "/login");
 
     }
@@ -174,20 +194,27 @@ class AppointmentsController
      */
     public function getForemen(Request $req, Response $res): string
     {
+        //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
+            
+            //get all foremen details
             $foremanModel = new Foreman();
             $foremen = $foremanModel->getAvailableForemen();
 
+            //if an error
             if (is_string($foremen)) {
                 $res->setStatusCode(500);
                 return $res->json([
                     "message" => "Internal Server Error"
                 ]);
             }
+
+            //if successful
             $res->setStatusCode(200);
             return $res->json($foremen);
         }
 
+        //if unauthorized
         $res->setStatusCode(401);
         return $res->json([
             "message" => "You're unauthorized to perform this action"
@@ -199,27 +226,43 @@ class AppointmentsController
      */
     public function getTimeSlots(Request $req, Response $res): string
     {
+        //check authentication
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member" || $req->session->get("user_role") === "customer")) {
+            
+            //create object from appointment
             $appointmentModel = new Appointment();
+
+            //get the query data
             $date = $req->query()["date"] ?? null;
+
+            //check the validate format
             $isValidDate = preg_match("/^\\d{4}-\\d{2}-\\d{2}$/", $date);
+
+            //set status code
             if (!$date || !$isValidDate) {
                 $res->setStatusCode(code: 400);
                 return $res->json(data: [
                     "message" => "Bad request"
                 ]);
             }
+
+            //request available time slots
             $result = $appointmentModel->getTimeslotsByDate(date: $date);
+
+            //if an error
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json(data: [
                     "message" => $result
                 ]);
             }
+
+            //if successful
             $res->setStatusCode(code: 200);
             return $res->json($result);
         }
 
+        //if unauthorized
         $res->setStatusCode(code: 401);
         return $res->json(data: [
             "message" => "Unauthorized"
@@ -231,10 +274,14 @@ class AppointmentsController
      */
     public function officeCreateAppointment(Request $req, Response $res): string
     {
+        //get the submitted data
         $body = $req->body();
+
+        //send data to the appointment model
         $appointment = new Appointment($body);
         $result = $appointment->officeCreateAppointment();
 
+        //if an error
         if (is_string($result)) {
             $res->setStatusCode(code: 500);
             return $res->json([
@@ -242,6 +289,7 @@ class AppointmentsController
             ]);
         }
 
+        //set qr code
         if (is_array($result)) {
             $options = new QROptions(
                 [
@@ -278,13 +326,14 @@ class AppointmentsController
                 var_dump($e->getMessage());
             }
 
-
+            //if successful
             $res->setStatusCode(code: 201);
             return $res->json([
                 "success" => "Appointment created successfully"
             ]);
         }
 
+        //if an error
         return $res->render("500", "error", [
             "error" => "Something went wrong. Please try again later."
         ]);
@@ -292,26 +341,35 @@ class AppointmentsController
 
     public function officeDeleteAppointment(Request $req, Response $res): string
     {
+        //check authentication
         if ($req->session->get("is_authenticated") && ($req->session->get("user_role") === "office_staff_member")) {
 
+            //get the submitted data
             $body = $req->body();
+
+            //check body has appointment_id
             if (empty($body['appointment_id'])) {
                 $res->setStatusCode(code: 400);
                 return $res->json([
                     "message" => "Bad Request"
                 ]);
             }
+
             $appointment_id = $body['appointment_id'];
+
+            //call delete appointment method with selected appointment_id
             $appointmentModel = new Appointment();
             $result = $appointmentModel->deleteAppointmentById(id: $appointment_id);
 
-
+            //if an error
             if (is_string($result)) {
                 $res->setStatusCode(code: 500);
                 return $res->json([
                     "message" => "Internal Server Error"
                 ]);
             }
+
+            //if successful
             if ($result) {
                 $res->setStatusCode(code: 204);
                 return $res->json([
@@ -321,35 +379,8 @@ class AppointmentsController
             }
         }
 
+        //if unauthorized
         return $res->redirect(path: "/login");
-    }
-
-    public function officeUpdateAppointment(Request $req, Response $res): string
-    {
-        $body = $req->body();
-        $appointment = new Appointment($body);
-        $result = $appointment->officeUpdateAppointment();
-
-        if (is_string($result)) {
-            $res->setStatusCode(code: 500);
-            return $res->json([
-                "message" => $result
-            ]);
-        }
-
-        if (is_array($result)) {
-            $res->setStatusCode(code: 400);
-            return $res->json([
-                "errors" => $result
-            ]);
-        }
-
-        if ($result) {
-            $res->setStatusCode(code: 201);
-            return $res->json([
-                "success" => "Appointment updated successfully"
-            ]);
-        }
     }
 }
 

@@ -18,7 +18,7 @@ class CustomersController
         $limit = isset($query['limit']) ? (int)$query['limit'] : 8;
         $page = isset($query['page']) ? (int)$query['page'] : 1;
 
-         //for search and filtering
+        //for search and filtering
         $searchTermCustomer = $query["cus"] ?? null;
         $searchTermEmail = $query["email"] ?? null;
 

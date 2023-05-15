@@ -38,13 +38,18 @@ class DashboardController
     }
 
     public function getOfficeStaffDashboardProfile(Request $req, Response $res): string
-    {
+    {   
+        //check authentication
         if ($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
 
+            //create new object and get the office satff details
             $officeStaffModel = new Officestaff();
             $officeStaff = $officeStaffModel->getOfficeStaffById($req->session->get("user_id"));
+
+            //render the office staff profile
             if ($officeStaff) {
-                return $res->render(view: "office-staff-dashboard-profile", layout: "office-staff-dashboard", pageParams: [
+                return $res->render(view: "office-staff-dashboard-profile", layout: "office-staff-dashboard", 
+                pageParams: [
                     'officeStaff' => $officeStaff
                 ], layoutParams: [
                     'title' => 'My Profile',
@@ -54,6 +59,7 @@ class DashboardController
                 ]);
             }
 
+            //if unauthorized
             return $res->redirect(path: "/login");
 
         }

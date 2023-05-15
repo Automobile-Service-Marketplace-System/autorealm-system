@@ -47,50 +47,50 @@ createAppointmentButton.forEach(function (btn) {
 
 
                     const createAppointmentForm = htmlToElement(`
-        <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
-            <div class="office-create-appointment-form_title mb-4" >
-                <button class="modal-close-btn" type="button">
-                    <i class="fas fa-times"></i>
-                </button>
-                <h1>
-                    Create an appointment for ${name}
-                </h1>
-            </div>
+                    <form method="post" class="office-create-appointment-form" enctype="multipart/form-data">
+                        <div class="office-create-appointment-form_title mb-4" >
+                            <button class="modal-close-btn" type="button">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <h1>
+                                Create an appointment for ${name}
+                            </h1>
+                        </div>
 
-            <div class="office-create-appointment-input-wrapper mt-8">  
-                <div class='form-item '>
-                    <label for='vehicle'>Vehicle<sup>*</sup></label>
-                    <select  name='vehicle_reg_no' id='vehicle' required> 
-                        ${vehicleOptions}
-                    </select> 
-                </div>
-                
-                <div class='form-item '>
-                    <label for='mileage'>Mileage (Km)<sup>*</sup></label>
-                    <input type='number' name='mileage' id='mileage' placeholder='' required  value='' min="0" max="100000">
-                </div>
+                        <div class="office-create-appointment-input-wrapper mt-8">  
+                            <div class='form-item '>
+                                <label for='vehicle'>Vehicle<sup>*</sup></label>
+                                <select  name='vehicle_reg_no' id='vehicle' required> 
+                                    ${vehicleOptions}
+                                </select> 
+                            </div>
+                            
+                            <div class='form-item '>
+                                <label for='mileage'>Mileage (Km)<sup>*</sup></label>
+                                <input type='number' name='mileage' id='mileage' placeholder='' required  value='' min="0" max="100000">
+                            </div>
 
-                <div class='form-item create-appointment-remarks'>
-                    <label for='remarks'>Remarks</sup></label>
-                    <textarea name='remarks' id='remarks' placeholder='' rows="1" style="height: 40px">
-                    </textarea>
-                </div>
-                <div class="create-time-slot">
-                    <input type="date" id="date" style="display: none" name="date">
-                </div>
-                <input style="display: none" name='customerID' id='customerID' value='${customerID}'>
-                <div class='form-item'>
-                    <label for='timeslot'>Timeslot<sup>*</sup></label>
-                    <select name='timeslot' id='timeslot' required> </select>
-                </div>
-            </div>
+                            <div class='form-item create-appointment-remarks'>
+                                <label for='remarks'>Remarks</sup></label>
+                                <textarea name='remarks' id='remarks' placeholder='' rows="1" style="height: 40px">
+                                </textarea>
+                            </div>
+                            <div class="create-time-slot">
+                                <input type="date" id="date" style="display: none" name="date">
+                            </div>
+                            <input style="display: none" name='customerID' id='customerID' value='${customerID}'>
+                            <div class='form-item'>
+                                <label for='timeslot'>Timeslot<sup>*</sup></label>
+                                <select name='timeslot' id='timeslot' required> </select>
+                            </div>
+                        </div>
 
-            <div class="office-create-appointment__actions">
-                <button type="reset" class="btn btn--danger btn--thin btn--text">Reset</button>
-                <button type="button" class="btn btn--thin" id="create-appointment-modal-btn">Submit</button>
-                <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
-            </div>
-    </form>
+                        <div class="office-create-appointment__actions">
+                            <button type="reset" class="btn btn--danger btn--thin btn--text">Reset</button>
+                            <button type="button" class="btn btn--thin" id="create-appointment-modal-btn">Submit</button>
+                            <button type="submit" style="display: none" id="create-appointment-final-btn"></button>
+                        </div>
+                </form>
 `);
 
 

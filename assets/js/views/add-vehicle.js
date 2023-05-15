@@ -7,7 +7,6 @@ const addVehicleButton = document.querySelector("#add-vehicle-for-customer");
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
-
 const addVehicleForm =
   htmlToElement(`<form action="/vehicles/add/by-customer?id=${params.id}" method="post" enctype="multipart/form-data" id="add-vehicle-form">
 
@@ -196,18 +195,19 @@ addVehicleButton?.addEventListener("click", () => {
   const brandSelectElement = addVehicleForm.querySelector("#brand");
   brandSelectElement.innerHTML = brandOptions;
 
-  const years = []
-  const maxYear = new Date().getFullYear()
+  const years = [];
+  const maxYear = new Date().getFullYear();
 
   for (let index = maxYear; index >= 1900; index--) {
-    years.push(index)
+    years.push(index);
   }
 
-  const modelYearOptions = years.map(y => {
-    return `<option value="${y}">${y}</option>`
-  })
+  const modelYearOptions = years.map((y) => {
+    return `<option value="${y}">${y}</option>`;
+  });
 
-  const manufacturedYearSelectElement = addVehicleForm.querySelector("#manufactured_year");
+  const manufacturedYearSelectElement =
+    addVehicleForm.querySelector("#manufactured_year");
   manufacturedYearSelectElement.innerHTML = modelYearOptions;
 
   Modal.show({

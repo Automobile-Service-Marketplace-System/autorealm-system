@@ -19,6 +19,7 @@ class OfficeStaff
 
     public function getOfficeStaffById(int $office_staff_id): bool|object
     {
+        //query for get employee details
         $stmt = $this->pdo->prepare("SELECT * FROM employee e INNER  JOIN officestaff o on e.employee_id = o.employee_id WHERE e.employee_id = :employee_id");
         $stmt->execute([
             ":employee_id" => $office_staff_id
