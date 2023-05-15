@@ -45,7 +45,7 @@ if (empty($invoices['invoices'])) {
             "Total Cost" => number_format($invoice["Total Cost"], 2, '.', ''),
             "Type" => $invoice["Type"],
             "Employee Name" => $invoice["Employee Name"],
-            "JobCard ID" => $invoice["JobCard ID"],
+            "JobCard ID" => $invoice["JobCard ID"] == null ? "N/A" : $invoice["JobCard ID"],
     //        "Actions" =>   "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'>
     //                                        <a href='/vehicles/by-customer?id={$invoice['Invoice No']}' class='btn btn--rounded btn--info'>
     //                                            <i class='fa-solid fa-car-side'></i>
