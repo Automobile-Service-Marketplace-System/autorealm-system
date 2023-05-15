@@ -22,18 +22,23 @@
 //var_dump("total => ".$total);
 use app\components\Table;
 
-
+//for the table
 $columns = ["ID", "Name", "Category", "Model", "Brand", "Price", "Quantity", "Type", "Actions"];
 
 $items = [];
+
+//to get the total count of products
 $noOfProducts = count($products);
 $startNo = ($page - 1) * $limit + 1;
 $endNo = $startNo + $noOfProducts - 1;
 
-
+//to insert the rows to the table
 foreach ($products as $product) {
+
+    //setting indicator colors for quantity
     $quantityColor = $product["Quantity"] > $product["medium_quantity"] ? "success" : ($product["Quantity"] > $product["low_quantity"] ? "warning" : "danger");
     $quantityElement = "<p class='product-quantity'>  <span class='status status--$quantityColor'></span>{$product["Quantity"]}</p>";
+
     $items[] = [
         "ID" => $product["ID"],
         "Name" => $product["Name"],
@@ -43,6 +48,7 @@ foreach ($products as $product) {
         "Price" => $product["Price (LKR)"],
         "Quantity" => $quantityElement,
         "Type" => $product["Type"],
+        //dataset values are used to pass data to the modal
         "Actions" => "<div style='display: flex;align-items: center;justify-content: center;gap: 1rem;padding-inline: 0.25rem'
                                 data-productId='{$product["ID"]}'              
                                 data-categoryId='{$product["CategoryID"]}' 
@@ -63,15 +69,20 @@ foreach ($products as $product) {
     ];
 }
 ?>
+
+
 <div class="product-count-and-actions">
+<!--    show the total and current count of products-->
     <div class="product-table-count">
         <p>
             Showing <?= $startNo ?> - <?= $endNo ?> of <?php echo $total; ?> products
+
             <!--            Showing 25 out of 100 products-->
         </p>
     </div>
-    <div class="stock-manager-add-button-set-product-page">
 
+
+    <div class="stock-manager-add-button-set-product-page">
 
         <button class="btn btn--rounded pagination-item btn--white" id="add-model-btn" style="margin-right: 1rem">
             <i class="fa-solid fa-m"></i>
@@ -81,6 +92,7 @@ foreach ($products as $product) {
             <i class="fa-solid fa-b"></i>
         </button>
 
+<!--        add button-->
         <div class="add-button">
             <a class="btn" href="products/add">
                 <i class="fa-solid fa-plus"></i>
@@ -103,12 +115,15 @@ foreach ($products as $product) {
     <form>
 
         <div class="filters__dropdown">
+
+<!--            product search input-->
             <div class="form-item form-item--icon-right form-item--no-label filters__search">
                 <input type="text" placeholder="Search Product by Name" id="dashboard-product-search"
                        name="q" <?php if ($searchTerm) echo "value='$searchTerm'" ?>>
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <?php $searchTerm = null; ?>
+
+<!--            product filters-->
             <p>Filter products by</p>
             <div class="filters__dropdown-content">
                 <div class="form-item">
@@ -116,6 +131,7 @@ foreach ($products as $product) {
                            placeholder="Category">
                     <datalist id="categories">
                         <option data-value="all" value="all" selected>All Categories</option>
+<!--                        inserting options for categories-->
                         <?php foreach ($categories as $category) : ?>
                             <option value="<?= $category["name"] ?>"
                                     data-value="<?= $category["category_id"] ?>">
@@ -130,6 +146,7 @@ foreach ($products as $product) {
                            placeholder="Brand">
                     <datalist id="brands">
                         <option data-value="all" value="all" selected>All Brands</option>
+<!--                        inserting options for brands-->
                         <?php foreach ($brands as $brand) : ?>
                             <option value="<?= $brand["brand_name"] ?>"
                                     data-value="<?= $brand["brand_id"] ?>"><?= $brand["brand_name"] ?></option>
@@ -187,6 +204,8 @@ foreach ($products as $product) {
 <!--show the table-->
 
 <?php
+
+//only then there are products
 if ($products){
     Table::render(items: $items, columns: $columns, keyColumns: ["ID", "Actions"]);
 ?>
@@ -194,6 +213,7 @@ if ($products){
     <div class="dashboard-pagination-container">
         <?php
 
+//        setting next and previous page buttons
         $hasNextPage = $page < ceil(num: $total / $limit);
         $hasNextPageClass = $hasNextPage ? "" : "dashboard-pagination-item--disabled";
         $hasNextPageHref = $hasNextPage ? "/products?q=$searchTerm&category_name=$categoryName&brand_name=$brandName&product_type=$productType&quantity=$quantityLevel&status=$status&page=" . ($page + 1) . "&limit=$limit" : "";
@@ -229,9 +249,11 @@ if ($products){
 
 
 
-
+<!--to store the category and product -->
 <script>
     <?php
+
+//        getting the categories, brands and models and encode them to json
     try {
         $categoriesString = json_encode($categories, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
@@ -250,6 +272,8 @@ if ($products){
         $modelsString = "[]";
     }
     ?>
+
+//    storing the categories, brands and models in local storage
     const categories = <?= $categoriesString ?>;
     const brands = <?= $brandsString ?>;
     const models = <?= $modelsString ?>;
