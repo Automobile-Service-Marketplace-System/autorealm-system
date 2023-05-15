@@ -24,3 +24,8 @@
     align-items: center;
     margin: 0 auto;
 }
+
+
+.analytic-filters__dropdown--active {
+    height: 220px !important;
+}

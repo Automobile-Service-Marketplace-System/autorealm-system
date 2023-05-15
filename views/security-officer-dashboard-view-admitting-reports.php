@@ -26,7 +26,7 @@ $endNo = $startNo + $noOfAdmittingReports - 1;
 
 showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
 
-<div class="filters" id="dashboard-product-filters">
+<div class="filters" id="dashboard-admitting-filters">
     <div class="filters__actions">
         <div class="filters__dropdown-trigger" >
             Search & Filter
@@ -62,11 +62,12 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                     </select>
                 </div>
 
+
+        </div>
             <div class="filter-action-buttons">
                 <button class="btn btn--text btn--danger btn--thin" id="clear-filters-btn" type="reset">Clear</button>
                 <button class="btn btn--text btn--thin" id="apply-filters-btn">Submit</button>
             </div>
-        </div>
     </form>
 </div>
 
