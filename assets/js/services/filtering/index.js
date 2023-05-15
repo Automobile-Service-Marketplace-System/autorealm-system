@@ -2,6 +2,7 @@ import "./dashboard-product-filtering";
 import "./dashboard-order-filtering";
 import "./dashboard-supplier-filtering";
 import "./dashboard-review-filtering";
+import "./dashboard-admitting-filtering";
 import "./site-product-filtering";
 
 /**
