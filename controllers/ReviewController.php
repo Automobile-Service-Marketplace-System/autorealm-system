@@ -55,9 +55,19 @@ class ReviewController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-reviews", layout: "admin-dashboard",
-                    pageParams: [],
-                    layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
-            }
+                pageParams: [
+                    "reviews" => $results['reviews'],
+                    'total' => $results['total'],
+                    'limit' => $limit,
+                    'page' => $page,
+
+                    //for search
+                    'searchTermProduct' => $searchTermProduct,
+                    'reviewRating' => $reviewRating,
+                    'reviewDate' => $reviewDate,
+                ],
+                layoutParams: ['title' => 'Reviews', 'pageMainHeading' => 'Reviews', 'employeeId' => $req->session->get("user_id")]);
+        }
 
         }
 

@@ -57,13 +57,19 @@ class OrdersController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-orders", layout: "admin-dashboard",
-                    pageParams: ["orders" => $result['orders'],
-                        'total' => $result['total'],
-                        'limit' => $limit,
-                        'page' => $page,
-                    ],
-                    layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
-            }
+                pageParams: [
+                    "orders" => $result['orders'],
+                    'total' => $result['total'],
+                    'limit' => $limit,
+                    'page' => $page,
+                    //passing filter options
+                    'searchTermCustomer' => $searchTermCustomer,
+                    'searchTermOrder' => $searchTermOrder,
+                    'orderStatus' => $orderStatus,
+                    'orderDate' => $orderDate,
+                ],
+                layoutParams: ['title' => 'Orders', 'pageMainHeading' => 'Orders', 'employeeId' => $req->session->get("user_id")]);
+        }
 
         }
 

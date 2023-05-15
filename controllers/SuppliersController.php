@@ -60,15 +60,23 @@ class SuppliersController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-suppliers", layout: "admin-dashboard",
-                    pageParams: [
-                        'suppliers' => $result['suppliers'],
-                        'total' => $result['total'],
-                    ],
-                    layoutParams: [
-                        'title' => 'Suppliers',
-                        'pageMainHeading' => 'Suppliers',
-                        'employeeId' => $req->session->get('user_id')
-                    ]);
+                pageParams: [
+                    'suppliers' => $result['suppliers'],
+                    'total' => $result['total'],
+                    'limit' => $limit,
+                    'page' => $page,
+
+                    //for filters
+                    'searchTermSupplier' => $searchTermSupplier,
+                    'searchTermMail' => $searchTermMail,
+                    'supplierStatus' => $supplierStatus,
+
+                ],
+                layoutParams: [
+                    'title' => 'Suppliers',
+                    'pageMainHeading' => 'Suppliers',
+                    'employeeId' => $req->session->get('user_id')
+                ]);
             }
 
 

@@ -64,13 +64,22 @@ class VehiclesController
             //check authentication for admin
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "office-staff-dashboard-vehicles-page", layout: "admin-dashboard",
-                    pageParams: ["vehicles" => $vehicles],
-                    layoutParams: [
-                        'title' => 'Vehicles',
-                        'pageMainHeading' => 'Vehicles',
-                        'employeeId' => $req->session->get('user_id')
-                    ]);
-            }
+                pageParams: [
+                    "vehicles" => $vehicles,
+                    "total" => $vehicles['total'],
+                    "limit" => $limit,
+                    "page" => $page,
+                    "models" => $modelModel->getMOdels(),
+                    "brands" => $brandModel->getBrands(),
+                    "searchTermRegNo" => $searchTermRegNo,
+                    "searchTermCustomer" => $searchTermCustomer,
+                    "vehicleType" => $vehicleType],
+                layoutParams: [
+                    'title' => 'Vehicles',
+                    'pageMainHeading' => 'Vehicles',
+                    'employeeId' => $req->session->get('user_id')
+                ]);
+        }
 
         }
 

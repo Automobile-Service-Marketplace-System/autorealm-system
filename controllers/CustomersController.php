@@ -54,13 +54,20 @@ class CustomersController
             //check authentication for admin
             if($req->session->get("user_role") === "admin"){
                 return $res->render(view:"office-staff-dashboard-customers-page", layout:"admin-dashboard",
-                    pageParams:["customers" => $customers],
-                    layoutParams:[
-                        'title' => 'Customers',
-                        'pageMainHeading' => 'Customers',
-                        'employeeId' => $req->session->get('user_id'),
+                pageParams:[
+                    "total"=>$customers['total'],
+                    "limit"=>$limit,
+                    "page"=>$page,
+                    'customers' => $customers,
+                    'searchTermCustomer'=> $searchTermCustomer,
+                    'searchTermEmail'=> $searchTermEmail
+                ],
+                layoutParams:[
+                    'title' => 'Customers',
+                    'pageMainHeading' => 'Customers',
+                    'employeeId' => $req->session->get("user_id")
                 ]);
-            }
+         }
 
         }
         //if unauthorized
