@@ -8,11 +8,6 @@
  * @var array $brands
  */
 
-//if there is a error print the error and return
-if(isset($error)) {
-    echo "<p class='error'>$error</p>";
-    return;
-}
 
 ?>
 
@@ -20,7 +15,7 @@ if(isset($error)) {
 <div class="add-vehicle-for-customer">
     <div class="customer-details">
         <strong class='customer-title'>
-            Customer Name: 
+            Customer Name:
         </strong>
         <?php echo "{$customer->f_name} {$customer->l_name}" ?>
     </div>
@@ -30,12 +25,12 @@ if(isset($error)) {
 <!-- vehicle card for each vehicle -->
 <div class='vehicle-card-container'>
     <?php
-    if(empty($vehicles)) {
+    if (empty($vehicles)) {
         echo "<p class='no-data'>No vehicles for this customer</p>";
     } else {
-    foreach ($vehicles as $vehicle) {
-        $manufacturedYear = explode('-', $vehicle['manufactured_year'])[0];
-        echo "
+        foreach ($vehicles as $vehicle) {
+            $manufacturedYear = explode('-', $vehicle['manufactured_year'])[0];
+            echo "
             <div class='vehicle-card'>
                 <img src='/images/placeholders/car-placeholder.svg' alt='vehicle-image' class='vehicle-card__image'>
                 <div class='vehicle-card__info'>

@@ -59,6 +59,8 @@ export async function loadTimeSlots(input, formEl) {
 export async function loadHolidays() {
     try {
         const result = await fetch(`/holidays`);
+        console.log(await result.text())
+        return
         switch (result.status) {
             case 404:
                 appointmentDataUtils.holidays = [];

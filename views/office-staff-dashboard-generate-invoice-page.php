@@ -137,13 +137,13 @@
     </section>
 
     <div class="invoice-button-set">
-        <button type="button" class="btn btn--success btn--square" >
-            <i class="fa-solid fa-print"></i>
-        </button>
-        <button type="button" class="btn btn--warning btn--square">
-            <i class="fa-solid fa-file-pdf"></i>
-        </button>
+<!--        <button type="button" class="btn btn--success btn--square" >-->
+<!--            <i class="fa-solid fa-print"></i>-->
+<!--        </button>-->
+<!--        <button type="button" class="btn btn--warning btn--square">-->
+<!--            <i class="fa-solid fa-file-pdf"></i>-->
+<!--        </button>-->
         <button type="button" class="btn" id="print-invoice">Print Invoice</button>
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn">Submit</button>
     </div>
 </form>

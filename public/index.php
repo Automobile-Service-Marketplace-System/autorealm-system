@@ -102,7 +102,7 @@ if (!$isInternal) {
     $app->router->get(path: "/holidays", callback: [AppointmentsController::class, 'getHolidays']);
     $app->router->get(path: "/appointments/timeslots", callback: [AppointmentsController::class, 'getTimeSlots']);
     $app->router->post(path: "/appointments/create-by-customer", callback:[AppointmentsController::class, 'createAppointmentByCustomer']);
-
+    $app->router->post(path: "/appointments/delete", callback: [AppointmentsController::class, 'officeDeleteAppointment']);
 //    $app->router->get(path: "/cart/checkout", callback: [ShoppingCartController::class, 'getCartCheckoutPage']);
 }
 
