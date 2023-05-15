@@ -409,6 +409,8 @@ class JobCard
             $whereClause = $whereClause ? $whereClause . " AND CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name" : "WHERE CONCAT(e.f_name,' ',e.l_name) LIKE :search_term_foreman_name";
         }
 
+        $whereClause = $whereClause ? $whereClause . " AND j.status = 'finished'" : "WHERE j.status = 'finished'";
+
         $limitClause = $count ? "LIMIT $count" : "";
         $pageClause = $page ? "OFFSET " . ($page - 1) * $count : "";
 
