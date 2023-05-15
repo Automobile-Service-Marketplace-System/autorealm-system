@@ -66,14 +66,22 @@ class InvoicesController
         return $res->redirect(path: "/login");
     }
 
-    public function createInvoice(Request $req, Response $res)
+    public function createInvoice(Request $req, Response $res): string
     {
         if($req->session->get("is_authenticated") && $req->session->get("user_role") === "office_staff_member") {
             $body = $req->body();
-            DevOnly::prettyEcho($body);
+//            DevOnly::prettyEcho($body);
 
+//            return "";
             $invoiceModel = new Invoice($body);
-            $invoiceModel->createInvoice(employeeId: $req->session->get("user_id"));
+            $createResult= $invoiceModel->createInvoice(employeeId: $req->session->get("user_id"));
+
+            if(is_string($createResult)) {
+                return "Internal Server Error<br>$createResult";
+            }
+
+            return $res->redirect(path: "/invoices");
         }
+        return $res->redirect(path: "/login");
     }
 }
