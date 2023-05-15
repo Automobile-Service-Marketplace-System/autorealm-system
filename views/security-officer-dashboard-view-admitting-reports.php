@@ -86,7 +86,7 @@ showing: <?= $startNo ?> - <?= $endNo ?> of <?= $total ?> admitting reports
                 }
                 else{
                     echo "<p class='admitting_card__departing'><b>Departing Time: </b>{$admittingReport['DeptTime']}</p>
-                        <p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span>Approved</p>";
+                        <p class='admitting_card__isapproved'><b>Status: </b><span style='color: green;'>Approved</span></p>";
                 }
                 echo "</a>";
             }
