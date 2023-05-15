@@ -4,7 +4,7 @@ import Notifier from "../components/Notifier";
 
 const addBrandBtn = document.querySelector('#add-brand-btn');
 
-
+// to create the form
 const addBrandForm = htmlToElement(`
                 <div>
                      <form class="stock-manager-add-brand-form" id="stock-manager-add-brand-form" method="post">
@@ -53,6 +53,8 @@ const addBrandForm = htmlToElement(`
                      
                      `);
 
+
+//when clicking add btn
 addBrandBtn?.addEventListener('click', () => {
 
     console.log('add brand button clicked');
@@ -63,6 +65,8 @@ addBrandBtn?.addEventListener('click', () => {
     })
 });
 
+
+// confirmation
 addBrandForm?.querySelector("#add-brand-modal-btn")?.addEventListener("click", (e) => {
 
     const template = `<div>
@@ -89,6 +93,8 @@ addBrandForm?.querySelector("#add-brand-modal-btn")?.addEventListener("click", (
     })
 })
 
+
+// when submitting the form and change default behaviour
 addBrandForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -99,7 +105,7 @@ addBrandForm?.addEventListener('submit', async (e) => {
             body: formData,
         })
 
-
+        //to display errors
         if (result.status === 400) {
             const resultBody = await result.json()
             for (const inputName in resultBody.errors) {
@@ -109,6 +115,8 @@ addBrandForm?.addEventListener('submit', async (e) => {
                 inputWrapper.appendChild(errorElement)
             }
         }
+
+        //to display success message
         else if (result.status === 201) {
 
             // add success message to url search params

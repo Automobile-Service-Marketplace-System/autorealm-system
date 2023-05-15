@@ -39,6 +39,8 @@ class ProductsController
             $categoryModel = new Category();
             $modelModel = new Model();
 
+
+            //calling the getProducts method from the model
             $result = $productModel->getProducts(
                 count: $limit,
                 page: $page,
@@ -58,6 +60,8 @@ class ProductsController
                 return "";
             }
 
+
+            
             if ($req->session->get("user_role") === "stock_manager") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "stock-manager-dashboard", pageParams: [
 
