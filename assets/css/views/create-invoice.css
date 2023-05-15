@@ -320,5 +320,15 @@
         display: none;
     }
 
+    .create-invoice__customer-info {
+        font-size: 0.8rem;
+    }
+
+
+    .create-invoice__customer-info h2 {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
 }
 
