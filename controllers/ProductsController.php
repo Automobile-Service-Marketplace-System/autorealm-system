@@ -90,11 +90,23 @@ class ProductsController
 
             if ($req->session->get("user_role") === "admin") {
                 return $res->render(view: "stock-manager-dashboard-view-products", layout: "admin-dashboard", pageParams: [
-                    'products' => $result['products'],
-                    "brands" => $brandModel->getBrands(),
 
+                    "brands" => $brandModel->getBrands(),
                     "categories" => $categoryModel->getCategories(),
                     "models" => $modelModel->getModels(),
+                    "limit" => $limit,
+                    "page" => $page,
+                    'products' => $result['products'],
+                    'total' => $result['total'],
+
+                    //passing filter options to pageParams
+                    'searchTerm' => $searchTerm,
+                    'categoryName' => $categoryName,
+                    'brandName' => $brandName,
+                    'productType' => $productType,
+                    'quantityLevel' => $quantityLevel,
+                    'status' => $status,
+
                 ], layoutParams: [
                     'title' => 'Products',
                     'pageMainHeading' => 'Products',
