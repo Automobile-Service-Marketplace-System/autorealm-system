@@ -5,8 +5,12 @@ import Notifier from "../components/Notifier";
 const addServiceButton = document.querySelector("#add-service")
 
 const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
+//query string parameters in the current URL.
+const params = Object.fromEntries(urlSearchParams.entries())
+//get the query string parameters from the current URL in a web browser using JavaScript.
 
+
+//takes an HTML string and converts it into a DOM element
 const addServiceForm = htmlToElement(`<form id="add-service-form" style="width: 400px">
 <button class="modal-close-btn">
     <i class="fas fa-times"></i>
@@ -47,7 +51,9 @@ addServiceForm?.querySelector("#add-service-modal-btn")?.addEventListener("click
                             <button class="btn btn--thin modal-close-btn" id="add-vehicle-confirm-btn">Confirm</button>                        
                         </div>
                         </div>`
+    //takes an element and converts it into a DOM element
     const element = htmlToElement(template);
+    //When the "Confirm" button is clicked, the function specified addEventListener() is executed
     element.querySelector("#add-vehicle-confirm-btn").addEventListener('click', () => {
         const submitBtn = addServiceForm?.querySelector("#add-service-final-btn");
         submitBtn?.click();
@@ -56,6 +62,7 @@ addServiceForm?.querySelector("#add-service-modal-btn")?.addEventListener("click
     Modal.show({
         content: element,
         key: "Add service confirmation",
+        //modal can be closed by clicking outside of it or pressing the escape key. If true
         closable: true,
     })
 })
@@ -65,11 +72,13 @@ addServiceForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
+        //The await keyword is used to wait for the response from the server
         const result = await fetch("/services/add", {
             body: formData,
             method: 'POST'
         })
         if(result.status === 400) {
+            //he result.json() method is used to extract the JSON-encoded data
             const resultBody = await result.json()
             for (const inputName in resultBody.errors) {
                 const inputWrapper = addServiceForm.querySelector(`#${inputName}`).parentElement
