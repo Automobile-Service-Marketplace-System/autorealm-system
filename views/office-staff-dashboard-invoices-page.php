@@ -1,3 +1,14 @@
+<?php
+/**
+ * @var array $invoices
+ * @var int $page
+ * @var int $limit
+ * @var string|null $searchTermCustomer
+ * @var string|null $searchTermEmployee
+ * @var int $total
+ */
+?>
+
 <div class="office-staff-button-set">
     <div class="add-button">
         <a class="btn" href="invoices/create">
@@ -31,7 +42,7 @@ if (empty($invoices['invoices'])) {
         $items[] = [
             "Invoice No" => $invoice["Invoice No"],
             "Customer Name" => $invoice["Customer Name"],
-            "Total Cost" => $invoice["Total Cost"],
+            "Total Cost" => number_format($invoice["Total Cost"], 2, '.', ''),
             "Type" => $invoice["Type"],
             "Employee Name" => $invoice["Employee Name"],
             "JobCard ID" => $invoice["JobCard ID"],

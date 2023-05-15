@@ -375,10 +375,10 @@ class AppointmentsController
         $holidayModel = new Holiday();
         $holidays = $holidayModel->getHolidays();
 
-        if (is_string($holidays) || !$holidays) {
+        if ((!is_array($holidays))) {
             $res->setStatusCode(code: 500);
             return $res->json([
-                "message" => "Internal Server Error"
+                "message" => $holidays
             ]);
         }
         $res->setStatusCode(code: 200);

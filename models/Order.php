@@ -312,7 +312,7 @@ class Order
                     VALUE 
                      (
                         :customer_id,
-                        'Not Prepared'
+                        'Paid'
                      )"
             );
             $stmt->bindValue(":customer_id", $customerId);

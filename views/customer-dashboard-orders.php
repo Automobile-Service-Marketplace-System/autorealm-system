@@ -12,14 +12,14 @@ use app\components\CustomerOrderCard;
 ?>
 
 
-    <div class="product-filters justify-between">
-        <div class="flex gap-4 items-center">
+    <div class="flex items-center justify-start">
+        <div class="form-item">
             <select name="type" id="customer-order-status" class="product-filter--select">
                 <?php
                 $options = [
-                    "Not Prepared" => "Due Orders",
+                    "Paid" => "Due Orders",
                     "Prepared" => "Shipped Orders",
-                    "Completed" => "Completed Orders",
+                    "CustomerConfirmed" => "Completed Orders",
                     "All" => "All Orders"
                 ];
 
@@ -28,10 +28,6 @@ use app\components\CustomerOrderCard;
                     echo "<option value='$value' $selected>$label</option>";
                 }
                 ?>
-                <!--            <option value="Not Prepared">Due Orders</option>-->
-                <!--            <option value="Prepared">Shipped Orders</option>-->
-                <!--            <option value="Completed">Completed Orders</option>-->
-                <!--            <option value="All">All Orders</option>-->
             </select>
         </div>
     </div>

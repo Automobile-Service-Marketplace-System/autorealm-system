@@ -48,6 +48,7 @@ use app\components\FormTextareaItem;
                 id: "light_lf",
                 label: "",
                 name: "lights_lf",
+                disabled: "disabled",
                 value: $admittingReport->lights_lf,
                 options: [
                     "good" => "Good",
@@ -56,15 +57,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "not working" => "Not Working",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "light_lf_description",
                 label: "",
                 name: "light_lf_description",
-                value: $admittingReport->light_lf_description,
                 disabled: "disabled",
+                value: $admittingReport->light_lf_description,
             );
         ?>
     </div>
@@ -76,6 +76,7 @@ use app\components\FormTextareaItem;
                 id: "light_rf",
                 label: "",
                 name: "lights_rf",
+                disabled: "disabled",
                 value: $admittingReport->lights_rf,
                 options: [
                     "good" => "Good",
@@ -84,15 +85,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "not working" => "Not Working",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "light_rf_description",
                 label: "",
                 name: "light_rf_description",
-                value: $admittingReport->light_rf_description,
                 disabled: "disabled",
+                value: $admittingReport->light_rf_description,
             );
         ?>
     </div>
@@ -104,6 +104,7 @@ use app\components\FormTextareaItem;
                 id: "light_lr",
                 label: "",
                 name: "lights_lr",
+                disabled: "disabled",
                 value: $admittingReport->lights_lr,
                 options: [
                     "good" => "Good",
@@ -112,15 +113,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "not working" => "Not Working",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "light_lr_description",
                 label: "",
                 name: "light_lr_description",
-                value: $admittingReport->light_lr_description,
                 disabled: "disabled",
+                value: $admittingReport->light_lr_description,
             );
         ?>
     </div>
@@ -132,6 +132,7 @@ use app\components\FormTextareaItem;
                 id: "light_rr",
                 label: "",
                 name: "lights_rr",
+                disabled: "disabled",
                 value: $admittingReport->lights_rr,
                 options: [
                     "good" => "Good",
@@ -140,7 +141,6 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "not working" => "Not Working",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
@@ -148,8 +148,8 @@ use app\components\FormTextareaItem;
                 label: "",
                 name: "light_rr_description",
                 type: "text",
-                value: $admittingReport->light_rr_description,
                 disabled: "disabled",
+                value: $admittingReport->light_rr_description,
             );
         ?>
     </div>
@@ -164,6 +164,7 @@ use app\components\FormTextareaItem;
                 id: "seat_lf",
                 label: "",
                 name: "seat_lf",
+                disabled: "disabled",
                 value: $admittingReport->seat_lf,
                 options: [
                     "good" => "Good",
@@ -172,15 +173,14 @@ use app\components\FormTextareaItem;
                     "torn" => "Torn",
                     "stained" => "Stained",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "seat_lf_description",
                 label: "",
                 name: "seat_lf_description",
-                value: $admittingReport->seat_lf_description,
                 disabled: "disabled",
+                value: $admittingReport->seat_lf_description,
             );
         ?>
     </div>
@@ -192,6 +192,7 @@ use app\components\FormTextareaItem;
                 id: "seat_rf",
                 label: "",
                 name: "seat_rf",
+                disabled: "disabled",
                 value: $admittingReport->seat_rf,
                 options: [
                     "good" => "Good",
@@ -200,15 +201,14 @@ use app\components\FormTextareaItem;
                     "torn" => "Torn",
                     "stained" => "Stained",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "seat_rf_description",
                 label: "",
                 name: "seat_rf_description",
-                value: $admittingReport->seat_rf_description,
                 disabled: "disabled",
+                value: $admittingReport->seat_rf_description,
             );
         ?>
     </div>
@@ -220,6 +220,7 @@ use app\components\FormTextareaItem;
                 id: "seat_rear",
                 label: "",
                 name: "seat_rear",
+                disabled: "disabled",
                 value: $admittingReport->seat_rear,
                 options: [
                     "good" => "Good",
@@ -228,15 +229,14 @@ use app\components\FormTextareaItem;
                     "torn" => "Torn",
                     "stained" => "Stained",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "seat_rear_description",
                 label: "",
                 name: "seat_rear_description",
-                value: $admittingReport->seat_rear_description,
                 disabled: "disabled",
+                value: $admittingReport->seat_rear_description,
             );
         ?>
     </div>
@@ -251,6 +251,7 @@ use app\components\FormTextareaItem;
                 id: "carpet_lf",
                 label: "",
                 name: "carpet_lf",
+                disabled: "disabled",
                 value: $admittingReport->carpet_lf,
                 options: [
                     "good" => "Good",
@@ -260,15 +261,14 @@ use app\components\FormTextareaItem;
                     "stained" => "Stained",
                     "missing" => " Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "carpet_lf_description",
                 label: "",
                 name: "carpet_lf_description",
-                value: $admittingReport->carpet_lf_description,
                 disabled: "disabled",
+                value: $admittingReport->carpet_lf_description,
             );
         ?>
     </div>
@@ -279,6 +279,7 @@ use app\components\FormTextareaItem;
                 id: "carpet_rf",
                 label: "",
                 name: "carpet_rf",
+                disabled: "disabled",
                 value: $admittingReport->carpet_rf,
                 options: [
                     "good" => "Good",
@@ -288,15 +289,14 @@ use app\components\FormTextareaItem;
                     "stained" => "Stained",
                     "missing" => " Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "carpet_rf_description",
                 label: "",
                 name: "carpet_rf_description",
-                value: $admittingReport->carpet_rf_description,
                 disabled: "disabled",
+                value: $admittingReport->carpet_rf_description,
             );
         ?>
     <div class="create-admitting-reports__topic">
@@ -306,6 +306,7 @@ use app\components\FormTextareaItem;
                 id: "carpet_rear",
                 label: "",
                 name: "carpet_rear",
+                disabled: "disabled",
                 value: $admittingReport->carpet_rear,
                 options: [
                     "good" => "Good",
@@ -315,15 +316,14 @@ use app\components\FormTextareaItem;
                     "stained" => "Stained",
                     "missing" => " Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "carpet_rear_description",
                 label: "",
                 name: "carpet_rear_description",
-                value: $admittingReport->carpet_rear_description,
                 disabled: "disabled",
+                value: $admittingReport->carpet_rear_description,
             );
         ?>
     </div>
@@ -339,6 +339,7 @@ use app\components\FormTextareaItem;
                 id: "rim_lf",
                 label: "",
                 name: "rim_lf",
+                disabled: "disabled",
                 value: $admittingReport->rim_lf,
                 options: [
                     "good" => "Good",
@@ -347,15 +348,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "missing" => "Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "rim_lf_description",
                 label: "",
                 name: "rim_lf_description",
-                value: $admittingReport->rim_lf_description,
                 disabled: "disabled",
+                value: $admittingReport->rim_lf_description,
             );
         ?>
     </div>
@@ -366,6 +366,7 @@ use app\components\FormTextareaItem;
                 id: "rim_rf",
                 label: "",
                 name: "rim_rf",
+                disabled: "disabled",
                 value: $admittingReport->rim_rf,
                 options: [
                     "good" => "Good",
@@ -374,15 +375,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "missing" => "Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "rim_rf_description",
                 label: "",
                 name: "rim_rf_description",
-                value: $admittingReport->rim_rf_description,
                 disabled: "disabled",
+                value: $admittingReport->rim_rf_description,
             );
         ?>
     </div>
@@ -393,6 +393,7 @@ use app\components\FormTextareaItem;
                 id: "rim_lr",
                 label: "",
                 name: "rim_lr",
+                disabled: "disabled",
                 value: $admittingReport->rim_lr,
                 options: [
                     "good" => "Good",
@@ -401,15 +402,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "missing" => "Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "rim_lr_description",
                 label: "",
                 name: "rim_lr_description",
-                value: $admittingReport->rim_lr_description,
                 disabled: "disabled",
+                value: $admittingReport->rim_lr_description,
             );
         ?>
 
@@ -420,6 +420,7 @@ use app\components\FormTextareaItem;
                 id: "rim_rr",
                 label: "",
                 name: "rim_rr",
+                disabled: "disabled",
                 value: $admittingReport->rim_rr,
                 options: [
                     "good" => "Good",
@@ -428,15 +429,14 @@ use app\components\FormTextareaItem;
                     "damaged" => "Damaged",
                     "missing" => "Missing",
                 ],
-                disabled: "disabled",
             );
 
             FormItem::render(
                 id: "rim_rr_description",
                 label: "",
                 name: "rim_rr_description",
-                value: $admittingReport->rim_rr_description,
                 disabled: "disabled",
+                value: $admittingReport->rim_rr_description,
             );
         ?>
     </div>
@@ -449,6 +449,7 @@ use app\components\FormTextareaItem;
             id: "current_fuel_level",
             label: "<b><br>Current Fuel Level</b>",
             name: "current_fuel_level",
+            disabled: "disabled",
             value: $admittingReport->current_fuel_level,
             options: [
                 "full" => "Full",
@@ -457,15 +458,14 @@ use app\components\FormTextareaItem;
                 "3/4" => "3/4",
                 "1/4" => "1/4",
             ],
-            disabled: "disabled",
         );  
 
         FormItem::render(
             id: "current_fuel_level_description",
             label: "",
             name: "current_fuel_level_description",
-            value: $admittingReport->current_fuel_level_description,
             disabled: "disabled",
+            value: $admittingReport->current_fuel_level_description,
         );
     ?>
 </div>
@@ -476,8 +476,8 @@ use app\components\FormTextareaItem;
             id: "mileage",
             label: "<b><br>Mileage</b>",
             name: "mileage",
-            value: $admittingReport->mileage,
             disabled: "disabled",
+            value: $admittingReport->mileage,
         );
     ?>
 </div>
@@ -488,8 +488,8 @@ use app\components\FormTextareaItem;
             id: "admitting_time",
             label: "<b><br>Admitting Time</b>",
             name: "admitting_time",
-            value: $admittingReport->admitting_time,
             disabled: "disabled",
+            value: $admittingReport->admitting_time,
         );
 
     ?>
@@ -502,8 +502,8 @@ use app\components\FormTextareaItem;
             id: "customer_belongings",
             label: "<b>Customer Belongins</b>",
             name: "customer_belongings",
-            value: $admittingReport->customer_belongings,
             disabled: "disabled",
+            value: $admittingReport->customer_belongings,
         );
     ?>
 </div>
@@ -514,8 +514,8 @@ use app\components\FormTextareaItem;
             id: "additional_note",
             label: "<b>Additional Note</b>",
             name: "additional_note",
-            value: $admittingReport->additional_note,
             disabled: "disabled",
+            value: $admittingReport->additional_note,
         );
     ?>
 </div>
@@ -526,6 +526,7 @@ use app\components\FormTextareaItem;
             id: "dashboard",
             label: "<b><br>Dashboard</b>",
             name: "dashboard",
+            disabled: "disabled",
             value: $admittingReport->dashboard,
             options: [
                 "good" => "Good",
@@ -534,15 +535,14 @@ use app\components\FormTextareaItem;
                 "burnt" => "Burnt",
                 "stained" => "Stained",
             ],
-            disabled: "disabled",
         );
 
         FormItem::render(
             id: "dashboard_description",
             label: "",
             name: "dashboard_description",
-            value: $admittingReport->dashboard_description,
             disabled: "disabled",
+            value: $admittingReport->dashboard_description,
         );
     ?>
 </div>
@@ -553,6 +553,7 @@ use app\components\FormTextareaItem;
             id: "windshield",
             label: "<b><br>Windshield</b>",
             name: "windshield",
+            disabled: "disabled",
             value: $admittingReport->windshield,
             options: [
                 "good" => "Good",
@@ -560,15 +561,14 @@ use app\components\FormTextareaItem;
                 "cracked" => "Cracked",
                 "damaged" => "Damaged",
             ],
-            disabled: "disabled",
         );
 
         FormItem::render(
             id: "windshield_description",
             label: "",
             name: "windshield_description",
-            value: $admittingReport->windshield_description,
             disabled: "disabled",
+            value: $admittingReport->windshield_description,
         );
     ?>
 </div>

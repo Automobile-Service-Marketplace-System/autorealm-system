@@ -43,7 +43,7 @@ class Invoice
             "SELECT
                 invoice_no as 'Invoice No',
                 customer_name as 'Customer Name',
-                total_cost as 'Total Cost',
+                (total_cost) / 100 as 'Total Cost',
                 type as Type,
                 CONCAT(e.f_name,' ',e.l_name) as 'Employee Name',
                 job_card_id as 'JobCard ID'
@@ -127,12 +127,24 @@ class Invoice
             $itemCosts = $this->body['product_amounts'];
             $serviceCosts = $this->body['service_amounts'];
 
+            $realItemCosts = [];
+
+            for($i = 0; $i < count($itemCosts); $i++) {
+                $realItemCosts[] = $itemCosts[$i] - ($itemCosts[$i] * $this->body['product_percentages'][$i])/100;
+            }
+
+            $realServiceCosts = [];
+
+            for($i = 0; $i < count($serviceCosts); $i++) {
+                $realServiceCosts[] = $serviceCosts[$i] - ($serviceCosts[$i] * $this->body['service_discounts'][$i])/100;
+            }
+
             $totalCost = 0;
-            foreach (array_merge($itemCosts, $serviceCosts) as $cost) {
+            foreach (array_merge($realItemCosts, $realServiceCosts) as $cost) {
                 $totalCost += (double) $cost;
             }
 
-            DevOnly::prettyEcho($totalCost);
+//            DevOnly::prettyEcho($totalCost);
 
             // create the invoice record,
             $statement = $this->pdo->prepare(
@@ -141,30 +153,115 @@ class Invoice
                          customer_phone,
                          customer_email,
                          customer_address,
-                         total_cost, 
-                         type, 
-                         employee_id, 
-                         job_card_id, 
-                         created_at,
+                        total_cost,
                          job_card_id,
                          employee_id
-                         ) VALUES 
-                (
-                 :customer_name,
+                         ) 
+                    VALUES (
+                    :customer_name,
                     :customer_phone,
                     :customer_email,
                     :customer_address,
                     :total_cost,
-                    :type,
-                    :employee_id,
-                    :job_card_id,
-                    :created_at,
                     :job_card_id,
                     :employee_id
                 )"
             );
+            $statement->bindValue(":customer_name", $this->body['customer_name'], PDO::PARAM_STR);
+            $statement->bindValue(":customer_phone", $this->body['customer_phone'], PDO::PARAM_STR);
+            $statement->bindValue(":customer_email", $this->body['customer_email'], PDO::PARAM_STR);
+            $statement->bindValue(":customer_address", $this->body['customer_address'], PDO::PARAM_STR);
+            $statement->bindValue(":total_cost", $totalCost * 100, PDO::PARAM_STR);
+            $statement->bindValue(":employee_id", $employeeId, PDO::PARAM_INT);
+            $statement->bindValue(":job_card_id", $this->body['job_id'] ?? null, PDO::PARAM_INT);
+            $statement->execute();
+
+            $invoiceId = $this->pdo->lastInsertId();
+
+            $productCount = count($this->body['item_codes']);
+            $products = [];
+
+            for ($i = 0; $i < $productCount; $i++) {
+                $products[] = [
+                    "item_code" => $this->body['item_codes'][$i],
+                    "quantity" => $this->body['product_quantities'][$i],
+                    "unit_price" => $this->body['product_unit_prices'][$i]*100,
+                    "discount" => $this->body['product_percentages'][$i],
+                    "product_amount" => $this->body['product_amounts'][$i]*100,
+                    "name" => $this->body['product_names'][$i],
+                ];
+            }
+//            DevOnly::prettyEcho($products);
+
+            $service_count = count($this->body['service_codes']);
+            $services = [];
+
+            for ($i = 0; $i < $service_count; $i++) {
+                $services[] = [
+                    "service_code" => $this->body['service_codes'][$i],
+                    "service_cost" => $this->body['service_costs'][$i]*100,
+                    "discount" => $this->body['service_discounts'][$i],
+                    "service_amount" => $this->body['service_amounts'][$i]*100,
+                    "name" => $this->body['service_names'][$i],
+                ];
+            }
+
+//            DevOnly::prettyEcho($services);
+
+            foreach ($products as $product) {
+                $statement = $this->pdo->prepare(
+                    "INSERT INTO invoice_has_product 
+                        (invoice_no, 
+                         item_code,
+                         quantity,
+                         price_at_invoice
+                         ) 
+                        VALUES (
+                        :invoice_no,
+                        :item_code,
+                        :quantity,
+                        :price_at_invoice
+                    )"
+                );
+                $statement->bindValue(":invoice_no", $invoiceId, PDO::PARAM_INT);
+                $statement->bindValue(":item_code", $product['item_code'], PDO::PARAM_STR);
+                $statement->bindValue(":quantity", $product['quantity'], PDO::PARAM_INT);
+
+                $discountedPrice = $product['unit_price'] - ($product['unit_price'] * ($product['discount'] / 100));
+                $statement->bindValue(":price_at_invoice", $discountedPrice, PDO::PARAM_INT);
+                $statement->execute();
+            }
+
+
+            foreach ($services as $service) {
+                $statement = $this->pdo->prepare(
+                    "INSERT INTO invoice_has_services 
+                        (invoice_no, 
+                         service_code,
+                         price_at_invoice
+                         ) 
+                        VALUES (
+                        :invoice_no,
+                        :service_code,
+                        :price_at_invoice
+                    )"
+                );
+                $statement->bindValue(":invoice_no", $invoiceId, PDO::PARAM_INT);
+                $statement->bindValue(":service_code", $service['service_code'], PDO::PARAM_STR);
+
+                $discountedPrice = $service['service_cost'] - ($service['service_cost'] * ($service['discount'] / 100));
+                $statement->bindValue(":price_at_invoice", $discountedPrice, PDO::PARAM_INT);
+                $statement->execute();
+            }
+
+
+
+
+            $this->pdo->commit();
+            return true;
 
         } catch (PDOException|Exception $e) {
+//            var_dump($e->getMessage());
             $this->pdo->rollBack();
             return "Failed to begin transaction : " . $e->getMessage();
         }

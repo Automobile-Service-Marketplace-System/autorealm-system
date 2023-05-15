@@ -175,7 +175,7 @@ class Vehicle
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
             if (!$results) {
-                return "No vehicle found";
+                return [];
             }
 
             $resultsWithLastService = [];

@@ -7,10 +7,12 @@ import Notifier from "../components/Notifier";
  * @type {HTMLButtonElement}
  */
 const editCustomerProfileButton = document.querySelector("#edit-customer-profile")
-const cusEditInfoDiv = document.querySelector("#customer-profile--info")
-console.log(cusEditInfoDiv)
+
+
 
 if(editCustomerProfileButton || cusEditInfoDiv) {
+    const cusEditInfoDiv = document.querySelector("#customer-profile--info")
+    console.log(cusEditInfoDiv)
     const cusFirstName = cusEditInfoDiv.dataset.cusfname
     const cusLastName = cusEditInfoDiv.dataset.cuslname
     const cusAddress = cusEditInfoDiv.dataset.cusaddress
@@ -101,7 +103,6 @@ if(editCustomerProfileButton || cusEditInfoDiv) {
                 }
             } else if (result.status === 201) {
 
-                // add success message to url search params
                 location.reload()
             }
         } catch (e) {
@@ -135,5 +136,3 @@ if(editCustomerProfileButton || cusEditInfoDiv) {
     })
 
 }
-
-

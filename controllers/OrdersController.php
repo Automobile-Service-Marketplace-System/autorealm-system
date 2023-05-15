@@ -80,7 +80,7 @@ class OrdersController
             $query = $req->query();
             $page = $query["page"] ?? 1;
             $limit = $query["limit"] ?? 4;
-            $status = $query["status"] ?? "Prepared";
+            $status = $query['status'] ?? "All";
 
 
             $orderModel = new Order();
