@@ -87,7 +87,7 @@ use app\utils\DevOnly;
         </div>
     </div>
 
-    <div class="admin-overview__container__title overview-card-wrapper">    
+    <div class="admin-overview__container__title overview-card-wrapper-employee">    
     <h2>Employee Count</h2>
         <div class="analytic-revenue-details">
             <div class="revenue-chart">

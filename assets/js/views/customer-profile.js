@@ -8,14 +8,15 @@ import Notifier from "../components/Notifier";
  */
 const editCustomerProfileButton = document.querySelector("#edit-customer-profile")
 
-if (editCustomerProfileButton) {
 
+
+if(editCustomerProfileButton || cusEditInfoDiv) {
     const cusEditInfoDiv = document.querySelector("#customer-profile--info")
     console.log(cusEditInfoDiv)
-    let cusFirstName = cusEditInfoDiv.dataset.cusfname
-    let cusLastName = cusEditInfoDiv.dataset.cuslname
-    let cusAddress = cusEditInfoDiv.dataset.cusaddress
-    let cusId = cusEditInfoDiv.dataset.cusid
+    const cusFirstName = cusEditInfoDiv.dataset.cusfname
+    const cusLastName = cusEditInfoDiv.dataset.cuslname
+    const cusAddress = cusEditInfoDiv.dataset.cusaddress
+    const cusId = cusEditInfoDiv.dataset.cusid
 
     const updateCustomerProfileForm = htmlToElement(
         `<form  method="post" enctype="multipart/form-data" id="update-customer-profile">
@@ -102,11 +103,6 @@ if (editCustomerProfileButton) {
                 }
             } else if (result.status === 201) {
 
-                // add success message to url search params
-                window.location.search = new URLSearchParams({
-                    ...params,
-                    success: 'Your profile has been updated successfully'
-                }).toString()
                 location.reload()
             }
         } catch (e) {
@@ -138,4 +134,5 @@ if (editCustomerProfileButton) {
             key: "updateCustomerProfileForm"
         })
     })
+
 }

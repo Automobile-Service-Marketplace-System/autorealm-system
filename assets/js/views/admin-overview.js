@@ -139,8 +139,14 @@ if(orderStatusCanvas){
                     const orderstatusChart = new Chart(orderStatusCanvas, {
                         type: "doughnut", data: {
                             labels: Status, datasets: [{
-                                label: "Order Status", data: Count,
+                                label: "Order Status", 
+                                data: Count,
+                                backgroundColor:[
+                                    'rgb(0, 255, 0)',
+                                    'rgb(255, 0, 0)',
+                                    'rgb(255, 255, 0)'
 
+                                ],
                                 hoverOffset: 5
                             }]
                         }, options: {
