@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="admin-analytics__container__title">    
+        <!-- <div class="admin-analytics__container__title">    
             <h2>Order Revenue</h2>
         </div>
 
@@ -28,7 +28,7 @@
             <div class="revenue-chart">
                 <canvas id="order-quantity-canvas"></canvas>
             </div>
-        </div>
+        </div> -->
 
         <!-- <div class="admin-analytics__container__title">    
             <h2>Sumarry</h2>
