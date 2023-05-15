@@ -3,7 +3,6 @@
  * @var object $admin
  */
 
-var_dump($admin);
 ?>
 
 
